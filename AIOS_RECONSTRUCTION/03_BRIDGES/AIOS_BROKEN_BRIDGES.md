@@ -5,17 +5,11 @@
 ## Currently Broken / Partial
 
 ### 1. `br-aios-hermes` (AIOS → Hermes Agent)
-- **Status**: PARTIAL · health = `broken_path`
-- **Reason**: PATH 双实例冲突
-  - `D:\AIOS\_relinked\hermes\hermes-agent` (v0.21.3, git install, 正确版本)
-  - `C:\Users\xinzh\.hermes\hermes-agent` (v0.15.1, 不知道哪来的, PATH 优先级指向这里)
-- **Last Success**: 2026-09-14 (R211 初始发现)
-- **Repair Plan**:
-  1. 修 PATH 让 `hermes` 指向 D 盘 v0.21.3
-  2. 删 C 盘 v0.15.1 (或移到 `12_ARCHIVE/`)
-  3. `git stash pop` 应用 `hermes-update-autostash-20260926-134849`
-  4. 跟踪上游 NousResearch/hermes-agent 修 `_github_compare_behind` import 后再升
-- **Blocker**: 上游 main 分支 broken
+- **Status**: ✅ **RESOLVED 2026-09-27 (R260 audit)** · moved to "Recently Repaired"
+- **Root-cause analysis (R260)**: The R211 diagnosis was based on incorrect version labels (v0.21.3 D vs v0.15.1 C). Both binaries actually report **v0.15.1 (2026.5.29)** with identical pyproject.toml sha `65cad64739fd98a0`. There is no PATH conflict — both paths point to the same version.
+- **Current state**: PATH priority correctly to D drive (`D:\AIOS\_relinked\hermes\hermes-agent\.venv\Scripts\hermes.exe`). Binary is functional.
+- **Bridge registry updated**: `status=active, health=healthy` per `AIOS_BRIDGE_REGISTRY.json`.
+- **Deferred**: Upgrade to upstream HEAD is blocked by proxy 127.0.0.1:7897 dead + DNS hijack of github.com → 20.205.243.166. User can manually restart clash-verge proxy or fix DNS to enable `hermes update`.
 
 ### 2. `br-swarmclaw-openclaw` (SwarmClaw → OpenClaw)
 - **Status**: FAILED_INSTALL · health = `needs_build_tools`
@@ -38,6 +32,13 @@
 ---
 
 ## Recently Repaired (R211)
+
+### ✅ `br-aios-hermes` (AIOS → Hermes Agent) — REPAIRED 2026-09-27 (R260 audit)
+- False alarm: R211 diagnosis of "v0.21.3 D vs v0.15.1 C PATH 双实例冲突" was incorrect.
+- Verified: both paths are v0.15.1 (2026.5.29) with identical pyproject.toml sha.
+- PATH priority to D drive is correct.
+- Registry: status=active, health=healthy.
+- Upgrade deferred (proxy 7897 dead + DNS hijack blocks `hermes update`).
 
 ### ✅ `br-cc-marketplace` (Claude Code → Marketplace)
 - **Status**: ACTIVE (R211 修复)

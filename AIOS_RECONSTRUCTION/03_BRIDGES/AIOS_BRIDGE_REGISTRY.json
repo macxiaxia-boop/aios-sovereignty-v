@@ -26,10 +26,10 @@
       "from": "AIOS",
       "to": "Hermes Agent",
       "type": "cli",
-      "status": "partial",
-      "transport": "shell (hermes CLI)",
-      "health": "broken_path",
-      "evidence": "R211: v0.21.3 D 盘 + v0.15.1 C 盘 PATH 双实例"
+      "status": "active",
+      "transport": "shell (hermes CLI, PATH priority = D drive)",
+      "health": "healthy",
+      "evidence": "R260 audit (2026-09-27): both D:/AIOS/_relinked/hermes and C:/Users/xinzh/.hermes are v0.15.1 (2026.5.29) identical pyproject.toml sha 65cad64739fd98a0 · PATH correctly to D drive · no version conflict · binary functional. Port :18792 DOWN handled separately by br-aios-openclaw Plan B (per R236). Update to upstream HEAD blocked by proxy 7897 dead + DNS hijack; deferred."
     },
     {
       "id": "br-aios-openclaw",
