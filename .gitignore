@@ -1,20 +1,29 @@
-# AIOS gitignore baseline
+# AIOS .gitignore · J wave · 2026-09-27
 aios_venv/
-_venv312/
 .venv/
 __pycache__/
 *.pyc
-*.bak
-*.bak_*
 *.tmp
-_archived_*/
-tmp/
-_scripts_tmp/
 downloads/
-.worktrees/
-*.log
-*.pid
-_ai_router_state.json
-_ai_router.log
-_ai_router_alert.log
-_death_alerts.jsonl
+**/state/
+**/logs/
+**/history/
+**/heartbeat/
+*_truth_report*
+*_health_report*
+*_watchdog_state*
+*_daemon_watchdog*
+
+# Runtime executables (不是 source)
+*.exe
+*.cmd
+*.bat
+*.scr
+*.pyd
+*.pdb
+
+# Build artifacts
+build/
+dist/
+.next/
+out/
