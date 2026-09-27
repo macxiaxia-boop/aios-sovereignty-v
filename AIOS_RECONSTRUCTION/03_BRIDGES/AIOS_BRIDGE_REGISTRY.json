@@ -76,10 +76,10 @@
       "from": "SwarmClaw",
       "to": "OpenClaw",
       "type": "candidate",
-      "status": "failed_install",
-      "transport": "npm (待装)",
-      "health": "needs_build_tools",
-      "evidence": "R211 npm install 失败 (gyp)"
+      "status": "installed_build_blocked",
+      "transport": "npm (installed v1.9.39, build blocked by Next.js 16.2.4 webpack Windows path bug)",
+      "health": "needs_nextjs_path_fix",
+      "evidence": "R262 (2026-09-27): npm install -g @swarmclawai/swarmclaw@1.9.39 OK · Next.js deps present · node-gyp v12.4.0 (newer than R211 v12.11.1) resolved original gyp ERR · standalone bundle build failed: Next.js 16.2.4 webpack cannot resolve './D:/npm-global/node_modules/.../next/dist/client/next.js' (Windows absolute path colon issue) · SiSlack react-icons barrel optimize warning (non-fatal) · NOT a VS Build Tools issue (no native compile needed for Next.js) · fix paths: install in colon-free prefix (e.g. C:\\npm-prefix — tested, package files copy OK but npm bin shim points back to D:\\npm-global, needs full PATH refresh + reinstall) · or wait for Next.js upstream Windows path fix · OpenClaw 18792 daemon continues to work without SwarmClaw UI (R236 Plan B)"
     },
     {
       "id": "br-cc-marketplace",
