@@ -1,29 +1,152 @@
-# AIOS .gitignore · J wave · 2026-09-27
-aios_venv/
-.venv/
+# AIOS .gitignore · R219 (N-WAVE 2026-09-27)
+
+# ===== 历史 backups (cc-switch, claude-code) =====
+.claude/
+.cc-switch/
+.cc_backups/
+_backups/
+*.bak
+*.bak.*
+
+# ===== Downloads / 临时目录 =====
+.downloads/
+.workzone/
+.out/
+.capability/
+.cc-history/
+.capability_*/
+
+# ===== R 系列一次性脚本 (保留 source, 排除一次性 fix) =====
+_R209_*
+_R77_*
+_R82_*
+_R93_*
+_AIOSWatchdogAliveCheck*
+_R65_*
+R93_*
+
+# ===== exe / cmd (binary daemon) =====
+AIOS*.exe
+AIOS*.cmd
+AIOS_Cron_*.ps1
+
+# ===== Archived / cleanup =====
+_archived_*/
+_cleanup_*
+_conv_*
+_aios_r*_append.py
+_aios_r*_write.py
+_aios_r*_l2_write.py
+_ai_apis.py
+_diagnose_exe.ps1
+_doubao_chat.py
+_dr_v3.0_uncompressed_workspace/
+_e_drive_dedup_workspace/
+_encoding_fix.ps1
+_final_restart.ps1
+_hermes_inbox.py
+_matrix_seedream_gen.py
+_obsidian_bridge.py
+_pil_monitor.py
+_r210_*
+_r211_*
+_r213_*
+_r214_*
+_r215_*
+_r259_*
+_r983_*
+_relinked/
+_role_channels.py
+_run_collector_py.ps1
+
+# ===== Capability / downloads =====
+_capability/
+_downloads/
+_workzone/
+.out/
+_workspace/
+_dr_workspace/
+_merge_workspace/
+_archived_workspace/
+
+# ===== Other miscellaneous =====
+_R65_*
+_R83_*
+_R98_*
+_out/
+_scripts/
+_start_all.ps1
+_test_alerts.ps1
+_test_cycle1_log.py
+_test_dryrun.cmd
+_test_v2.cmd
+_test_wrapper.cmd
+_tools/
+_watchdog_alive_check.py
+代练_一键根治_L4.cmd
+R65_*.bat
+daemons_v2/
+aios_tasks/
+aios_tools/
+cloudtech-saas/
+
+# ===== Chinese filename wildcards =====
+*代练*.cmd
+*一键根治*.cmd
+
+# ===== Python 临时 =====
 __pycache__/
 *.pyc
-*.tmp
-downloads/
-**/state/
-**/logs/
-**/history/
-**/heartbeat/
-*_truth_report*
-*_health_report*
-*_watchdog_state*
-*_daemon_watchdog*
-
-# Runtime executables (不是 source)
-*.exe
-*.cmd
-*.bat
-*.scr
+*.pyo
 *.pyd
-*.pdb
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
 
-# Build artifacts
-build/
-dist/
-.next/
-out/
+# ===== Secrets (红线 #59 · 永远不提交) =====
+.env
+.env.local
+*.env
+mcp_credentials.env
+secrets.json
+credentials.json
+id_rsa
+id_dsa
+*.pem
+*.key
+
+# ===== Logs =====
+*.log
+*.log.*
+*.pid
+
+# ===== IDE =====
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ===== OS =====
+desktop.ini
+$RECYCLE.BIN/
+
+# ===== AIOS 内部 =====
+.ai_brain_state/
+.ai_session/
+.ai_drift/
+.ai_logs/
+.ai_dump/
+
+# ===== Workbuddy / AI 实体 state =====
+_ai_router_state.json
+_ai_router.log
+_ai_router_alert.log
+_ai_apis_state.json
+_workbuddy_connector_state.json
+_workbuddy_connector.log
+
+# ===== Test temp =====
+test_*/
+tmp/
