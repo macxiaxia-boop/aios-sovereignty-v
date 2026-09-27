@@ -1,0 +1,177 @@
+{
+  "version": "R212-step4-v1",
+  "agents": [
+    {
+      "id": "agent-hermes",
+      "name": "Hermes (治理)",
+      "type": "role",
+      "system": "AIOS",
+      "status": "active",
+      "authority": "canonical",
+      "description": "AIOS 5 角色之治理 · T10 触发器 · 用户北极星对齐 · 行为红线监督",
+      "signals": [
+        "T10"
+      ],
+      "evidence": "AGENTS.md #21"
+    },
+    {
+      "id": "agent-lyra",
+      "name": "Lyra (内容)",
+      "type": "role",
+      "system": "AIOS",
+      "status": "active",
+      "authority": "canonical",
+      "signals": [
+        "T11"
+      ]
+    },
+    {
+      "id": "agent-athena",
+      "name": "Athena (架构)",
+      "type": "role",
+      "system": "AIOS",
+      "status": "active",
+      "authority": "canonical",
+      "signals": [
+        "T12"
+      ]
+    },
+    {
+      "id": "agent-apollo",
+      "name": "Apollo (数据)",
+      "type": "role",
+      "system": "AIOS",
+      "status": "active",
+      "authority": "canonical",
+      "signals": [
+        "T13"
+      ]
+    },
+    {
+      "id": "agent-artemis",
+      "name": "Artemis (运营)",
+      "type": "role",
+      "system": "AIOS",
+      "status": "active",
+      "authority": "canonical",
+      "signals": [
+        "T14"
+      ]
+    },
+    {
+      "id": "agent-claude-code-main",
+      "name": "Claude Code Main Session",
+      "type": "agent",
+      "system": "ClaudeCode",
+      "status": "active",
+      "authority": "canonical",
+      "description": "Claude Code 主 session · 当前运行的就是它 · MiniMax-M3 模型 · 200K window",
+      "model": "MiniMax-M3"
+    },
+    {
+      "id": "agent-codex-cli",
+      "name": "Codex CLI Agent",
+      "type": "agent",
+      "system": "CodexCLI",
+      "status": "active",
+      "authority": "canonical",
+      "description": "OpenAI Codex CLI · OAuth · deepseek profile · 本地 relay 19194",
+      "relay": "localhost:19194"
+    },
+    {
+      "id": "agent-hermes-nos-res",
+      "name": "Hermes Agent (Nous Research)",
+      "type": "agent_framework",
+      "system": "Hermes",
+      "status": "active",
+      "authority": "canonical",
+      "description": "v0.21.3 git install · 自学习循环 · FTS5 记忆 · agentskills.io 兼容",
+      "version": "0.21.3",
+      "update_attempt": "FAILED (R211)"
+    },
+    {
+      "id": "agent-openclaw-gateway",
+      "name": "OpenClaw Gateway",
+      "type": "gateway",
+      "system": "OpenClaw",
+      "status": "active",
+      "authority": "canonical",
+      "description": "本地 OpenClaw Gateway · 多通道 (含 Feishu)"
+    },
+    {
+      "id": "agent-explore",
+      "name": "Explore Subagent",
+      "type": "subagent",
+      "system": "ClaudeCode",
+      "status": "active",
+      "authority": "canonical",
+      "description": "Read-only search subagent · broad fan-out"
+    },
+    {
+      "id": "agent-planner",
+      "name": "Plan Subagent",
+      "type": "subagent",
+      "system": "ClaudeCode",
+      "status": "active",
+      "authority": "canonical",
+      "description": "软件架构师 subagent"
+    },
+    {
+      "id": "agent-reviewer",
+      "name": "Reviewer Subagent",
+      "type": "subagent",
+      "system": "ClaudeCode",
+      "status": "active",
+      "authority": "canonical"
+    },
+    {
+      "id": "agent-test-engineer",
+      "name": "Test Engineer Subagent",
+      "type": "subagent",
+      "system": "ClaudeCode",
+      "status": "active",
+      "authority": "canonical"
+    },
+    {
+      "id": "agent-developer",
+      "name": "Developer Subagent",
+      "type": "subagent",
+      "system": "ClaudeCode",
+      "status": "active",
+      "authority": "canonical"
+    },
+    {
+      "id": "agent-architect",
+      "name": "Architect Subagent",
+      "type": "subagent",
+      "system": "ClaudeCode",
+      "status": "active",
+      "authority": "canonical"
+    },
+    {
+      "id": "agent-security",
+      "name": "Security Subagent",
+      "type": "subagent",
+      "system": "ClaudeCode",
+      "status": "active",
+      "authority": "canonical"
+    },
+    {
+      "id": "agent-general-purpose",
+      "name": "General Purpose Subagent",
+      "type": "subagent",
+      "system": "ClaudeCode",
+      "status": "active",
+      "authority": "canonical"
+    },
+    {
+      "id": "agent-claude-code-guide",
+      "name": "Claude Code Guide Subagent",
+      "type": "subagent",
+      "system": "ClaudeCode",
+      "status": "active",
+      "authority": "canonical",
+      "description": "Claude Code/Agent SDK 专用 Q&A subagent"
+    }
+  ]
+}

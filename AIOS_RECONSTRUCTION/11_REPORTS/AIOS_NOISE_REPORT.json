@@ -1,0 +1,353 @@
+{
+  "version": "R212-step10-v1",
+  "noise_locations": [
+    {
+      "path": "D:\\AIOS\\aios_tools\\state\\_archived_R139_20260922",
+      "pattern": "_archive",
+      "file_count": 1,
+      "sample": [
+        "aios_tasks_dag.md"
+      ]
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\_archived_20260919",
+      "pattern": "_archive",
+      "file_count": 1,
+      "sample": [
+        "_aios_mcp_feishu_server.py"
+      ]
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\_archived_old_exes",
+      "pattern": "_archive",
+      "file_count": 5,
+      "sample": [
+        "aios-incident-controller.exe",
+        "AIOSCentralCollector.exe",
+        "AIOSSelfHeal.exe"
+      ]
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\_archived_R162_20260924_skill_growth_runs",
+      "pattern": "_archive",
+      "file_count": 2,
+      "sample": [
+        "_aios_skill_index.py.bak",
+        "_user_growth_log.py.bak"
+      ]
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\_archived_R163_20260924",
+      "pattern": "_archive",
+      "file_count": 8,
+      "sample": [
+        "fix_register_cmd.py",
+        "R163_CronFix.ps1",
+        "R163_diag.log"
+      ]
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\_archived_R165_20260924",
+      "pattern": "_archive",
+      "file_count": 3,
+      "sample": [
+        "R165_DR_Fix.ps1",
+        "R165_DR_Watchdog.cmd",
+        "R165_DR_Watchdog_v2.cmd"
+      ]
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\_archived_R167_20260924",
+      "pattern": "_archive",
+      "file_count": 1,
+      "sample": [
+        "R167_R153_Wrapper.cmd"
+      ]
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\_archived_R170_20260924",
+      "pattern": "_archive",
+      "file_count": 13,
+      "sample": [
+        "R162_DailyNewsletter.cmd",
+        "R162_Heartbeat.cmd",
+        "R162_SkillIndex.cmd"
+      ]
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\_archived_R172_20260924",
+      "pattern": "_archive",
+      "file_count": 4,
+      "sample": [
+        "R162_DailyNewsletter.cmd",
+        "R162_Heartbeat.cmd",
+        "R162_Register.cmd"
+      ]
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\_archived_R173_20260924",
+      "pattern": "_archive",
+      "file_count": 9,
+      "sample": [
+        "register_codex_aios_sync.cmd",
+        "register_codex_health_watchdog.cmd",
+        "register_codex_relay_guard.cmd"
+      ]
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\00_CORE\\_archived_20260919",
+      "pattern": "_archive",
+      "file_count": 1,
+      "sample": [
+        "AIOS-PROTOCOL-V4.md.pre-v4.1-extend-2026-09-19"
+      ]
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\00_CORE\\_archived_v13_pre_20260924",
+      "pattern": "_archive",
+      "file_count": 1,
+      "sample": [
+        "AGENT-ROLES_v1.0_20260918.md"
+      ]
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\00_CORE\\_roundtrip_backups",
+      "pattern": "_backups",
+      "file_count": 6,
+      "sample": [
+        "CORE-RULES_20260921_022646.bak",
+        "CORE-RULES_20260921_022713.bak",
+        "CORE-RULES_20260921_023304.bak"
+      ]
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\aios_tasks\\memory\\_archived",
+      "pattern": "_archive",
+      "file_count": 2633,
+      "sample": [
+        "mem-test-20260922114356.json",
+        "mem-test-20260922115538.json",
+        "mem-test-20260922120757.json"
+      ]
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\aios_tasks\\_archived_R137_20260922",
+      "pattern": "_archive",
+      "file_count": 3,
+      "sample": [
+        "cleanup_temp.py",
+        "reencode_bat.py",
+        "test_script.py"
+      ]
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\aios_tasks\\_archived_R140_20260922",
+      "pattern": "_archive",
+      "file_count": 12,
+      "sample": [
+        "_aios_5role_reflexion_loop.py.bak-pre-bom-strip-20260921",
+        "_aios_atomic_write.py.bak-pre-bom-strip-20260921",
+        "_aios_autonomy_scheduler.py.bak-pre-bom-strip-20260921"
+      ]
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\aios_tasks\\_archived_R151_20260922\\corrupted_jsonl",
+      "pattern": "_archive",
+      "file_count": 3,
+      "sample": [
+        "decision_engine_9.jsonl",
+        "deliberative_layer.jsonl",
+        "plan_kernel.jsonl"
+      ]
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\aios_tasks\\_archived_R151_20260922\\pre_R_baks",
+      "pattern": "_archive",
+      "file_count": 32,
+      "sample": [
+        "aios_checker.py.pre_R149.bak",
+        "aios_maker.py.pre_R149.bak",
+        "aios_mcp_gateway.py.pre_R150.bak"
+      ]
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\aios_tasks\\_archived_R151_20260922\\work_scripts",
+      "pattern": "_archive",
+      "file_count": 5,
+      "sample": [
+        "_r148_fix_corrupted.py",
+        "_r148_selftest.py",
+        "_r149_batch_switch_safe.py"
+      ]
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\aios_tasks\\_r191_scripts",
+      "pattern": "_r1",
+      "file_count": 10,
+      "sample": [
+        "md_to_ip_txt.py",
+        "r191_check_lock.ps1",
+        "R191_desktop_cleanup_log.txt"
+      ]
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\aios_tools\\state\\_archived_R139_20260922",
+      "pattern": "_archive",
+      "file_count": 1,
+      "sample": [
+        "aios_tasks_dag.md"
+      ]
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\aios_tools\\_archived_20260919",
+      "pattern": "_archive",
+      "file_count": 1,
+      "sample": [
+        "_aios_mcp_feishu_server.py"
+      ]
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\aios_tools\\_archived_old_exes",
+      "pattern": "_archive",
+      "file_count": 5,
+      "sample": [
+        "aios-incident-controller.exe",
+        "AIOSCentralCollector.exe",
+        "AIOSSelfHeal.exe"
+      ]
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\aios_tools\\_archived_R162_20260924_skill_growth_runs",
+      "pattern": "_archive",
+      "file_count": 2,
+      "sample": [
+        "_aios_skill_index.py.bak",
+        "_user_growth_log.py.bak"
+      ]
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\aios_tools\\_archived_R163_20260924",
+      "pattern": "_archive",
+      "file_count": 8,
+      "sample": [
+        "fix_register_cmd.py",
+        "R163_CronFix.ps1",
+        "R163_diag.log"
+      ]
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\aios_tools\\_archived_R165_20260924",
+      "pattern": "_archive",
+      "file_count": 3,
+      "sample": [
+        "R165_DR_Fix.ps1",
+        "R165_DR_Watchdog.cmd",
+        "R165_DR_Watchdog_v2.cmd"
+      ]
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\aios_tools\\_archived_R167_20260924",
+      "pattern": "_archive",
+      "file_count": 1,
+      "sample": [
+        "R167_R153_Wrapper.cmd"
+      ]
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\aios_tools\\_archived_R170_20260924",
+      "pattern": "_archive",
+      "file_count": 13,
+      "sample": [
+        "R162_DailyNewsletter.cmd",
+        "R162_Heartbeat.cmd",
+        "R162_SkillIndex.cmd"
+      ]
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\aios_tools\\_archived_R172_20260924",
+      "pattern": "_archive",
+      "file_count": 4,
+      "sample": [
+        "R162_DailyNewsletter.cmd",
+        "R162_Heartbeat.cmd",
+        "R162_Register.cmd"
+      ]
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\aios_tools\\_archived_R173_20260924",
+      "pattern": "_archive",
+      "file_count": 9,
+      "sample": [
+        "register_codex_aios_sync.cmd",
+        "register_codex_health_watchdog.cmd",
+        "register_codex_relay_guard.cmd"
+      ]
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\aios_venv\\Lib\\site-packages\\torch\\export\\pt2_archive",
+      "pattern": "_archive",
+      "file_count": 4,
+      "sample": [
+        "constants.py",
+        "_package.py",
+        "_package_weights.py"
+      ]
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\openclaw_tools\\_archived_winsw-20260918",
+      "pattern": "_archive",
+      "file_count": 2,
+      "sample": [
+        "OpenClawGateway.exe",
+        "OpenClawHealthzWatchdog.exe"
+      ]
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\_archived_20260919",
+      "pattern": "_archive",
+      "file_count": 1,
+      "sample": [
+        "AGENTS.md.openclaw-default-template-2026-09-19"
+      ]
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\_archived_R113_20260921\\aios_host_resilience",
+      "pattern": "_archive",
+      "file_count": 6,
+      "sample": [
+        "EXISTING_CAPABILITY_MAP_v1.0_20260921.md",
+        "GAP_ANALYSIS_v1.0_20260921.json",
+        "GAP_ANALYSIS_v1.0_20260921.md"
+      ]
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\_archived_R113_20260921\\aios_tools",
+      "pattern": "_archive",
+      "file_count": 10,
+      "sample": [
+        "aios_checkpoint.py",
+        "aios_execution_graph.py",
+        "aios_goal_contract.py"
+      ]
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\_archived_R145_20260922\\r145_evidence",
+      "pattern": "_archive",
+      "file_count": 9,
+      "sample": [
+        "r145_browser_path_session_20260922_105405.json",
+        "r145_v3_isolated_20260922_105521.json",
+        "r145_v3_isolated_20260922_105542.json"
+      ]
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\_archived_Wave1_20260922",
+      "pattern": "_archive",
+      "file_count": 2,
+      "sample": [
+        "AIOS_CAPABILITY_INVENTORY.md",
+        "_langfuse_trace_fallback.log"
+      ]
+    }
+  ]
+}

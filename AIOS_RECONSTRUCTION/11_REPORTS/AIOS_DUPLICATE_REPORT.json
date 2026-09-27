@@ -1,0 +1,260 @@
+{
+  "version": "R212-step7-v1",
+  "scope": [
+    "D:\\AIOS\\aios_tools",
+    "D:\\个人文件\\AI\\Operator\\00_CORE",
+    "D:\\AIOS\\_relinked\\hermes\\hermes-agent"
+  ],
+  "total_hashed": 6420,
+  "unique_hashes": 6318,
+  "duplicate_groups": 85,
+  "duplicate_details": [
+    {
+      "hash": "51e99f14c6",
+      "count": 2,
+      "files": [
+        "D:\\AIOS\\aios_tools\\build\\AIOSCentralCollector\\PYZ-00.pyz",
+        "D:\\AIOS\\aios_tools\\build\\AIOS_centralcollector\\PYZ-00.pyz"
+      ]
+    },
+    {
+      "hash": "9dca017574",
+      "count": 2,
+      "files": [
+        "D:\\AIOS\\aios_tools\\build\\AIOS_autonomy\\PYZ-00.pyz",
+        "D:\\AIOS\\aios_tools\\build\\AIOS_Autonomy_Daemon\\PYZ-00.pyz"
+      ]
+    },
+    {
+      "hash": "1e84dcaf07",
+      "count": 2,
+      "files": [
+        "D:\\AIOS\\aios_tools\\build\\AIOSSupervisor\\PYZ-00.pyz",
+        "D:\\AIOS\\aios_tools\\build\\AIOS_supervisor\\PYZ-00.pyz"
+      ]
+    },
+    {
+      "hash": "f09f0e31cb",
+      "count": 2,
+      "files": [
+        "D:\\AIOS\\aios_tools\\build\\AIOSSelfHeal\\PYZ-00.pyz",
+        "D:\\AIOS\\aios_tools\\build\\AIOS_selfheal\\PYZ-00.pyz"
+      ]
+    },
+    {
+      "hash": "cff4ccc79d",
+      "count": 2,
+      "files": [
+        "D:\\AIOS\\aios_tools\\build\\aios-incident-controller\\PYZ-00.pyz",
+        "D:\\AIOS\\aios_tools\\build\\AIOS_incident\\PYZ-00.pyz"
+      ]
+    },
+    {
+      "hash": "2caaf11d88",
+      "count": 2,
+      "files": [
+        "D:\\AIOS\\_relinked\\hermes\\hermes-agent\\apps\\bootstrap-installer\\src-tauri\\icons\\icon.icns",
+        "D:\\AIOS\\_relinked\\hermes\\hermes-agent\\apps\\desktop\\assets\\icon.icns"
+      ]
+    },
+    {
+      "hash": "1781283f08",
+      "count": 4,
+      "files": [
+        "D:\\AIOS\\_relinked\\hermes\\hermes-agent\\apps\\bootstrap-installer\\src-tauri\\icons\\128x128.png",
+        "D:\\AIOS\\_relinked\\hermes\\hermes-agent\\apps\\bootstrap-installer\\src-tauri\\icons\\128x128@2x.png",
+        "D:\\AIOS\\_relinked\\hermes\\hermes-agent\\apps\\bootstrap-installer\\src-tauri\\icons\\32x32.png",
+        "D:\\AIOS\\_relinked\\hermes\\hermes-agent\\apps\\desktop\\assets\\icon.png"
+      ]
+    },
+    {
+      "hash": "7fe17f0aea",
+      "count": 3,
+      "files": [
+        "D:\\AIOS\\aios_tools\\build\\AIOSSupervisor\\xref-AIOSSupervisor.html",
+        "D:\\AIOS\\aios_tools\\build\\AIOS_supervisor\\xref-AIOS_supervisor.html",
+        "D:\\AIOS\\aios_tools\\build\\_aios_service_supervisor\\xref-_aios_service_supervisor.html"
+      ]
+    },
+    {
+      "hash": "96efcc075b",
+      "count": 3,
+      "files": [
+        "D:\\AIOS\\aios_tools\\build\\AIOS_autonomy\\xref-AIOS_autonomy.html",
+        "D:\\AIOS\\aios_tools\\build\\AIOS_Autonomy_Daemon\\xref-AIOS_Autonomy_Daemon.html",
+        "D:\\AIOS\\aios_tools\\build\\_aios_service_autonomy\\xref-_aios_service_autonomy.html"
+      ]
+    },
+    {
+      "hash": "6d3fa782a0",
+      "count": 3,
+      "files": [
+        "D:\\AIOS\\aios_tools\\build\\AIOSSelfHeal\\xref-AIOSSelfHeal.html",
+        "D:\\AIOS\\aios_tools\\build\\AIOS_selfheal\\xref-AIOS_selfheal.html",
+        "D:\\AIOS\\aios_tools\\build\\_aios_service_selfheal\\xref-_aios_service_selfheal.html"
+      ]
+    },
+    {
+      "hash": "bc360f5abd",
+      "count": 3,
+      "files": [
+        "D:\\AIOS\\aios_tools\\build\\aios-incident-controller\\xref-aios-incident-controller.html",
+        "D:\\AIOS\\aios_tools\\build\\AIOS_incident\\xref-AIOS_incident.html",
+        "D:\\AIOS\\aios_tools\\build\\_aios_service_incident\\xref-_aios_service_incident.html"
+      ]
+    },
+    {
+      "hash": "5f1476cb6d",
+      "count": 2,
+      "files": [
+        "D:\\AIOS\\aios_tools\\build\\AIOSCentralCollector\\xref-AIOSCentralCollector.html",
+        "D:\\AIOS\\aios_tools\\build\\AIOS_centralcollector\\xref-AIOS_centralcollector.html"
+      ]
+    },
+    {
+      "hash": "d55f695f92",
+      "count": 2,
+      "files": [
+        "D:\\AIOS\\aios_tools\\build\\AIOSFeishuRelay\\xref-AIOSFeishuRelay.html",
+        "D:\\AIOS\\aios_tools\\build\\AIOS_feishu\\xref-AIOS_feishu.html"
+      ]
+    },
+    {
+      "hash": "0f18ec852e",
+      "count": 3,
+      "files": [
+        "D:\\个人文件\\AI\\Operator\\00_CORE\\_roundtrip_backups\\CORE-RULES_20260921_023304.bak",
+        "D:\\个人文件\\AI\\Operator\\00_CORE\\_roundtrip_backups\\CORE-RULES_20260921_023556.bak",
+        "D:\\个人文件\\AI\\Operator\\00_CORE\\_roundtrip_backups\\CORE-RULES_20260921_023819.bak"
+      ]
+    },
+    {
+      "hash": "3b9577d281",
+      "count": 2,
+      "files": [
+        "D:\\AIOS\\_relinked\\hermes\\hermes-agent\\apps\\bootstrap-installer\\src-tauri\\icons\\icon.ico",
+        "D:\\AIOS\\_relinked\\hermes\\hermes-agent\\apps\\desktop\\assets\\icon.ico"
+      ]
+    },
+    {
+      "hash": "ba6c5b6bbd",
+      "count": 2,
+      "files": [
+        "D:\\个人文件\\AI\\Operator\\00_CORE\\_roundtrip_backups\\CORE-RULES_20260921_022646.bak",
+        "D:\\个人文件\\AI\\Operator\\00_CORE\\_roundtrip_backups\\CORE-RULES_20260921_022713.bak"
+      ]
+    },
+    {
+      "hash": "40088ce024",
+      "count": 2,
+      "files": [
+        "D:\\AIOS\\_relinked\\hermes\\hermes-agent\\skills\\research\\research-paper-writing\\templates\\colm2025\\natbib.sty",
+        "D:\\AIOS\\_relinked\\hermes\\hermes-agent\\skills\\research\\research-paper-writing\\templates\\iclr2026\\natbib.sty"
+      ]
+    },
+    {
+      "hash": "4e6ff1edcb",
+      "count": 2,
+      "files": [
+        "D:\\AIOS\\_relinked\\hermes\\hermes-agent\\_workzone\\website-audit-20260916\\deploy\\out\\hero-cover.jpg",
+        "D:\\AIOS\\_relinked\\hermes\\hermes-agent\\_workzone\\website-audit-20260916\\deploy\\public\\hero-cover.jpg"
+      ]
+    },
+    {
+      "hash": "af983813ca",
+      "count": 2,
+      "files": [
+        "D:\\AIOS\\_relinked\\hermes\\hermes-agent\\skills\\research\\research-paper-writing\\templates\\colm2025\\colm2025_conference.bst",
+        "D:\\AIOS\\_relinked\\hermes\\hermes-agent\\skills\\research\\research-paper-writing\\templates\\iclr2026\\iclr2026_conference.bst"
+      ]
+    },
+    {
+      "hash": "e5d13d98d5",
+      "count": 2,
+      "files": [
+        "D:\\AIOS\\_relinked\\hermes\\hermes-agent\\skills\\research\\research-paper-writing\\templates\\colm2025\\fancyhdr.sty",
+        "D:\\AIOS\\_relinked\\hermes\\hermes-agent\\skills\\research\\research-paper-writing\\templates\\iclr2026\\fancyhdr.sty"
+      ]
+    },
+    {
+      "hash": "f52963ed03",
+      "count": 2,
+      "files": [
+        "D:\\AIOS\\_relinked\\hermes\\hermes-agent\\_workzone\\website-audit-20260916\\deploy\\out\\hero-cover.webp",
+        "D:\\AIOS\\_relinked\\hermes\\hermes-agent\\_workzone\\website-audit-20260916\\deploy\\public\\hero-cover.webp"
+      ]
+    },
+    {
+      "hash": "c6ae439fb3",
+      "count": 2,
+      "files": [
+        "D:\\AIOS\\aios_tools\\aios_interop_mcp.py.bak-R96-pre-proxy-inherit-2",
+        "D:\\AIOS\\aios_tools\\aios_interop_mcp.py.bak-R96-pre-python-runtime-fix"
+      ]
+    },
+    {
+      "hash": "d6a89456d9",
+      "count": 2,
+      "files": [
+        "D:\\AIOS\\_relinked\\hermes\\hermes-agent\\assets\\banner.png",
+        "D:\\AIOS\\_relinked\\hermes\\hermes-agent\\website\\static\\img\\hermes-agent-banner.png"
+      ]
+    },
+    {
+      "hash": "a716537151",
+      "count": 2,
+      "files": [
+        "D:\\AIOS\\_relinked\\hermes\\hermes-agent\\skills\\research\\research-paper-writing\\templates\\colm2025\\math_commands.tex",
+        "D:\\AIOS\\_relinked\\hermes\\hermes-agent\\skills\\research\\research-paper-writing\\templates\\iclr2026\\math_commands.tex"
+      ]
+    },
+    {
+      "hash": "26d90baed2",
+      "count": 2,
+      "files": [
+        "D:\\AIOS\\_relinked\\hermes\\hermes-agent\\_workzone\\website-audit-20260916\\deploy\\out\\changelog.xml",
+        "D:\\AIOS\\_relinked\\hermes\\hermes-agent\\_workzone\\website-audit-20260916\\deploy\\public\\changelog.xml"
+      ]
+    },
+    {
+      "hash": "f176381ab8",
+      "count": 2,
+      "files": [
+        "D:\\AIOS\\aios_tools\\_aios_user_growth_runner.py",
+        "D:\\AIOS\\aios_tools\\R162\\_aios_user_growth_runner.py"
+      ]
+    },
+    {
+      "hash": "16e48b284b",
+      "count": 2,
+      "files": [
+        "D:\\AIOS\\aios_tools\\aios_decision_logger.py",
+        "D:\\AIOS\\aios_tools\\aios_decision_logger.py.pre_R155_psr_sir.bak"
+      ]
+    },
+    {
+      "hash": "37cdadb8bb",
+      "count": 2,
+      "files": [
+        "D:\\AIOS\\aios_tools\\mcp_credentials.env.bak-gateway-token-20260922-152354",
+        "D:\\AIOS\\aios_tools\\mcp_credentials.env.bak-pre-minimax-alias-20260922-100600"
+      ]
+    },
+    {
+      "hash": "0ecc1ac660",
+      "count": 2,
+      "files": [
+        "D:\\AIOS\\aios_tools\\skill_loader.py",
+        "D:\\AIOS\\aios_tools\\R162\\skill_loader.py"
+      ]
+    },
+    {
+      "hash": "921f67d787",
+      "count": 2,
+      "files": [
+        "D:\\AIOS\\aios_tools\\_aios_skill_index.py",
+        "D:\\AIOS\\aios_tools\\R162\\_aios_skill_index.py"
+      ]
+    }
+  ]
+}

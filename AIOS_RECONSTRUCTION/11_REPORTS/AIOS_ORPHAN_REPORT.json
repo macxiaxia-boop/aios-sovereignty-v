@@ -1,0 +1,365 @@
+{
+  "version": "R212-step10-v1",
+  "orphans": [
+    {
+      "path": "D:\\AIOS\\aios_tools\\README_R63_2026-09-19.md",
+      "name": "README_R63_2026-09-19.md",
+      "size": 3171,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\RESTART_RELAY_README.md",
+      "name": "RESTART_RELAY_README.md",
+      "size": 1259,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\RUNBOOK_L4_user_admin.md",
+      "name": "RUNBOOK_L4_user_admin.md",
+      "size": 4280,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\archive_R88_atlas_retire\\data\\skills\\aios-key-rotation\\body.md",
+      "name": "body.md",
+      "size": 85,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\archive_R88_atlas_retire\\data\\skills\\aios-key-rotation\\SKILL.md",
+      "name": "SKILL.md",
+      "size": 601,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\archive_R90_session\\feedback-R70-mandatory-deep-thinking-2026-09-19.md",
+      "name": "feedback-R70-mandatory-deep-thinking-2026-09-19.md",
+      "size": 3679,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\archive_R90_session\\README.md",
+      "name": "README.md",
+      "size": 1720,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\data\\patterns\\patt-r61-制造-006.md",
+      "name": "patt-r61-制造-006.md",
+      "size": 909,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\data\\patterns\\patt-r61-制造-007.md",
+      "name": "patt-r61-制造-007.md",
+      "size": 1675,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\data\\patterns\\patt-r61-制造-008.md",
+      "name": "patt-r61-制造-008.md",
+      "size": 1592,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\data\\patterns\\patt-r61-制造-009.md",
+      "name": "patt-r61-制造-009.md",
+      "size": 1410,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\data\\patterns\\patt-r61-教育-003.md",
+      "name": "patt-r61-教育-003.md",
+      "size": 669,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\data\\patterns\\patt-r61-教育-004.md",
+      "name": "patt-r61-教育-004.md",
+      "size": 678,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\data\\patterns\\patt-r61-教育-005.md",
+      "name": "patt-r61-教育-005.md",
+      "size": 453,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\data\\patterns\\patt-r61-服务-007.md",
+      "name": "patt-r61-服务-007.md",
+      "size": 796,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\data\\patterns\\patt-r61-服务-008.md",
+      "name": "patt-r61-服务-008.md",
+      "size": 687,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\data\\patterns\\patt-r61-服务-009.md",
+      "name": "patt-r61-服务-009.md",
+      "size": 845,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\data\\patterns\\patt-r61-装修建材装企-000.md",
+      "name": "patt-r61-装修建材装企-000.md",
+      "size": 721,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\data\\patterns\\patt-r61-装修建材装企-001.md",
+      "name": "patt-r61-装修建材装企-001.md",
+      "size": 576,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\data\\patterns\\patt-r61-装修建材装企-002.md",
+      "name": "patt-r61-装修建材装企-002.md",
+      "size": 474,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\data\\patterns\\patt-test-001.md",
+      "name": "patt-test-001.md",
+      "size": 75,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\data\\skills\\aios-autonomy-scheduler\\body.md",
+      "name": "body.md",
+      "size": 96,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\data\\skills\\aios-autonomy-scheduler\\SKILL.md",
+      "name": "SKILL.md",
+      "size": 642,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\data\\skills\\aios-key-rotation\\body.md",
+      "name": "body.md",
+      "size": 85,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\data\\skills\\aios-key-rotation\\SKILL.md",
+      "name": "SKILL.md",
+      "size": 601,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\data\\skills\\aios-persistence-system\\body.md",
+      "name": "body.md",
+      "size": 94,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\data\\skills\\aios-persistence-system\\SKILL.md",
+      "name": "SKILL.md",
+      "size": 667,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\data\\skills\\test-skill-001\\body.md",
+      "name": "body.md",
+      "size": 17,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\data\\skills\\test-skill-001\\SKILL.md",
+      "name": "SKILL.md",
+      "size": 421,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\AIOS\\aios_tools\\data\\_index\\INDEX.md",
+      "name": "INDEX.md",
+      "size": 3622,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\00_CORE\\5维SOP_cap模板_v1.0-20260919.md",
+      "name": "5维SOP_cap模板_v1.0-20260919.md",
+      "size": 4797,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\00_CORE\\atlas_key_rotation_sop-2026-09-19.md",
+      "name": "atlas_key_rotation_sop-2026-09-19.md",
+      "size": 3005,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\00_CORE\\CloudTech-1.0-BLUEPRINT.md",
+      "name": "CloudTech-1.0-BLUEPRINT.md",
+      "size": 4512,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\00_CORE\\CloudTech-DECISION-MATRIX.md",
+      "name": "CloudTech-DECISION-MATRIX.md",
+      "size": 3367,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\00_CORE\\CloudTech_PhaseBC_EXEC_PLAN_2026-09-22.md",
+      "name": "CloudTech_PhaseBC_EXEC_PLAN_2026-09-22.md",
+      "size": 3989,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\00_CORE\\COMPUTER-DISASTER-RECOVERY-V1-E-DRIVE-LAYOUT.md",
+      "name": "COMPUTER-DISASTER-RECOVERY-V1-E-DRIVE-LAYOUT.md",
+      "size": 3527,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\00_CORE\\COMPUTER-DISASTER-RECOVERY-V1-PHASE4-BACKUP-ENGINE.md",
+      "name": "COMPUTER-DISASTER-RECOVERY-V1-PHASE4-BACKUP-ENGINE.md",
+      "size": 3398,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\00_CORE\\CORE-RULES-ADDENDUM-redline-70-MCP-治理_v1.0-20260919.md",
+      "name": "CORE-RULES-ADDENDUM-redline-70-MCP-治理_v1.0-20260919.md",
+      "size": 4429,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\00_CORE\\CREDENTIAL-ROTATION-R161-DRY-RUN-2026-09-22.md",
+      "name": "CREDENTIAL-ROTATION-R161-DRY-RUN-2026-09-22.md",
+      "size": 1420,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\00_CORE\\CREDENTIAL-ROTATION-SOP-V1.0_20260922.md",
+      "name": "CREDENTIAL-ROTATION-SOP-V1.0_20260922.md",
+      "size": 1902,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\00_CORE\\CREDENTIAL-STATUS-AUDIT-V1.0_20260922.md",
+      "name": "CREDENTIAL-STATUS-AUDIT-V1.0_20260922.md",
+      "size": 3749,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\00_CORE\\CRON-SPEC-aios-v52-5day-rollout_2026-09-22.md",
+      "name": "CRON-SPEC-aios-v52-5day-rollout_2026-09-22.md",
+      "size": 860,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\00_CORE\\CRON-SPEC-aios-v52-phase3-integration_2026-09-22.md",
+      "name": "CRON-SPEC-aios-v52-phase3-integration_2026-09-22.md",
+      "size": 683,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\00_CORE\\CRON-SPEC-cap-monitor-2026-09-22.md",
+      "name": "CRON-SPEC-cap-monitor-2026-09-22.md",
+      "size": 1596,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\00_CORE\\CRON-SPEC-d9-red24-trigger-freq-2026-09-22.md",
+      "name": "CRON-SPEC-d9-red24-trigger-freq-2026-09-22.md",
+      "size": 1355,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\00_CORE\\daily_growth_reminder_2026-09-24.md",
+      "name": "daily_growth_reminder_2026-09-24.md",
+      "size": 254,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\00_CORE\\daily_道法术器_2026-09-23.md",
+      "name": "daily_道法术器_2026-09-23.md",
+      "size": 634,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\00_CORE\\feedback-5系统蓝图v1.0-2026-09-19.md",
+      "name": "feedback-5系统蓝图v1.0-2026-09-19.md",
+      "size": 4316,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\00_CORE\\feedback-AIOS-PROTOCOL-V4-phase-d-2026-09-19.md",
+      "name": "feedback-AIOS-PROTOCOL-V4-phase-d-2026-09-19.md",
+      "size": 4293,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\00_CORE\\feedback-AIOS-PROTOCOL-V4-phase-ef-2026-09-19.md",
+      "name": "feedback-AIOS-PROTOCOL-V4-phase-ef-2026-09-19.md",
+      "size": 4134,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\00_CORE\\feedback-L4-3-supervisor-acceptance-2026-09-19.md",
+      "name": "feedback-L4-3-supervisor-acceptance-2026-09-19.md",
+      "size": 2919,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\00_CORE\\feedback-R101-codex-gpt-pro-network-boundary-2026-09-20.md",
+      "name": "feedback-R101-codex-gpt-pro-network-boundary-2026-09-20.md",
+      "size": 4835,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\00_CORE\\feedback-R106-batch-size-12-cure-2026-09-20.md",
+      "name": "feedback-R106-batch-size-12-cure-2026-09-20.md",
+      "size": 1653,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\00_CORE\\feedback-R106-c-disk-cure-2026-09-20.md",
+      "name": "feedback-R106-c-disk-cure-2026-09-20.md",
+      "size": 4956,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\00_CORE\\feedback-R108-detached-process-cure-2026-09-20.md",
+      "name": "feedback-R108-detached-process-cure-2026-09-20.md",
+      "size": 1574,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\00_CORE\\feedback-R109-distil-whisper-v35-cure-2026-09-20.md",
+      "name": "feedback-R109-distil-whisper-v35-cure-2026-09-20.md",
+      "size": 1674,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\00_CORE\\feedback-R110-codex-restore-r108-path-2026-09-20.md",
+      "name": "feedback-R110-codex-restore-r108-path-2026-09-20.md",
+      "size": 4142,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\00_CORE\\feedback-R110-cpu-throttle-stable-mode-2026-09-21.md",
+      "name": "feedback-R110-cpu-throttle-stable-mode-2026-09-21.md",
+      "size": 1306,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\00_CORE\\feedback-R112-brain-backup-schtasks-cured-2026-09-20.md",
+      "name": "feedback-R112-brain-backup-schtasks-cured-2026-09-20.md",
+      "size": 4571,
+      "modified_days_ago": true
+    },
+    {
+      "path": "D:\\个人文件\\AI\\Operator\\00_CORE\\feedback-R125-V5-idle-and-autoplan-2026-09-21.md",
+      "name": "feedback-R125-V5-idle-and-autoplan-2026-09-21.md",
+      "size": 3925,
+      "modified_days_ago": true
+    }
+  ]
+}

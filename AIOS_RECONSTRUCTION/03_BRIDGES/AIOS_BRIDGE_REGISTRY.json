@@ -1,0 +1,95 @@
+{
+  "version": "R212-step4-v1",
+  "bridges": [
+    {
+      "id": "br-aicc",
+      "from": "AIOS",
+      "to": "Claude Code",
+      "type": "native",
+      "status": "active",
+      "transport": "stdio/MCP",
+      "health": "healthy",
+      "evidence": "用户在 Claude Code 内运行 AIOS · CLAUDE.md/AGENTS.md 是 SSOT"
+    },
+    {
+      "id": "br-aios-codex",
+      "from": "AIOS",
+      "to": "Codex CLI",
+      "type": "cli",
+      "status": "active",
+      "transport": "shell + relay 19194",
+      "health": "healthy",
+      "evidence": "AGENTS.md ChatGPT 调用路径 R76"
+    },
+    {
+      "id": "br-aios-hermes",
+      "from": "AIOS",
+      "to": "Hermes Agent",
+      "type": "cli",
+      "status": "partial",
+      "transport": "shell (hermes CLI)",
+      "health": "broken_path",
+      "evidence": "R211: v0.21.3 D 盘 + v0.15.1 C 盘 PATH 双实例"
+    },
+    {
+      "id": "br-aios-openclaw",
+      "from": "AIOS",
+      "to": "OpenClaw Gateway",
+      "type": "cli",
+      "status": "active",
+      "transport": "shell + Feishu",
+      "health": "healthy",
+      "evidence": "AGENTS.md openclaw message send --channel feishu"
+    },
+    {
+      "id": "br-claudecode-openclaw",
+      "from": "Claude Code",
+      "to": "OpenClaw",
+      "type": "indirect",
+      "status": "candidate",
+      "transport": "via AIOS",
+      "health": "unbuilt",
+      "evidence": "R211 SwarmClaw 评估 works with OpenClaw gateways"
+    },
+    {
+      "id": "br-aios-codex-relay",
+      "from": "AIOS",
+      "to": "Codex relay",
+      "type": "infra",
+      "status": "active",
+      "transport": "HTTP localhost:19194",
+      "health": "healthy",
+      "evidence": "pythonw relay 必须跑 (R76)"
+    },
+    {
+      "id": "br-hermes-aios-skills",
+      "from": "Hermes Agent",
+      "to": "agentskills.io",
+      "type": "standard",
+      "status": "active",
+      "transport": "file-based",
+      "health": "healthy",
+      "evidence": "hermes-agent 兼容 agentskills.io"
+    },
+    {
+      "id": "br-swarmclaw-openclaw",
+      "from": "SwarmClaw",
+      "to": "OpenClaw",
+      "type": "candidate",
+      "status": "failed_install",
+      "transport": "npm (待装)",
+      "health": "needs_build_tools",
+      "evidence": "R211 npm install 失败 (gyp)"
+    },
+    {
+      "id": "br-cc-marketplace",
+      "from": "Claude Code",
+      "to": "Marketplace",
+      "type": "plugin",
+      "status": "active",
+      "transport": "git+npm",
+      "health": "healthy",
+      "evidence": "R211 已接入 anthropics/claude-plugins-official (314 plugins)"
+    }
+  ]
+}

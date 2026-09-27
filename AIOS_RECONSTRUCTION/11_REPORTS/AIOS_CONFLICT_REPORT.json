@@ -1,0 +1,93 @@
+{
+  "version": "R212-step9-v1",
+  "conflicts": [
+    {
+      "name": "AGENTS.md",
+      "count": 37,
+      "locations": [
+        "D:\\AIOS\\aios_venv\\Lib\\site-packages\\litellm\\proxy\\_experimental\\mcp_server\\AGENTS.md",
+        "D:\\AIOS\\_relinked\\hermes\\hermes-agent\\AGENTS.md",
+        "D:\\AIOS\\_relinked\\openclaw\\workspace\\AGENTS.md",
+        "D:\\AIOS\\_relinked\\openclaw\\workspace-claude\\AGENTS.md",
+        "D:\\AIOS\\_relinked\\openclaw\\workspace-codex\\AGENTS.md",
+        "D:\\AIOS\\_relinked\\openclaw\\workspace-geo-competitor\\AGENTS.md",
+        "D:\\AIOS\\_relinked\\openclaw\\workspace-geo-creator\\AGENTS.md",
+        "D:\\AIOS\\_relinked\\openclaw\\workspace-geo-intent\\AGENTS.md",
+        "D:\\AIOS\\_relinked\\openclaw\\workspace-geo-strategy\\AGENTS.md",
+        "D:\\AIOS\\_relinked\\openclaw\\workspace-geo-validator\\AGENTS.md",
+        "D:\\AIOS\\_relinked\\openclaw\\workspace-isolated\\AGENTS.md",
+        "D:\\个人文件\\AI\\Operator\\AGENTS.md",
+        "D:\\个人文件\\AI\\Operator\\aios_venv\\Lib\\site-packages\\litellm\\proxy\\_experimental\\mcp_server\\AGENTS.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\crewAI\\AGENTS.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\crewAI\\lib\\cli\\src\\crewai_cli\\templates\\AGENTS.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\crewAI\\lib\\cli\\src\\crewai_cli\\templates\\declarative_flow\\AGENTS.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\khoj\\documentation\\docs\\features\\AGENTS.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\letta\\AGENTS.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\logseq\\AGENTS.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\logseq\\cli\\AGENTS.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\logseq\\cli-e2e\\AGENTS.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\logseq\\clj-e2e\\AGENTS.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\logseq\\libs\\guides\\AGENTS.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\logseq\\src\\main\\logseq\\cli\\AGENTS.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\mem0\\AGENTS.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\mem0\\cli\\node\\AGENTS.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\mem0\\cli\\python\\AGENTS.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\mem0\\docs\\AGENTS.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\mem0\\integrations\\AGENTS.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\mem0\\mem0\\AGENTS.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\mem0\\mem0-ts\\AGENTS.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\mem0\\server\\AGENTS.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\mem0\\skills\\AGENTS.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\mem0\\tests\\AGENTS.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\obsidian-local-rest-api\\AGENTS.md",
+        "C:\\Users\\xinzh\\.claude\\skills\\ai-business-skills\\AGENTS.md",
+        "C:\\Users\\xinzh\\.claude\\skills\\founder-marketing-skills\\AGENTS.md"
+      ]
+    },
+    {
+      "name": "CLAUDE.md",
+      "count": 25,
+      "locations": [
+        "D:\\AIOS\\aios_venv\\Lib\\site-packages\\litellm\\proxy\\_experimental\\mcp_server\\CLAUDE.md",
+        "D:\\AIOS\\_relinked\\hermes\\hermes-agent\\skills\\creative\\popular-web-designs\\templates\\CLAUDE.md",
+        "D:\\AIOS\\_relinked\\hermes\\skills\\.archive\\popular-web-designs\\templates\\CLAUDE.md",
+        "D:\\AIOS\\_relinked\\workbuddy\\connectors-marketplace\\connectors\\feishu\\skills\\lark-apps\\creative-design\\references\\CLAUDE.md",
+        "D:\\AIOS\\_relinked\\workbuddy\\plugins\\marketplaces\\codebuddy-plugins-official\\external_plugins\\superpowers-chrome\\CLAUDE.md",
+        "D:\\AIOS\\_relinked\\workbuddy\\plugins\\marketplaces\\codebuddy-plugins-official\\plugins\\godot-mcp\\CLAUDE.md",
+        "D:\\个人文件\\AI\\Operator\\aios_venv\\Lib\\site-packages\\litellm\\proxy\\_experimental\\mcp_server\\CLAUDE.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\crewAI\\lib\\cli\\src\\crewai_cli\\templates\\CLAUDE.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\mem0\\CLAUDE.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\mem0\\cli\\node\\CLAUDE.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\mem0\\cli\\python\\CLAUDE.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\mem0\\docs\\CLAUDE.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\mem0\\integrations\\CLAUDE.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\mem0\\mem0\\CLAUDE.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\mem0\\mem0-ts\\CLAUDE.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\mem0\\server\\CLAUDE.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\mem0\\skills\\CLAUDE.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\mem0\\tests\\CLAUDE.md",
+        "D:\\个人文件\\AI\\Operator\\downloads\\obsidian-local-rest-api\\CLAUDE.md",
+        "C:\\Users\\xinzh\\.claude\\CLAUDE.md",
+        "C:\\Users\\xinzh\\.claude\\skills\\Agent-Reach\\CLAUDE.md",
+        "C:\\Users\\xinzh\\.claude\\skills\\ai-business-skills\\CLAUDE.md",
+        "C:\\Users\\xinzh\\.claude\\skills\\founder-marketing-skills\\CLAUDE.md",
+        "C:\\Users\\xinzh\\.claude\\skills\\founder-skills\\CLAUDE.md",
+        "C:\\Users\\xinzh\\.claude\\skills\\lingce\\CLAUDE.md"
+      ]
+    },
+    {
+      "name": "settings.json",
+      "count": 8,
+      "locations": [
+        "D:\\AIOS\\_relinked\\workbuddy\\settings.json",
+        "D:\\AIOS\\_relinked\\workbuddy\\plugins\\cache\\workbuddy-builtin\\welcomemode-code\\5.5.6-wb.38337834.g5f969292.h4918b5ced607\\settings.json",
+        "D:\\AIOS\\_relinked\\workbuddy\\plugins\\cache\\workbuddy-builtin\\welcomemode-design\\5.5.6-wb.38337834.g5f969292.h4918b5ced607\\settings.json",
+        "D:\\AIOS\\_relinked\\workbuddy\\plugins\\cache\\workbuddy-builtin\\welcomemode-work\\5.5.6-wb.38337834.g5f969292.h4918b5ced607\\settings.json",
+        "D:\\个人文件\\AI\\Operator\\downloads\\khoj\\.vscode\\settings.json",
+        "D:\\个人文件\\AI\\Operator\\downloads\\obsidian-local-rest-api\\.claude\\settings.json",
+        "D:\\个人文件\\AI\\Operator\\downloads\\obsidian-local-rest-api\\.vscode\\settings.json",
+        "C:\\Users\\xinzh\\.claude\\settings.json"
+      ]
+    }
+  ]
+}

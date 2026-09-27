@@ -1,0 +1,160 @@
+{
+  "version": "R212-step12-v1",
+  "repositories": [
+    {
+      "id": "r-anthropics-claude-code",
+      "url": "github.com/anthropics/claude-code",
+      "stars": "high",
+      "category": "IDE",
+      "status": "installed",
+      "note": "Claude Code main repo Marketplace demo"
+    },
+    {
+      "id": "r-anthropics-plugins",
+      "url": "github.com/anthropics/claude-plugins-official",
+      "stars": "high",
+      "category": "Marketplace",
+      "status": "installed",
+      "plugin_count": 314
+    },
+    {
+      "id": "r-anthropic-code-claude-com",
+      "url": "code.claude.com/docs/en/hooks",
+      "stars": "n/a",
+      "category": "Official Docs",
+      "status": "reference",
+      "note": "Hooks reference 18+ events 2026"
+    },
+    {
+      "id": "r-nous-hermes-agent",
+      "url": "github.com/NousResearch/hermes-agent",
+      "stars": "med-high",
+      "category": "Agent Framework",
+      "status": "installed_v0.21.3",
+      "note": "R211 update failed upstream broken"
+    },
+    {
+      "id": "r-swarmclaw",
+      "url": "github.com/swarmclawai/swarmclaw",
+      "stars": "med",
+      "category": "Multi-Agent",
+      "status": "candidate",
+      "note": "R211 npm install failed"
+    },
+    {
+      "id": "r-goclaw",
+      "url": "github.com/nextlevelbuilder/goclaw",
+      "stars": "low",
+      "category": "Multi-Agent Gateway",
+      "status": "rejected",
+      "note": "Overlaps existing OpenClaw"
+    },
+    {
+      "id": "r-picoclaw",
+      "url": "github.com/sipeed/picoclaw",
+      "stars": "med",
+      "category": "Edge",
+      "status": "rejected",
+      "note": "Not user scenario"
+    },
+    {
+      "id": "r-nanobot",
+      "url": "github.com/HKUDS/nanobot",
+      "stars": "med",
+      "category": "Data Agent",
+      "status": "candidate"
+    },
+    {
+      "id": "r-ironclaw",
+      "url": "github.com/nearai/ironclaw",
+      "stars": "low",
+      "category": "Agent Framework",
+      "status": "candidate"
+    },
+    {
+      "id": "r-openclaw-official",
+      "url": "github.com/openclaw/openclaw",
+      "stars": "med",
+      "category": "Gateway",
+      "status": "reference",
+      "note": "awesome lists mentioned"
+    },
+    {
+      "id": "r-awesome-openclaw",
+      "url": "github.com/alvinunreal/awesome-openclaw",
+      "stars": "med",
+      "category": "Resource List",
+      "status": "reference"
+    },
+    {
+      "id": "r-pr1m8-muse",
+      "url": "github.com/pr1m8/MUSE",
+      "stars": "low",
+      "category": "AI Tool",
+      "status": "unknown",
+      "note": "R211 fuzzy match Muse AI"
+    },
+    {
+      "id": "r-ffmpeg-wizard",
+      "url": "github.com/gregorizeidler/FFmpeg-wizard",
+      "stars": "med",
+      "category": "AI Video Auto-Edit",
+      "status": "candidate_priority",
+      "note": "Most comprehensive 7-step pipeline"
+    },
+    {
+      "id": "r-cutstorm",
+      "url": "github.com/vorniches/cutstorm",
+      "stars": "low",
+      "category": "Self-hosted Video Editor",
+      "status": "candidate",
+      "note": "Docker single container"
+    },
+    {
+      "id": "r-video-editing-skill",
+      "url": "github.com/6missedcalls/video-editing-skill",
+      "stars": "low",
+      "category": "Skill",
+      "status": "candidate_compose",
+      "note": "Pure Bash FFmpeg Whisper designed for AI agents"
+    },
+    {
+      "id": "r-agent-bank",
+      "url": "github.com/different-ai/agent-bank",
+      "stars": "low",
+      "category": "Skill Bank",
+      "status": "candidate_reference",
+      "note": "video-subtitle-cutter SKILL.md canonical pipeline doc"
+    },
+    {
+      "id": "r-auto-editor",
+      "url": "github.com/WyattBlue/auto-editor",
+      "stars": "high",
+      "category": "Video Auto-Edit",
+      "status": "candidate",
+      "note": "Transcript-driven auto edit"
+    },
+    {
+      "id": "r-moviepy",
+      "url": "github.com/Zulko/moviepy",
+      "stars": "high",
+      "category": "Video Edit",
+      "status": "candidate"
+    },
+    {
+      "id": "r-pyscenedetect",
+      "url": "github.com/Breakthrough/PySceneDetect",
+      "stars": "med",
+      "category": "Scene Detection",
+      "status": "candidate"
+    },
+    {
+      "id": "r-remotion",
+      "url": "github.com/remotion-dev/remotion",
+      "stars": "high",
+      "category": "React Video",
+      "status": "candidate",
+      "note": "React-based video generation"
+    }
+  ]
+}

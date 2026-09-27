@@ -1,0 +1,126 @@
+{
+  "version": "R212-step12-v1",
+  "mechanisms": [
+    {
+      "id": "m-claude-code-context-steering",
+      "source": "Claude Code",
+      "description": "CLAUDE.md AGENTS.md as constitution layer strong prompt context control",
+      "applicable_to": [
+        "AIOS",
+        "Hermes Agent"
+      ],
+      "adoption_status": "reference"
+    },
+    {
+      "id": "m-claude-code-hooks",
+      "source": "Claude Code",
+      "description": "PreToolUse PostToolUse Notification Stop SubagentStop 18+ events hook",
+      "applicable_to": [
+        "AIOS",
+        "Hermes Agent"
+      ],
+      "adoption_status": "reference"
+    },
+    {
+      "id": "m-claude-code-hook-permission",
+      "source": "Claude Code 2026",
+      "description": "PreToolUse hookSpecificOutput.permissionDecision allow deny ask defer exit code 2 blocks",
+      "applicable_to": [
+        "AIOS"
+      ],
+      "adoption_status": "candidate_high"
+    },
+    {
+      "id": "m-claude-code-marketplace",
+      "source": "Claude Code",
+      "description": "plugin.json marketplace.json multiple scope user project local",
+      "applicable_to": [
+        "AIOS"
+      ],
+      "adoption_status": "partial_adopted_via_5_plugins"
+    },
+    {
+      "id": "m-hermes-self-learning",
+      "source": "Hermes Agent",
+      "description": "Agent-curated memory periodic nudges autonomous skill creation FTS5 session search LLM summarization",
+      "applicable_to": [
+        "AIOS"
+      ],
+      "adoption_status": "candidate",
+      "priority": "P0"
+    },
+    {
+      "id": "m-hermes-subagent-isolation",
+      "source": "Hermes Agent",
+      "description": "spawn isolated subagents for parallel workstreams RPC zero context overhead",
+      "applicable_to": [
+        "AIOS",
+        "Claude Code"
+      ],
+      "adoption_status": "reference"
+    },
+    {
+      "id": "m-hermes-cron-delivery",
+      "source": "Hermes Agent",
+      "description": "built-in cron scheduler delivery to any platform",
+      "applicable_to": [
+        "AIOS"
+      ],
+      "adoption_status": "candidate"
+    },
+    {
+      "id": "m-codex-repo-execution",
+      "source": "OpenAI Codex CLI",
+      "description": "local exec via shell relay deepseek profile for free local model",
+      "applicable_to": [
+        "AIOS"
+      ],
+      "adoption_status": "active_via_relay_19194"
+    },
+    {
+      "id": "m-openclaw-multi-channel",
+      "source": "OpenClaw",
+      "description": "multi-channel gateway Feishu Telegram etc from single daemon",
+      "applicable_to": [
+        "AIOS"
+      ],
+      "adoption_status": "active_via_openclaw_gateway"
+    },
+    {
+      "id": "m-muse-personal-agent-ux",
+      "source": "Muse AI TBD",
+      "description": "New personal Agent UX research pending",
+      "applicable_to": [],
+      "adoption_status": "research_needed"
+    },
+    {
+      "id": "m-swarmclaw-org-chart",
+      "source": "SwarmClaw",
+      "description": "org chart view delegation visualization agent chat UI",
+      "applicable_to": [
+        "AIOS",
+        "OpenClaw"
+      ],
+      "adoption_status": "candidate",
+      "blocker": "npm install failed"
+    },
+    {
+      "id": "m-ffmpeg-wizard-canonical-pipeline",
+      "source": "FFmpeg Wizard",
+      "description": "Whisper transcribe JSON SRT GPT-4 identify cuts FFmpeg RE-ENCODE libx264 crf 18-20 burn SRT",
+      "applicable_to": [
+        "AIOS video pipeline"
+      ],
+      "adoption_status": "candidate_priority_P1"
+    },
+    {
+      "id": "m-video-editing-skill-bash-pure",
+      "source": "video-editing-skill",
+      "description": "Pure Bash FFmpeg Whisper zero runtime deps designed for AI agents compose trim jumpcut caption overlay speed",
+      "applicable_to": [
+        "AIOS"
+      ],
+      "adoption_status": "candidate_high_composability"
+    }
+  ]
+}

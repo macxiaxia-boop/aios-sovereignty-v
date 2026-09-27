@@ -1,0 +1,203 @@
+{
+  "version": "APP_CONNECTOR_FABRIC_PHASE_2_V1",
+  "tools": [
+    {
+      "id": "tool-ffmpeg",
+      "name": "ffmpeg",
+      "category": "video",
+      "status": "candidate",
+      "description": "视频转码/剪辑核心 · VIDEO_AUTO_EDIT 候选",
+      "capability": "VIDEO_AUTO_EDIT"
+    },
+    {
+      "id": "tool-whisper",
+      "name": "OpenAI Whisper",
+      "category": "audio",
+      "status": "candidate",
+      "capability": "TRANSCRIPTION"
+    },
+    {
+      "id": "tool-whisperx",
+      "name": "WhisperX",
+      "category": "audio",
+      "status": "candidate",
+      "capability": "TRANSCRIPTION_WORD_ALIGNED"
+    },
+    {
+      "id": "tool-pyscenedetect",
+      "name": "PySceneDetect",
+      "category": "video",
+      "status": "candidate",
+      "capability": "SCENE_DETECTION"
+    },
+    {
+      "id": "tool-moviepy",
+      "name": "MoviePy",
+      "category": "video",
+      "status": "candidate",
+      "capability": "VIDEO_EDIT_PYTHON"
+    },
+    {
+      "id": "tool-opencv",
+      "name": "OpenCV",
+      "category": "video",
+      "status": "candidate",
+      "capability": "VISION"
+    },
+    {
+      "id": "tool-auto-editor",
+      "name": "auto-editor",
+      "category": "video",
+      "status": "candidate",
+      "capability": "AUTO_EDIT_TRANSCRIPT_BASED"
+    },
+    {
+      "id": "tool-remotion",
+      "name": "Remotion",
+      "category": "video",
+      "status": "candidate",
+      "capability": "VIDEO_REACT"
+    },
+    {
+      "id": "tool-tavily",
+      "name": "Tavily",
+      "category": "search",
+      "status": "active",
+      "description": "Web search API (TAVILY_API_KEY_1/2/3 已配)"
+    },
+    {
+      "id": "tool-gh",
+      "name": "GitHub CLI",
+      "status": "active",
+      "description": "gh 2.92.0 · 已登录 macxiaxia-boop"
+    },
+    {
+      "id": "tool-pip",
+      "name": "pip",
+      "status": "failed",
+      "description": "Python pip 不可用 · 用 python -m pip / pipx"
+    },
+    {
+      "id": "tool-npm",
+      "name": "npm",
+      "status": "active",
+      "description": "11.17.0 · Node v26.8.2"
+    },
+    {
+      "id": "tool-python",
+      "name": "Python",
+      "status": "active",
+      "description": "3.11.15"
+    },
+    {
+      "id": "tool-git",
+      "name": "git",
+      "status": "active",
+      "description": "用于 hermes update 等"
+    },
+    {
+      "id": "connector-baidu-netdisk",
+      "name": "Baidu Netdisk (百度网盘)",
+      "category": "connector",
+      "status": "candidate",
+      "description": "百度网盘官方 REST/MCP · 5 actions: list/download/upload/create_share/send",
+      "capability": "baidu.netdisk",
+      "module": "aios_connector_baidu_netdisk",
+      "class": "BaiduNetdiskConnector",
+      "actions": [
+        "list",
+        "download",
+        "upload",
+        "create_share",
+        "send"
+      ],
+      "transport": "rest_https",
+      "authority": "P",
+      "credentials_required": [
+        "BAIDU_NETDISK_APP_KEY",
+        "BAIDU_NETDISK_SECRET_KEY",
+        "BAIDU_NETDISK_ACCESS_TOKEN",
+        "BAIDU_NETDISK_REFRESH_TOKEN"
+      ],
+      "evidence_ref": "D:/AIOS/_workzone/app_connectors/evidence/phase2/"
+    },
+    {
+      "id": "connector-frappe",
+      "name": "Frappe / ERPNext",
+      "category": "connector",
+      "status": "candidate",
+      "description": "Frappe REST · 7 actions: read/preview_diff/create_or_write/verify_readback/idempotency_check/failure_path/webhook_setup",
+      "capability": "erp.frappe",
+      "module": "aios_connector_erp_frappe",
+      "class": "FrappeConnector",
+      "actions": [
+        "read",
+        "preview_diff",
+        "create_or_write",
+        "verify_readback",
+        "idempotency_check",
+        "failure_path",
+        "webhook_setup"
+      ],
+      "transport": "rest_https",
+      "authority": "P",
+      "credentials_required": [
+        "FRAPPE_API_KEY",
+        "FRAPPE_API_SECRET",
+        "FRAPPE_TENANT_URL",
+        "FRAPPE_WEBHOOK_SECRET"
+      ],
+      "evidence_ref": "D:/AIOS/_workzone/app_connectors/evidence/phase2/"
+    },
+    {
+      "id": "connector-odoo19",
+      "name": "Odoo 19 JSON-2",
+      "category": "connector",
+      "status": "candidate",
+      "description": "Odoo External JSON-2 · 7 actions · 1 RPS rate limit · Bearer + X-Odoo-Database",
+      "capability": "erp.odoo19",
+      "module": "aios_connector_erp_odoo",
+      "class": "Odoo19Connector",
+      "actions": [
+        "read",
+        "preview_diff",
+        "create_or_write",
+        "verify_readback",
+        "idempotency_check",
+        "failure_path",
+        "webhook_setup"
+      ],
+      "transport": "rest_https",
+      "authority": "P",
+      "rate_limit": "1 RPS no parallel (Odoo Acceptable Use Policy)",
+      "credentials_required": [
+        "ODOO_TENANT_URL",
+        "ODOO_DB",
+        "ODOO_API_KEY"
+      ],
+      "evidence_ref": "D:/AIOS/_workzone/app_connectors/evidence/phase2/"
+    },
+    {
+      "id": "connector-cross-app-g5",
+      "name": "Cross-App G5 (Netdisk -> ERP)",
+      "category": "connector",
+      "status": "candidate",
+      "description": "跨 App 切片 · 读 Netdisk CSV 行 → 写 ERP Customer (本地 fault sim)",
+      "capability": "cross_app.netdisk_to_erp",
+      "module": "aios_connector_cross_app_g5",
+      "class": "NetdiskToErpConnector",
+      "actions": [
+        "read_csv_to_erp_create",
+        "fault_sim_read_csv_to_erp"
+      ],
+      "transport": "local_sim",
+      "authority": "P",
+      "depends_on": [
+        "connector-baidu-netdisk",
+        "connector-frappe",
+        "connector-odoo19"
+      ],
+      "evidence_ref": "D:/AIOS/_workzone/app_connectors/evidence/phase5/"
+    }
+  ]
+}

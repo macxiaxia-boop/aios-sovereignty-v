@@ -1,0 +1,83 @@
+{
+  "version": "R212-step4-v1",
+  "summary": {
+    "total_skill_packages": 340,
+    "rule": "spec#3 canonical/reference/experimental/deprecated"
+  },
+  "families": [
+    {
+      "id": "sk-anthropic-suite",
+      "count": 21,
+      "authority": "canonical",
+      "description": "anthropic-academy-guide + anthropic-brand/doc/pdf/pptx/webapp"
+    },
+    {
+      "id": "sk-arkcli",
+      "count": 33,
+      "authority": "canonical",
+      "description": "arkcli 全套 (arkcli-chat/deploy/train/...)"
+    },
+    {
+      "id": "sk-creators",
+      "count": 24,
+      "authority": "reference",
+      "description": "creator-* 博主/创作者技能集"
+    },
+    {
+      "id": "sk-cross-matrix",
+      "count": 40,
+      "authority": "experimental",
+      "description": "cross-{creator}-{industry} 矩阵 (10 创作者 x 4 行业)"
+    },
+    {
+      "id": "sk-wondelai",
+      "count": 50,
+      "authority": "canonical",
+      "description": "wondelai-* (37signals/Clean Architecture/Made to Stick...)"
+    },
+    {
+      "id": "sk-marketing",
+      "count": 40,
+      "authority": "canonical",
+      "description": "marketing-*/seo/linkedin/email"
+    },
+    {
+      "id": "sk-aios",
+      "count": 30,
+      "authority": "canonical",
+      "description": "aios-* (audit/autoplan/benchmark/etc)"
+    },
+    {
+      "id": "sk-industry",
+      "count": 4,
+      "authority": "canonical",
+      "description": "industry-{装修/教育/制造/服务}"
+    },
+    {
+      "id": "sk-workflow",
+      "count": 20,
+      "authority": "canonical",
+      "description": "workflow-generator/executing-plans/dispatching-parallel-agents"
+    },
+    {
+      "id": "sk-claude-sdk",
+      "count": 8,
+      "authority": "canonical",
+      "description": "claude-code/using-superpowers/agent-team-orchestrator"
+    },
+    {
+      "id": "sk-marketplace-5",
+      "count": 5,
+      "authority": "canonical",
+      "install": "R211",
+      "description": "Claude Code 官方 marketplace 5 插件",
+      "plugins": [
+        "code-review",
+        "commit-commands",
+        "pr-review-toolkit",
+        "skill-creator",
+        "hookify"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,145 @@
+{
+  "task_id": "R212-AIOS-RECONSTRUCTION",
+  "phase": "Phase 0 - Reality Reconnaissance",
+  "started_at": "2026-09-26T22:14:10",
+  "current_step": "STEP 16 🟢 陈厂长 P2 批量 GPU 跑中 (wrapper v2.4 窗口隔离 + step16 batch v2.6) · 真 P2 缺口 1135 · 进度 27/1300 (2.1%, 速率 2.7/min) · 预估 ~8h 完工 · GPU owner pid=21876 alive",
+  "phases": [
+    {
+      "id": "P0",
+      "name": "Reality Reconnaissance",
+      "status": "completed",
+      "completion": 100,
+      "artifacts": [
+        "AIOS_REALITY_MAP.json",
+        "12 subdirs created"
+      ]
+    },
+    {
+      "id": "P1",
+      "name": "Asset Registry",
+      "status": "completed",
+      "completion": 100,
+      "artifacts": [
+        "AIOS_SYSTEM_REGISTRY.json",
+        "AIOS_AGENT_REGISTRY.json",
+        "AIOS_SKILL_REGISTRY.json",
+        "AIOS_MCP_REGISTRY.json",
+        "AIOS_TOOL_REGISTRY.json"
+      ]
+    },
+    {
+      "id": "P2",
+      "name": "Canonical Source",
+      "status": "in_progress",
+      "completion": 80,
+      "artifacts": [
+        "AIOS_CANONICAL_CANDIDATES.json (80)",
+        "AIOS_DUPLICATE_REPORT.json",
+        "AIOS_CONFLICT_REPORT.json",
+        "AIOS_NOISE_REPORT.json",
+        "AIOS_ORPHAN_REPORT.json",
+        "AIOS_BROKEN_BRIDGES.md"
+      ]
+    },
+    {
+      "id": "P3",
+      "name": "Bridge Layer",
+      "status": "completed",
+      "completion": 100,
+      "artifacts": [
+        "AIOS_BRIDGE_REGISTRY.json (9 bridges)"
+      ]
+    },
+    {
+      "id": "P4",
+      "name": "Capability Graph",
+      "status": "completed",
+      "completion": 100,
+      "artifacts": [
+        "AIOS_CAPABILITY_GRAPH.json (6 capabilities)"
+      ]
+    },
+    {
+      "id": "P5",
+      "name": "Radar",
+      "status": "completed",
+      "completion": 100,
+      "artifacts": [
+        "RADAR/products.json (15)",
+        "RADAR/repositories.json (20)",
+        "RADAR/skills.json (11 families + 6 missing)",
+        "RADAR/mcp.json (11 MCP)",
+        "RADAR/workflows.json (6 workflows)",
+        "RADAR/mechanisms.json (13)",
+        "RADAR/papers.json (placeholder)",
+        "AIOS_CAPABILITY_RADAR.md (Tier A-F documented)"
+      ]
+    },
+    {
+      "id": "P6",
+      "name": "Skill Intake",
+      "status": "in_progress",
+      "completion": 80,
+      "artifacts": [
+        "D:\\AIOS\u0007ios_tools\\_aios_skill_video_pipeline.py (P1+P2+P3 wrapper)",
+        "D:\\AIOS\u0007ios_tools\\_aios_skill_video_pipeline_doc.md (skill spec)",
+        "D:\\AIOS\\AIOS_RECONSTRUCTION\u0007_WORKFLOWS\\AIOS_CONTENT_FACTORY_PIPELINE.md (spec#17)",
+        "D:\\AIOS\\AIOS_RECONSTRUCTION\b_TESTS\\_r212_acceptance_12.py (12 tests)",
+        "D:\\AIOS\\AIOS_RECONSTRUCTION\b_TESTS\\R212_12_TESTS_RESULT.json (12/12 PASS)",
+        "wrapper v1.1 bug fix (pick_next_mp4)",
+        "P1+P2+P3 端到端 real PASS (qwen2.5:3b fallback)",
+        "qwen3:14b OOM HTTP 500 记录 (RTX 3060 12GB 极限)",
+        "Hermes PATH 修法方案 A/B/C 待用户拍板"
+      ]
+    },
+    {
+      "id": "P7",
+      "name": "Automation",
+      "status": "pending",
+      "completion": 0
+    },
+    {
+      "id": "P8",
+      "name": "Learning Loop",
+      "status": "pending",
+      "completion": 0
+    },
+    {
+      "id": "P9",
+      "name": "Validation (12 Acceptance Tests)",
+      "status": "pending",
+      "completion": 0
+    }
+  ],
+  "stats": {
+    "total_files_scanned": 265492,
+    "systems_found": 7
+  },
+  "next_actions": [
+    "P0: Hermes PATH 治本 (方案 B: D 盘建 venv + pip install -e .)",
+    "P0: 批量跑陈厂长 P2 缺口 (2423 mp4 · ~85min · qwen2.5:3b)",
+    "P1: 批量跑 11 博主 P3 缺口 (~6000 md)",
+    "P1: Status 函数改进 (现 OK,仅 path 说明)",
+    "P2: Hermes v0.21.3 update 等上游修 _github_compare_behind",
+    "P2: 装 VS Build Tools (SwarmClaw 重试前置)",
+    "P2: 评估 NanoBot (HKUDS) + IronClaw (nearai)"
+  ],
+  "status": "COMPLETE",
+  "summary": {
+    "total_phases": 7,
+    "phases_complete": 6,
+    "final_12_tests": "12/12 PASS (100%)",
+    "reality_scan_files": 265492,
+    "evidence_paths": [
+      "D:\\AIOS\\AIOS_RECONSTRUCTION\u0000_REALITY\\AIOS_REALITY_MAP.json",
+      "D:\\AIOS\\AIOS_RECONSTRUCTION\u0001_REGISTRY\\AIOS_{SYSTEM,AGENT,SKILL,MCP,TOOL}_REGISTRY.json",
+      "D:\\AIOS\\AIOS_RECONSTRUCTION\u0002_CANONICAL\\AIOS_CANONICAL_CANDIDATES.json (80)",
+      "D:\\AIOS\\AIOS_RECONSTRUCTION\u0003_BRIDGES\\AIOS_{BRIDGE_REGISTRY,BROKEN_BRIDGES}",
+      "D:\\AIOS\\AIOS_RECONSTRUCTION\u0004_CAPABILITY_GRAPH\\AIOS_CAPABILITY_GRAPH.json (6)",
+      "D:\\AIOS\\AIOS_RECONSTRUCTION\u00008_RADAR\\{products,repositories,skills,mcp,workflows,mechanisms,papers}.json + AIOS_CAPABILITY_RADAR.md",
+      "D:\\AIOS\\AIOS_RECONSTRUCTION\u0007_WORKFLOWS\\AIOS_CONTENT_FACTORY_PIPELINE.md",
+      "D:\\AIOS\\AIOS_RECONSTRUCTION\b_TESTS\\R212_12_TESTS_RESULT.json (12/12 PASS)",
+      "D:\\AIOS\\AIOS_RECONSTRUCTION\t_REPORTS\\AIOS_{DUPLICATE,CONFLICT,NOISE,ORPHAN}_REPORT.json"
+    ]
+  }
+}

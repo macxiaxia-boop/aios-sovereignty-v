@@ -1,0 +1,104 @@
+{
+  "version": "R212-step4-v1",
+  "mcp_servers": [
+    {
+      "id": "mcp-aios-interop",
+      "name": "aios-interop",
+      "status": "active",
+      "tools": [
+        "aios_status",
+        "codex_query",
+        "codex_desktop_query",
+        "openclaw_delegate"
+      ]
+    },
+    {
+      "id": "mcp-atlascloud",
+      "name": "atlascloud",
+      "status": "active",
+      "tools": [
+        "atlas_chat",
+        "atlas_generate_image",
+        "atlas_generate_video",
+        "atlas_generate_audio",
+        "atlas_search_docs",
+        "atlas_list_models",
+        "atlas_get_prediction"
+      ]
+    },
+    {
+      "id": "mcp-filesystem",
+      "name": "filesystem",
+      "status": "active",
+      "tools": [
+        "read_file",
+        "write_file",
+        "list_directory",
+        "directory_tree",
+        "search_files"
+      ]
+    },
+    {
+      "id": "mcp-memory",
+      "name": "memory",
+      "status": "active",
+      "tools": [
+        "create_entities",
+        "search_nodes",
+        "open_nodes",
+        "create_relations",
+        "add_observations"
+      ]
+    },
+    {
+      "id": "mcp-playwright",
+      "name": "playwright",
+      "status": "active",
+      "tools": [
+        "browser_navigate",
+        "browser_snapshot",
+        "browser_click",
+        "browser_take_screenshot",
+        "browser_evaluate"
+      ]
+    },
+    {
+      "id": "mcp-sequential-thinking",
+      "name": "sequential-thinking",
+      "status": "active",
+      "tools": [
+        "sequentialthinking"
+      ]
+    },
+    {
+      "id": "mcp-code-review",
+      "name": "code-review (marketplace)",
+      "status": "active",
+      "install": "R211"
+    },
+    {
+      "id": "mcp-commit-commands",
+      "name": "commit-commands (marketplace)",
+      "status": "active",
+      "install": "R211"
+    },
+    {
+      "id": "mcp-pr-review-toolkit",
+      "name": "pr-review-toolkit (marketplace)",
+      "status": "active",
+      "install": "R211"
+    },
+    {
+      "id": "mcp-skill-creator",
+      "name": "skill-creator (marketplace)",
+      "status": "active",
+      "install": "R211"
+    },
+    {
+      "id": "mcp-hookify",
+      "name": "hookify (marketplace)",
+      "status": "active",
+      "install": "R211"
+    }
+  ]
+}

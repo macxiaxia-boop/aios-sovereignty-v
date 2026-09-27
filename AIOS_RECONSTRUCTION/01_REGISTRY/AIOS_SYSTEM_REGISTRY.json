@@ -1,0 +1,98 @@
+{
+  "registry_meta": {
+    "id": "AIOS_SYSTEM_REGISTRY",
+    "version": "R212-step2-v1",
+    "created_at": "2026-09-26",
+    "spec_ref": "spec#3"
+  },
+  "systems": [
+    {
+      "id": "sys-aios",
+      "name": "AIOS Core",
+      "type": "operating_system",
+      "path": "D:\\AIOS",
+      "owner": "xinzh",
+      "status": "active",
+      "authority": "canonical",
+      "description": "用户自建 AIOS 操作系统根目录 · 包含 aios_tools / _relinked / _openclaw / AIOS_RECONSTRUCTION / codex-full-build-* 等子项目",
+      "key_subdirs": [
+        "aios_tools",
+        "_relinked",
+        "_openclaw",
+        "AIOS_RECONSTRUCTION"
+      ],
+      "stats": {
+        "files": 142572,
+        "dirs": 93,
+        "size_mb": 7770.7
+      }
+    },
+    {
+      "id": "sys-operator",
+      "name": "Operator",
+      "type": "knowledge_base",
+      "path": "D:\\个人文件\\AI\\Operator",
+      "owner": "xinzh",
+      "status": "active",
+      "authority": "canonical",
+      "description": "Operator SSOT · 00_CORE 宪法/红线/方法论 · feedback 反馈沉淀 · aios_tools MCP 凭据",
+      "key_subdirs": [
+        "00_CORE",
+        "feedback",
+        "aios_tools",
+        "aios_interop",
+        "mcp_credentials.env"
+      ]
+    },
+    {
+      "id": "sys-cloudtech",
+      "name": "CloudTech",
+      "type": "project",
+      "path": "D:\\个人文件\\AI\\cloudtech",
+      "owner": "xinzh",
+      "status": "active",
+      "authority": "canonical",
+      "description": "用户个人独立项目 cloudtech"
+    },
+    {
+      "id": "sys-claudecode",
+      "name": "Claude Code",
+      "type": "ide_assistant",
+      "path": "C:\\Users\\xinzh\\.claude",
+      "owner": "Anthropic",
+      "status": "active",
+      "authority": "canonical",
+      "description": "Claude Code 2.1.282 · settings (frozen) · plugins · marketplace · MCP · skills · 5 插件已装"
+    },
+    {
+      "id": "sys-openclaw",
+      "name": "OpenClaw",
+      "type": "gateway",
+      "path": "C:\\Users\\xinzh\\.openclaw",
+      "owner": "xinzh",
+      "status": "active",
+      "authority": "canonical",
+      "description": "本地 OpenClaw Gateway"
+    },
+    {
+      "id": "sys-hermes",
+      "name": "Hermes Agent",
+      "type": "agent_framework",
+      "path": "D:\\AIOS\\_relinked\\hermes",
+      "owner": "NousResearch",
+      "status": "active",
+      "authority": "canonical",
+      "description": "Nous Research hermes-agent v0.21.3 (git install) · 自学习循环 · FTS5 记忆 · 多平台网关 · agentskills.io 兼容"
+    },
+    {
+      "id": "sys-codexcli",
+      "name": "Codex CLI",
+      "type": "cli_tool",
+      "path": "C:\\Users\\xinzh\\.codex",
+      "owner": "OpenAI",
+      "status": "active",
+      "authority": "canonical",
+      "description": "OpenAI Codex CLI · OAuth · profile deepseek · 本地 relay 19194"
+    }
+  ]
+}

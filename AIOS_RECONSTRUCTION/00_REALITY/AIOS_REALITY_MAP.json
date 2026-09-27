@@ -1,0 +1,487 @@
+{
+  "scan_meta": {
+    "started_at": "2026-09-26T22:13:42",
+    "version": "R212-step1-v2-targeted"
+  },
+  "systems": {
+    "AIOS": {
+      "path": "D:\\AIOS",
+      "exists": true,
+      "files": 142572,
+      "dirs": 93,
+      "bytes": 8148119343,
+      "top_dirs": [
+        {
+          "name": "_relinked",
+          "count": 96481
+        },
+        {
+          "name": "aios_venv",
+          "count": 42135
+        },
+        {
+          "name": "_capability",
+          "count": 1989
+        },
+        {
+          "name": "aios_tools",
+          "count": 1001
+        },
+        {
+          "name": "_workzone",
+          "count": 468
+        },
+        {
+          "name": "daemons_v2",
+          "count": 175
+        },
+        {
+          "name": "_archived_20260925_P0",
+          "count": 93
+        },
+        {
+          "name": "aios_tasks",
+          "count": 48
+        },
+        {
+          "name": "_dr_v3.0_uncompressed_workspace",
+          "count": 34
+        },
+        {
+          "name": "_archived_2026-09-18",
+          "count": 20
+        },
+        {
+          "name": "_venv312",
+          "count": 16
+        },
+        {
+          "name": "AIOS_RECONSTRUCTION",
+          "count": 13
+        },
+        {
+          "name": "_tools",
+          "count": 6
+        },
+        {
+          "name": "_e_drive_dedup_workspace",
+          "count": 5
+        },
+        {
+          "name": "cloudtech-saas",
+          "count": 4
+        }
+      ],
+      "size_mb": 7770.7
+    },
+    "Operator": {
+      "path": "D:\\个人文件\\AI\\Operator",
+      "exists": true,
+      "files": 85535,
+      "dirs": 168,
+      "bytes": 2608254453,
+      "top_dirs": [
+        {
+          "name": "aios_venv",
+          "count": 42135
+        },
+        {
+          "name": "downloads",
+          "count": 39722
+        },
+        {
+          "name": "aios_tasks",
+          "count": 1865
+        },
+        {
+          "name": "aios_tools",
+          "count": 1001
+        },
+        {
+          "name": "00_CORE",
+          "count": 328
+        },
+        {
+          "name": "handoff",
+          "count": 136
+        },
+        {
+          "name": "aios_host_resilience",
+          "count": 68
+        },
+        {
+          "name": "业务",
+          "count": 27
+        },
+        {
+          "name": "feedback",
+          "count": 23
+        },
+        {
+          "name": "_archived_R113_20260921",
+          "count": 16
+        },
+        {
+          "name": "aios_data",
+          "count": 12
+        },
+        {
+          "name": "scripts",
+          "count": 9
+        },
+        {
+          "name": "_archived_R145_20260922",
+          "count": 9
+        },
+        {
+          "name": "knowledge_base",
+          "count": 7
+        },
+        {
+          "name": "memory",
+          "count": 7
+        }
+      ],
+      "size_mb": 2487.4
+    },
+    "CloudTech": {
+      "path": "D:\\个人文件\\AI\\cloudtech",
+      "exists": true,
+      "files": 4020,
+      "dirs": 3,
+      "bytes": 31010258,
+      "top_dirs": [
+        {
+          "name": "V2.0",
+          "count": 4014
+        },
+        {
+          "name": "V1.0发布包",
+          "count": 5
+        },
+        {
+          "name": "CloudTech.lnk",
+          "count": 1
+        }
+      ],
+      "size_mb": 29.6
+    },
+    "ClaudeCode": {
+      "path": "C:\\Users\\xinzh\\.claude",
+      "exists": true,
+      "files": 25428,
+      "dirs": 63,
+      "bytes": 3619967942,
+      "top_dirs": [
+        {
+          "name": "file-history",
+          "count": 13928
+        },
+        {
+          "name": "projects",
+          "count": 7482
+        },
+        {
+          "name": "skills",
+          "count": 2475
+        },
+        {
+          "name": "shell-snapshots",
+          "count": 418
+        },
+        {
+          "name": "_archive-sessions",
+          "count": 381
+        },
+        {
+          "name": "embedding",
+          "count": 286
+        },
+        {
+          "name": "plans",
+          "count": 116
+        },
+        {
+          "name": "sessions-archive",
+          "count": 103
+        },
+        {
+          "name": "ide",
+          "count": 66
+        },
+        {
+          "name": "telemetry",
+          "count": 36
+        },
+        {
+          "name": "_scripts",
+          "count": 31
+        },
+        {
+          "name": "backups",
+          "count": 19
+        },
+        {
+          "name": "sessions",
+          "count": 14
+        },
+        {
+          "name": "agents",
+          "count": 6
+        },
+        {
+          "name": "presets",
+          "count": 5
+        }
+      ],
+      "size_mb": 3452.3
+    },
+    "OpenClaw": {
+      "path": "C:\\Users\\xinzh\\.openclaw",
+      "exists": true,
+      "files": 1632,
+      "dirs": 36,
+      "bytes": 94635056,
+      "top_dirs": [
+        {
+          "name": "cache",
+          "count": 1429
+        },
+        {
+          "name": "workspace",
+          "count": 49
+        },
+        {
+          "name": "agents",
+          "count": 33
+        },
+        {
+          "name": "tools",
+          "count": 16
+        },
+        {
+          "name": "npm",
+          "count": 12
+        },
+        {
+          "name": "logs",
+          "count": 11
+        },
+        {
+          "name": "state",
+          "count": 10
+        },
+        {
+          "name": "tmp",
+          "count": 7
+        },
+        {
+          "name": "plugin-skills",
+          "count": 6
+        },
+        {
+          "name": "workspace-claude",
+          "count": 5
+        },
+        {
+          "name": "workspace-codex",
+          "count": 5
+        },
+        {
+          "name": "workspace-geo-competitor",
+          "count": 5
+        },
+        {
+          "name": "workspace-geo-creator",
+          "count": 5
+        },
+        {
+          "name": "workspace-geo-intent",
+          "count": 5
+        },
+        {
+          "name": "workspace-geo-strategy",
+          "count": 5
+        }
+      ],
+      "size_mb": 90.3
+    },
+    "Hermes": {
+      "path": "D:\\AIOS\\_relinked\\hermes",
+      "exists": true,
+      "files": 5448,
+      "dirs": 43,
+      "bytes": 220154241,
+      "top_dirs": [
+        {
+          "name": "hermes-agent",
+          "count": 4794
+        },
+        {
+          "name": "skills",
+          "count": 558
+        },
+        {
+          "name": "logs",
+          "count": 22
+        },
+        {
+          "name": "sessions",
+          "count": 13
+        },
+        {
+          "name": "state-snapshots",
+          "count": 8
+        },
+        {
+          "name": "backups",
+          "count": 6
+        },
+        {
+          "name": "cache",
+          "count": 6
+        },
+        {
+          "name": "memories",
+          "count": 4
+        },
+        {
+          "name": "bin",
+          "count": 2
+        },
+        {
+          "name": "runtime",
+          "count": 2
+        },
+        {
+          "name": ".backup.lock",
+          "count": 1
+        },
+        {
+          "name": ".env",
+          "count": 1
+        },
+        {
+          "name": ".hermes_history",
+          "count": 1
+        },
+        {
+          "name": ".skills_prompt_snapshot.json",
+          "count": 1
+        },
+        {
+          "name": ".update_check",
+          "count": 1
+        }
+      ],
+      "size_mb": 210.0
+    },
+    "CodexCLI": {
+      "path": "C:\\Users\\xinzh\\.codex",
+      "exists": true,
+      "files": 857,
+      "dirs": 90,
+      "bytes": 1416483098,
+      "top_dirs": [
+        {
+          "name": "sessions",
+          "count": 477
+        },
+        {
+          "name": "skills",
+          "count": 134
+        },
+        {
+          "name": "_backup-20260819-final",
+          "count": 32
+        },
+        {
+          "name": "thread-writer-locks",
+          "count": 26
+        },
+        {
+          "name": "attachments",
+          "count": 23
+        },
+        {
+          "name": "_backup-20260922-A+B-fix",
+          "count": 14
+        },
+        {
+          "name": "agents",
+          "count": 10
+        },
+        {
+          "name": "backups",
+          "count": 9
+        },
+        {
+          "name": "_scripts",
+          "count": 9
+        },
+        {
+          "name": "_backup-20260819-audit",
+          "count": 8
+        },
+        {
+          "name": "automations",
+          "count": 6
+        },
+        {
+          "name": "cache",
+          "count": 6
+        },
+        {
+          "name": "_backup-20260819-cache-cleanup",
+          "count": 6
+        },
+        {
+          "name": "_protocols",
+          "count": 6
+        },
+        {
+          "name": "archived_sessions",
+          "count": 5
+        }
+      ],
+      "size_mb": 1350.9
+    }
+  },
+  "extensions": {
+    ".py": 68434,
+    ".html": 49086,
+    ".h": 29960,
+    ".mdx": 28915,
+    "(none)": 22168,
+    ".md": 16935,
+    ".json": 10904,
+    ".js": 4774,
+    ".jsonl": 3686,
+    ".gz": 3184,
+    ".txt": 2319,
+    ".pyi": 1826,
+    ".ts": 1510,
+    ".yaml": 1157,
+    ".dll": 1152,
+    ".png": 1052,
+    ".pyd": 975,
+    ".br": 952,
+    ".tsx": 945,
+    ".cljs": 915,
+    ".svg": 812,
+    ".log": 745,
+    ".exe": 635,
+    ".php": 635,
+    ".sh": 564,
+    ".cs": 506,
+    ".lib": 479,
+    ".css": 458,
+    ".typed": 435,
+    ".ps1": 427
+  },
+  "summary": {
+    "total_files": 265492,
+    "systems_found": 7,
+    "scan_duration_sec": 27.7
+  }
+}

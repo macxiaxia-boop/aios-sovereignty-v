@@ -1,0 +1,158 @@
+{
+  "version": "R212-step8-v1",
+  "spec_ref": "spec#34 Capability Graph",
+  "capabilities": [
+    {
+      "id": "cap-video-auto-edit",
+      "name": "VIDEO_AUTO_EDIT",
+      "description": "从原始视频自动产出可发布短片 (转录+剪辑+字幕+封面+导出)",
+      "status": "candidate",
+      "evidence": "spec#15-16",
+      "requires_capabilities": [
+        "TRANSCRIPTION",
+        "SCENE_DETECTION",
+        "JUMP_CUT",
+        "CAPTION_GENERATION",
+        "BROLL_MATCHING",
+        "RENDER"
+      ],
+      "tools": [
+        "tool-ffmpeg",
+        "tool-whisper",
+        "tool-pyscenedetect",
+        "tool-auto-editor",
+        "tool-moviepy"
+      ],
+      "agents": [
+        "agent-claude-code-main"
+      ],
+      "bridges": [
+        "br-aicc"
+      ],
+      "test_status": "NOT_TESTED",
+      "next_action": "STEP 11 - Sandbox with sample video"
+    },
+    {
+      "id": "cap-content-factory",
+      "name": "CONTENT_FACTORY",
+      "description": "选题→脚本→生成→剪辑→发布→数据回流→复盘",
+      "status": "candidate",
+      "evidence": "spec#17",
+      "requires_capabilities": [
+        "SCRIPT_GENERATION",
+        "CAPTION_GENERATION",
+        "TTS",
+        "IMAGE_GENERATION",
+        "VIDEO_GENERATION",
+        "VIDEO_AUTO_EDIT",
+        "PUBLISH",
+        "ANALYTICS"
+      ],
+      "tools": [
+        "tool-ffmpeg",
+        "tool-whisper"
+      ],
+      "agents": [
+        "agent-lyra"
+      ],
+      "bridges": [
+        "br-aicc",
+        "br-aios-openclaw"
+      ],
+      "test_status": "NOT_TESTED"
+    },
+    {
+      "id": "cap-self-learning",
+      "name": "SELF_LEARNING_SKILL",
+      "description": "从任务经验自动生成/改进 Skill (Hermes Agent 学习循环范式)",
+      "status": "partial",
+      "evidence": "spec#30-31 · Hermes Agent 学习循环",
+      "requires_capabilities": [
+        "MEMORY_STORE",
+        "MEMORY_RETRIEVE",
+        "SKILL_GENERATION",
+        "SKILL_EVALUATION"
+      ],
+      "tools": [],
+      "agents": [
+        "agent-hermes-nos-res"
+      ],
+      "bridges": [
+        "br-aios-hermes",
+        "br-hermes-aios-skills"
+      ],
+      "test_status": "NOT_TESTED",
+      "notes": "Hermes Agent v0.21.3 已具备 · 与 AIOS Hermes(治理角色) 不同,这是框架层"
+    },
+    {
+      "id": "cap-bridge-routing",
+      "name": "BRIDGE_ROUTING",
+      "description": "跨 AIOS/Codex/Claude Code/Hermes/OpenClaw 的任务委派 + 上下文转换",
+      "status": "candidate",
+      "evidence": "spec#7-9",
+      "requires_capabilities": [
+        "TASK_CONTRACT",
+        "CONTEXT_PACKAGE",
+        "STATE_SYNC",
+        "EVIDENCE_VALIDATION"
+      ],
+      "tools": [],
+      "agents": [
+        "agent-claude-code-main",
+        "agent-codex-cli",
+        "agent-hermes-nos-res",
+        "agent-openclaw-gateway"
+      ],
+      "bridges": [
+        "br-aicc",
+        "br-aios-codex",
+        "br-aios-hermes",
+        "br-aios-openclaw",
+        "br-claudecode-openclaw"
+      ],
+      "test_status": "PARTIAL",
+      "notes": "br-aios-hermes broken_path (R211)"
+    },
+    {
+      "id": "cap-marketplace-integration",
+      "name": "PLUGIN_MARKETPLACE",
+      "description": "Claude Code 官方 marketplace (314 plugins) + 自定义 plugin registry",
+      "status": "active",
+      "evidence": "R211 marketplace 已接入 · 5 插件已装",
+      "tools": [
+        "tool-gh"
+      ],
+      "agents": [
+        "agent-claude-code-main"
+      ],
+      "bridges": [
+        "br-cc-marketplace"
+      ],
+      "test_status": "PASS",
+      "active_plugins": [
+        "code-review",
+        "commit-commands",
+        "pr-review-toolkit",
+        "skill-creator",
+        "hookify"
+      ]
+    },
+    {
+      "id": "cap-web-search",
+      "name": "TIERED_SEARCH",
+      "description": "6 tier 来源 (官方/开源/社区/产品/内容/新闻) 多策略搜索",
+      "status": "candidate",
+      "evidence": "spec#11-13",
+      "tools": [
+        "tool-tavily",
+        "tool-gh"
+      ],
+      "agents": [
+        "agent-claude-code-main",
+        "agent-general-purpose"
+      ],
+      "test_status": "PARTIAL",
+      "notes": "已用 Tier B (GitHub) + WebSearch,未系统化 Tier A/C/D/E/F"
+    }
+  ]
+}

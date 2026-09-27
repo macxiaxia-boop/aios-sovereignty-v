@@ -1,0 +1,93 @@
+{
+  "version": "R212-step12-v1",
+  "skill_families": [
+    {
+      "family": "anthropic-suite",
+      "count": 21,
+      "authority": "canonical"
+    },
+    {
+      "family": "arkcli",
+      "count": 33,
+      "authority": "canonical"
+    },
+    {
+      "family": "wondelai",
+      "count": 50,
+      "authority": "canonical"
+    },
+    {
+      "family": "marketing",
+      "count": 40,
+      "authority": "canonical"
+    },
+    {
+      "family": "aios",
+      "count": 30,
+      "authority": "canonical"
+    },
+    {
+      "family": "industry-4",
+      "count": 4,
+      "authority": "canonical"
+    },
+    {
+      "family": "workflow",
+      "count": 20,
+      "authority": "canonical"
+    },
+    {
+      "family": "claude-sdk",
+      "count": 8,
+      "authority": "canonical"
+    },
+    {
+      "family": "creators",
+      "count": 24,
+      "authority": "reference"
+    },
+    {
+      "family": "cross-matrix",
+      "count": 40,
+      "authority": "experimental"
+    },
+    {
+      "family": "marketplace-5",
+      "count": 5,
+      "authority": "canonical",
+      "install": "R211"
+    }
+  ],
+  "missing_critical_skills": [
+    {
+      "id": "sk-video-auto-edit",
+      "reason": "spec#15-16 P1",
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "sk-content-factory",
+      "reason": "spec#17 P1",
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "sk-capability-radar",
+      "reason": "spec#11-13",
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "sk-task-contract",
+      "reason": "spec#8",
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "sk-context-gateway",
+      "reason": "spec#5-6",
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "sk-bridge-health-check",
+      "reason": "spec#36",
+      "status": "NOT_STARTED"
+    }
+  ]
+}

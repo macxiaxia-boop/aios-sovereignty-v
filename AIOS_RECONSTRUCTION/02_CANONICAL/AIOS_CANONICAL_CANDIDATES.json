@@ -1,0 +1,485 @@
+{
+  "version": "R212-step3-v1",
+  "candidates": [
+    {
+      "path": "D:\\AIOS\\aios_venv\\Lib\\site-packages\\litellm\\proxy\\_experimental\\mcp_server\\AGENTS.md",
+      "name": "AGENTS.md",
+      "size": 6470,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\aios_venv\\Lib\\site-packages\\litellm\\proxy\\_experimental\\mcp_server\\CLAUDE.md",
+      "name": "CLAUDE.md",
+      "size": 515,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\hermes\\hermes-agent\\AGENTS.md",
+      "name": "AGENTS.md",
+      "size": 54483,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\hermes\\hermes-agent\\skills\\creative\\popular-web-designs\\templates\\claude.md",
+      "name": "claude.md",
+      "size": 21403,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\hermes\\skills\\.archive\\popular-web-designs\\templates\\claude.md",
+      "name": "claude.md",
+      "size": 21403,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-codex-8902d781d4\\node_modules\\@openclaw\\codex\\node_modules\\openclaw\\docs\\AGENTS.md",
+      "name": "AGENTS.md",
+      "size": 6896,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-codex-8902d781d4\\node_modules\\@openclaw\\codex\\node_modules\\openclaw\\docs\\channels\\feishu\\dynamic-agents.md",
+      "name": "dynamic-agents.md",
+      "size": 6959,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-codex-8902d781d4\\node_modules\\@openclaw\\codex\\node_modules\\openclaw\\docs\\cli\\agents.md",
+      "name": "agents.md",
+      "size": 16321,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-codex-8902d781d4\\node_modules\\@openclaw\\codex\\node_modules\\openclaw\\docs\\gateway\\config-agents.md",
+      "name": "config-agents.md",
+      "size": 12643,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-codex-8902d781d4\\node_modules\\@openclaw\\codex\\node_modules\\openclaw\\docs\\gateway\\config-tools\\sessions-and-subagents.md",
+      "name": "sessions-and-subagents.md",
+      "size": 8388,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-codex-8902d781d4\\node_modules\\@openclaw\\codex\\node_modules\\openclaw\\docs\\gateway\\protocol\\rpc-talk-config-and-agents.md",
+      "name": "rpc-talk-config-and-agents.md",
+      "size": 21716,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-codex-8902d781d4\\node_modules\\@openclaw\\codex\\node_modules\\openclaw\\docs\\install\\migrating-claude.md",
+      "name": "migrating-claude.md",
+      "size": 7047,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-codex-8902d781d4\\node_modules\\@openclaw\\codex\\node_modules\\openclaw\\docs\\plugins\\reference\\migrate-claude.md",
+      "name": "migrate-claude.md",
+      "size": 748,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-codex-8902d781d4\\node_modules\\@openclaw\\codex\\node_modules\\openclaw\\docs\\reference\\templates\\AGENTS.md",
+      "name": "AGENTS.md",
+      "size": 6437,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-codex-8902d781d4\\node_modules\\@openclaw\\codex\\node_modules\\openclaw\\docs\\reference\\templates\\roles\\coordinator\\workspace\\AGENTS.md",
+      "name": "AGENTS.md",
+      "size": 3174,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-codex-8902d781d4\\node_modules\\@openclaw\\codex\\node_modules\\openclaw\\docs\\reference\\templates\\roles\\researcher\\workspace\\AGENTS.md",
+      "name": "AGENTS.md",
+      "size": 2401,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-codex-8902d781d4\\node_modules\\@openclaw\\codex\\node_modules\\openclaw\\docs\\reference\\templates\\roles\\reviewer\\workspace\\AGENTS.md",
+      "name": "AGENTS.md",
+      "size": 2495,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-codex-8902d781d4\\node_modules\\@openclaw\\codex\\node_modules\\openclaw\\docs\\reference\\templates\\roles\\writer\\workspace\\AGENTS.md",
+      "name": "AGENTS.md",
+      "size": 2435,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-codex-8902d781d4\\node_modules\\@openclaw\\codex\\node_modules\\openclaw\\docs\\tools\\acp-agents.md",
+      "name": "acp-agents.md",
+      "size": 13611,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-codex-8902d781d4\\node_modules\\@openclaw\\codex\\node_modules\\openclaw\\docs\\tools\\subagents.md",
+      "name": "subagents.md",
+      "size": 12318,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-deepseek-provider-2481ed984b\\node_modules\\@openclaw\\deepseek-provider\\node_modules\\openclaw\\docs\\AGENTS.md",
+      "name": "AGENTS.md",
+      "size": 6896,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-deepseek-provider-2481ed984b\\node_modules\\@openclaw\\deepseek-provider\\node_modules\\openclaw\\docs\\channels\\feishu\\dynamic-agents.md",
+      "name": "dynamic-agents.md",
+      "size": 6959,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-deepseek-provider-2481ed984b\\node_modules\\@openclaw\\deepseek-provider\\node_modules\\openclaw\\docs\\cli\\agents.md",
+      "name": "agents.md",
+      "size": 16321,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-deepseek-provider-2481ed984b\\node_modules\\@openclaw\\deepseek-provider\\node_modules\\openclaw\\docs\\gateway\\config-agents.md",
+      "name": "config-agents.md",
+      "size": 12643,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-deepseek-provider-2481ed984b\\node_modules\\@openclaw\\deepseek-provider\\node_modules\\openclaw\\docs\\gateway\\config-tools\\sessions-and-subagents.md",
+      "name": "sessions-and-subagents.md",
+      "size": 8388,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-deepseek-provider-2481ed984b\\node_modules\\@openclaw\\deepseek-provider\\node_modules\\openclaw\\docs\\gateway\\protocol\\rpc-talk-config-and-agents.md",
+      "name": "rpc-talk-config-and-agents.md",
+      "size": 21716,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-deepseek-provider-2481ed984b\\node_modules\\@openclaw\\deepseek-provider\\node_modules\\openclaw\\docs\\install\\migrating-claude.md",
+      "name": "migrating-claude.md",
+      "size": 7047,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-deepseek-provider-2481ed984b\\node_modules\\@openclaw\\deepseek-provider\\node_modules\\openclaw\\docs\\plugins\\reference\\migrate-claude.md",
+      "name": "migrate-claude.md",
+      "size": 748,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-deepseek-provider-2481ed984b\\node_modules\\@openclaw\\deepseek-provider\\node_modules\\openclaw\\docs\\reference\\templates\\AGENTS.md",
+      "name": "AGENTS.md",
+      "size": 6437,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-deepseek-provider-2481ed984b\\node_modules\\@openclaw\\deepseek-provider\\node_modules\\openclaw\\docs\\reference\\templates\\roles\\coordinator\\workspace\\AGENTS.md",
+      "name": "AGENTS.md",
+      "size": 3174,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-deepseek-provider-2481ed984b\\node_modules\\@openclaw\\deepseek-provider\\node_modules\\openclaw\\docs\\reference\\templates\\roles\\researcher\\workspace\\AGENTS.md",
+      "name": "AGENTS.md",
+      "size": 2401,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-deepseek-provider-2481ed984b\\node_modules\\@openclaw\\deepseek-provider\\node_modules\\openclaw\\docs\\reference\\templates\\roles\\reviewer\\workspace\\AGENTS.md",
+      "name": "AGENTS.md",
+      "size": 2495,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-deepseek-provider-2481ed984b\\node_modules\\@openclaw\\deepseek-provider\\node_modules\\openclaw\\docs\\reference\\templates\\roles\\writer\\workspace\\AGENTS.md",
+      "name": "AGENTS.md",
+      "size": 2435,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-deepseek-provider-2481ed984b\\node_modules\\@openclaw\\deepseek-provider\\node_modules\\openclaw\\docs\\tools\\acp-agents.md",
+      "name": "acp-agents.md",
+      "size": 13611,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-deepseek-provider-2481ed984b\\node_modules\\@openclaw\\deepseek-provider\\node_modules\\openclaw\\docs\\tools\\subagents.md",
+      "name": "subagents.md",
+      "size": 12318,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-feishu-dc69f44688\\node_modules\\@openclaw\\feishu\\node_modules\\openclaw\\docs\\AGENTS.md",
+      "name": "AGENTS.md",
+      "size": 6896,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-feishu-dc69f44688\\node_modules\\@openclaw\\feishu\\node_modules\\openclaw\\docs\\channels\\feishu\\dynamic-agents.md",
+      "name": "dynamic-agents.md",
+      "size": 6959,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-feishu-dc69f44688\\node_modules\\@openclaw\\feishu\\node_modules\\openclaw\\docs\\cli\\agents.md",
+      "name": "agents.md",
+      "size": 16321,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-feishu-dc69f44688\\node_modules\\@openclaw\\feishu\\node_modules\\openclaw\\docs\\gateway\\config-agents.md",
+      "name": "config-agents.md",
+      "size": 12643,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-feishu-dc69f44688\\node_modules\\@openclaw\\feishu\\node_modules\\openclaw\\docs\\gateway\\config-tools\\sessions-and-subagents.md",
+      "name": "sessions-and-subagents.md",
+      "size": 8388,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-feishu-dc69f44688\\node_modules\\@openclaw\\feishu\\node_modules\\openclaw\\docs\\gateway\\protocol\\rpc-talk-config-and-agents.md",
+      "name": "rpc-talk-config-and-agents.md",
+      "size": 21716,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-feishu-dc69f44688\\node_modules\\@openclaw\\feishu\\node_modules\\openclaw\\docs\\install\\migrating-claude.md",
+      "name": "migrating-claude.md",
+      "size": 7047,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-feishu-dc69f44688\\node_modules\\@openclaw\\feishu\\node_modules\\openclaw\\docs\\plugins\\reference\\migrate-claude.md",
+      "name": "migrate-claude.md",
+      "size": 748,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-feishu-dc69f44688\\node_modules\\@openclaw\\feishu\\node_modules\\openclaw\\docs\\reference\\templates\\AGENTS.md",
+      "name": "AGENTS.md",
+      "size": 6437,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-feishu-dc69f44688\\node_modules\\@openclaw\\feishu\\node_modules\\openclaw\\docs\\reference\\templates\\roles\\coordinator\\workspace\\AGENTS.md",
+      "name": "AGENTS.md",
+      "size": 3174,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-feishu-dc69f44688\\node_modules\\@openclaw\\feishu\\node_modules\\openclaw\\docs\\reference\\templates\\roles\\researcher\\workspace\\AGENTS.md",
+      "name": "AGENTS.md",
+      "size": 2401,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-feishu-dc69f44688\\node_modules\\@openclaw\\feishu\\node_modules\\openclaw\\docs\\reference\\templates\\roles\\reviewer\\workspace\\AGENTS.md",
+      "name": "AGENTS.md",
+      "size": 2495,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-feishu-dc69f44688\\node_modules\\@openclaw\\feishu\\node_modules\\openclaw\\docs\\reference\\templates\\roles\\writer\\workspace\\AGENTS.md",
+      "name": "AGENTS.md",
+      "size": 2435,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-feishu-dc69f44688\\node_modules\\@openclaw\\feishu\\node_modules\\openclaw\\docs\\tools\\acp-agents.md",
+      "name": "acp-agents.md",
+      "size": 13611,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-feishu-dc69f44688\\node_modules\\@openclaw\\feishu\\node_modules\\openclaw\\docs\\tools\\subagents.md",
+      "name": "subagents.md",
+      "size": 12318,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-llama-cpp-provider-15b2d859e6\\node_modules\\@openclaw\\llama-cpp-provider\\node_modules\\openclaw\\docs\\AGENTS.md",
+      "name": "AGENTS.md",
+      "size": 6896,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-llama-cpp-provider-15b2d859e6\\node_modules\\@openclaw\\llama-cpp-provider\\node_modules\\openclaw\\docs\\channels\\feishu\\dynamic-agents.md",
+      "name": "dynamic-agents.md",
+      "size": 6959,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-llama-cpp-provider-15b2d859e6\\node_modules\\@openclaw\\llama-cpp-provider\\node_modules\\openclaw\\docs\\cli\\agents.md",
+      "name": "agents.md",
+      "size": 16321,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-llama-cpp-provider-15b2d859e6\\node_modules\\@openclaw\\llama-cpp-provider\\node_modules\\openclaw\\docs\\gateway\\config-agents.md",
+      "name": "config-agents.md",
+      "size": 12643,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-llama-cpp-provider-15b2d859e6\\node_modules\\@openclaw\\llama-cpp-provider\\node_modules\\openclaw\\docs\\gateway\\config-tools\\sessions-and-subagents.md",
+      "name": "sessions-and-subagents.md",
+      "size": 8388,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-llama-cpp-provider-15b2d859e6\\node_modules\\@openclaw\\llama-cpp-provider\\node_modules\\openclaw\\docs\\gateway\\protocol\\rpc-talk-config-and-agents.md",
+      "name": "rpc-talk-config-and-agents.md",
+      "size": 21716,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-llama-cpp-provider-15b2d859e6\\node_modules\\@openclaw\\llama-cpp-provider\\node_modules\\openclaw\\docs\\install\\migrating-claude.md",
+      "name": "migrating-claude.md",
+      "size": 7047,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-llama-cpp-provider-15b2d859e6\\node_modules\\@openclaw\\llama-cpp-provider\\node_modules\\openclaw\\docs\\plugins\\reference\\migrate-claude.md",
+      "name": "migrate-claude.md",
+      "size": 748,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-llama-cpp-provider-15b2d859e6\\node_modules\\@openclaw\\llama-cpp-provider\\node_modules\\openclaw\\docs\\reference\\templates\\AGENTS.md",
+      "name": "AGENTS.md",
+      "size": 6437,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-llama-cpp-provider-15b2d859e6\\node_modules\\@openclaw\\llama-cpp-provider\\node_modules\\openclaw\\docs\\reference\\templates\\roles\\coordinator\\workspace\\AGENTS.md",
+      "name": "AGENTS.md",
+      "size": 3174,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-llama-cpp-provider-15b2d859e6\\node_modules\\@openclaw\\llama-cpp-provider\\node_modules\\openclaw\\docs\\reference\\templates\\roles\\researcher\\workspace\\AGENTS.md",
+      "name": "AGENTS.md",
+      "size": 2401,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-llama-cpp-provider-15b2d859e6\\node_modules\\@openclaw\\llama-cpp-provider\\node_modules\\openclaw\\docs\\reference\\templates\\roles\\reviewer\\workspace\\AGENTS.md",
+      "name": "AGENTS.md",
+      "size": 2495,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-llama-cpp-provider-15b2d859e6\\node_modules\\@openclaw\\llama-cpp-provider\\node_modules\\openclaw\\docs\\reference\\templates\\roles\\writer\\workspace\\AGENTS.md",
+      "name": "AGENTS.md",
+      "size": 2435,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-llama-cpp-provider-15b2d859e6\\node_modules\\@openclaw\\llama-cpp-provider\\node_modules\\openclaw\\docs\\tools\\acp-agents.md",
+      "name": "acp-agents.md",
+      "size": 13611,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-llama-cpp-provider-15b2d859e6\\node_modules\\@openclaw\\llama-cpp-provider\\node_modules\\openclaw\\docs\\tools\\subagents.md",
+      "name": "subagents.md",
+      "size": 12318,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-qwen-provider-ff9f55ade7\\node_modules\\@openclaw\\qwen-provider\\node_modules\\openclaw\\docs\\AGENTS.md",
+      "name": "AGENTS.md",
+      "size": 6896,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-qwen-provider-ff9f55ade7\\node_modules\\@openclaw\\qwen-provider\\node_modules\\openclaw\\docs\\channels\\feishu\\dynamic-agents.md",
+      "name": "dynamic-agents.md",
+      "size": 6959,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-qwen-provider-ff9f55ade7\\node_modules\\@openclaw\\qwen-provider\\node_modules\\openclaw\\docs\\cli\\agents.md",
+      "name": "agents.md",
+      "size": 16321,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-qwen-provider-ff9f55ade7\\node_modules\\@openclaw\\qwen-provider\\node_modules\\openclaw\\docs\\gateway\\config-agents.md",
+      "name": "config-agents.md",
+      "size": 12643,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-qwen-provider-ff9f55ade7\\node_modules\\@openclaw\\qwen-provider\\node_modules\\openclaw\\docs\\gateway\\config-tools\\sessions-and-subagents.md",
+      "name": "sessions-and-subagents.md",
+      "size": 8388,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-qwen-provider-ff9f55ade7\\node_modules\\@openclaw\\qwen-provider\\node_modules\\openclaw\\docs\\gateway\\protocol\\rpc-talk-config-and-agents.md",
+      "name": "rpc-talk-config-and-agents.md",
+      "size": 21716,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-qwen-provider-ff9f55ade7\\node_modules\\@openclaw\\qwen-provider\\node_modules\\openclaw\\docs\\install\\migrating-claude.md",
+      "name": "migrating-claude.md",
+      "size": 7047,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-qwen-provider-ff9f55ade7\\node_modules\\@openclaw\\qwen-provider\\node_modules\\openclaw\\docs\\plugins\\reference\\migrate-claude.md",
+      "name": "migrate-claude.md",
+      "size": 748,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-qwen-provider-ff9f55ade7\\node_modules\\@openclaw\\qwen-provider\\node_modules\\openclaw\\docs\\reference\\templates\\AGENTS.md",
+      "name": "AGENTS.md",
+      "size": 6437,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-qwen-provider-ff9f55ade7\\node_modules\\@openclaw\\qwen-provider\\node_modules\\openclaw\\docs\\reference\\templates\\roles\\coordinator\\workspace\\AGENTS.md",
+      "name": "AGENTS.md",
+      "size": 3174,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-qwen-provider-ff9f55ade7\\node_modules\\@openclaw\\qwen-provider\\node_modules\\openclaw\\docs\\reference\\templates\\roles\\researcher\\workspace\\AGENTS.md",
+      "name": "AGENTS.md",
+      "size": 2401,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-qwen-provider-ff9f55ade7\\node_modules\\@openclaw\\qwen-provider\\node_modules\\openclaw\\docs\\reference\\templates\\roles\\reviewer\\workspace\\AGENTS.md",
+      "name": "AGENTS.md",
+      "size": 2495,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-qwen-provider-ff9f55ade7\\node_modules\\@openclaw\\qwen-provider\\node_modules\\openclaw\\docs\\reference\\templates\\roles\\writer\\workspace\\AGENTS.md",
+      "name": "AGENTS.md",
+      "size": 2435,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-qwen-provider-ff9f55ade7\\node_modules\\@openclaw\\qwen-provider\\node_modules\\openclaw\\docs\\tools\\acp-agents.md",
+      "name": "acp-agents.md",
+      "size": 13611,
+      "system": "AIOS"
+    },
+    {
+      "path": "D:\\AIOS\\_relinked\\openclaw\\npm\\projects\\openclaw-qwen-provider-ff9f55ade7\\node_modules\\@openclaw\\qwen-provider\\node_modules\\openclaw\\docs\\tools\\subagents.md",
+      "name": "subagents.md",
+      "size": 12318,
+      "system": "AIOS"
+    }
+  ]
+}

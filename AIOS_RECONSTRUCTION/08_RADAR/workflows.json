@@ -1,0 +1,90 @@
+{
+  "version": "R212-step12-v1",
+  "workflows": [
+    {
+      "id": "wf-video-pipeline",
+      "name": "AI Video Production Pipeline",
+      "status": "candidate",
+      "spec": "spec#15-16",
+      "phases": [
+        "素材扫描",
+        "语音识别",
+        "语义分段",
+        "Jump Cut",
+        "字幕",
+        "B-roll",
+        "封面",
+        "导出"
+      ]
+    },
+    {
+      "id": "wf-content-factory",
+      "name": "Content Factory Pipeline",
+      "status": "candidate",
+      "spec": "spec#17",
+      "phases": [
+        "选题",
+        "脚本",
+        "生成",
+        "剪辑",
+        "发布",
+        "数据回流",
+        "复盘"
+      ]
+    },
+    {
+      "id": "wf-task-contract",
+      "name": "Task Contract Flow",
+      "status": "candidate",
+      "spec": "spec#8",
+      "phases": [
+        "定义 Contract",
+        "路由",
+        "执行",
+        "验证 Evidence",
+        "回传",
+        "沉淀"
+      ]
+    },
+    {
+      "id": "wf-bridge-health",
+      "name": "Bridge Health Check",
+      "status": "candidate",
+      "spec": "spec#36",
+      "phases": [
+        "定期 ping",
+        "失败检测",
+        "报告",
+        "修复"
+      ]
+    },
+    {
+      "id": "wf-self-learning",
+      "name": "Experience to Skill Pipeline",
+      "status": "candidate",
+      "spec": "spec#30-31",
+      "phases": [
+        "Detect 重复",
+        "Extract 步骤",
+        "Generate Skill",
+        "Eval",
+        "Active"
+      ]
+    },
+    {
+      "id": "wf-capability-intake",
+      "name": "Internet Capability Intake",
+      "status": "candidate",
+      "spec": "spec#11-21",
+      "phases": [
+        "Tier A-F 搜索",
+        "实体消歧",
+        "16 维评估",
+        "Quarantine",
+        "Sandbox",
+        "整合",
+        "Benchmark"
+      ]
+    }
+  ]
+}
