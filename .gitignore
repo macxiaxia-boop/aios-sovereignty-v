@@ -1,0 +1,20 @@
+# AIOS gitignore baseline
+aios_venv/
+_venv312/
+.venv/
+__pycache__/
+*.pyc
+*.bak
+*.bak_*
+*.tmp
+_archived_*/
+tmp/
+_scripts_tmp/
+downloads/
+.worktrees/
+*.log
+*.pid
+_ai_router_state.json
+_ai_router.log
+_ai_router_alert.log
+_death_alerts.jsonl
