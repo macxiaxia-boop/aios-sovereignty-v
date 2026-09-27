@@ -1,0 +1,130 @@
+import type { NextConfig } from "next";
+import { execSync } from "child_process";
+import { existsSync } from "fs";
+import { networkInterfaces } from "os";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const PROJECT_ROOT = path.dirname(fileURLToPath(import.meta.url))
+const OUTPUT_TRACE_EXCLUDE_GLOBS = [
+  './.env*',
+  './.git/**/*',
+  './.next/cache/**/*',
+  './.tmp-swarmclaw-build/**/*',
+  './AGENTS.md',
+  './CLAUDE.md',
+  './CONTRIBUTING.md',
+  './Dockerfile',
+  './Dockerfile.*',
+  './README.md',
+  './SWARMDOCK.md',
+  './artifacts/**/*',
+  './components.json',
+  './coverage/**/*',
+  './data/**/*',
+  './daemon.log',
+  './docker-compose.yml',
+  './electron-builder.yml',
+  './electron-dist/**/*',
+  './eslint.config.mjs',
+  './fly.toml',
+  './install.sh',
+  './next.config.ts',
+  './package-lock.json',
+  './postcss.config.mjs',
+  './railway.json',
+  './release/**/*',
+  './render.yaml',
+  './research.md',
+  './swarmclaw-skill.md',
+  './test-results/**/*',
+  './tsconfig.json',
+]
+
+function getGitSha(): string {
+  try {
+    if (!existsSync(path.join(PROJECT_ROOT, '.git'))) return 'unknown'
+    return execSync('git rev-parse --short HEAD', { encoding: 'utf-8' }).trim()
+  } catch {
+    return 'unknown'
+  }
+}
+
+function getAllowedDevOrigins(): string[] {
+  const allowed = new Set<string>([
+    'localhost',
+    '127.0.0.1',
+    '0.0.0.0',
+  ])
+
+  // Include all active local IPv4 interfaces so LAN devices can load /_next assets in dev.
+  for (const interfaces of Object.values(networkInterfaces())) {
+    for (const iface of interfaces ?? []) {
+      if ((iface.family === 'IPv4' || (iface.family as string | number) === 4) && !iface.internal) {
+        allowed.add(iface.address)
+      }
+    }
+  }
+
+  // Optional override for custom origins/hosts, e.g. `NEXT_ALLOWED_DEV_ORIGINS=host1,host2`.
+  const extra = (process.env.NEXT_ALLOWED_DEV_ORIGINS ?? '')
+    .split(',')
+    .map((v) => v.trim())
+    .filter(Boolean)
+    .map((v) => v.replace(/^https?:\/\//, '').replace(/\/$/, ''))
+  for (const host of extra) allowed.add(host)
+
+  return [...allowed]
+}
+
+const nextConfig: NextConfig = {
+  output: 'standalone',
+  outputFileTracingExcludes: {
+    '/*': OUTPUT_TRACE_EXCLUDE_GLOBS,
+    '/api/**': OUTPUT_TRACE_EXCLUDE_GLOBS,
+    instrumentation: OUTPUT_TRACE_EXCLUDE_GLOBS,
+    '/instrumentation': OUTPUT_TRACE_EXCLUDE_GLOBS,
+    'next-server': OUTPUT_TRACE_EXCLUDE_GLOBS,
+  },
+  turbopack: {
+    // Pin workspace root to the project directory so a stale lockfile
+    // in a parent folder (e.g. ~/) or a nested launch cwd doesn't confuse
+    // native module resolution.
+    root: PROJECT_ROOT,
+  },
+  experimental: {
+    // Limit build workers to 1 inside Docker to avoid SQLITE_BUSY contention
+    // when multiple workers collect page data concurrently.
+    ...(process.env.SWARMCLAW_BUILD_MODE ? { cpus: 1 } : {}),
+  },
+  env: {
+    NEXT_PUBLIC_GIT_SHA: getGitSha(),
+    NEXT_PUBLIC_WS_PORT: String((Number(process.env.PORT) || 3456) + 1),
+  },
+  // Allow external network access
+  serverExternalPackages: [
+    'ws',
+    'highlight.js', 'better-sqlite3',
+    'discord.js', '@discordjs/ws', '@discordjs/rest',
+    'grammy',
+    '@slack/bolt', '@slack/web-api', '@slack/socket-mode',
+    '@whiskeysockets/baileys',
+    'qrcode',
+    'just-bash',
+  ],
+  allowedDevOrigins: getAllowedDevOrigins(),
+  // R262 PATCH · fix Next.js 16.2.4 Windows absolute path bug
+  // standalone output generates paths like './D:/npm-global/.../next/dist/client/next.js'
+  // webpack can't resolve. Map to absolute path without './' prefix
+  webpack: (config, { webpack }) => {
+    config.resolve = config.resolve || {}
+    config.resolve.alias = {
+      ...(config.resolve.alias || {}),
+      'next/dist/client/next.js': path.resolve(PROJECT_ROOT, 'node_modules/next/dist/client/next.js'),
+      'next/dist/client/app-next.js': path.resolve(PROJECT_ROOT, 'node_modules/next/dist/client/app-next.js'),
+    }
+    return config
+  },
+};
+
+export default nextConfig;
