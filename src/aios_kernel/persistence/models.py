@@ -513,3 +513,87 @@ def working_memory_from_orm(o):
         expires_at=o.expires_at,
         schema_version=o.schema_version,
     )
+# ---------------------------------------------------------------------------
+# Phase B B005 - Knowledge RAG (documents + chunks + embeddings).
+# ---------------------------------------------------------------------------
+class DocumentORM(Base):
+    __tablename__ = "documents"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True)
+    title: Mapped[str] = mapped_column(String(500), nullable=False)
+    content: Mapped[str] = mapped_column(Text, nullable=False)
+    source_path: Mapped[str | None] = mapped_column(String(1000), nullable=True)
+    token_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    chunk_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    tags: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
+    metadata_: Mapped[dict] = mapped_column("metadata", JSON, nullable=False, default=dict)
+    envelope_json: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
+    schema_version: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+    chunks = relationship(
+        "DocumentChunkORM", back_populates="document", cascade="all, delete-orphan"
+    )
+
+    __table_args__ = (
+        Index("ix_documents_title", "title"),
+        Index("ix_documents_created_at", "created_at"),
+    )
+
+
+class DocumentChunkORM(Base):
+    __tablename__ = "document_chunks"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True)
+    doc_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey("documents.id", ondelete="CASCADE"), nullable=False
+    )
+    chunk_index: Mapped[int] = mapped_column(Integer, nullable=False)
+    content: Mapped[str] = mapped_column(Text, nullable=False)
+    token_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    start_token: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    end_token: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    tags: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
+    metadata_: Mapped[dict] = mapped_column("metadata", JSON, nullable=False, default=dict)
+    schema_version: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+    document = relationship("DocumentORM", back_populates="chunks")
+    embedding = relationship(
+        "EmbeddingORM",
+        back_populates="chunk",
+        uselist=False,
+        cascade="all, delete-orphan",
+    )
+
+    __table_args__ = (
+        Index("ix_chunks_doc_id_index", "doc_id", "chunk_index", unique=True),
+        Index("ix_chunks_doc_id", "doc_id"),
+    )
+
+
+class EmbeddingORM(Base):
+    __tablename__ = "embeddings"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True)
+    chunk_id: Mapped[str] = mapped_column(
+        String(36),
+        ForeignKey("document_chunks.id", ondelete="CASCADE"),
+        nullable=False,
+        unique=True,
+    )
+    model: Mapped[str] = mapped_column(String(100), nullable=False, default="hash-dev-1536")
+    dim: Mapped[int] = mapped_column(Integer, nullable=False, default=1536)
+    # SQLite + numpy cosine in dev. In production this becomes pgvector.
+    vector_json: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
+    norm: Mapped[float] = mapped_column(Float, nullable=False, default=1.0)
+    schema_version: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+    chunk = relationship("DocumentChunkORM", back_populates="embedding")
+
+    __table_args__ = (
+        Index("ix_embeddings_chunk_id", "chunk_id"),
+        Index("ix_embeddings_model", "model"),
+    )
