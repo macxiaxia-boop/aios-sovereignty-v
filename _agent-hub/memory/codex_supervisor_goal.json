@@ -1,0 +1,189 @@
+{
+  "id": "18d6f3fd-c309-4db9-82bb-cdec71762a81",
+  "created_at": "2026-10-08T15:44:40.867999+00:00",
+  "updated_at": "2026-10-08T15:44:40.868186+00:00",
+  "schema_version": 1,
+  "title": "Codex Supervisor 自主运行 (Cognitive Governance)",
+  "description": "Codex 在用户不在场时自主推进：自审计、失败归并、健康监控、写 memory。autonomous_scope 已生效，requires_authorization 列出的需用户拍板。",
+  "success_criteria": "self-audit 每次启动 Codex 自动跑，结果写 memory log，DEGRADED 时按 autonomous_scope 自动修，CLEAN 时无用户介入。",
+  "budget": 0.0,
+  "deadline": null,
+  "owner": "codex",
+  "status": "Active",
+  "tags": [],
+  "plan_ids": [],
+  "metadata": {},
+  "inferred_intent": "用户要的不再是逐条 task card 验收，而是系统自主运行能力 — Phase F 是数据结构层，本 Goal 是运行机制层。",
+  "preserve_capabilities": [
+    "verifier/deterministic.py (don't touch)",
+    "v2 consumer main loop (don't refactor)",
+    "AGENTS.md SSOT (central truth)",
+    "Phase A-F 49+6 Verified cards (don't downgrade)",
+    "codex_self_audit.py (autonomous health check)"
+  ],
+  "known_constraints": [
+    {
+      "type": "timeout",
+      "value": "self-audit < 5min",
+      "rationale": "user 期望快速反馈"
+    },
+    {
+      "type": "forbidden_path",
+      "value": "D:/AIOS/_agent-hub/AGENTS.md",
+      "rationale": "SSOT, requires user approval to modify"
+    },
+    {
+      "type": "scope",
+      "value": "kernel unit + v2 baseline only",
+      "rationale": "不跑全 integration suite 太慢"
+    }
+  ],
+  "environment_context": {
+    "cwd": "D:/AIOS",
+    "os": "Windows",
+    "available_tools": [
+      "pytest",
+      "preflight",
+      "git",
+      "wmic",
+      "tasklist",
+      "aiosv2 CLI"
+    ],
+    "recent_failures": [
+      "v2/src/queue.py shadow stdlib queue (transient)",
+      "test_services_persistence.py 3 pre-existing FAIL"
+    ],
+    "history_refs": [
+      "Phase F Done report 2026-10-08 23:42",
+      "AGENTS.md Phase F section"
+    ]
+  },
+  "failure_modes": [
+    {
+      "description": "self-audit 持续 DEGRADED 但无人看见",
+      "detection": "memory log 连续 3 天无 Codex Self-Audit 段落",
+      "indicator": null
+    },
+    {
+      "description": "git dirty 累积超阈值无清理",
+      "detection": "git status --short 数量 > 200",
+      "indicator": null
+    },
+    {
+      "description": "v2 consumer 长跑 daemon 挂掉",
+      "detection": "wmic 无 v2_consumer / start_consumer_real 进程",
+      "indicator": null
+    },
+    {
+      "description": "pytest baseline 退化但无警觉",
+      "detection": "baseline 测试失败数 > 5 (相对前一天)",
+      "indicator": null
+    }
+  ],
+  "permission_scope": {
+    "allowed_paths": [
+      "D:/AIOS/_agent-hub/scripts/",
+      "D:/AIOS/_agent-hub/memory/",
+      "D:/AIOS/_agent-hub/reports/",
+      "D:/AIOS/aios_tasks/aios_vnext/cards/",
+      "D:/AIOS/aios_tasks/aios_vnext/evidence/",
+      "D:/AIOS/kernel/tests/unit/",
+      "D:/AIOS/kernel/.venv/"
+    ],
+    "allowed_ops": [
+      "read",
+      "write",
+      "execute"
+    ],
+    "max_budget": 0.0,
+    "max_duration_sec": 300,
+    "requires_approval": [
+      "delete"
+    ]
+  },
+  "missing_evidence": [
+    {
+      "description": "v2 consumer 是否真的在长跑",
+      "source": "tasklist / wmic process query",
+      "required": true
+    },
+    {
+      "description": "pytest baseline 失败是 pre-existing 还是 regression",
+      "source": "git log + pytest history",
+      "required": true
+    },
+    {
+      "description": "用户母令第 4 部分是否补全",
+      "source": "memory log + new user message",
+      "required": false
+    }
+  ],
+  "approved_tradeoffs": [
+    {
+      "decision": "每次 Codex session 启动自动跑 self-audit",
+      "cost": "启动 latency +5s",
+      "benefit": "用户不在场时也能发现问题",
+      "approved_by": "user"
+    },
+    {
+      "decision": "self-audit 不修 pre-existing baseline 失败",
+      "cost": "DEGRADED 报告里包含已知失败",
+      "benefit": "不擅自越界改 Phase A-E 已 Verified 范围",
+      "approved_by": "user (隐含: 不可改 SSOT 已建立)"
+    }
+  ],
+  "autonomous_scope": [
+    {
+      "domain": "file",
+      "action": "read",
+      "target": null
+    },
+    {
+      "domain": "file",
+      "action": "write",
+      "target": "D:/AIOS/_agent-hub/scripts/"
+    },
+    {
+      "domain": "file",
+      "action": "write",
+      "target": "D:/AIOS/_agent-hub/memory/"
+    },
+    {
+      "domain": "service",
+      "action": "execute",
+      "target": "kernel unit pytest baseline"
+    },
+    {
+      "domain": "data",
+      "action": "read",
+      "target": "v2 messages inbox/outbox"
+    },
+    {
+      "domain": "config",
+      "action": "read",
+      "target": "aios_kernel.*"
+    }
+  ],
+  "requires_authorization": [
+    {
+      "domain": "file",
+      "action": "delete",
+      "target": null
+    },
+    {
+      "domain": "file",
+      "action": "modify",
+      "target": "D:/AIOS/_agent-hub/AGENTS.md"
+    },
+    {
+      "domain": "file",
+      "action": "modify",
+      "target": "kernel/alembic/versions/"
+    },
+    {
+      "domain": "config",
+      "action": "modify",
+      "target": "aios_kernel.governance"
+    }
+  ]
+}
