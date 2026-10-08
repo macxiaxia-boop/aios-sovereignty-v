@@ -1,0 +1,23 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.14, pytest-9.1.1, pluggy-1.6.0 -- D:\AIOS\kernel\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: D:\AIOS\kernel
+configfile: pyproject.toml
+plugins: asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 12 items
+
+tests/integration/test_100_task_closed_loop.py::test_100_of_100_pass PASSED [  8%]
+tests/integration/test_100_task_closed_loop.py::test_worker_distribution_within_5pp PASSED [ 16%]
+tests/integration/test_100_task_closed_loop.py::test_verifier_pid_independent PASSED [ 25%]
+tests/integration/test_100_task_closed_loop.py::test_each_task_has_artifact_evidence_cost PASSED [ 33%]
+tests/integration/test_100_task_closed_loop.py::test_cross_worker_tasks_all_pass PASSED [ 41%]
+tests/integration/test_100_task_closed_loop.py::test_type_distribution_30_20_20_15_15 PASSED [ 50%]
+tests/integration/test_false_completion.py::test_fake_done_5_of_5_rejected PASSED [ 58%]
+tests/integration/test_false_completion.py::test_rejection_verdict_is_fail_or_blocked PASSED [ 66%]
+tests/integration/test_false_completion.py::test_rejection_reason_mentions_evidence_missing PASSED [ 75%]
+tests/integration/test_false_completion.py::test_fake_done_worker_contract PASSED [ 83%]
+tests/integration/test_false_completion.py::test_verifier_pid_independent_of_worker PASSED [ 91%]
+tests/integration/test_false_completion.py::test_no_false_pass_in_evidence_dump PASSED [100%]
+
+============================= 12 passed in 0.40s ==============================
