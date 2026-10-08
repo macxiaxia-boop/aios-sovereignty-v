@@ -1,0 +1,106 @@
+{
+  "ok": true,
+  "transport": "openclaw_mcp",
+  "adapter": "openclaw",
+  "envelope_id": "p2-real-probe",
+  "action": "tool",
+  "url": "http://127.0.0.1:18801/mcp/aios_status",
+  "method": "POST",
+  "status": 200,
+  "content_type": "application/json",
+  "duration_ms": 2323,
+  "body_preview": "{\"ok\": true, \"all_healthy\": true, \"endpoints\": {\"openclaw_gateway\": {\"ok\": true, \"host\": \"127.0.0.1\", \"port\": 18792, \"probe_method\": \"tcp_connect\"}}, \"model_resources\": {\"chatgpt\": {\"status\": \"manual\", \"reason\": \"interactive strategic brain; no unattended API call\", \"quota_remaining\": null, \"updated_at\": \"2026-10-08T16:10:16.197914+00:00\"}, \"gpt-5-codex\": {\"status\": \"available\", \"reason\": \"config_default\", \"quota_remaining\": null, \"updated_at\": null}, \"codex\": {\"status\": \"available\", \"reason\": \"codex CLI probe\", \"quota_remaining\": null, \"updated_at\": \"2026-10-08T16:10:16.197914+00:00\"}, \"codex_desktop_thread\": {\"status\": \"manual\", \"reason\": \"manual execution boundary\", \"quota_remaining\": null, \"updated_at\": \"2026-10-08T16:10:16.197914+00:00\"}, \"codex_appserver\": {\"status\": \"manual\", \"reason\": \"manual execution boundary\", \"quota_remaining\": null, \"updated_at\": \"2026-10-08T16:10:16.197914+00:00\"}, \"codex_stdio\": {\"status\": \"manual\", \"reason\": \"manual execution boundary\", \"quota_remaining\": null, \"updated_at\": \"2026-10-08T16:10:16.197914+00:00\"}, \"claude_code\": {\"status\": \"available\", \"reason\": \"claude CLI probe\", \"quota_remaining\": null, \"updated_at\": \"2026-10-08T16:10:16.197914+00:0",
+  "body_bytes": 1918,
+  "dispatched_at": 1791475813,
+  "body_json": {
+    "ok": true,
+    "all_healthy": true,
+    "endpoints": {
+      "openclaw_gateway": {
+        "ok": true,
+        "host": "127.0.0.1",
+        "port": 18792,
+        "probe_method": "tcp_connect"
+      }
+    },
+    "model_resources": {
+      "chatgpt": {
+        "status": "manual",
+        "reason": "interactive strategic brain; no unattended API call",
+        "quota_remaining": null,
+        "updated_at": "2026-10-08T16:10:16.197914+00:00"
+      },
+      "gpt-5-codex": {
+        "status": "available",
+        "reason": "config_default",
+        "quota_remaining": null,
+        "updated_at": null
+      },
+      "codex": {
+        "status": "available",
+        "reason": "codex CLI probe",
+        "quota_remaining": null,
+        "updated_at": "2026-10-08T16:10:16.197914+00:00"
+      },
+      "codex_desktop_thread": {
+        "status": "manual",
+        "reason": "manual execution boundary",
+        "quota_remaining": null,
+        "updated_at": "2026-10-08T16:10:16.197914+00:00"
+      },
+      "codex_appserver": {
+        "status": "manual",
+        "reason": "manual execution boundary",
+        "quota_remaining": null,
+        "updated_at": "2026-10-08T16:10:16.197914+00:00"
+      },
+      "codex_stdio": {
+        "status": "manual",
+        "reason": "manual execution boundary",
+        "quota_remaining": null,
+        "updated_at": "2026-10-08T16:10:16.197914+00:00"
+      },
+      "claude_code": {
+        "status": "available",
+        "reason": "claude CLI probe",
+        "quota_remaining": null,
+        "updated_at": "2026-10-08T16:10:16.197914+00:00"
+      },
+      "minimax": {
+        "status": "available",
+        "reason": "OpenClaw + credential probe",
+        "quota_remaining": null,
+        "updated_at": "2026-10-08T16:10:16.197914+00:00"
+      },
+      "agnes_pro": {
+        "status": "available",
+        "reason": "config_default",
+        "quota_remaining": null,
+        "updated_at": null
+      },
+      "doubao": {
+        "status": "available",
+        "reason": "Ark credential probe",
+        "quota_remaining": null,
+        "updated_at": "2026-10-08T16:10:16.197914+00:00"
+      },
+      "gpt-image-2": {
+        "status": "manual",
+        "reason": "manual execution boundary",
+        "quota_remaining": null,
+        "updated_at": "2026-10-08T16:10:16.197914+00:00"
+      },
+      "local_model": {
+        "status": "offline",
+        "reason": "Ollama /api/tags unavailable",
+        "quota_remaining": null,
+        "updated_at": "2026-10-08T16:10:16.197914+00:00"
+      }
+    }
+  },
+  "attempts": 1,
+  "backoff_delays_ms": [],
+  "duration_ms_total": 2323,
+  "tool": "aios_status",
+  "arguments": {}
+}
