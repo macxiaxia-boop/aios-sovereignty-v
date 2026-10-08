@@ -1,27 +1,26 @@
-"""aios_kernel.persistence - SQLAlchemy ORM + Alembic migrations (T0032).
-
-Submodules:
-- models: 8 ORM tables (6 main + 2 auxiliary) + Pydantic<->ORM helpers
-- repository: SqlAlchemyRepository (real DB) + create_all/drop_all helpers
-- migrations: Alembic env.py + 001_initial.py (T0032 deliverable)
-"""
+"""aios_kernel.persistence - SQLAlchemy ORM + Alembic migrations (T0032)."""
 from aios_kernel.persistence.models import (
     ArtifactORM,
     Base,
     EvidenceORM,
     GoalORM,
+    LongTermMemoryORM,
     PlanORM,
     TaskORM,
     TraceORM,
     VerifierRunORM,
     WorkerRunORM,
+    WorkingMemoryORM,
     artifact_to_orm,
     envelope_json_of,
     evidence_to_orm,
     goal_to_orm,
+    long_term_memory_to_orm,
     plan_to_orm,
     task_to_orm,
     trace_to_orm,
+    working_memory_from_orm,
+    working_memory_to_orm,
 )
 from aios_kernel.persistence.repository import (
     SqlAlchemyRepository,
@@ -30,7 +29,6 @@ from aios_kernel.persistence.repository import (
 )
 
 __all__ = [
-    # models
     "Base",
     "GoalORM",
     "TaskORM",
@@ -40,14 +38,18 @@ __all__ = [
     "TraceORM",
     "WorkerRunORM",
     "VerifierRunORM",
+    "WorkingMemoryORM",
+    "LongTermMemoryORM",
     "goal_to_orm",
     "task_to_orm",
     "plan_to_orm",
     "artifact_to_orm",
     "evidence_to_orm",
     "trace_to_orm",
+    "long_term_memory_to_orm",
+    "working_memory_to_orm",
+    "working_memory_from_orm",
     "envelope_json_of",
-    # repository
     "SqlAlchemyRepository",
     "create_all",
     "drop_all",

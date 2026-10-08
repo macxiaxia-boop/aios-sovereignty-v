@@ -410,11 +410,106 @@ __all__ = [
     "TraceORM",
     "WorkerRunORM",
     "VerifierRunORM",
+    "LongTermMemoryORM",
     "goal_to_orm",
     "task_to_orm",
     "plan_to_orm",
     "artifact_to_orm",
     "evidence_to_orm",
     "trace_to_orm",
+    "long_term_memory_to_orm",
     "envelope_json_of",
 ]
+
+
+# ---------------------------------------------------------------------------
+# Phase B B003 - Long-term Memory (cross-session persistent knowledge).
+# ---------------------------------------------------------------------------
+class LongTermMemoryORM(Base):
+    __tablename__ = "long_term_memory"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True)
+    key: Mapped[str] = mapped_column(String(200), nullable=False, unique=True)
+    value_json: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    retention_days: Mapped[int] = mapped_column(Integer, nullable=False, default=30)
+    tags: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
+    source_evidence_id: Mapped[str | None] = mapped_column(String(36), nullable=True)
+    schema_version: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
+
+    __table_args__ = (
+        Index("ix_ltm_key", "key"),
+        Index("ix_ltm_created_at", "created_at"),
+        Index("ix_ltm_source_evidence_id", "source_evidence_id"),
+    )
+
+
+def long_term_memory_to_orm(p):
+    """Convert LongTermEntry (Pydantic) -> LongTermMemoryORM."""
+    from aios_kernel.context.long_term_memory import LongTermEntry
+    assert isinstance(p, LongTermEntry), f"expected LongTermEntry, got {type(p).__name__}"
+    return LongTermMemoryORM(
+        id=p.id,
+        key=p.key,
+        value_json=dict(p.value) if isinstance(p.value, dict) else {"data": p.value},
+        created_at=p.created_at,
+        updated_at=p.updated_at,
+        expires_at=p.expires_at,
+        retention_days=p.retention_days,
+        tags=list(p.tags),
+        source_evidence_id=str(p.source_evidence_id) if p.source_evidence_id else None,
+        schema_version=p.schema_version,
+    )
+
+
+# ---------------------------------------------------------------------------
+# Phase B B002 - Working Memory (short-lived per-session state).
+# ---------------------------------------------------------------------------
+class WorkingMemoryORM(Base):
+    __tablename__ = "working_memory"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True)
+    session_id: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
+    key: Mapped[str] = mapped_column(String(200), nullable=False)
+    value_json: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    schema_version: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
+
+    __table_args__ = (
+        Index("ix_wm_session_key", "session_id", "key", unique=True),
+        Index("ix_wm_expires", "expires_at"),
+    )
+
+
+def working_memory_to_orm(p):
+    from aios_kernel.context.working_memory import WorkingMemoryEntry
+    if not isinstance(p, WorkingMemoryEntry):
+        raise TypeError(f"expected WorkingMemoryEntry, got {type(p).__name__}")
+    return WorkingMemoryORM(
+        id=str(p.id),
+        session_id=p.session_id,
+        key=p.key,
+        value_json=dict(p.value),
+        created_at=p.created_at,
+        updated_at=p.updated_at,
+        expires_at=p.expires_at,
+        schema_version=p.schema_version,
+    )
+
+
+def working_memory_from_orm(o):
+    from aios_kernel.context.working_memory import WorkingMemoryEntry
+    return WorkingMemoryEntry(
+        id=o.id,
+        session_id=o.session_id,
+        key=o.key,
+        value=dict(o.value_json or {}),
+        created_at=o.created_at,
+        updated_at=o.updated_at,
+        expires_at=o.expires_at,
+        schema_version=o.schema_version,
+    )
