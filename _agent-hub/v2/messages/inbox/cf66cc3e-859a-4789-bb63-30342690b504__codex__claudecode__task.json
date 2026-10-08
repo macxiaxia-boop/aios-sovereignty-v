@@ -1,0 +1,45 @@
+{
+  "artifact_refs": [
+    "W9"
+  ],
+  "id": "cf66cc3e-859a-4789-bb63-30342690b504",
+  "idempotency_key": "608567abff6e6a37c0b03e178d26bb33ddc88054d9c10800a44b1127859dacfb",
+  "message_type": "task",
+  "payload": {
+    "artifacts": [
+      "W9"
+    ],
+    "authorizer": "user-2026-10-08T23:55:你就开始",
+    "deployment_choice": "A_persistent_task_scheduler",
+    "engineering_thread_id": "01a11c33-c813-7752-9e53-b7c332d00445",
+    "expected_runtime_seconds": 90,
+    "fallback_if_schtasks_fails": "B_on_demand_startup_hook",
+    "mode": "WRITE_DEPLOY_RECONCILER",
+    "output_paths": {
+      "T7_done": "D:\\AIOS\\_agent-hub\\reports\\sovereignty-v\\tasks\\T7.done",
+      "W9_dir": "D:\\AIOS\\_agent-hub\\policy\\reconciler",
+      "W9_reconciler_py": "D:\\AIOS\\_agent-hub\\policy\\reconciler\\reconciler.py",
+      "W9_register_cmd": "D:\\AIOS\\_agent-hub\\policy\\reconciler\\register_reconciler.cmd"
+    },
+    "parent_thread_id": "01a11c23-ab7f-7253-9059-7aa7fc204c02",
+    "phase": "SOVEREIGNTY-V",
+    "reconciler_py_template": "#!/usr/bin/env python3\n# Model Policy Reconciler\n# Scans running AIOS-related processes, checks actual loaded providers against policy,\n# alerts on non-compliance, NEVER auto-modifies.\nimport argparse, os, sys, json, hashlib, time\nfrom pathlib import Path\n\nPOLICY_PATH_DEFAULT = r\"D:\\AIOS\\_agent-hub\\policy\\model-policy.v1.yaml\"\nALERT_PATH = r\"D:\\AIOS\\_agent-hub\\policy\\reconciler\\alerts.jsonl\"\n\ndef load_policy(path: str) -> dict:\n    import yaml\n    with open(path, \"r\", encoding=\"utf-8\") as f:\n        return yaml.safe_load(f)\n\ndef scan_processes() -> list:\n    # Read process list without modifying\n    proc_data = []\n    try:\n        import subprocess\n        out = subprocess.run([\"wmic\", \"process\", \"get\", \"Name,ProcessId,CommandLine\", \"/FORMAT:CSV\"],\n                             capture_output=True, text=True, timeout=10)\n        for line in out.stdout.splitlines()[1:]:\n            parts = line.split(\",\")\n            if len(parts) >= 3:\n                proc_data.append({\"name\": parts[0], \"pid\": parts[1], \"cmdline\": parts[2]})\n    except Exception as e:\n        proc_data.append({\"error\": str(e)})\n    return proc_data\n\ndef check_compliance(policy: dict, procs: list) -> list:\n    violations = []\n    allowed = set(policy.get(\"allowed_providers\", []))\n    prohibited = set(policy.get(\"prohibited_runtime_routes\", []))\n    targets = {\"codex\", \"claude\", \"openclaw\", \"hermes\"}\n    for p in procs:\n        name = (p.get(\"name\") or \"\").lower()\n        cmd = (p.get(\"cmdline\") or \"\").lower()\n        if not any(t in name for t in targets):\n            continue\n        for prov in prohibited:\n            if prov in cmd:\n                violations.append({\"proc\": p, \"violation\": f\"prohibited_route:{prov}\"})\n        # Note: allowed_providers match requires deeper cmdline parsing\n        # If provider NOT in allowed_providers AND NOT in prohibited_runtime_routes,\n        # still flag as \"unknown_provider\".\n        if not any(prov in cmd for prov in allowed):\n            if not any(prov in cmd for prov in prohibited):\n                # could be just a process not actually invoking model; skip\n                pass\n    return violations\n\ndef main():\n    ap = argparse.ArgumentParser()\n    ap.add_argument(\"--policy\", default=POLICY_PATH_DEFAULT)\n    ap.add_argument(\"--once\", action=\"store_true\")\n    args = ap.parse_args()\n    policy = load_policy(args.policy)\n    procs = scan_processes()\n    violations = check_compliance(policy, procs)\n    if violations:\n        with open(ALERT_PATH, \"a\", encoding=\"utf-8\") as f:\n            for v in violations:\n                f.write(json.dumps({\"ts\": time.time(), **v}) + \"\\n\")\n        print(f\"ALERT: {len(violations)} violations found. See {ALERT_PATH}\")\n    else:\n        print(f\"OK: {len(procs)} procs scanned, 0 violations.\")\n\nif __name__ == \"__main__\":\n    main()\n",
+    "red_lines": [
+      "NO_AUTO_MODIFY_CONFIG",
+      "SINGLE_INSTANCE_REQUIRED",
+      "NO_LEADER_ELECTION_SKIP",
+      "RECONCILER_NEVER_MODIFIES_POLICY_FILE"
+    ],
+    "register_cmd_template": "@echo off\nREM Model Policy Reconciler — Task Scheduler registration\nREM mode: persistent (default A); override to on-demand by setting MODE=on_demand\n\nsetlocal\nset POLICY_PATH=D:\\AIOS\\_agent-hub\\policy\\model-policy.v1.yaml\nset RECON_DIR=D:\\AIOS\\_agent-hub\\policy\\reconciler\nset TASK_NAME=AIOS_ModelPolicy_Reconciler\n\nREM Ensure single instance\ntasklist | findstr /I \"ModelPolicyReconciler.exe\" >nul\nif %ERRORLEVEL%==0 (\n  echo Reconciler already running. Skipping start.\n  exit /b 0\n)\n\nREM Register Task Scheduler (runs every 5 min, persistent)\nschtasks /Create /TN \"%TASK_NAME%\" /TR \"python %RECON_DIR%\\reconciler.py --policy %POLICY_PATH%\" /SC MINUTE /MO 5 /F\nif errorlevel 1 (\n  echo Failed to register task. Falling back to on-demand.\n  start \"\" python \"%RECON_DIR%\\reconciler.py\" --policy \"%POLICY_PATH%\"\n) else (\n  echo Reconciler registered as %TASK_NAME% (5-minute interval).\n)\nendlocal\n",
+    "supervisor_thread_id": "01a11c30-6f6c-76c0-8c60-a55f3a43ff63",
+    "task_card": "T7",
+    "task_id": "sovereignty-v:T7",
+    "title": "Deploy Reconciler — DEFAULT mode A (Task Scheduler persistent, 5-min interval)"
+  },
+  "recipient": "claudecode",
+  "retry_count": 0,
+  "schema_version": "1.0",
+  "sender": "codex",
+  "timestamp": "2026-10-08T15:52:42Z",
+  "ttl_ms": 600000
+}

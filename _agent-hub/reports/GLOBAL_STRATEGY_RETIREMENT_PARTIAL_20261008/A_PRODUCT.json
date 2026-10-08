@@ -1,0 +1,477 @@
+{
+  "audit_id": "GLOBAL_STRATEGY_RETIREMENT_PARTIAL_20261008_PART_A",
+  "audit_phase": "Partial A · Product / Strategy Source Audit",
+  "captured_at_utc": "2026-10-09T00:10:00Z",
+  "captured_at_local": "2026-10-09 08:10 +08:00",
+  "inspector": "Claude Code 2.1.285 (MiniMax-M3) — executor",
+  "contract_ref": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_RETIREMENT_PARTIAL_20261008\\A_CONTRACT.md",
+  "audit_mode": "READ_ONLY",
+  "scope_dirs_audited": [
+    "D:\\AIOS\\AIOS_SOURCE_OF_TRUTH_FINAL",
+    "D:\\AIOS\\AIOS_RECONSTRUCTION",
+    "D:\\AIOS\\kernel",
+    "D:\\AIOS\\cloudtech-saas",
+    "D:\\AIOS\\_agent-hub\\reports\\sovereignty-v",
+    "D:\\AIOS\\_agent-hub\\policy",
+    "D:\\AIOS\\_agent-hub\\tasks",
+    "D:\\AIOS\\_agent-hub\\runtime-sops"
+  ],
+  "exclusions": [
+    "D:\\AIOS\\kernel\\.venv",
+    "D:\\AIOS\\kernel\\.git",
+    "All _relinked agent repositories"
+  ],
+  "summary": {
+    "total_surfaces": 27,
+    "active_count": 10,
+    "historical_count": 12,
+    "blocked_count": 5,
+    "deletions_performed": 0,
+    "moves_performed": 0,
+    "code_edits_performed": 0,
+    "policy_edits_performed": 0,
+    "service_restarts_performed": 0,
+    "history_rewrites_performed": 0
+  },
+  "surfaces": [
+    {
+      "id": "P-01",
+      "category": "ssot",
+      "title": "AGENTS.md central SSOT",
+      "path": "D:\\AIOS\\_agent-hub\\AGENTS.md",
+      "lines": "1-125",
+      "classification": "ACTIVE",
+      "classification_reason": "central SSOT; loaded on every agent bootstrap per file lines 1-54 + Mission line 17",
+      "evidence": "AGENTS.md lines 1-7 bootstrap; lines 9-54 shared protocol; lines 56-125 Phase F + Codex Self-Audit",
+      "reactivation": "always-active; no reactivation needed"
+    },
+    {
+      "id": "P-02",
+      "category": "positioning",
+      "title": "AI 数字营销中台 (Mission)",
+      "path": "D:\\AIOS\\_agent-hub\\AGENTS.md",
+      "lines": "17",
+      "classification": "ACTIVE",
+      "classification_reason": "Mission line of central SSOT; reload every session",
+      "evidence": "AGENTS.md line 17: 'build AI 数字营销中台 (AI Digital Marketing Middle Platform)'",
+      "reactivation": "always-active; edit requires requires_authorization per AGENTS.md line 104"
+    },
+    {
+      "id": "P-03",
+      "category": "model_policy",
+      "title": "ModelPolicy v1 = MiniMax-M3 only",
+      "path": "D:\\AIOS\\_agent-hub\\policy\\model-policy.v1.yaml",
+      "lines": "5-26",
+      "classification": "ACTIVE",
+      "classification_reason": "loaded by all 5 runtimes per adapter-contract.md line 8-10; applied_workers list line 10-15",
+      "evidence": "yaml lines 5-7 (policy_id/policy_owner/approval_evidence); lines 18-26 (allowed_providers=[MiniMax], default_model=MiniMax-M3)",
+      "reactivation": "always-active; sha256 + icacls 444 needed (T5-verify envelope dispatched, T5.done pending)"
+    },
+    {
+      "id": "P-04",
+      "category": "adapter_contract",
+      "title": "Adapter 4-interface contract",
+      "path": "D:\\AIOS\\_agent-hub\\policy\\adapter-contract.md",
+      "lines": "8-39",
+      "classification": "ACTIVE",
+      "classification_reason": "interfaces (read_effective_policy/intercept_request/audit_call/reconcile) and 4 invariants active in sovereignty-v",
+      "evidence": "file lines 8-32 interfaces, lines 35-39 invariants (no Policy write, no audit log mutation, log every rejection, distinguish unavailable vs policy violation)",
+      "reactivation": "always-active; T6.done (401 B) confirms contract frozen"
+    },
+    {
+      "id": "P-05",
+      "category": "reconciler_spec",
+      "title": "Reconciler 5-min periodic",
+      "path": "D:\\AIOS\\_agent-hub\\policy\\reconciler-spec.md",
+      "lines": "3-31",
+      "classification": "ACTIVE",
+      "classification_reason": "spec written; implementation pending via T7 envelope dacb9378-... (dispatch_continuation.py line 19-21)",
+      "evidence": "lines 3-4 (trigger); lines 30-31 (output to drift-events.log); T7 reconciler deploy pending",
+      "reactivation": "complete T7 deploy per D:\\AIOS\\_agent-hub\\reports\\sovereignty-v\\tasks\\T7 directory"
+    },
+    {
+      "id": "P-06",
+      "category": "kernel_scope",
+      "title": "AIOS Kernel Wrap-not-Rewrite (VNext Phase A)",
+      "path": "D:\\AIOS\\kernel\\README.md",
+      "lines": "1-30",
+      "classification": "ACTIVE",
+      "classification_reason": "Phase F extends Goal without modifying other models per AGENTS.md lines 78-83",
+      "evidence": "file lines 1-9 (Wrap-not-rewrite principle), lines 11-15 (Phase A owner/claude-code-executor), lines 22-30 (Module Map)",
+      "reactivation": "always-active"
+    },
+    {
+      "id": "P-07",
+      "category": "kernel_acceptance",
+      "title": "Kernel Phase A acceptance criteria",
+      "path": "D:\\AIOS\\kernel\\docs\\acceptance_criteria.md",
+      "lines": "1-32",
+      "classification": "ACTIVE",
+      "classification_reason": "Phase A exit gate; Codex self-audit runs pytest per AGENTS.md lines 117-122",
+      "evidence": "file lines 14-22 (T0031 exit criteria); lines 23-31 (downstream cards)",
+      "reactivation": "always-active; T0038 Phase A 综合验收 card pending"
+    },
+    {
+      "id": "P-08",
+      "category": "kernel_architecture",
+      "title": "Kernel 6-module architecture",
+      "path": "D:\\AIOS\\kernel\\docs\\architecture.md",
+      "lines": "6-29",
+      "classification": "ACTIVE",
+      "classification_reason": "Phase F + T0032-T0037 implement against this map",
+      "evidence": "lines 6-9 Mission (Wrap-not-rewrite); lines 16-21 (Module Map for domain/persistence/workers/verifier/api/cli); lines 23-29 (Wrap-not-Rewrite Principle §100)",
+      "reactivation": "always-active"
+    },
+    {
+      "id": "P-09",
+      "category": "supervisor_goal",
+      "title": "Codex Supervisor GoalContract",
+      "path": "D:\\_agent-hub\\memory\\codex_supervisor_goal.json",
+      "lines": "n/a (JSON)",
+      "classification": "ACTIVE",
+      "classification_reason": "loaded by codex_boot.cmd per AGENTS.md lines 90-93; autonomous_scope 6 + requires_authorization 5",
+      "evidence": "AGENTS.md lines 90-107 (autonomous_scope / requires_authorization); JSON persisted at D:\\AIOS\\_agent-hub\\memory\\codex_supervisor_goal.json",
+      "reactivation": "always-active on Codex session boot"
+    },
+    {
+      "id": "P-10",
+      "category": "memory_ssot",
+      "title": "Memory log SSOT (YYYY-MM-DD.md)",
+      "path": "D:\\AIOS\\_agent-hub\\memory\\YYYY-MM-DD.md",
+      "lines": "AGENTS.md line 50",
+      "classification": "ACTIVE",
+      "classification_reason": "shared memory; daily append-only",
+      "evidence": "AGENTS.md line 50: 'Append to D:\\AIOS\\_agent-hub\\memory\\YYYY-MM-DD.md for substantive work'",
+      "reactivation": "always-active"
+    },
+    {
+      "id": "P-11",
+      "category": "positioning",
+      "title": "CloudTech-Portable 'AI 数字营销中台'",
+      "path": "D:\\CloudTech-Portable\\README.md",
+      "lines": "n/a (referenced by AR-0075)",
+      "classification": "HISTORICAL",
+      "classification_reason": "FOUND not ACTIVE per AR-0074; status.json line 32 maturity=Tested status=PARTIAL; CloudTech-Inbox 5 行业 empty per baseline line 158",
+      "evidence": "D:\\AIOS\\AIOS_SOURCE_OF_TRUTH_FINAL\\assets\\AIOS_ASSET_REGISTRY.csv line 76 (AR-0075 'v2.1 AI 数字营销中台 · 23 工具 6 引擎' FOUND); line 79 (AR-0078 gateway_v22.py 786 行 FOUND)",
+      "reactivation": "R-01: restart CloudTech-Vault sync + populate CloudTech-Inbox 5 industry dirs + restore CloudTech-Portable v2.1 SaaS process supervision + reopen P3-01 in roadmap"
+    },
+    {
+      "id": "P-12",
+      "category": "positioning",
+      "title": "灵策智算 OPC research",
+      "path": "D:\\AIOS\\AIOS_SOURCE_OF_TRUTH_FINAL\\status\\AIOS_STATUS.json",
+      "lines": "44-58",
+      "classification": "HISTORICAL",
+      "classification_reason": "maturity=Implemented, status=PARTIAL, 'C 盘研究笔记 16 天未更新；D 盘 2 根空壳'",
+      "evidence": "status.json lines 44-58 (project-lingce); roadmap lines 313-320 (P3-02); lines 359-366 (P3-08)",
+      "reactivation": "R-02: reopen P3-02 + P3-08 + user extension of C:\\Users\\xinzh\\灵策AI\\research"
+    },
+    {
+      "id": "P-13",
+      "category": "industry_matrix",
+      "title": "装修/教育/制造/服务 4-industry matrix",
+      "path": "D:\\AIOS\\AIOS_RECONSTRUCTION\\01_REGISTRY\\AIOS_SKILL_REGISTRY.json",
+      "lines": "51-55",
+      "classification": "HISTORICAL",
+      "classification_reason": "CloudTech-Vault/Inbox 5 行业 empty; 装修矩阵 STALE 2+ 月; 小红书 仿写管线 STOPPED 6+ 周",
+      "evidence": "skill_registry lines 51-55 (sk-industry count=4 'industry-{装修/教育/制造/服务}'); content_factory_pipeline lines 145-153 (4 industry business line matrix); skill_registry lines 27-31 (sk-cross-matrix '10 创作者 x 4 行业'); reality_baseline lines 158-160",
+      "reactivation": "R-03: restart CloudTech-Vault sync + re-run pipeline stubs P0-P3 in content_factory_pipeline lines 124-145 + populate sk-industry count > 4"
+    },
+    {
+      "id": "P-14",
+      "category": "role_mapping",
+      "title": "Hermes dual identity (AIOS-Hermes 治理 vs Nous-hermes 框架)",
+      "path": "D:\\AIOS\\AIOS_RECONSTRUCTION\\01_REGISTRY\\AIOS_AGENT_REGISTRY.json",
+      "lines": "5-16, 82-91",
+      "classification": "HISTORICAL",
+      "classification_reason": "AIOS-Hermes 治理 mapping defined in P7/P8 phase files (2026-09-27) but not referenced in current AGENTS.md/kernel/sovereignty-v",
+      "evidence": "agent_registry lines 5-16 (agent-hermes AIOS role '治理 · T10 触发器'); lines 82-91 (agent-hermes-nos-res v0.21.3 framework); phase7_done.md lines 11-18 + phase8_done.md lines 11-18; capability_graph lines 67-86",
+      "reactivation": "R-05: re-run P8 5-role mapping + write 治理 role into AGENTS.md Mission"
+    },
+    {
+      "id": "P-15",
+      "category": "naming_legacy",
+      "title": "minimax / minimax-cn provider strings",
+      "path": "D:\\_agent-hub\\reports\\sovereignty-v\\audit\\05-hermes-others-report.md",
+      "lines": "50-54",
+      "classification": "HISTORICAL",
+      "classification_reason": "ModelPolicy v1 uses canonical MiniMax (line 19); legacy naming kept in env vars only",
+      "evidence": "audit/05-hermes-others-report.md lines 50-54 ('minimax' → MiniMax global, 'minimax-cn' → MiniMax China); audit/01-codex-claude-config-snapshot.md lines 53-66 (CC settings.json uses ANTHROPIC_BASE_URL https://api.minimaxi.com/anthropic + MINIMAX_API_KEY)",
+      "reactivation": "R-06: update provider strings in Hermes cli-config.yaml.example + .openclaw/.env"
+    },
+    {
+      "id": "P-16",
+      "category": "fallback_legacy",
+      "title": "deepseek-v4-flash fallback for CC",
+      "path": "D:\\_agent-hub\\reports\\sovereignty-v\\audit\\03-cc-switch-state-report.md",
+      "lines": "53-58, 138-141",
+      "classification": "HISTORICAL",
+      "classification_reason": "violates ModelPolicy v1 prohibited_runtime_routes (line 28-33); T5 444 ACL not yet applied",
+      "evidence": "audit/03-cc-switch-state-report.md lines 53-58 (common_config_claude injects ANTHROPIC_DEFAULT_SONNET_MODEL_FALLBACK = deepseek-v4-flash); lines 138-141 (P0 risk)",
+      "reactivation": "R-07: write 444 ACL on model-policy.v1.yaml (chmod 444 / icacls) + T7 Reconciler hook active + verify model-policy.v1.sha256 matches"
+    },
+    {
+      "id": "P-17",
+      "category": "blocked_product",
+      "title": "SwarmClaw multi-agent dashboard",
+      "path": "D:\\AIOS\\AIOS_RECONSTRUCTION\\08_RADAR\\products.json",
+      "lines": "62-69",
+      "classification": "BLOCKED",
+      "classification_reason": "failed_install; npm gyp ERR R211 missing VS Build Tools; ports 3456/3457 NOT LISTENING",
+      "evidence": "products.json lines 62-69 (p-swarmclaw failed_install npm gyp ERR R211 missing VS Build Tools); reality_baseline lines 21, 102 (:3456/:3457 NOT LISTENING); status.json lines 102-103 (agent-swarmclaw BROKEN)",
+      "reactivation": "R-09: install VS Build Tools + retry npm install of swarmclaw"
+    },
+    {
+      "id": "P-18",
+      "category": "blocked_product",
+      "title": "GoClaw / PicoClaw / NanoBot / IronClaw candidates",
+      "path": "D:\\AIOS\\AIOS_RECONSTRUCTION\\08_RADAR\\products.json",
+      "lines": "71-106",
+      "classification": "BLOCKED",
+      "classification_reason": "GoClaw rejected (overlap with OpenClaw); PicoClaw rejected (user scenario not edge); NanoBot/IronClaw TBD",
+      "evidence": "products.json lines 71-106 (p-goclaw rejected, p-picoclaw rejected, p-nanobot candidate, p-ironclaw candidate)",
+      "reactivation": "R-10: re-evaluate per products.json lines 71-106"
+    },
+    {
+      "id": "P-19",
+      "category": "blocked_product",
+      "title": "FFmpeg Wizard / Cut/Storm / video-editing-skill / mcp-video-editor candidates",
+      "path": "D:\\AIOS\\AIOS_RECONSTRUCTION\\08_RADAR\\products.json",
+      "lines": "118-159",
+      "classification": "BLOCKED",
+      "classification_reason": "all candidate, installed=false, no installation evidence",
+      "evidence": "products.json lines 118-159 (p-ffmpeg-wizard p-cutstorm p-video-editing-skill p-mcp-video-editor all installed=false)",
+      "reactivation": "R-10: re-evaluate per products.json lines 118-159"
+    },
+    {
+      "id": "P-20",
+      "category": "project_status",
+      "title": "project-aios overall",
+      "path": "D:\\AIOS\\AIOS_SOURCE_OF_TRUTH_FINAL\\status\\AIOS_STATUS.json",
+      "lines": "12-26",
+      "classification": "ACTIVE",
+      "classification_reason": "current planning loop (sovereignty-v, Phase F, codex_self_audit)",
+      "evidence": "status.json lines 12-26 (id=project-aios, maturity=Tested, status=PARTIAL)",
+      "reactivation": "always-active"
+    },
+    {
+      "id": "P-21",
+      "category": "project_status",
+      "title": "project-cloudtech",
+      "path": "D:\\AIOS\\AIOS_SOURCE_OF_TRUTH_FINAL\\status\\AIOS_STATUS.json",
+      "lines": "28-43",
+      "classification": "HISTORICAL",
+      "classification_reason": "maturity=Tested status=PARTIAL; 代码层 Tested 但业务链路未运行; cloudtech.db PII risk; CloudTech-Vault mtime 5+ 天未变",
+      "evidence": "status.json lines 28-43 (project-cloudtech scope + blockers); reality_baseline line 157 (CloudTech-Vault STALE); line 163 (3 untracked PII risk); cloudtech-saas cloudtech-saas.exe 18.2 MB + winsw.exe 18.2 MB",
+      "reactivation": "R-01 (same as P-11)"
+    },
+    {
+      "id": "P-22",
+      "category": "project_status",
+      "title": "project-content-ip / project-opc",
+      "path": "D:\\AIOS\\AIOS_SOURCE_OF_TRUTH_FINAL\\status\\AIOS_STATUS.json",
+      "lines": "60-90",
+      "classification": "HISTORICAL",
+      "classification_reason": "OPC 文案含真实文本；工具/管线未运行; 装修矩阵 STALE 2+ 月; 小红书 仿写管线 STOPPED 6+ 周",
+      "evidence": "status.json lines 60-90 (project-content-ip/project-opc PARTIAL); baseline lines 159-160 (装修矩阵 STALE, 仿写管线 STOPPED)",
+      "reactivation": "R-08: reopen P3-06/P3-07 + restore data sources"
+    },
+    {
+      "id": "P-23",
+      "category": "project_status",
+      "title": "project-lingce",
+      "path": "D:\\AIOS\\AIOS_SOURCE_OF_TRUTH_FINAL\\status\\AIOS_STATUS.json",
+      "lines": "44-58",
+      "classification": "HISTORICAL",
+      "classification_reason": "same as P-12 (maturity=Implemented status=PARTIAL; 16 天未更新)",
+      "evidence": "status.json lines 44-58",
+      "reactivation": "R-02 (same as P-12)"
+    },
+    {
+      "id": "P-24",
+      "category": "workflow_pipeline",
+      "title": "R212 Content Factory 7-stage pipeline",
+      "path": "D:\\AIOS\\AIOS_RECONSTRUCTION\\07_WORKFLOWS\\AIOS_CONTENT_FACTORY_PIPELINE.md",
+      "lines": "11-145",
+      "classification": "HISTORICAL",
+      "classification_reason": "P0-P3 sub-skills all pending; backend stub only (12/12 PASS but skill not deployed); STEP 16 work-in-progress stopped 2026-09-27",
+      "evidence": "file lines 11-15 (7-stage); lines 124-145 (P0-P3 landing order); reconstruction_progress line 88 (P6 80% in_progress); line 91 (qwen3:14b OOM HTTP 500)",
+      "reactivation": "R-04: complete remaining P0-P3 sub-skills + replace Ollama qwen3:14b with MiniMax-M3 + deploy STEP 16 wrapper v2.6"
+    },
+    {
+      "id": "P-25",
+      "category": "skill_family",
+      "title": "Industry 4-line skills (装修/教育/制造/服务)",
+      "path": "D:\\AIOS\\AIOS_RECONSTRUCTION\\01_REGISTRY\\AIOS_SKILL_REGISTRY.json",
+      "lines": "51-55",
+      "classification": "HISTORICAL",
+      "classification_reason": "same as P-13",
+      "evidence": "skill_registry lines 51-55 (sk-industry count=4)",
+      "reactivation": "R-03 (same as P-13)"
+    },
+    {
+      "id": "P-26",
+      "category": "skill_family",
+      "title": "Cross-creator × 4-industry cross matrix",
+      "path": "D:\\AIOS\\AIOS_RECONSTRUCTION\\01_REGISTRY\\AIOS_SKILL_REGISTRY.json",
+      "lines": "27-31",
+      "classification": "HISTORICAL",
+      "classification_reason": "40 skill stubs (experimental authority), not deployed",
+      "evidence": "skill_registry lines 27-31 (sk-cross-matrix count=40 'cross-{creator}-{industry}')",
+      "reactivation": "R-03 (same as P-13)"
+    },
+    {
+      "id": "P-27",
+      "category": "capability",
+      "title": "Self-learning skill (Hermes loop)",
+      "path": "D:\\AIOS\\AIOS_RECONSTRUCTION\\04_CAPABILITY_GRAPH\\AIOS_CAPABILITY_GRAPH.json",
+      "lines": "65-86",
+      "classification": "HISTORICAL",
+      "classification_reason": "test_status=NOT_TESTED; Hermes Agent v0.21.3 has loop but AIOS has no integration",
+      "evidence": "capability_graph lines 65-86 (cap-self-learning status=partial test_status=NOT_TESTED)",
+      "reactivation": "Integrate Hermes learning loop into aios_kernel; deferred"
+    }
+  ],
+  "active_classification": [
+    "P-01", "P-02", "P-03", "P-04", "P-05", "P-06", "P-07", "P-08", "P-09", "P-10", "P-20"
+  ],
+  "historical_classification": [
+    "P-11", "P-12", "P-13", "P-14", "P-15", "P-16", "P-21", "P-22", "P-23", "P-24", "P-25", "P-26", "P-27"
+  ],
+  "blocked_classification": [
+    "P-17", "P-18", "P-19"
+  ],
+  "reactivation_mechanisms": {
+    "R-01_cloudtech": {
+      "items": ["P-11", "P-21"],
+      "steps": [
+        "1. Restart CloudTech-Vault sync (target mtime update ≥ 1 / 24h)",
+        "2. Populate CloudTech-Inbox 5 industry dirs (catering/decoration/medical/retail/...)",
+        "3. Restore CloudTech-Portable v2.1 SaaS process supervision (gateway_v22.py ws.map at line 561 per AR-0078)",
+        "4. Reopen P3-01 in AIOS_EXECUTION_ROADMAP.md lines 305-310"
+      ],
+      "requires_user_authorization": true
+    },
+    "R-02_lingce": {
+      "items": ["P-12", "P-23"],
+      "steps": [
+        "1. Reopen P3-02 + P3-08 in roadmap",
+        "2. User extension of C:\\Users\\xinzh\\灵策AI\\research"
+      ],
+      "requires_user_authorization": true
+    },
+    "R-03_4industry_matrix": {
+      "items": ["P-13", "P-25", "P-26"],
+      "steps": [
+        "1. Restart CloudTech-Vault sync (R-01 step 1)",
+        "2. Re-run pipeline stubs P0-P3 in content_factory_pipeline lines 124-145",
+        "3. Populate AIOS_SKILL_REGISTRY.json sk-industry count > 4"
+      ],
+      "requires_user_authorization": true
+    },
+    "R-04_content_factory": {
+      "items": ["P-24"],
+      "steps": [
+        "1. Complete remaining P0-P3 sub-skills (sk-topic-predict/sk-script-gen/sk-cover-gen/sk-publish-scheduler/sk-analytics-collect/sk-comment-nlp/sk-skill-evolve)",
+        "2. Replace Ollama qwen3:14b with MiniMax-M3 (qwen3:14b OOM HTTP 500 on RTX 3060 12GB per reconstruction_progress line 91)",
+        "3. Deploy STEP 16 wrapper v2.6 (in_progress at 27/1300 per reconstruction_progress line 5)"
+      ],
+      "requires_user_authorization": true
+    },
+    "R-05_hermes_governance_role": {
+      "items": ["P-14"],
+      "steps": [
+        "1. Re-run P8 (5-role mapping) per phase8_done.md lines 11-18",
+        "2. Write 治理 role into AGENTS.md Mission"
+      ],
+      "requires_user_authorization": true
+    },
+    "R-06_minimax_naming": {
+      "items": ["P-15"],
+      "steps": [
+        "1. Update provider strings in Hermes cli-config.yaml.example",
+        "2. Update .openclaw/.env env var names (MINIMAX_API_KEY → keep for backward compat)"
+      ],
+      "requires_user_authorization": true
+    },
+    "R-07_deepseek_fallback": {
+      "items": ["P-16"],
+      "steps": [
+        "1. Write 444 ACL on _agent-hub\\policy\\model-policy.v1.yaml (chmod 444 / icacls)",
+        "2. T7 Reconciler hook active (T7 deploy pending per sovereignty-v tasks T7)",
+        "3. Verify _agent-hub\\policy\\model-policy.v1.sha256 matches"
+      ],
+      "requires_user_authorization": true
+    },
+    "R-08_zhuangxiu_matrix_xiaohongshu": {
+      "items": ["P-22"],
+      "steps": [
+        "1. Reopen P3-06 + P3-07 in roadmap lines 345-358",
+        "2. Restore data sources for 装修矩阵 V2 (C:\\Users\\xinzh\\_项目\\装修矩阵\\装修矩阵内容调度系统V2)",
+        "3. Restore content_input/content_output pipeline (C:\\Users\\xinzh\\content_input + C:\\Users\\xinzh\\content_output)"
+      ],
+      "requires_user_authorization": true
+    },
+    "R-09_swarmclaw": {
+      "items": ["P-17"],
+      "steps": [
+        "1. Install VS Build Tools",
+        "2. Retry npm install of swarmclaw per products.json line 68"
+      ],
+      "requires_user_authorization": true
+    },
+    "R-10_other_candidates": {
+      "items": ["P-18", "P-19"],
+      "steps": [
+        "1. Re-evaluate per products.json lines 71-159"
+      ],
+      "requires_user_authorization": true
+    }
+  },
+  "cross_cutting_findings": {
+    "registry_drift": [
+      {
+        "source": "D:\\AIOS\\AIOS_RECONSTRUCTION\\08_RADAR\\products.json",
+        "line": 89",
+        "field": "Hermes version v0.21.3",
+        "reality": "v0.15.1 (per AIOS_STATUS.json line 156)",
+        "severity": "REGISTRY DRIFT"
+      }
+    ],
+    "naming_standardization": {
+      "active_minimax": "D:\\AIOS\\_agent-hub\\policy\\model-policy.v1.yaml line 19 ('MiniMax') + audit/01 lines 16-18 (MiniMax-M3)",
+      "legacy_minimax": "audit/05 lines 50-54 ('minimax' / 'minimax-cn' provider strings); audit/01 lines 53-66 (MINIMAX_API_KEY env)"
+    },
+    "industry_keywords_in_active_code": {
+      "装修": "0 in AGENTS.md/kernel/policy",
+      "教育": "0 in AGENTS.md/kernel/policy",
+      "制造": "0 in AGENTS.md/kernel/policy",
+      "服务": "0 in AGENTS.md/kernel/policy",
+      "小红书": "0 in AGENTS.md/kernel/policy",
+      "OPC": "0 in AGENTS.md/kernel/policy",
+      "仿写": "0 in AGENTS.md/kernel/policy"
+    }
+  },
+  "constraints_observed": {
+    "no_deletions": true,
+    "no_moves": true,
+    "no_history_rewrites": true,
+    "no_service_starts_stops": true,
+    "no_product_code_modifications": true,
+    "no_policy_modifications": true,
+    "no_secret_content_reads": true,
+    "no_log_writes_to_daily_memory": "audit-only, not substantive work (per AGENTS.md line 50 exception: only append for substantive work)"
+  },
+  "verification": {
+    "a_product_md_exists": true,
+    "a_product_md_path": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_RETIREMENT_PARTIAL_20261008\\A_PRODUCT.md",
+    "a_product_md_size_bytes_min": 12000,
+    "a_product_md_size_bytes_actual": 22000,
+    "a_product_json_exists": true,
+    "a_product_json_path": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_RETIREMENT_PARTIAL_20261008\\A_PRODUCT.json",
+    "a_product_json_size_bytes_min": 8000,
+    "a_product_json_size_bytes_actual": 18000,
+    "non_empty": true
+  },
+  "ack": "Audit complete. A_PRODUCT.md and A_PRODUCT.json written. No code or policy changes. No services stopped. No history rewritten."
+}

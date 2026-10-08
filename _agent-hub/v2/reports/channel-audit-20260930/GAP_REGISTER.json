@@ -1,0 +1,367 @@
+{
+  "schema": "gap-register/1.0",
+  "audit_id": "R285-channel-audit-20260930",
+  "captured_at": "2026-09-30T00:55:00Z",
+  "purpose": "Evidence-backed gap inventory for the Codex \u2194 Claude Code channel. Each gap has file/process evidence, severity, affected files/processes, and measurable acceptance criteria for R286.",
+  "gaps": [
+    {
+      "id": "GAP-P0-01",
+      "severity": "P0",
+      "title": "Channel is narrow text-only \u2014 no typed envelopes, no task lifecycle, no cancellation, no progress, no approval, no artifact refs",
+      "summary": "Both directions of the CC\u2194Codex channel carry only `prompt` strings (via aios-interop MCP tools `codex_query`/`codex_desktop_query`/`claude_code_query`). The v2 envelope v1.0 protocol defines 7 message_types and a task lifecycle schema, but no production code path wires MCP tools to envelopes. There is no in-band progress, no in-band cancellation, no approval/input request flow, no structured final-result schema beyond a free-form output string.",
+      "evidence": [
+        "aios_interop_mcp.py:152-167 (codex_query inputSchema: only `prompt`, `profile`, `session_key`, `timeout`, `trace`)",
+        "aios_interop_mcp.py:169-183 (codex_desktop_query inputSchema: only `prompt`, `thread_id`, `timeout`, `trace`)",
+        "aios_interop_mcp.py:185-199 (claude_code_query inputSchema: only `prompt`, `session_id`, `timeout`, `trace`)",
+        "aios_adapter_base.py:67-117 (BaseAdapter.execute returns dict; no envelope wrapping)",
+        "v2/schemas/envelope.schema.json:24-36 (defines 7 message_types: message|task|status|result|ack|heartbeat|error)",
+        "v2/schemas/task.schema.json:24-28 (defines task lifecycle states: queued|running|waiting|succeeded|failed|cancelled)"
+      ],
+      "affected_files": [
+        "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\aios_interop_mcp.py",
+        "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\aios_adapter_base.py",
+        "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\aios_adapter_codex.py",
+        "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\aios_adapter_claude.py",
+        "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\aios_adapter_codex_desktop.py"
+      ],
+      "affected_processes": [
+        "aios_interop_launcher.py claude x6 (PIDs 12044, 26580, 32036, 26924, 3924, 25848)",
+        "aios_interop_mcp.py x6 (in-process)"
+      ],
+      "acceptance_criteria": [
+        "Each MCP tool that talks to Codex/CC MUST accept an optional `envelope` parameter carrying a v2 envelope v1.0 dict; if provided, the tool MUST validate it against envelope.schema.json and use its `id`/`correlation_id` for the spawned call",
+        "Each MCP tool that talks to Codex/CC MUST return an envelope-shaped result with `message_type=result|error` and `correlation_id == input.envelope.id`",
+        "Add a new MCP tool `task_submit` accepting `{title, description, assignee, timeout_ms, max_retries, input_payload, parent_envelope_id?}` that calls `state_machine.submit_task()` and returns the task envelope",
+        "Add a new MCP tool `task_transition` accepting `{task_id, to_state, output_payload?, error?, note?}` that calls `state_machine.transition()`",
+        "Add a new MCP tool `task_heartbeat` accepting `{task_id}`",
+        "Add a new MCP tool `task_cancel` accepting `{task_id, reason?}`",
+        "Add a new MCP tool `envelope_send` accepting a full v1.0 envelope dict (validated) and writing it to v2/messages/inbox/{recipient}/ via `queue.enqueue`",
+        "Add a new MCP tool `envelope_receive` accepting `{recipient, limit?, claim?}` and returning v2/messages/inbox/ envelopes for that recipient"
+      ]
+    },
+    {
+      "id": "GAP-P0-02",
+      "severity": "P0",
+      "title": "v2 inbox has a 12-hour-stale ack from Codex that CC main session never claimed; v2 outbox has 2 stranded acks from the pre-R320.6 era with no dispatcher",
+      "summary": "1 envelope in `v2/messages/inbox/` (`41afc2c3-...ack` ts 2026-09-29T13:15, ~12h ago) has never been claimed because no CC main session has run `aiosv2.py receive --agent claudecode --claim` since. 2 envelopes in `v2/messages/outbox/` (`19334d04-...ack`, `0fbf6f33-...ack` from 2026-09-29T13:07-13:08) were written under the pre-R320.6 `dest=outbox` default for acks and can never be delivered because `outbox/` has no dispatcher (protocol v1.md \u00a710 pins this contract).",
+      "evidence": [
+        "filesystem listing `ls -la D:/AIOS/_agent-hub/v2/messages/inbox/` (1 file: 41afc2c3-...ack.json)",
+        "filesystem listing `ls -la D:/AIOS/_agent-hub/v2/messages/outbox/` (2 files)",
+        "D:\\AIOS\\_agent-hub\\v2\\protocols\\v1.md \u00a710 (no outbox\u2192inbox dispatcher)",
+        "inbox envelope payload `{ack_of: 3a9d9f27-..., note: \"r3206-result-verified\"}` \u2014 R320.6 round-trip left a residual ack that was never drained",
+        "outbox envelope payload `{ack_of: d12a944d-..., note: \"received-and-processed-by-independent-cc\"}` \u2014 written BEFORE R320.6 source fix; stranded",
+        "v2/idempotency_index.json contains 9 entries all from 2026-09-29T05:06Z-05:15Z (the R320.6 verification window); zero entries since"
+      ],
+      "affected_files": [
+        "D:\\AIOS\\_agent-hub\\v2\\messages\\inbox\\41afc2c3-8fd3-4c80-80f2-62943eea25fd__codex__claudecode__ack.json",
+        "D:\\AIOS\\_agent-hub\\v2\\messages\\outbox\\19334d04-08f8-4d3d-9f94-4eab28d336ce__claudecode__codex__ack.json",
+        "D:\\AIOS\\_agent-hub\\v2\\messages\\outbox\\0fbf6f33-4eb9-47b6-9400-1c2914b2d72f__codex__claudecode__ack.json"
+      ],
+      "acceptance_criteria": [
+        "Audit-only phase (R285) MUST NOT modify these envelopes. R286 migration plan MUST specify how they are reconciled (e.g., manual `mv` into inbox if recipient is reachable, or deadletter with reason `stranded_pre_r3206`)",
+        "After R286 cutover, a long-running v2 supervisor (`aiosv2.py watch`) MUST be deployed so that v2 envelopes are auto-claimed; the stuck-inbox count must reach 0 within 1 hour of supervisor boot"
+      ]
+    },
+    {
+      "id": "GAP-P0-03",
+      "severity": "P0",
+      "title": "AIOS Hub v2 supervisor not running in production \u2014 state machine and audit trail are empty",
+      "summary": "`v2/state/state.json` is missing (only `idempotency_index.json` + its sidecar lock exist). `v2/logs/events.ndjson` has 0 lines. `v2/tasks/` and `v2/runs/` are empty. No process is observed running `aiosv2.py watch` or `src/supervisor.py`. The state machine is therefore never reaped, never snapshotted, never audited.",
+      "evidence": [
+        "filesystem: `state/state.json` MISSING (cat returns \"No such file or directory\")",
+        "filesystem: `logs/events.ndjson` 0 lines (wc -l = 0)",
+        "filesystem: `tasks/` empty (0 entries)",
+        "filesystem: `runs/` empty (0 entries)",
+        "process list: no python process matches `aiosv2.*watch` or `src.supervisor`",
+        "_aios_daemon_watchdog.py:181 DAEMONS list \u2014 no v2 supervisor entry; only handoff/ daemons are tracked"
+      ],
+      "affected_files": [
+        "D:\\AIOS\\_agent-hub\\v2\\src\\supervisor.py",
+        "D:\\AIOS\\_agent-hub\\v2\\src\\state_machine.py",
+        "D:\\AIOS\\_agent-hub\\v2\\src\\queue.py",
+        "D:\\AIOS\\v2\\cli\\aiosv2.py"
+      ],
+      "affected_processes": [
+        "no v2 supervisor process currently running"
+      ],
+      "acceptance_criteria": [
+        "R286 plan MUST add a `_aios_v2_supervisor.py` entry to `_aios_daemon_watchdog.py::DAEMONS` so the singleton watchdog starts and restarts it",
+        "After deployment, `v2/state/state.json` MUST exist and `v2/logs/events.ndjson` MUST grow by \u22651 line per envelope transition",
+        "Tasks file count must reach \u22651 when a single `submit-task` is run; `runs/` count must reach \u22651 per transition"
+      ]
+    },
+    {
+      "id": "GAP-P1-01",
+      "severity": "P1",
+      "title": "6 aios_interop_launcher.py instances cause mtime-watchdog cascade restarts",
+      "summary": "Each launcher runs `_mtime_watchdog(server_path, interval=5.0)` which `os.execv`s itself when `SERVER_PATH` mtime changes. With 6 launchers all watching the same file, a single source edit triggers up to 6 cascading execv cycles, each restarting the launcher AND its in-process server AND its daemon watchdog AND its AIOS_Autonomy_Daemon. The stdio MCP will reconnect (Claude Code and Codex both support reconnect), but the cumulative churn amplifies restart counts.",
+      "evidence": [
+        "aios_interop_launcher.py:70-90 (_mtime_watchdog function)",
+        "aios_interop_launcher.py:177-183 (watchdog thread started in main)",
+        "process list: 6 aios_interop_launcher.py claude PIDs (12044, 26580, 32036, 26924, 3924, 25848) all children of 6 different claude.exe",
+        "aios_interop_launcher.py:178-190 (\"_mtime_watchdog\" thread + \"aios-daemon-watchdog\" thread both daemon=True)"
+      ],
+      "affected_files": [
+        "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\aios_interop_launcher.py"
+      ],
+      "affected_processes": [
+        "aios_interop_launcher.py claude x6"
+      ],
+      "acceptance_criteria": [
+        "R286 plan MUST coalesce mtime-watchdog into a single host-wide notifier (e.g., via a Windows Mutex or named pipe) so only ONE launcher observes a change and broadcasts via stdio flush to siblings",
+        "OR: R286 plan MUST replace mtime-watchdog with explicit `aiosv2.py reload` CLI invocation",
+        "Verify: after a single intentional edit to aios_interop_mcp.py, the number of AIOS_Autonomy_Daemon restarts in `_aios_daemon_watchdog_restart_history.json` within 60 seconds MUST be \u22641 (currently the count grows by N for N launchers)"
+      ]
+    },
+    {
+      "id": "GAP-P1-02",
+      "severity": "P1",
+      "title": "7 AIOS_Autonomy_Daemon.exe instances \u2014 no daemon-level singleton lock",
+      "summary": "3 distinct launch sources (WinSW service, supervisor python, manual console) + parent\u2192child chains produce 7 concurrent AIOS_Autonomy_Daemon.exe processes. The singleton protection at the WATCHDOG layer (`msvcrt LK_NBLCK` on `_aios_daemon_watchdog.py:506-552`) only blocks duplicate watchdog instances; it does NOT block duplicate daemon instances. Today they don't conflict because only one watchdog writes `_aios_daemon_watchdog_state.json` (the file's mtime corresponds to the single watchdog's last cycle); but restart storms or scheduled task races could create conflicting writers.",
+      "evidence": [
+        "tasklist: 7 AIOS_Autonomy_Daemon.exe instances (PIDs 18508 9112 19400 21160 21356 3400 21336) plus 1 AIOS_Autonomy_Daemon-svc.exe (PID 19400)",
+        "wmic parent chain: parent 18452 (python r306_dashboard_supervisor) \u2192 18508 (daemon) \u2192 9112 (daemon child); parent 1000 (system) \u2192 19400 (svc) \u2192 21160 (daemon) \u2192 21356 (daemon grandchild); parent 20496 (cmd console) \u2192 3400 (daemon) \u2192 21336 (daemon child)",
+        "_aios_daemon_watchdog.py:506-552 (watchdog singleton lock)",
+        "no equivalent singleton lock exists inside AIOS_Autonomy_Daemon.exe (no source visible to this audit)"
+      ],
+      "affected_files": [
+        "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\_aios_daemon_watchdog.py"
+      ],
+      "affected_processes": [
+        "AIOS_Autonomy_Daemon.exe x7"
+      ],
+      "acceptance_criteria": [
+        "R286 plan MUST add an AIOS_Autonomy_Daemon-level singleton (either as an in-binary mutex, or as a wrapper script that holds a named OS mutex before spawning)",
+        "Verify: at any moment, the count of AIOS_Autonomy_Daemon.exe (excluding -svc.exe wrapper) MUST be \u22643 (1 root + 1 supervisor + 1 hot spare); current count is 7",
+        "Verify: any new daemon start MUST acquire an exclusive OS lock and refuse to start if held"
+      ]
+    },
+    {
+      "id": "GAP-P1-03",
+      "severity": "P1",
+      "title": "2 OpenClaw gateway instances bound to port 18792",
+      "summary": "Two `openclaw/dist/index.js gateway --port 18792` processes are running concurrently (PIDs 5920 + 6336). The second one either bound via SO_REUSEADDR or is failing silently. The MCP `aios_status::openclaw_gateway` uses TCP `connect_ex` (success = port open) and reports healthy regardless of which gateway actually answers. WebSocket sessions may be split across two gateway instances, causing message_id drift in openclaw delegations.",
+      "evidence": [
+        "wmic node.exe: 2 distinct `gateway --port 18792` command lines (PIDs 5920 + 6336), different parents (4472 vs 8080)",
+        "aios_interop_mcp.py:76-107 (probe_openclaw only checks port-open + GET /healthz; does not enumerate gateway instances)",
+        "aios_interop_mcp.py:1015-1045 (openclaw_health same)",
+        "no source-visible port-bind mutex inside openclaw/dist/index.js (out of audit scope)"
+      ],
+      "affected_files": [
+        "D:\\npm-global\\node_modules\\openclaw\\dist\\index.js (out of operator-owned scope per CANONICAL_INDEX.json operator_paths_out_of_scope)",
+        "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\aios_interop_mcp.py"
+      ],
+      "affected_processes": [
+        "node.exe openclaw gateway x2 (PIDs 5920, 6336)"
+      ],
+      "acceptance_criteria": [
+        "R286 plan MUST add a probe that enumerates ALL PIDs listening on port 18792 (via netstat or `Get-NetTCPConnection`) and records them in probe evidence",
+        "If 2+ instances detected, probe MUST flip `healthy=false` with blocker `multiple_gateway_instances` until consolidated to 1"
+      ]
+    },
+    {
+      "id": "GAP-P1-04",
+      "severity": "P1",
+      "title": "handoff/ polling daemons flap (31 restart events in ~4h)",
+      "summary": "14 handoff/ polling daemons are tracked by `_aios_daemon_watchdog.py` and the watchdog state shows all 14 alive. However the `_aios_daemon_watchdog_restart_history.json` records 31 restart events between 2026-09-29T21:10Z and 2026-09-30T00:31Z (~4 hours) for 9 distinct daemon names. This is **above the 3-per-hour throttle** for some daemons, which means the watchdog's `MAX_RESTART_PER_HOUR=3` throttle is NOT being enforced for these names (or the throttle window just rolled over). The result is **alert noise + state churn + log spam** without actually fixing the underlying instability.",
+      "evidence": [
+        "_aios_daemon_watchdog_state.json (2026-09-30T00:51:27Z; cycle=353): all 14 daemons alive",
+        "_aios_daemon_watchdog_restart_history.json: 31 entries between 2026-09-29T21:10:43Z and 2026-09-30T00:31:26Z",
+        "Most-restarted daemon: `_codex_to_cc_inbox_watcher` (6 restarts), `_codex_desktop_to_cli_bridge` (6 restarts), `_doubao_to_cc_inbox_watcher` (4 restarts), `_openclaw_to_cc_inbox_watcher` (3 restarts)",
+        "_aios_daemon_watchdog.py:187-194 (MAX_RESTART_PER_HOUR=3, MIN_RESTART_INTERVAL_SECONDS=300) \u2014 throttling logic exists but `_codex_to_cc_inbox_watcher` 6 restarts in ~4h exceeds 3/h window partially"
+      ],
+      "affected_files": [
+        "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\_aios_daemon_watchdog.py",
+        "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\_codex_to_cc_inbox_watcher.py",
+        "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\_codex_desktop_to_cli_bridge.py",
+        "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\_doubao_to_cc_inbox_watcher.py",
+        "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\_openclaw_to_cc_inbox_watcher.py"
+      ],
+      "affected_processes": [
+        "_codex_to_cc_inbox_watcher.py (PID 23800)",
+        "_codex_desktop_to_cli_bridge.py (PID 31248)",
+        "_doubao_to_cc_inbox_watcher.py (PID 31124)",
+        "_openclaw_to_cc_inbox_watcher.py (PID 27064)",
+        "+ 10 other handoff/ daemons"
+      ],
+      "acceptance_criteria": [
+        "R286 plan MUST diagnose root cause of the 4 most-restarted daemons (likely: stale `seen` set, lock contention, or handoff/inbox/* file races) and either fix or formally sunset them",
+        "After R286 cutover, `_aios_daemon_watchdog_restart_history.json` MUST have \u22641 entry per daemon per hour sustained over 24h"
+      ]
+    },
+    {
+      "id": "GAP-P1-05",
+      "severity": "P1",
+      "title": "No MCP-tool \u2194 v2 envelope wiring \u2014 the two layers are disconnected",
+      "summary": "The v2 envelope layer (`v2/cli/aiosv2.py`, `v2/src/{envelope,queue,state_machine,supervisor}.py`) and the aios-interop MCP layer (`aios_interop_mcp.py`) have NO shared invocation path. `codex_query` calls `codex_cli_chat.py` directly; `codex_desktop_query` calls `aios_adapter_codex_desktop.py` directly; `claude_code_query` shells out to `claude -p`. None of these tools build, validate, or persist a v2 envelope. The v2 inbox/outbox/deadletter/tasks/runs directories exist on disk but no MCP tool reads or writes them.",
+      "evidence": [
+        "aios_interop_mcp.py:801-845 (codex_query)",
+        "aios_interop_mcp.py:848-878 (codex_desktop_query)",
+        "aios_interop_mcp.py:881-901 (claude_code_query)",
+        "no import of `v2.src.envelope`, `v2.src.queue`, `v2.src.state_machine` anywhere in aios_interop_mcp.py",
+        "v2/messages/inbox files: only the 1 stuck ack from R320.6 verification; no MCP-produced envelope",
+        "v2/messages/outbox files: only 2 stranded R320.6 acks; no MCP-produced envelope"
+      ],
+      "affected_files": [
+        "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\aios_interop_mcp.py",
+        "D:\\AIOS\\_agent-hub\\v2\\cli\\aiosv2.py",
+        "D:\\AIOS\\_agent-hub\\v2\\src\\envelope.py",
+        "D:\\AIOS\\_agent-hub\\v2\\src\\queue.py",
+        "D:\\AIOS\\_agent-hub\\v2\\src\\state_machine.py"
+      ],
+      "affected_processes": [
+        "aios_interop_mcp.py x6 (in-process per claude.exe)"
+      ],
+      "acceptance_criteria": [
+        "Every aios-interop MCP tool that calls Codex/CC MUST, on success, write a `result` envelope to v2/messages/inbox/{recipient}/ via `queue.enqueue`",
+        "Every aios-interop MCP tool MUST, on validation failure, write an `error` envelope to v2/messages/inbox/{recipient}/",
+        "Every aios-interop MCP tool MUST accept an optional `envelope` parameter and use its `id` as `correlation_id` in the response envelope",
+        "A new MCP tool `envelope_round_trip` MUST exist that submits a v2 task, claims it from inbox, transitions it to running, emits progress status, transitions to succeeded/failed, and emits final result \u2014 all via `state_machine.py` + `queue.py` and atomically observable in v2/tasks/ + v2/logs/events.ndjson"
+      ]
+    },
+    {
+      "id": "GAP-P1-06",
+      "severity": "P1",
+      "title": "handoff/ polling daemons read empty inboxes \u2014 polling interval wastes CPU + lock churn",
+      "summary": "All 9 handoff/inbox/* directories are empty at capture time, yet 14 polling daemons continue to scan them every 15s. Combined with the 31 restart events, this is wasted work. The daemons also do not perform schema validation on whatever they DO read, so when an old or malformed file appears, they crash + get restarted by the watchdog.",
+      "evidence": [
+        "filesystem: all 9 subdirs of `D:/个人文件/AI/Operator/handoff/inbox/` empty",
+        "process list: 14 polling daemons alive",
+        "_codex_to_cc_inbox_watcher.py:60-76 (no schema validation; raw `json.load`)",
+        "_cc_to_openclaw_bridge.py:269-271 (only catches generic Exception)",
+        "no rate-limit/cooldown on empty cycles"
+      ],
+      "affected_files": [
+        "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\_codex_to_cc_inbox_watcher.py",
+        "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\_codex_cli_to_cc_inbox_watcher.py",
+        "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\_doubao_to_cc_inbox_watcher.py",
+        "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\_openclaw_to_cc_inbox_watcher.py",
+        "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\_codex_to_cc_bridge_v2.py",
+        "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\_cc_to_codex_cli_bridge.py",
+        "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\_cc_to_openclaw_bridge.py",
+        "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\_cc_to_doubao_bridge.py"
+      ],
+      "affected_processes": [
+        "All 14 handoff/ daemons"
+      ],
+      "acceptance_criteria": [
+        "R286 cutover MUST migrate all 14 daemons' inbox/outbox paths to v2/messages/{inbox,outbox}/{recipient}/",
+        "R286 plan MUST specify a graceful sunset (delete or comment-out) for each legacy daemon, OR formally consolidate them into a single `v2_consumer.py` that subscribes to a unified queue",
+        "Verify post-cutover: only ONE polling consumer per direction (e.g., one daemon for CC\u2194Codex, one for CC\u2194Hermes, one for CC\u2194OpenClaw)"
+      ]
+    },
+    {
+      "id": "GAP-P1-07",
+      "severity": "P1",
+      "title": "Codex relay 19194 DOWN \u2014 Codex CLI base profile fallback chain declared but relay-side path silent",
+      "summary": "`v2/src/probes.py::probe_codex` confirms relay 19194 TCP CLOSED. The `codex_query` MCP tool declares a fallback chain `base \u2192 ollama` (R329), but the base profile routes to MiniMax-M3 over `api.minimaxi.com`, NOT via relay 19194. However, the `br-aios-codex-relay` entry in `AIOS_BRIDGE_REGISTRY.json` still claims `health=healthy` based on a stale 2026 R76 evidence. This is a documentation drift: the relay is documented-but-dead; CC base profile works via direct API.",
+      "evidence": [
+        "v2/src/probes.py:114-124 (relay_port probe \u2192 19194 closed)",
+        "v2/agents/agents.json:14 (\"relay localhost:19194 (currently DOWN)\")",
+        "AIOS_RECONSTRUCTION/03_BRIDGES/AIOS_BRIDGE_REGISTRY.json `br-aios-codex-relay` (status=active, health=healthy, evidence \"pythonw relay \u5fc5\u987b\u8dd1 (R76)\")",
+        "aios_interop_mcp.py:801-845 (codex_query fallback chain base\u2192ollama; does NOT touch relay 19194)",
+        "codex_cli_chat.py:80-82 (CODEX_CLI_PATH default `codex`; uses Codex CLI which talks to provider via OAuth/API key, not relay)"
+      ],
+      "affected_files": [
+        "D:\\AIOS\\AIOS_RECONSTRUCTION\\03_BRIDGES\\AIOS_BRIDGE_REGISTRY.json",
+        "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\codex_cli_chat.py",
+        "D:\\AIOS\\_agent-hub\\v2\\src\\probes.py"
+      ],
+      "acceptance_criteria": [
+        "R286 plan MUST either revive the relay OR remove `br-aios-codex-relay` from the bridge registry and document that base/ollama profiles bypass it",
+        "If relay is revived, probe_codex MUST be wired to the v2 supervisor so probe evidence is captured in v2/state/state.json per tick"
+      ]
+    },
+    {
+      "id": "GAP-P1-08",
+      "severity": "P1",
+      "title": "AIOS daemon watchdog does NOT cover v2 supervisor or MCP launchers",
+      "summary": "_aios_daemon_watchdog.py DAEMONS list (lines 77-182) contains 14 handoff/ scripts but no entry for `aiosv2.py watch` (v2 supervisor) and no entry for `aios_interop_launcher.py claude`. The result: if v2 supervisor dies, no one restarts it; if aios_interop_launcher crashes, only Claude Code's stdio reconnect handles it (and it does NOT auto-respawn the launcher).",
+      "evidence": [
+        "_aios_daemon_watchdog.py:77-182 (DAEMONS list \u2014 no v2 or MCP entries)",
+        "aiosv2.py:252-259 (watch command exists but no daemon watching it)",
+        "aios_interop_launcher.py:172-198 (main exits if Claude Code stdio closes)"
+      ],
+      "affected_files": [
+        "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\_aios_daemon_watchdog.py"
+      ],
+      "affected_processes": [
+        "aiosv2.py watch (not currently running)",
+        "aios_interop_launcher.py claude x6"
+      ],
+      "acceptance_criteria": [
+        "R286 plan MUST extend DAEMONS list to include v2 supervisor (script=`aiosv2.py watch --interval 5`, args=[], min_uptime_seconds=10) AND an MCP-launcher watchdog (a thin wrapper that keeps exactly ONE aios_interop_launcher.py per host)",
+        "Verify: after the registry is updated, `_aios_daemon_watchdog_state.json` MUST list >=15 daemons (current=14) and the v2 supervisor MUST appear as alive"
+      ]
+    },
+    {
+      "id": "GAP-P2-01",
+      "severity": "P2",
+      "title": "Codex relay 19194 also written to br-aios-codex-relay as healthy; probe sees it DOWN; documentation drift",
+      "summary": "See GAP-P1-07 \u2014 same root cause, lower severity because the relay is not on the hot path (base profile uses direct API). But the registry entry misleads readers; recommend either fixing or retiring.",
+      "evidence": [
+        "AIOS_RECONSTRUCTION/03_BRIDGES/AIOS_BRIDGE_REGISTRY.json `br-aios-codex-relay`"
+      ],
+      "acceptance_criteria": [
+        "Same as GAP-P1-07"
+      ]
+    },
+    {
+      "id": "GAP-P2-02",
+      "severity": "P2",
+      "title": "CC main-session permission gate blocks live MCP calls in this audit window",
+      "summary": "Codex/CC round-trip was VERIFIED in R320.6 via a strictly-scoped temporary CC bypass session. The CC main-session permission gate (which blocks `python <script>` and `mcp__aios-interop__*` calls) is unchanged. Future R286 deployment scripts that need to run `aiosv2.py` will hit the same gate.",
+      "evidence": [
+        "IMPLEMENTATION_REPORT.md \u00a78 Blocker Inventory (B1, B2 still OPEN as of 2026-09-29T05:19:02Z)",
+        "tasklist shows CC main session is alive (claude.exe PID 14732 \u2192 aios_interop_launcher.py PID 12044)"
+      ],
+      "affected_files": [
+        "C:\\Users\\xinzh\\.claude.json (out of operator-owned scope; CC-managed)"
+      ],
+      "acceptance_criteria": [
+        "R286 plan MUST NOT depend on live MCP calls in the CC main session; all R286 verification MUST be runnable from a permitted shell (cmd/PS) with `python D:\\AIOS\\_agent-hub\\v2\\tests\\run_all_tests.py`"
+      ]
+    },
+    {
+      "id": "GAP-P2-03",
+      "severity": "P2",
+      "title": "aios_adapter_claude.py SDK detection is no-op (`callable(getattr(sdk, \"query_sync\", None))` always fails closed)",
+      "summary": "`aios_adapter_claude.py:58-71` deliberately fails closed when SDK has no `query_sync` symbol; the production environment does not import `claude_code_sdk`, so every call falls back to CLI subprocess. This is documented as R295 design choice but is brittle.",
+      "evidence": [
+        "aios_adapter_claude.py:58-71",
+        "aios_adapter_claude.py:48 (\"return 'cli'\" when ImportError)"
+      ],
+      "affected_files": [
+        "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\aios_adapter_claude.py"
+      ],
+      "acceptance_criteria": [
+        "R286 plan SHOULD add a feature-detection wrapper that probes `claude_code_sdk` at startup and caches the result; if SDK works, use it; else fall through to CLI"
+      ]
+    },
+    {
+      "id": "GAP-P2-04",
+      "severity": "P2",
+      "title": "Heremes / OpenClaw / WorkBuddy have no v2 envelope consumer (only self-health probes)",
+      "summary": "Probes show Hermes + OpenClaw `healthy=true`. But no Hermes/OpenClaw/WorkBuddy process consumes v2 `inbox/` envelopes. The `br-claudecode-openclaw` registry row remains `loopback_only/unverified`.",
+      "evidence": [
+        "v2/src/probes.py:225-228 (probe_all returns 5 entries; healthy only proves binary/HTTP reachable, not v2 consumer)",
+        "AIOS_RECONSTRUCTION/03_BRIDGES/AIOS_BRIDGE_REGISTRY.json `br-claudecode-openclaw` (loopback_only/unverified)",
+        "v2/messages/inbox only contains R320.6 acks \u2014 no Hermes/OpenClaw/WorkBuddy envelopes"
+      ],
+      "affected_files": [
+        "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\aios_interop_mcp.py",
+        "D:\\AIOS\\AIOS_RECONSTRUCTION\\03_BRIDGES\\AIOS_BRIDGE_REGISTRY.json"
+      ],
+      "acceptance_criteria": [
+        "R286 plan MUST add a `v2_consumer.py` that, for each entry in `v2/agents/agents.json`, polls v2/messages/inbox/{recipient}/, claims envelopes whose `recipient` matches, dispatches to the appropriate adapter (Hermes \u2192 HermesAdapter; OpenClaw \u2192 openclaw_delegate subprocess; WorkBuddy \u2192 SOUL/USER/MEMORY hub-sync), writes a `result` envelope back to v2/messages/inbox/{original.sender}/",
+        "After deployment, `v2/messages/inbox/` count MUST increase when a v2 envelope is sent to Hermes/OpenClaw/WorkBuddy, and `v2/logs/events.ndjson` MUST contain the corresponding events"
+      ]
+    }
+  ],
+  "summary_counts": {
+    "P0": 3,
+    "P1": 8,
+    "P2": 4,
+    "total": 15
+  }
+}

@@ -1,0 +1,820 @@
+{
+  "version": "v2-2026-09-29",
+  "started_at": "2026-09-30T05:42:53Z",
+  "python_version": "3.13.14 (main, Jun 11 2026, 04:04:46) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "win32",
+  "modules": [
+    {
+      "module": "tests.test_01_envelope_schema",
+      "pass": 8,
+      "fail": 0,
+      "tests": [
+        {
+          "name": "test_envelope_idempotency_key_deterministic_for_same_payload",
+          "ok": true,
+          "duration_ms": 0
+        },
+        {
+          "name": "test_envelope_idempotency_key_is_sha256_hex_64",
+          "ok": true,
+          "duration_ms": 0
+        },
+        {
+          "name": "test_envelope_invalid_message_type_rejected",
+          "ok": true,
+          "duration_ms": 0
+        },
+        {
+          "name": "test_envelope_required_fields_present",
+          "ok": true,
+          "duration_ms": 0
+        },
+        {
+          "name": "test_envelope_schema_version_is_1_0",
+          "ok": true,
+          "duration_ms": 0
+        },
+        {
+          "name": "test_heartbeat_payload_minimum_fields",
+          "ok": true,
+          "duration_ms": 0
+        },
+        {
+          "name": "test_reply_envelope_has_correlation_id",
+          "ok": true,
+          "duration_ms": 0
+        },
+        {
+          "name": "test_verify_envelope_detects_tampered_payload",
+          "ok": true,
+          "duration_ms": 0
+        }
+      ],
+      "module_duration_ms": 16
+    },
+    {
+      "module": "tests.test_02_queue_concurrency",
+      "pass": 6,
+      "fail": 0,
+      "tests": [
+        {
+          "name": "test_claim_and_ack_roundtrip",
+          "ok": true,
+          "duration_ms": 14
+        },
+        {
+          "name": "test_concurrent_distinct_envelopes_all_succeed",
+          "ok": true,
+          "duration_ms": 691
+        },
+        {
+          "name": "test_concurrent_enqueue_same_envelope_no_duplicate_files",
+          "ok": true,
+          "duration_ms": 74
+        },
+        {
+          "name": "test_deadletter_renames_with_reason_sidecar",
+          "ok": true,
+          "duration_ms": 12
+        },
+        {
+          "name": "test_enqueue_creates_file",
+          "ok": true,
+          "duration_ms": 9
+        },
+        {
+          "name": "test_enqueue_is_idempotent",
+          "ok": true,
+          "duration_ms": 17
+        }
+      ],
+      "module_duration_ms": 830
+    },
+    {
+      "module": "tests.test_03_state_machine",
+      "pass": 8,
+      "fail": 0,
+      "tests": [
+        {
+          "name": "test_cancel_from_queued",
+          "ok": true,
+          "duration_ms": 12
+        },
+        {
+          "name": "test_failed_can_retry_to_queued",
+          "ok": true,
+          "duration_ms": 45
+        },
+        {
+          "name": "test_invalid_transition_queued_to_succeeded_rejected",
+          "ok": true,
+          "duration_ms": 8
+        },
+        {
+          "name": "test_list_tasks_filter_by_state",
+          "ok": true,
+          "duration_ms": 86
+        },
+        {
+          "name": "test_running_to_succeeded_allowed",
+          "ok": true,
+          "duration_ms": 46
+        },
+        {
+          "name": "test_submit_task_default_queued",
+          "ok": true,
+          "duration_ms": 3
+        },
+        {
+          "name": "test_terminal_state_blocks_transition",
+          "ok": true,
+          "duration_ms": 28
+        },
+        {
+          "name": "test_valid_transition_queued_to_running",
+          "ok": true,
+          "duration_ms": 39
+        }
+      ],
+      "module_duration_ms": 272
+    },
+    {
+      "module": "tests.test_04_heartbeat_timeout_retry",
+      "pass": 4,
+      "fail": 0,
+      "tests": [
+        {
+          "name": "test_heartbeat_refreshes_lease",
+          "ok": true,
+          "duration_ms": 21
+        },
+        {
+          "name": "test_no_reap_when_lease_fresh",
+          "ok": true,
+          "duration_ms": 41
+        },
+        {
+          "name": "test_reap_expired_marks_failed_and_retries",
+          "ok": true,
+          "duration_ms": 53
+        },
+        {
+          "name": "test_reap_expired_respects_max_retries",
+          "ok": true,
+          "duration_ms": 41
+        }
+      ],
+      "module_duration_ms": 158
+    },
+    {
+      "module": "tests.test_05_protocol_loopback",
+      "pass": 10,
+      "fail": 0,
+      "tests": [
+        {
+          "name": "test_protocol_loopback_ack_emits_ack_envelope",
+          "ok": true,
+          "duration_ms": 20
+        },
+        {
+          "name": "test_protocol_loopback_dedup_blocks_double_send",
+          "ok": true,
+          "duration_ms": 17
+        },
+        {
+          "name": "test_protocol_loopback_routing_a_to_a_only_a_receives",
+          "ok": true,
+          "duration_ms": 408
+        },
+        {
+          "name": "test_protocol_loopback_routing_broadcast_seen_by_all",
+          "ok": true,
+          "duration_ms": 65
+        },
+        {
+          "name": "test_protocol_loopback_routing_no_filter_sees_all",
+          "ok": true,
+          "duration_ms": 30
+        },
+        {
+          "name": "test_protocol_loopback_task_envelope_to_result",
+          "ok": true,
+          "duration_ms": 54
+        },
+        {
+          "name": "test_r3206_ack_default_lands_in_inbox_not_outbox",
+          "ok": true,
+          "duration_ms": 27
+        },
+        {
+          "name": "test_r3206_ack_of_ack_does_not_create_loop",
+          "ok": true,
+          "duration_ms": 32
+        },
+        {
+          "name": "test_r3206_build_envelope_propagates_correlation_id_and_in_reply_to",
+          "ok": true,
+          "duration_ms": 0
+        },
+        {
+          "name": "test_r3206_correlation_id_filter_isolates_replies_per_original",
+          "ok": true,
+          "duration_ms": 0
+        }
+      ],
+      "module_duration_ms": 658
+    },
+    {
+      "module": "tests.test_06_probes",
+      "pass": 7,
+      "fail": 0,
+      "tests": [
+        {
+          "name": "test_probe_all_includes_all_five_agents_with_4_levels",
+          "ok": true,
+          "duration_ms": 2779
+        },
+        {
+          "name": "test_probe_claudecode_mapping_consistency",
+          "ok": true,
+          "duration_ms": 1
+        },
+        {
+          "name": "test_probe_codex_isolated_relay_down_chatgpt_alive",
+          "ok": true,
+          "duration_ms": 0
+        },
+        {
+          "name": "test_probe_codex_mapping_consistency",
+          "ok": true,
+          "duration_ms": 527
+        },
+        {
+          "name": "test_probe_hermes_mapping_consistency",
+          "ok": true,
+          "duration_ms": 999
+        },
+        {
+          "name": "test_probe_openclaw_mapping_consistency",
+          "ok": true,
+          "duration_ms": 2037
+        },
+        {
+          "name": "test_probe_workbuddy_mapping_consistency",
+          "ok": true,
+          "duration_ms": 0
+        }
+      ],
+      "module_duration_ms": 6455
+    },
+    {
+      "module": "tests.test_07_healthcheck",
+      "pass": 11,
+      "fail": 0,
+      "tests": [
+        {
+          "name": "test_cli_ack_correlation_id_and_in_reply_to_match_original",
+          "ok": true,
+          "duration_ms": 512
+        },
+        {
+          "name": "test_cli_ack_default_writes_to_inbox_receivable_by_sender",
+          "ok": true,
+          "duration_ms": 663
+        },
+        {
+          "name": "test_cli_ack_of_ack_does_not_create_loop",
+          "ok": true,
+          "duration_ms": 469
+        },
+        {
+          "name": "test_cli_ack_returns_error_when_not_claimed",
+          "ok": true,
+          "duration_ms": 298
+        },
+        {
+          "name": "test_cli_health_returns_five_agents_with_4_levels",
+          "ok": true,
+          "duration_ms": 2911
+        },
+        {
+          "name": "test_cli_init",
+          "ok": true,
+          "duration_ms": 164
+        },
+        {
+          "name": "test_cli_receive_agent_filter_isolates_agents",
+          "ok": true,
+          "duration_ms": 691
+        },
+        {
+          "name": "test_cli_send_then_receive_then_ack_roundtrip",
+          "ok": true,
+          "duration_ms": 660
+        },
+        {
+          "name": "test_cli_send_with_correlation_id_and_in_reply_to_writes_them",
+          "ok": true,
+          "duration_ms": 165
+        },
+        {
+          "name": "test_cli_status",
+          "ok": true,
+          "duration_ms": 148
+        },
+        {
+          "name": "test_cli_submit_then_update_task_full_lifecycle",
+          "ok": true,
+          "duration_ms": 620
+        }
+      ],
+      "module_duration_ms": 7307
+    },
+    {
+      "module": "tests.test_08_supervisor_watch",
+      "pass": 2,
+      "fail": 0,
+      "tests": [
+        {
+          "name": "test_cli_tick_runs_and_returns_reaped_snapshot",
+          "ok": true,
+          "duration_ms": 180
+        },
+        {
+          "name": "test_cli_watch_runs_two_ticks_then_exits",
+          "ok": true,
+          "duration_ms": 277
+        }
+      ],
+      "module_duration_ms": 458
+    },
+    {
+      "module": "tests.test_09_envelope_chunking",
+      "pass": 10,
+      "fail": 0,
+      "tests": [
+        {
+          "name": "test_envelope_from_chunks_rejects_duplicate_index",
+          "ok": true,
+          "duration_ms": 1
+        },
+        {
+          "name": "test_envelope_from_chunks_rejects_empty",
+          "ok": true,
+          "duration_ms": 0
+        },
+        {
+          "name": "test_envelope_from_chunks_rejects_inconsistent_chunk_total",
+          "ok": true,
+          "duration_ms": 0
+        },
+        {
+          "name": "test_envelope_from_chunks_rejects_mismatched_correlation_id",
+          "ok": true,
+          "duration_ms": 0
+        },
+        {
+          "name": "test_envelope_from_chunks_rejects_missing_index",
+          "ok": true,
+          "duration_ms": 0
+        },
+        {
+          "name": "test_envelope_to_chunks_32kib_split_then_reassemble_roundtrip",
+          "ok": true,
+          "duration_ms": 0
+        },
+        {
+          "name": "test_envelope_to_chunks_64kib_split_then_reassemble_roundtrip",
+          "ok": true,
+          "duration_ms": 0
+        },
+        {
+          "name": "test_envelope_to_chunks_chunk_id_stable_across_chunks",
+          "ok": true,
+          "duration_ms": 1
+        },
+        {
+          "name": "test_envelope_to_chunks_no_text_returns_empty",
+          "ok": true,
+          "duration_ms": 0
+        },
+        {
+          "name": "test_envelope_to_chunks_small_text_returns_empty",
+          "ok": true,
+          "duration_ms": 0
+        }
+      ],
+      "module_duration_ms": 7
+    },
+    {
+      "module": "tests.test_10_consumer_dispatch",
+      "pass": 10,
+      "fail": 0,
+      "tests": [
+        {
+          "name": "test_v2_consumer_bounded_concurrency_respects_semaphore",
+          "ok": true,
+          "duration_ms": 15
+        },
+        {
+          "name": "test_v2_consumer_capabilities_advertised",
+          "ok": true,
+          "duration_ms": 0
+        },
+        {
+          "name": "test_v2_consumer_dispatch_4_evidence_classes",
+          "ok": true,
+          "duration_ms": 36
+        },
+        {
+          "name": "test_v2_consumer_dispatch_dispatcher_exception_deadletters",
+          "ok": true,
+          "duration_ms": 56
+        },
+        {
+          "name": "test_v2_consumer_dispatch_emits_separate_ack_and_result",
+          "ok": true,
+          "duration_ms": 81
+        },
+        {
+          "name": "test_v2_consumer_dispatch_injects_custom_dispatcher",
+          "ok": true,
+          "duration_ms": 49
+        },
+        {
+          "name": "test_v2_consumer_dispatch_no_route_deadletters",
+          "ok": true,
+          "duration_ms": 12
+        },
+        {
+          "name": "test_v2_consumer_enqueue_ack_envelope_separate_from_result",
+          "ok": true,
+          "duration_ms": 43
+        },
+        {
+          "name": "test_v2_consumer_legacy_marker_files_are_NOT_consumed",
+          "ok": true,
+          "duration_ms": 282
+        },
+        {
+          "name": "test_v2_consumer_stats_counters",
+          "ok": true,
+          "duration_ms": 34
+        }
+      ],
+      "module_duration_ms": 616
+    },
+    {
+      "module": "tests.test_11_consumer_restart_lease",
+      "pass": 5,
+      "fail": 0,
+      "tests": [
+        {
+          "name": "test_bounded_concurrency_under_tick",
+          "ok": true,
+          "duration_ms": 966
+        },
+        {
+          "name": "test_consumer_kill_restart_recovery_via_unclaimed_list",
+          "ok": true,
+          "duration_ms": 4
+        },
+        {
+          "name": "test_idempotency_6_concurrent_writers_persist_exactly_one",
+          "ok": true,
+          "duration_ms": 42
+        },
+        {
+          "name": "test_lease_recovery_state_machine",
+          "ok": true,
+          "duration_ms": 2845
+        },
+        {
+          "name": "test_unclaimed_list_respects_filter",
+          "ok": true,
+          "duration_ms": 97
+        }
+      ],
+      "module_duration_ms": 3959
+    },
+    {
+      "module": "tests.test_12_artifact_refs_no_binary",
+      "pass": 7,
+      "fail": 0,
+      "tests": [
+        {
+          "name": "test_artifact_refs_no_binary_in_payload",
+          "ok": true,
+          "duration_ms": 0
+        },
+        {
+          "name": "test_artifact_refs_structure",
+          "ok": true,
+          "duration_ms": 0
+        },
+        {
+          "name": "test_artifact_refs_with_chunk_metadata",
+          "ok": true,
+          "duration_ms": 0
+        },
+        {
+          "name": "test_chunked_payload_carries_no_raw_binary",
+          "ok": true,
+          "duration_ms": 0
+        },
+        {
+          "name": "test_no_raw_binary_embedded_anywhere",
+          "ok": true,
+          "duration_ms": 0
+        },
+        {
+          "name": "test_text_chunks_round_trip_preserves_payload",
+          "ok": true,
+          "duration_ms": 0
+        },
+        {
+          "name": "test_validate_envelope_accepts_chunked_envelope",
+          "ok": true,
+          "duration_ms": 0
+        }
+      ],
+      "module_duration_ms": 6
+    },
+    {
+      "module": "tests.test_13_task_lifecycle",
+      "pass": 7,
+      "fail": 0,
+      "tests": [
+        {
+          "name": "test_full_task_lifecycle_success",
+          "ok": true,
+          "duration_ms": 38
+        },
+        {
+          "name": "test_heartbeat_refreshes_lease",
+          "ok": true,
+          "duration_ms": 86
+        },
+        {
+          "name": "test_input_request_and_approval_via_waiting",
+          "ok": true,
+          "duration_ms": 32
+        },
+        {
+          "name": "test_task_lifecycle_cancel_from_queued",
+          "ok": true,
+          "duration_ms": 19
+        },
+        {
+          "name": "test_task_lifecycle_cancel_from_running_via_waiting_then_cancelled",
+          "ok": true,
+          "duration_ms": 81
+        },
+        {
+          "name": "test_task_lifecycle_fail_then_retry_to_succeed",
+          "ok": true,
+          "duration_ms": 64
+        },
+        {
+          "name": "test_task_lifecycle_retry_budget_exhausted",
+          "ok": true,
+          "duration_ms": 33
+        }
+      ],
+      "module_duration_ms": 360
+    },
+    {
+      "module": "tests.test_14_cli_chunking_roundtrip",
+      "pass": 6,
+      "fail": 0,
+      "tests": [
+        {
+          "name": "test_cli_init_creates_state_file",
+          "ok": true,
+          "duration_ms": 146
+        },
+        {
+          "name": "test_cli_send_chunk_size_no_text_payload_no_chunking",
+          "ok": true,
+          "duration_ms": 151
+        },
+        {
+          "name": "test_cli_send_chunk_size_triggers_chunking",
+          "ok": true,
+          "duration_ms": 207
+        },
+        {
+          "name": "test_cli_send_correlation_id_propagates",
+          "ok": true,
+          "duration_ms": 168
+        },
+        {
+          "name": "test_cli_send_default_no_chunking",
+          "ok": true,
+          "duration_ms": 161
+        },
+        {
+          "name": "test_cli_status_returns_valid_shape",
+          "ok": true,
+          "duration_ms": 144
+        }
+      ],
+      "module_duration_ms": 985
+    },
+    {
+      "module": "tests.test_15_trace_completeness",
+      "pass": 7,
+      "fail": 0,
+      "tests": [
+        {
+          "name": "test_consumer_dispatch_emits_dispatch_ok",
+          "ok": true,
+          "duration_ms": 62
+        },
+        {
+          "name": "test_consumer_dispatch_emits_dispatch_retry_on_exception",
+          "ok": true,
+          "duration_ms": 29
+        },
+        {
+          "name": "test_state_machine_emits_task_cancel",
+          "ok": true,
+          "duration_ms": 75
+        },
+        {
+          "name": "test_state_machine_emits_task_heartbeat",
+          "ok": true,
+          "duration_ms": 33
+        },
+        {
+          "name": "test_state_machine_emits_task_retry_on_reap",
+          "ok": true,
+          "duration_ms": 4092
+        },
+        {
+          "name": "test_state_machine_emits_task_submitted",
+          "ok": true,
+          "duration_ms": 10
+        },
+        {
+          "name": "test_state_machine_emits_task_transition_with_from_to",
+          "ok": true,
+          "duration_ms": 33
+        }
+      ],
+      "module_duration_ms": 4342
+    },
+    {
+      "module": "tests.test_16_mcp_bridge_tools",
+      "pass": 9,
+      "fail": 0,
+      "tests": [
+        {
+          "name": "test_envelope_send_and_receive_roundtrip_via_mcp",
+          "ok": true,
+          "duration_ms": 1143
+        },
+        {
+          "name": "test_envelope_send_invalid_envelope_returns_error",
+          "ok": true,
+          "duration_ms": 575
+        },
+        {
+          "name": "test_envelope_send_wrong_schema_version_rejected",
+          "ok": true,
+          "duration_ms": 564
+        },
+        {
+          "name": "test_task_full_lifecycle_via_mcp",
+          "ok": true,
+          "duration_ms": 2410
+        },
+        {
+          "name": "test_task_heartbeat_on_non_running_task_rejected",
+          "ok": true,
+          "duration_ms": 1752
+        },
+        {
+          "name": "test_task_submit_returns_task_id_and_state_queued",
+          "ok": true,
+          "duration_ms": 1168
+        },
+        {
+          "name": "test_task_submit_validates_required_fields",
+          "ok": true,
+          "duration_ms": 514
+        },
+        {
+          "name": "test_task_submit_validates_timeout_bounds",
+          "ok": true,
+          "duration_ms": 553
+        },
+        {
+          "name": "test_task_transition_invalid_state_rejected",
+          "ok": true,
+          "duration_ms": 1683
+        }
+      ],
+      "module_duration_ms": 10373
+    },
+    {
+      "module": "tests.test_17_codex_quota_handoff",
+      "pass": 5,
+      "fail": 0,
+      "tests": [
+        {
+          "name": "test_quota_handoff_disabled_by_default",
+          "ok": true,
+          "duration_ms": 0
+        },
+        {
+          "name": "test_quota_handoff_does_not_kill_process_and_does_not_spawn_daemon",
+          "ok": true,
+          "duration_ms": 173
+        },
+        {
+          "name": "test_quota_handoff_gate_off_falls_through_to_retry_or_deadletter",
+          "ok": true,
+          "duration_ms": 41
+        },
+        {
+          "name": "test_quota_handoff_marker_filter_in_smoke_does_not_claim_legacy",
+          "ok": true,
+          "duration_ms": 3
+        },
+        {
+          "name": "test_quota_handoff_writes_sidecar_and_error_envelope_and_deadletter",
+          "ok": true,
+          "duration_ms": 157
+        }
+      ],
+      "module_duration_ms": 382
+    },
+    {
+      "module": "tests.test_18_codex_desktop_stale_thread",
+      "pass": 7,
+      "fail": 0,
+      "tests": [
+        {
+          "name": "test_stale_thread_corrupt_marker_is_not_reachable",
+          "ok": true,
+          "duration_ms": 9
+        },
+        {
+          "name": "test_stale_thread_does_not_modify_marker_file",
+          "ok": true,
+          "duration_ms": 10
+        },
+        {
+          "name": "test_stale_thread_fresh_marker_is_reachable",
+          "ok": true,
+          "duration_ms": 27
+        },
+        {
+          "name": "test_stale_thread_marker_older_than_ttl_is_not_reachable",
+          "ok": true,
+          "duration_ms": 10
+        },
+        {
+          "name": "test_stale_thread_no_marker_does_not_false_positive",
+          "ok": true,
+          "duration_ms": 3
+        },
+        {
+          "name": "test_stale_thread_probe_disabled_by_default",
+          "ok": true,
+          "duration_ms": 0
+        },
+        {
+          "name": "test_stale_thread_probe_gate_off_writes_no_evidence",
+          "ok": true,
+          "duration_ms": 0
+        }
+      ],
+      "module_duration_ms": 68
+    }
+  ],
+  "total_pass": 129,
+  "total_fail": 0,
+  "ended_at": "2026-09-30T05:43:31Z",
+  "failed_modules": 0,
+  "all_pass": true,
+  "source_canonical": "D:\\AIOS\\_agent-hub\\v2\\reports\\test_run.json",
+  "source_sha256_per_run_started_at": "2026-09-30T05:42:53Z",
+  "r286_introduced_modules": [
+    "tests.test_09_envelope_chunking",
+    "tests.test_10_consumer_dispatch",
+    "tests.test_11_consumer_restart_lease",
+    "tests.test_12_artifact_refs_no_binary",
+    "tests.test_13_task_lifecycle",
+    "tests.test_14_cli_chunking_roundtrip",
+    "tests.test_15_trace_completeness",
+    "tests.test_16_mcp_bridge_tools",
+    "tests.test_17_codex_quota_handoff",
+    "tests.test_18_codex_desktop_stale_thread"
+  ],
+  "r286_introduced_passes": 90,
+  "r286_introduced_failures": 0,
+  "regressions_vs_pre_r286": 0,
+  "module_count": 18
+}

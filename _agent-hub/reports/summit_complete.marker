@@ -1,12 +1,12 @@
 {
   "marker": "AIOS_CORE_SPINE_SUMMIT_REACHED",
-  "timestamp_utc": "2026-10-08T15:50:42Z",
-  "timestamp_beijing": "2026-10-08T23:50:42+08:00",
+  "timestamp_utc": "2026-10-08T15:51:36Z",
+  "timestamp_beijing": "2026-10-08T23:51:36+08:00",
   "git": {
-    "head_sha": "97d5edfca0ff4212247fda95eaa0b293118fd3b1",
-    "head_short": "97d5edf",
-    "head_message": "Summit 2026-10-08: T07-T24 18 PASS + 4 verifier PASS (22/22); 4 adapters (claude/hermes/openclaw/workbuddy); 11 real bug fixes; P5 V7 FULL E2E; 22 per-test PASS.md evidence",
-    "log3": "97d5edf Summit 2026-10-08: T07-T24 18 PASS + 4 verifier PASS (22/22); 4 adapters (claude/hermes/openclaw/workbuddy); 11 real bug fixes; P5 V7 FULL E2E; 22 per-test PASS.md evidence\ndb37448 P8 full 18/18 acceptance + 3 adapters + verifier\n0b964e6 N wave: AIOS_RECONSTRUCTION P7-P9 + WorkBuddy + cross-cloud + 10 new e2e kernels (45/45 PASS)"
+    "head_sha": "7dceeb3f6f3531a38ce0a660a0f801f0aaa35e47",
+    "head_short": "7dceeb3",
+    "head_message": "Summit closeout 2026-10-08: FINAL_BASELINE doc + summit_complete marker + dashboard fallback + fixed evidence generator + dashboard refresher",
+    "log3": "7dceeb3 Summit closeout 2026-10-08: FINAL_BASELINE doc + summit_complete marker + dashboard fallback + fixed evidence generator + dashboard refresher\n97d5edf Summit 2026-10-08: T07-T24 18 PASS + 4 verifier PASS (22/22); 4 adapters (claude/hermes/openclaw/workbuddy); 11 real bug fixes; P5 V7 FULL E2E; 22 per-test PASS.md evidence\ndb37448 P8 full 18/18 acceptance + 3 adapters + verifier"
   },
   "v2_consumer": {
     "alive": true,

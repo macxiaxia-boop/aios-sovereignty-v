@@ -1,0 +1,85 @@
+{
+  "ok": true,
+  "smoke_run_id": "fdd04cd1-2fb5-4a9f-ac25-0eddaa041476",
+  "ts": "2026-09-30T01:35:50Z",
+  "host": "DESKTOP-0JKD1FQ",
+  "v2_root": "D:\\AIOS\\_agent-hub\\v2",
+  "input_envelope_id": "67e9c843-964a-4e20-8a02-e94f4557256e",
+  "input_marker": "r286_smoke_marker_DO_NOT_REMOVE",
+  "tick_totals": {
+    "claimed": 1,
+    "acked": 0,
+    "results": 1,
+    "errors": 0,
+    "deadlettered": 0,
+    "no_route": 0,
+    "skipped_nonv2": 0
+  },
+  "result_envelopes_count": 1,
+  "result_envelopes": [
+    {
+      "path": "5d5fdaca-b154-49d9-b381-75dade6e9c69__codex__claudecode__result.json",
+      "envelope": {
+        "correlation_id": "67e9c843-964a-4e20-8a02-e94f4557256e",
+        "id": "5d5fdaca-b154-49d9-b381-75dade6e9c69",
+        "idempotency_key": "bd532aa06829188289bf09c7120015b952e0ca28b4f6d46a77313c96e2a4bd8d",
+        "in_reply_to": "67e9c843-964a-4e20-8a02-e94f4557256e",
+        "message_type": "result",
+        "payload": {
+          "output": {
+            "ok": true,
+            "received_id": "67e9c843-964a-4e20-8a02-e94f4557256e",
+            "received_message_type": "message",
+            "received_recipient": "codex",
+            "received_sender": "claudecode",
+            "transport": "passthrough"
+          }
+        },
+        "recipient": "claudecode",
+        "retry_count": 0,
+        "schema_version": "1.0",
+        "sender": "codex",
+        "timestamp": "2026-09-30T01:35:50Z",
+        "ttl_ms": 300000
+      }
+    }
+  ],
+  "ack_envelopes_count": 1,
+  "ack_envelopes": [
+    {
+      "path": "ded0f5fd-e0ef-468e-a923-c30d24319710__codex__claudecode__ack.json",
+      "envelope": {
+        "correlation_id": "67e9c843-964a-4e20-8a02-e94f4557256e",
+        "id": "ded0f5fd-e0ef-468e-a923-c30d24319710",
+        "idempotency_key": "358dec1390357c0ecbe74b48ffbd68a5b4248c8181395788fbc5179b4ac32da8",
+        "in_reply_to": "67e9c843-964a-4e20-8a02-e94f4557256e",
+        "message_type": "ack",
+        "payload": {
+          "ack_of": "67e9c843-964a-4e20-8a02-e94f4557256e",
+          "note": "v2_consumer_received"
+        },
+        "recipient": "claudecode",
+        "retry_count": 0,
+        "schema_version": "1.0",
+        "sender": "codex",
+        "timestamp": "2026-09-30T01:35:50Z",
+        "ttl_ms": 300000
+      }
+    }
+  ],
+  "legacy_stranded_unchanged": [
+    "messages\\inbox\\41afc2c3-8fd3-4c80-80f2-62943eea25fd__codex__claudecode__ack.json",
+    "messages\\outbox\\19334d04-08f8-4d3d-9f94-4eab28d336ce__claudecode__codex__ack.json",
+    "messages\\outbox\\0fbf6f33-4eb9-47b6-9400-1c2914b2d72f__codex__claudecode__ack.json"
+  ],
+  "legacy_stranded_count": 3,
+  "ai_os_v2_dispatch_asserted": true,
+  "ack_separate_from_result": true,
+  "cleaned_files": [],
+  "legacy_stranded_after_cleanup": [
+    "messages\\inbox\\41afc2c3-8fd3-4c80-80f2-62943eea25fd__codex__claudecode__ack.json",
+    "messages\\outbox\\19334d04-08f8-4d3d-9f94-4eab28d336ce__claudecode__codex__ack.json",
+    "messages\\outbox\\0fbf6f33-4eb9-47b6-9400-1c2914b2d72f__codex__claudecode__ack.json"
+  ],
+  "legacy_stranded_intact": true
+}

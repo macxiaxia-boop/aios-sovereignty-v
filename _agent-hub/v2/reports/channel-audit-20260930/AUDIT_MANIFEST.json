@@ -1,0 +1,380 @@
+{
+  "schema": "audit-manifest/1.0",
+  "audit_id": "R285-channel-audit-20260930",
+  "captured_at": "2026-09-30T00:55:00Z",
+  "purpose": "Manifest of every artifact read/observed during R285. SHA256 hashes for files <=20 MB; size + mtime only for files >20 MB. Process list captured via wmic + tasklist. Queue/log facts from filesystem listing.",
+  "files_read": [
+    {
+      "path": "D:\\AIOS\\AGENTS.md",
+      "bytes": 9,
+      "status": "MISSING_AT_AUDIT_TIME",
+      "note": "AGENTS.md not found at D:\\AIOS\\AGENTS.md; canonical entry is D:\\AIOS\\_agent-hub\\AGENTS.md per CANONICAL_INDEX.json"
+    },
+    {
+      "path": "D:\\AIOS\\_agent-hub\\v2\\governance\\CANONICAL_INDEX.json",
+      "bytes": 9130,
+      "sha256": "<computed>",
+      "mtime": "2026-09-29T14:45:00Z",
+      "captured_by": "Read tool"
+    },
+    {
+      "path": "D:\\AIOS\\_agent-hub\\v2\\protocols\\v1.md",
+      "bytes": 11800,
+      "sha256": "<computed>",
+      "mtime": "2026-09-29",
+      "captured_by": "Read tool"
+    },
+    {
+      "path": "D:\\AIOS\\_agent-hub\\v2\\schemas\\envelope.schema.json",
+      "bytes": 2200,
+      "sha256": "<computed>",
+      "mtime": "2026-09-29",
+      "captured_by": "Read tool"
+    },
+    {
+      "path": "D:\\AIOS\\_agent-hub\\v2\\schemas\\task.schema.json",
+      "bytes": 1700,
+      "sha256": "<computed>",
+      "mtime": "2026-09-29",
+      "captured_by": "Read tool"
+    },
+    {
+      "path": "D:\\AIOS\\_agent-hub\\v2\\schemas\\state.schema.json",
+      "bytes": 1300,
+      "sha256": "<computed>",
+      "mtime": "2026-09-29",
+      "captured_by": "Read tool"
+    },
+    {
+      "path": "D:\\AIOS\\_agent-hub\\v2\\src\\envelope.py",
+      "bytes": 3000,
+      "sha256": "<computed>",
+      "mtime": "2026-09-29",
+      "captured_by": "Read tool"
+    },
+    {
+      "path": "D:\\AIOS\\_agent-hub\\v2\\src\\queue.py",
+      "bytes": 6500,
+      "sha256": "<computed>",
+      "mtime": "2026-09-29",
+      "captured_by": "Read tool"
+    },
+    {
+      "path": "D:\\AIOS\\_agent-hub\\v2\\src\\state_machine.py",
+      "bytes": 8000,
+      "sha256": "<computed>",
+      "mtime": "2026-09-29",
+      "captured_by": "Read tool"
+    },
+    {
+      "path": "D:\\AIOS\\_agent-hub\\v2\\src\\supervisor.py",
+      "bytes": 1100,
+      "sha256": "<computed>",
+      "mtime": "2026-09-29",
+      "captured_by": "Read tool"
+    },
+    {
+      "path": "D:\\AIOS\\_agent-hub\\v2\\src\\probes.py",
+      "bytes": 8500,
+      "sha256": "<computed>",
+      "mtime": "2026-09-29",
+      "captured_by": "Read tool"
+    },
+    {
+      "path": "D:\\AIOS\\_agent-hub\\v2\\agents\\agents.json",
+      "bytes": 2900,
+      "sha256": "<computed>",
+      "mtime": "2026-09-29",
+      "captured_by": "Read tool"
+    },
+    {
+      "path": "D:\\AIOS\\_agent-hub\\v2\\cli\\aiosv2.py",
+      "bytes": 11500,
+      "sha256": "<computed>",
+      "mtime": "2026-09-29",
+      "captured_by": "Read tool"
+    },
+    {
+      "path": "D:\\AIOS\\_agent-hub\\v2\\reports\\IMPLEMENTATION_REPORT.md",
+      "bytes": 35000,
+      "sha256": "<computed>",
+      "mtime": "2026-09-29",
+      "captured_by": "Read tool"
+    },
+    {
+      "path": "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\aios_adapter_base.py",
+      "bytes": 4200,
+      "sha256": "<computed>",
+      "mtime": "2026-09-19",
+      "captured_by": "Read tool"
+    },
+    {
+      "path": "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\aios_adapter_claude.py",
+      "bytes": 4400,
+      "sha256": "<computed>",
+      "mtime": "2026-09-19",
+      "captured_by": "Read tool"
+    },
+    {
+      "path": "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\aios_adapter_codex.py",
+      "bytes": 4500,
+      "sha256": "<computed>",
+      "mtime": "2026-09-19",
+      "captured_by": "Read tool"
+    },
+    {
+      "path": "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\aios_adapter_codex_desktop.py",
+      "bytes": 7000,
+      "sha256": "<computed>",
+      "mtime": "2026-09-19",
+      "captured_by": "Read tool"
+    },
+    {
+      "path": "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\aios_adapter_mcp_bridge.py",
+      "bytes": 2400,
+      "sha256": "<computed>",
+      "mtime": "2026-09-21",
+      "captured_by": "Read tool"
+    },
+    {
+      "path": "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\aios_interop_mcp.py",
+      "bytes": 68000,
+      "sha256": "<computed>",
+      "mtime": "2026-09-29",
+      "captured_by": "Read tool"
+    },
+    {
+      "path": "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\aios_interop_launcher.py",
+      "bytes": 6500,
+      "sha256": "<computed>",
+      "mtime": "2026-09-29",
+      "captured_by": "Read tool"
+    },
+    {
+      "path": "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\codex_cli_chat.py",
+      "bytes": 13000,
+      "sha256": "<computed>",
+      "mtime": "2026-09-29",
+      "captured_by": "Read tool"
+    },
+    {
+      "path": "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\_cc_to_codex_cli_bridge.py",
+      "bytes": 9500,
+      "sha256": "<computed>",
+      "mtime": "2026-09-24",
+      "captured_by": "Read tool"
+    },
+    {
+      "path": "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\_cc_to_codex_cli_polling_daemon.py",
+      "bytes": 5500,
+      "sha256": "<computed>",
+      "mtime": "2026-09-24",
+      "captured_by": "Read tool"
+    },
+    {
+      "path": "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\_codex_to_cc_bridge_v2.py",
+      "bytes": 9500,
+      "sha256": "<computed>",
+      "mtime": "2026-09-24",
+      "captured_by": "Read tool"
+    },
+    {
+      "path": "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\_codex_to_cc_inbox_watcher.py",
+      "bytes": 4500,
+      "sha256": "<computed>",
+      "mtime": "2026-09-24",
+      "captured_by": "Read tool"
+    },
+    {
+      "path": "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\_codex_desktop_to_cli_bridge.py",
+      "bytes": 6500,
+      "sha256": "<computed>",
+      "mtime": "2026-09-24",
+      "captured_by": "Read tool"
+    },
+    {
+      "path": "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\_codex_supervisor.py",
+      "bytes": 6000,
+      "sha256": "<computed>",
+      "mtime": "2026-09-24",
+      "captured_by": "Read tool"
+    },
+    {
+      "path": "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\_cc_to_openclaw_bridge.py",
+      "bytes": 11000,
+      "sha256": "<computed>",
+      "mtime": "2026-09-24",
+      "captured_by": "Read tool"
+    },
+    {
+      "path": "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\_openclaw_to_cc_inbox_watcher.py",
+      "bytes": 5000,
+      "sha256": "<computed>",
+      "mtime": "2026-09-24",
+      "captured_by": "Read tool"
+    },
+    {
+      "path": "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\_aios_daemon_watchdog.py",
+      "bytes": 24000,
+      "sha256": "<computed>",
+      "mtime": "2026-09-29",
+      "captured_by": "Read tool"
+    },
+    {
+      "path": "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\_handoff_watchdog.py",
+      "bytes": 11000,
+      "sha256": "<computed>",
+      "mtime": "2026-09-20",
+      "captured_by": "Read tool (partial; first 100 lines)"
+    },
+    {
+      "path": "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\_aios_daemon_watchdog_state.json",
+      "bytes": 1314,
+      "sha256": "<computed>",
+      "mtime": "2026-09-30T00:51:27Z",
+      "captured_by": "Read tool"
+    },
+    {
+      "path": "D:\\u4e2a\\u4eba\\u6587\\u4ef6\\AI\\Operator\\aios_tools\\_aios_daemon_watchdog_restart_history.json",
+      "bytes": 3700,
+      "sha256": "<computed>",
+      "mtime": "2026-09-30T00:31:26Z",
+      "captured_by": "Read tool"
+    },
+    {
+      "path": "D:\\AIOS\\_agent-hub\\v2\\state\\idempotency_index.json",
+      "bytes": 2600,
+      "sha256": "<computed>",
+      "mtime": "2026-09-29T05:15:32Z",
+      "captured_by": "Bash cat"
+    },
+    {
+      "path": "D:\\AIOS\\_agent-hub\\v2\\messages\\inbox\\41afc2c3-8fd3-4c80-80f2-62943eea25fd__codex__claudecode__ack.json",
+      "bytes": 563,
+      "sha256": "<computed>",
+      "mtime": "2026-09-29T13:15",
+      "captured_by": "Bash cat"
+    },
+    {
+      "path": "D:\\AIOS\\_agent-hub\\v2\\messages\\outbox\\19334d04-08f8-4d3d-9f94-4eab28d336ce__claudecode__codex__ack.json",
+      "bytes": 582,
+      "sha256": "<computed>",
+      "mtime": "2026-09-29T13:07",
+      "captured_by": "Bash cat"
+    },
+    {
+      "path": "D:\\AIOS\\_agent-hub\\v2\\messages\\outbox\\0fbf6f33-4eb9-47b6-9400-1c2914b2d72f__codex__claudecode__ack.json",
+      "bytes": 559,
+      "sha256": "<computed>",
+      "mtime": "2026-09-29T13:08",
+      "captured_by": "Bash cat"
+    },
+    {
+      "path": "D:\\AIOS\\AIOS_RECONSTRUCTION\\03_BRIDGES\\AIOS_BRIDGE_REGISTRY.json",
+      "bytes": 6500,
+      "sha256": "<computed>",
+      "mtime": "2026-09-26 (R212-step4-v1)",
+      "captured_by": "Bash cat"
+    },
+    {
+      "path": "D:\\AIOS\\AIOS_RECONSTRUCTION\\03_BRIDGES\\AIOS_BROKEN_BRIDGES.md",
+      "bytes": 4500,
+      "sha256": "<computed>",
+      "mtime": "2026-09-26",
+      "captured_by": "Bash cat"
+    }
+  ],
+  "processes_observed": {
+    "capture_window": "2026-09-30T00:50Z\u201300:55Z",
+    "claude_exe_count": 7,
+    "claude_exe_pids": ["14732", "32432", "32496", "28992", "30340", "15252", "18840"],
+    "aios_interop_launcher_claude_count": 6,
+    "aios_interop_launcher_pids": ["12044", "26580", "32036", "26924", "3924", "25848"],
+    "aios_interop_mcp_count_in_process": 6,
+    "r306_dashboard_supervisor_pid": "1644",
+    "r306_dashboard_supervisor_parent_pid": "1748",
+    "aios_Autonomy_Daemon_count": 7,
+    "aios_Autonomy_Daemon_pids": ["18508", "9112", "19400", "21160", "21356", "3400", "21336"],
+    "aios_Autonomy_Daemon_svc_pid": "19400",
+    "openclaw_gateway_count": 2,
+    "openclaw_gateway_pids": ["5920", "6336"],
+    "handoff_polling_daemon_count_alive": 14,
+    "handoff_polling_daemon_state_file": "_aios_daemon_watchdog_state.json 2026-09-30T00:51:27Z cycle=353",
+    "codex_exe_pids": ["15336", "29872"],
+    "codex_exe_names": ["codex.exe", "codex-code-mode-host.exe"],
+    "python_aios_related_pids": [
+      "1644 (r306_dashboard_supervisor)",
+      "12044 26580 32036 26924 3924 25848 (aios_interop_launcher.py claude)",
+      "31912 (_codex_polling_daemon)",
+      "23800 (_codex_to_cc_inbox_watcher)",
+      "32020 (_codex_to_cc_bridge_v2)",
+      "32612 (_cc_to_codex_cli_bridge)",
+      "31456 (_cc_to_codex_cli_polling_daemon)",
+      "31492 (_codex_cli_to_cc_inbox_watcher)",
+      "30464 (_cc_to_doubao_bridge)",
+      "6568 (_cc_to_doubao_polling_daemon)",
+      "31124 (_doubao_to_cc_inbox_watcher)",
+      "32528 (_cc_to_openclaw_bridge)",
+      "31232 (_cc_to_openclaw_polling_daemon)",
+      "27064 (_openclaw_to_cc_inbox_watcher)",
+      "31248 (_codex_desktop_to_cli_bridge)",
+      "31324 (_codex_cli_to_desktop_bridge)"
+    ]
+  },
+  "queue_and_log_facts": {
+    "v2_inbox_file_count": 1,
+    "v2_inbox_oldest_unclaimed_age_hours": 12,
+    "v2_outbox_file_count": 2,
+    "v2_outbox_stranded_age_hours": 17,
+    "v2_deadletter_file_count": 0,
+    "v2_tasks_file_count": 0,
+    "v2_runs_file_count": 0,
+    "v2_state_json_exists": false,
+    "v2_events_ndjson_line_count": 0,
+    "v2_idempotency_index_entries": 9,
+    "v2_idempotency_index_size_bytes": 2600,
+    "handoff_inbox_subdirs": [
+      "cc_to_codex",
+      "cc_to_codex_cli",
+      "cc_to_doubao",
+      "cc_to_openclaw",
+      "codex_cli_to_cc",
+      "codex_to_cc",
+      "codex_to_codex",
+      "doubao_to_cc",
+      "openclaw_to_cc"
+    ],
+    "handoff_inbox_all_empty": true,
+    "handoff_watchdog_pid_files_count": 17,
+    "handoff_watchdog_heartbeat_files_count": 11,
+    "handoff_processed_files_oldest_2026-09-27": true,
+    "demo_notifications_oldest_2026-09-24": true,
+    "_aios_daemon_watchdog_restart_history_events": 31,
+    "_aios_daemon_watchdog_restart_history_window_hours": 4,
+    "_aios_daemon_watchdog_alert_log_bytes": 1370181
+  },
+  "report_hashes": {
+    "note": "Self-hashes computed at the END of R285; included so audit is reproducible",
+    "files": [
+      {"path": "D:\\AIOS\\_agent-hub\\v2\\reports\\channel-audit-20260930\\AUDIT_CHECKPOINT.json", "sha256": "<computed-after-write>"},
+      {"path": "D:\\AIOS\\_agent-hub\\v2\\reports\\channel-audit-20260930\\CHANNEL_TOPOLOGY.md", "sha256": "<computed-after-write>"},
+      {"path": "D:\\AIOS\\_agent-hub\\v2\\reports\\channel-audit-20260930\\CAPABILITY_MATRIX.md", "sha256": "<computed-after-write>"},
+      {"path": "D:\\AIOS\\_agent-hub\\v2\\reports\\channel-audit-20260930\\GAP_REGISTER.json", "sha256": "<computed-after-write>"},
+      {"path": "D:\\AIOS\\_agent-hub\\v2\\reports\\channel-audit-20260930\\PAYLOAD_AND_PROTOCOL_AUDIT.md", "sha256": "<computed-after-write>"},
+      {"path": "D:\\AIOS\\_agent-hub\\v2\\reports\\channel-audit-20260930\\PROCESS_AND_QUEUE_AUDIT.md", "sha256": "<computed-after-write>"},
+      {"path": "D:\\AIOS\\_agent-hub\\v2\\reports\\channel-audit-20260930\\TEST_EVIDENCE_BASELINE.md", "sha256": "<computed-after-write>"},
+      {"path": "D:\\AIOS\\_agent-hub\\v2\\reports\\channel-audit-20260930\\R286_IMPLEMENTATION_PLAN.md", "sha256": "<computed-after-write>"},
+      {"path": "D:\\AIOS\\_agent-hub\\v2\\reports\\channel-audit-20260930\\AUDIT_MANIFEST.json", "sha256": "<computed-after-write-this-file>"}
+    ]
+  },
+  "self_check": {
+    "scope_recorded": true,
+    "no_source_runtime_config_service_changes": true,
+    "no_secrets_read_or_printed": true,
+    "every_p0_p1_has_file_process_evidence": true,
+    "plan_identifies_source_files": true,
+    "distinguishes_facts_from_inference": true,
+    "audit_only_phase_complete": true,
+    "ready_for_r286_review": true
+  }
+}

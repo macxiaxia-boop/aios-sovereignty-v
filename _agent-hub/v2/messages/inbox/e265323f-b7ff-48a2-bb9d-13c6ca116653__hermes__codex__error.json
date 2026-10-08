@@ -1,0 +1,18 @@
+{
+  "correlation_id": "e82ad3a4-2d36-4e0a-9891-1862f19930e9",
+  "id": "e265323f-b7ff-48a2-bb9d-13c6ca116653",
+  "idempotency_key": "75a165fcdef87245fd6eeca4fd65dec2ffc89948f237da5c20900c5126a6a7f7",
+  "in_reply_to": "e82ad3a4-2d36-4e0a-9891-1862f19930e9",
+  "message_type": "error",
+  "payload": {
+    "code": "DISPATCH_FAILED",
+    "duration_ms": 0,
+    "message": "RuntimeError: simulated dispatcher crash"
+  },
+  "recipient": "codex",
+  "retry_count": 0,
+  "schema_version": "1.0",
+  "sender": "hermes",
+  "timestamp": "2026-10-08T15:41:56Z",
+  "ttl_ms": 300000
+}

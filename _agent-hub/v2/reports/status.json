@@ -1,0 +1,20 @@
+{
+  "version": "v2-2026-09-29",
+  "captured_at": "2026-09-29T13:00:00Z",
+  "captured_by": "static-audit",
+  "audit_note": "Synthesized baseline (counters=0) — see audit_note in health.json for why no live CLI invocation was possible in this session.",
+  "v2_root": "D:\\AIOS\\_agent-hub\\v2",
+  "tasks_total": 0,
+  "tasks_by_state": {
+    "queued": 0,
+    "running": 0,
+    "waiting": 0,
+    "succeeded": 0,
+    "failed": 0,
+    "cancelled": 0
+  },
+  "inbox_count": 0,
+  "outbox_count": 0,
+  "agents_in_registry": 5,
+  "state_file_exists": false
+}

@@ -1,0 +1,176 @@
+{
+  "schema": 2,
+  "audit_id": "system-audit-20260929-R282",
+  "captured_at": "2026-09-29T14:45:00Z",
+  "purpose": "Single entry point every AI should consult first. Resolves where shared identity, v2 protocol, schemas, registry, project entry, and current audit live. Use this index, not guesswork. R281.2: canonical protocol registry is ONLY governance/PROTOCOL_REGISTRY.json; tests/fixtures/ and tools/ never participate in current parsing. R282: 7 governance/decisions/ records may serve as current pointers when no runtime file is legitimate; see decisions/ sub-block below.",
+  "shared_identity": {
+    "AGENTS": {
+      "path": "D:\\AIOS\\_agent-hub\\AGENTS.md",
+      "propagates_to": [
+        "C:\\Users\\xinzh\\.codex\\AGENTS.md (via install-links.ps1 / sync-from-hub.ps1)"
+      ],
+      "version": "2026-09-28"
+    },
+    "CLAUDE": {
+      "path": "D:\\AIOS\\_agent-hub\\CLAUDE.md",
+      "propagates_to": [
+        "C:\\Users\\xinzh\\.claude\\CLAUDE.md"
+      ],
+      "version": "2026-09-28"
+    },
+    "MEMORY": {
+      "path": "D:\\AIOS\\_agent-hub\\MEMORY.md",
+      "version": "2026-09-28"
+    },
+    "SOUL": {
+      "path": "D:\\AIOS\\_agent-hub\\SOUL.md",
+      "propagates_to": [
+        "C:\\Users\\xinzh\\.workbuddy\\SOUL.md (junction)"
+      ],
+      "version": "2026-09-28"
+    },
+    "USER": {
+      "path": "D:\\AIOS\\_agent-hub\\USER.md",
+      "version": "2026-09-28"
+    },
+    "BOOTSTRAP": {
+      "path": "D:\\AIOS\\_relinked\\workbuddy\\BOOTSTRAP.md",
+      "version": "2026-09-29",
+      "note": "Only for WorkBuddy; not propagated elsewhere. R282.1: runtime file MISSING on disk (was current at R282 capture 1089 B sha256 4b154cb7...); pointer re-anchored to decision record R282.1_DEC_01_shared_identity_bootstrap.md (governance/decisions/)."
+    },
+    "IDENTITY": {
+      "path": "D:\\AIOS\\_relinked\\workbuddy\\IDENTITY.md",
+      "version": "2026-09-28",
+      "note": "WorkBuddy identity; install-links.ps1 also points IDENTITY.md at _agent-hub/SOUL.md. R282.1: runtime file MISSING on disk (was current at R282 capture 2745 B sha256 084f0b7c..., byte-equal to SOUL.md); pointer re-anchored to existing R282_DEC_06_shared_identity_identity.md (promoted candidate -> current)."
+    }
+  },
+  "v2_protocol_stack": {
+    "protocol_spec": "D:\\AIOS\\_agent-hub\\v2\\protocols\\v1.md",
+    "schemas": {
+      "envelope": "D:\\AIOS\\_agent-hub\\v2\\schemas\\envelope.schema.json",
+      "task": "D:\\AIOS\\_agent-hub\\v2\\schemas\\task.schema.json",
+      "state": "D:\\AIOS\\_agent-hub\\v2\\schemas\\state.schema.json"
+    },
+    "agent_registry": "D:\\AIOS\\_agent-hub\\v2\\agents\\agents.json",
+    "paths_ssot": "D:\\AIOS\\_agent-hub\\v2\\src\\paths.py",
+    "cli": {
+      "wrapper": "D:\\AIOS\\_agent-hub\\v2\\cli\\aiosv2.cmd",
+      "script": "D:\\AIOS\\_agent-hub\\v2\\cli\\aiosv2.py"
+    },
+    "supervisor": "D:\\AIOS\\_agent-hub\\v2\\src\\supervisor.py",
+    "tests": "D:\\AIOS\\_agent-hub\\v2\\tests\\run_all_tests.py",
+    "implementation_report": "D:\\AIOS\\_agent-hub\\v2\\reports\\IMPLEMENTATION_REPORT.md",
+    "changelog": "D:\\AIOS\\_agent-hub\\v2\\CHANGELOG.md"
+  },
+  "reconstruction_registry": {
+    "root": "D:\\AIOS\\AIOS_RECONSTRUCTION\\",
+    "system_registry": "D:\\AIOS\\AIOS_RECONSTRUCTION\\01_REGISTRY\\AIOS_SYSTEM_REGISTRY.json",
+    "agent_registry": "D:\\AIOS\\AIOS_RECONSTRUCTION\\01_REGISTRY\\AIOS_AGENT_REGISTRY.json",
+    "skill_registry": "D:\\AIOS\\AIOS_RECONSTRUCTION\\01_REGISTRY\\AIOS_SKILL_REGISTRY.json",
+    "mcp_registry": "D:\\AIOS\\AIOS_RECONSTRUCTION\\01_REGISTRY\\AIOS_MCP_REGISTRY.json",
+    "tool_registry": "D:\\AIOS\\AIOS_RECONSTRUCTION\\01_REGISTRY\\AIOS_TOOL_REGISTRY.json (NAMESPACE ANOMALY)",
+    "canonical_candidates": "D:\\AIOS\\AIOS_RECONSTRUCTION\\02_CANONICAL\\AIOS_CANONICAL_CANDIDATES.json",
+    "bridge_registry": "D:\\AIOS\\AIOS_RECONSTRUCTION\\03_BRIDGES\\AIOS_BRIDGE_REGISTRY.json",
+    "broken_bridges": "D:\\AIOS\\AIOS_RECONSTRUCTION\\03_BRIDGES\\AIOS_BROKEN_BRIDGES.md",
+    "capability_graph": "D:\\AIOS\\AIOS_RECONSTRUCTION\\04_CAPABILITY_GRAPH\\AIOS_CAPABILITY_GRAPH.json",
+    "radar": "D:\\AIOS\\AIOS_RECONSTRUCTION\\08_RADAR\\*.json (7 files)",
+    "reality_map": "D:\\AIOS\\AIOS_RECONSTRUCTION\\00_REALITY\\AIOS_REALITY_MAP.json",
+    "progress": "D:\\AIOS\\AIOS_RECONSTRUCTION\\AIOS_RECONSTRUCTION_PROGRESS.json"
+  },
+  "projects": {
+    "cloudtech_saas": {
+      "root": "D:\\AIOS\\cloudtech-saas\\",
+      "role": "WinSW-managed Windows service wrapper around CloudTech V22 health monitor",
+      "install": "D:\\AIOS\\cloudtech-saas\\install.cmd",
+      "uninstall": "D:\\AIOS\\cloudtech-saas\\uninstall.cmd",
+      "direct_watchdog": "D:\\AIOS\\cloudtech-saas\\start_v22_watchdog.bat",
+      "service_descriptor": "D:\\AIOS\\cloudtech-saas\\cloudtech-saas.xml.bak_C_1790215941 (RENAMED; install.cmd broken)",
+      "logs_dir": "D:\\AIOS\\cloudtech-saas\\logs\\ (empty)",
+      "real_bridge_code": "D:\\AIOS\\_workzone\\src\\_aios_cloudtech_bridge.py (out-of-tree)",
+      "python_runtime": "D:\\AIOS\\_venv312\\Scripts\\python.exe (hardcoded path)"
+    },
+    "swarmclaw": {
+      "root": "D:\\AIOS\\_patches\\swarmclaw\\",
+      "files": ["connector-platform-icon.tsx", "next.config.ts"],
+      "note": "out-of-scope for this audit; only the patch fragments are inside AIOS"
+    }
+  },
+  "current_audit": {
+    "root": "D:\\AIOS\\_agent-hub\\v2\\reports\\system-audit-20260929\\",
+    "manifest": "D:\\AIOS\\_agent-hub\\v2\\reports\\system-audit-20260929\\AUDIT_MANIFEST.json",
+    "inventory_csv": "D:\\AIOS\\_agent-hub\\v2\\reports\\system-audit-20260929\\FILE_INVENTORY.csv",
+    "checkpoint": "D:\\AIOS\\_agent-hub\\v2\\reports\\system-audit-20260929\\SCAN_CHECKPOINT.json",
+    "reports": [
+      "INVENTORY_SUMMARY.md",
+      "DUPLICATE_ANALYSIS.md",
+      "PROTOCOL_AUDIT.md",
+      "CLOUDTECH_PROJECT_MAP.md",
+      "DESKTOP_AUDIT.md",
+      "AGENT_FOOTPRINTS.md",
+      "STORAGE_HOTSPOTS.md",
+      "MIGRATION_PLAN.md",
+      "AUDIT_MANIFEST.json",
+      "FILE_INVENTORY.csv"
+    ],
+    "governance": {
+      "canonical_registry_only": "D:\\AIOS\\_agent-hub\\v2\\governance\\PROTOCOL_REGISTRY.json",
+      "canonical_registry_note": "R281.2: the SINGLE canonical protocol registry. No file under governance/tools/ or governance/tests/ participates in current_by_family resolution.",
+      "tools": {
+        "dir": "D:\\AIOS\\_agent-hub\\v2\\governance\\tools\\",
+        "files": [
+          "compute_protocol_hashes.py",
+          "build_protocol_registry.py"
+        ],
+        "note": "Maintenance utilities. NOT canonical; not read as protocol truth."
+      },
+      "tests": {
+        "dir": "D:\\AIOS\\_agent-hub\\v2\\governance\\tests\\",
+        "fixtures_dir": "D:\\AIOS\\_agent-hub\\v2\\governance\\tests\\fixtures\\",
+        "files": [
+          "fixtures/TEST_ONLY_protocol_registry.json"
+        ],
+        "readme": "D:\\AIOS\\_agent-hub\\v2\\governance\\tests\\README.md",
+        "note": "Test isolation only. NEVER canonical. NEVER consulted for current_by_family."
+      },
+      "root_files": [
+        "PLACEMENT_RULES.md",
+        "PROTOCOL_REGISTRY.json",
+        "CANONICAL_INDEX.json (this file)",
+        "RETENTION_POLICY.md",
+        "CLEANUP_CANDIDATES.json",
+        "HOUSEKEEPER_REPORT.json",
+        "housekeeper.py",
+        "scan_inventory.py",
+        "build_assets.py",
+        "protocol_registry.py"
+      ],
+      "decisions": {
+        "dir": "D:\\AIOS\\_agent-hub\\v2\\governance\\decisions\\",
+        "r282_records": [
+          "R282_DEC_01_bridge_claudecode_openclaw.md",
+          "R282_DEC_02_chatgpt_bridge_task_protocol.md",
+          "R282_DEC_03_cloudtech_xml_winsw.md",
+          "R282_DEC_04_reconstruction_broken_bridges_report.md",
+          "R282_DEC_05_reconstruction_tool_registry.md",
+          "R282_DEC_06_shared_identity_identity.md",
+          "R282_DEC_07_v2_health_snapshot.md"
+        ],
+        "r282_1_records": [
+          "R282.1_DEC_01_shared_identity_bootstrap.md"
+        ],
+        "note": "R282 governance decisions. May serve as current_by_family pointers when (a) no runtime file is legitimate (status=current), or (b) runtime file exists and is current (status=candidate, evidence-only). R282.1 (drift repair): a concurrent WorkBuddy relink removed two runtime files (_relinked/workbuddy/BOOTSTRAP.md and _relinked/workbuddy/IDENTITY.md); shared-identity-bootstrap pointer re-anchored to r282.1-decision-shared-identity-bootstrap; shared-identity-identity pointer re-anchored to r282-decision-shared-identity-identity (promoted candidate -> current). See PROTOCOL_AUDIT.md §9 and DRIFT_INCIDENT_R282_1.md."
+      }
+    },
+    "r282_repair_plan": "D:\\AIOS\\_agent-hub\\v2\\reports\\system-audit-20260929\\CLOUDTECH_REPAIR_PLAN.md"
+  },
+  "memory": {
+    "today": "D:\\AIOS\\_agent-hub\\memory\\2026-09-29.md",
+    "index": "D:\\AIOS\\_agent-hub\\MEMORY.md",
+    "today_note": "R282.1 (drift repair): the append-only target D:\\AIOS\\_agent-hub\\memory\\2026-09-29.md is currently MISSING on disk (the directory exists but is empty; git status reports AD for prior files). Daily memory append is BLOCKED for this audit round. Do NOT recreate the file. See DRIFT_INCIDENT_R282_1.md §3."
+  },
+  "operator_paths_out_of_scope": {
+    "aios_tools_symlink": "D:\\AIOS\\aios_tools -> D:\\个人文件\\AI\\Operator\\aios_tools",
+    "aios_venv_symlink": "D:\\AIOS\\aios_venv -> D:\\个人文件\\AI\\Operator\\aios_venv",
+    "note": "operator-owned; never modify in this round"
+  }
+}

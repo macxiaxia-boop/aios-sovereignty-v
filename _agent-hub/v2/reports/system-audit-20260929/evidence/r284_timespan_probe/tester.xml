@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- R284 TimeSpan probe: verify which resetfailure syntax WinSW 2.12 accepts -->
+<service>
+  <id>CloudTechR284TimeSpanProbe</id>
+  <name>R284 TimeSpan Probe</name>
+  <description>Probe only - do NOT install</description>
+  <executable>D:\AIOS\_relinked\workbuddy\binaries\python\versions\3.13.12\python.exe</executable>
+  <arguments>-c "import sys; sys.exit(0)"</arguments>
+  <workingdirectory>D:\AIOS\cloudtech-saas\_r284_timespan_test</workingdirectory>
+  <log mode="roll-by-size"><sizeThreshold>10240</sizeThreshold><keepFiles>1</keepFiles></log>
+  <logpath>D:\AIOS\cloudtech-saas\_r284_timespan_test\logs</logpath>
+  <startmode>Manual</startmode>
+  <onfailure action="restart" delay="30 sec"/>
+  <onfailure action="restart" delay="60 sec"/>
+  <resetfailureafter>2 hour</resetfailureafter>
+</service>

@@ -1,0 +1,16 @@
+{
+  "id": "5e15bccf-43b7-404b-ad68-416b68751a7d",
+  "idempotency_key": "31d80ba3a8f2de689c351f65b5b938fa5b2a10ac517fe6e80ac19ff9da021eda",
+  "message_type": "task",
+  "payload": {
+    "objective": "P5 final: write HELLO_FROM_ADAPTER to p5_real/out.txt and exit",
+    "ts": "now",
+    "workdir": "D:\\AIOS\\_agent-hub\\reports\\p5_real"
+  },
+  "recipient": "claudecode",
+  "retry_count": 0,
+  "schema_version": "1.0",
+  "sender": "codex",
+  "timestamp": "2026-10-08T14:35:23Z",
+  "ttl_ms": 300000
+}

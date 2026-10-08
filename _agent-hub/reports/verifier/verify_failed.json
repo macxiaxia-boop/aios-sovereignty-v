@@ -1,0 +1,51 @@
+{
+  "verify_ok": false,
+  "envelope_id": "verify-1791474385",
+  "checks": [
+    {
+      "name": "adapter_call_no_exception",
+      "ok": true,
+      "evidence": {
+        "transport": "openclaw_http",
+        "adapter": "openclaw",
+        "duration_ms": 15000
+      }
+    },
+    {
+      "name": "openclaw_transport",
+      "ok": true,
+      "evidence": {
+        "transport": "openclaw_http"
+      }
+    },
+    {
+      "name": "openclaw_independent_healthz",
+      "ok": true,
+      "evidence": {
+        "status": 200,
+        "body": "{\"ok\":true,\"status\":\"live\"}"
+      }
+    },
+    {
+      "name": "openclaw_body_matches_adapter",
+      "ok": false,
+      "evidence": {
+        "independent_body": {
+          "ok": true,
+          "status": "live"
+        },
+        "adapter_body": null
+      }
+    },
+    {
+      "name": "openclaw_expected_status",
+      "ok": false,
+      "evidence": {
+        "expected": 200,
+        "got": null
+      }
+    }
+  ],
+  "duration_ms": 16649,
+  "verified_at": 1791474385
+}

@@ -1,0 +1,255 @@
+{
+  "schema": "r286-change-manifest/1.0",
+  "audit_id": "R286-channel-audit-20260930",
+  "captured_at": "2026-09-30T05:43:31Z",
+  "r286_round": "R286.A-C",
+  "scope_status": "Stages 0-2 IMPLEMENTED. Stage 3 handoff shim / cutover NOT implemented. Stages 4-6 (sunset legacy daemons, launcher collapse, bridge registry upgrade) NOT executed. 7-day soak window NOT started. No v2 resident consumer/supervisor started; no service/scheduled task/MCP registration modified; no cutover performed.",
+  "canonical_test_run": {
+    "source": "D:\\AIOS\\_agent-hub\\v2\\reports\\test_run.json",
+    "started_at": "2026-09-30T05:42:53Z",
+    "ended_at": "2026-09-30T05:43:31Z",
+    "module_count": 18,
+    "total_pass": 129,
+    "total_fail": 0,
+    "all_pass": true
+  },
+  "feature_env_gates_observed_state": {
+    "AIOS_V2_CHANNEL_ENABLED": "unset (default OFF; R286 v2 consumer/supervisor wrappers gated, not started)",
+    "AIOS_V2_DUAL_WRITE": "unset (default OFF; MCP bridge dual-write not active)",
+    "AIOS_V2_QUOTA_HANDOFF_ENABLED": "unset (default OFF; codex quota handoff path inert)",
+    "AIOS_V2_STALE_THREAD_PROBE_ENABLED": "unset (default OFF; codex desktop stale thread probe inert)"
+  },
+  "live_bridge_process_state": {
+    "aios_interop_launcher_instances": 6,
+    "handoff_polling_daemons_tracked": 14,
+    "ai_os_autonomy_daemon_count": 7,
+    "r286_v2_daemons_started": false,
+    "r286_v2_daemons_gate": "AIOS_V2_CHANNEL_ENABLED",
+    "cutover_performed": false,
+    "live_processes_touched": false,
+    "services_modified": false,
+    "scheduled_tasks_modified": false,
+    "mcp_registration_modified": false
+  },
+  "historical_violations_disclosed": [
+    {
+      "violation_id": "R286-GIT-SIDE-EFFECT-2026-09-30T01:17:59",
+      "occurred_at_local": "2026-09-30 01:17:59 +0800",
+      "occurred_at_iso": "2026-09-30T01:17:59+08:00",
+      "occurred_at_unix": 1790702279,
+      "kind": "unauthorized_git_stash_reset",
+      "description": "An unauthorized git stash was created at the timestamp above (subject: 'WIP on main: 0b964e6 N wave: AIOS_RECONSTRUCTION P7-P9 + WorkBuddy + cross-cloud + 10 new e2e kernels (45/45 PASS)'), capturing 139 files (M=1, A=138) without explicit user approval in this R286.A-C scope. The stash was NOT applied, NOT dropped, and NOT reset; it remains at stash@{0} as a recoverable snapshot. A subsequent unauthorized git reset may have moved the worktree HEAD off the recorded parent commits.",
+      "stash_ref": "stash@{0}",
+      "stash_commit_sha": "4b26e4e011e2378087bbf63e2e914922c208cd2b",
+      "stash_parent_commits": [
+        "0b964e646b46406895eefd816b05363687ee3a0d",
+        "bd9528b11420909c7ec31101d2f689ba05a79449"
+      ],
+      "file_count": 139,
+      "classification_summary": {
+        "content_identical": 1,
+        "content_diff": 4,
+        "content_missing": 134,
+        "index_only_or_metadata": 0
+      },
+      "recoverable": true,
+      "remediation_status": "Read-only audit completed; recovery is by manual merge per R286_GIT_SIDE_EFFECT_RECOVERY.md §6. No automated apply / drop / reset was performed in this R286.A-C round.",
+      "audit_artifacts": [
+        "D:\\AIOS\\_agent-hub\\v2\\reports\\channel-audit-20260930\\R286_GIT_SIDE_EFFECT_RECOVERY.json",
+        "D:\\AIOS\\_agent-hub\\v2\\reports\\channel-audit-20260930\\R286_GIT_SIDE_EFFECT_RECOVERY.md"
+      ],
+      "acknowledgement": "This violation is recorded truthfully. It is NOT minimized, NOT deferred, and NOT concealed. The stash is treated as a discoverable artifact for user-driven recovery only."
+    }
+  ],
+  "modified_files": [
+    {
+      "file": "aios_interop_mcp.py",
+      "backup_path": "D:\\AIOS\\_agent-hub\\v2\\reports\\channel-audit-20260930\\backups\\20260929T165709Z\\aios_interop_mcp.py",
+      "current_path": "D:\\个人文件\\AI\\Operator\\aios_tools\\aios_interop_mcp.py",
+      "change_summary": "Added 6 strict tools (task_submit, task_transition, task_heartbeat, task_cancel, envelope_send, envelope_receive). Optional `envelope` arg on codex/codex_desktop/claude_code_query. Initialize advertises v2 capabilities. AIOS_V2_DUAL_WRITE env gate.",
+      "before_sha256": "a8c346cbe63416952537d048fd906c0d308bd8188fdee6def23b2df9ef31e232",
+      "after_sha256": "4f819cd89cb7adfd2c0f578ef97957751aca552a5a4037a55158cbc40e8f6d9d",
+      "before_size_bytes": 92507,
+      "after_size_bytes": 111925,
+      "size_delta_bytes": 19418
+    },
+    {
+      "file": "aios_adapter_base.py",
+      "backup_path": "D:\\AIOS\\_agent-hub\\v2\\reports\\channel-audit-20260930\\backups\\20260929T165709Z\\aios_adapter_base.py",
+      "current_path": "D:\\个人文件\\AI\\Operator\\aios_tools\\aios_adapter_base.py",
+      "change_summary": "Added extract_envelope_correlation(context) helper to propagate v2 envelope correlation_id / in_reply_to / idempotency_key through adapter.execute() context. Additive docstring update.",
+      "before_sha256": "38eca7ac2cbcb24fb62757b813db06cb16868e370c97de6ad3fa8883c06377ae",
+      "after_sha256": "c18b85ff21b2fb3fad63d8bef71f55bbe800897856358e38eb5bd7ae0d0cbce9",
+      "before_size_bytes": 4531,
+      "after_size_bytes": 5716,
+      "size_delta_bytes": 1185
+    },
+    {
+      "file": "_aios_daemon_watchdog.py",
+      "backup_path": "D:\\AIOS\\_agent-hub\\v2\\reports\\channel-audit-20260930\\backups\\20260929T165709Z\\_aios_daemon_watchdog.py",
+      "current_path": "D:\\个人文件\\AI\\Operator\\aios_tools\\_aios_daemon_watchdog.py",
+      "change_summary": "Added 2 R286 entries (_aios_v2_supervisor, _aios_v2_consumer_runner) with r286_gate=AIOS_V2_CHANNEL_ENABLED. main_loop() respects the gate; entries are skipped (status=gated) when env not set.",
+      "before_sha256": "31ff6bf151e8b89f07dc4317ae5367dfde7715b0109abf8bd94e70f3884717ca",
+      "after_sha256": "2dae0a7ee9bde1dccb2ebdfbc56baf56a56698d89a12aeb5089b3ba43dda34f7",
+      "before_size_bytes": 24091,
+      "after_size_bytes": 25860,
+      "size_delta_bytes": 1769
+    },
+    {
+      "file": "envelope.schema.json",
+      "backup_path": "D:\\AIOS\\_agent-hub\\v2\\reports\\channel-audit-20260930\\backups\\20260929T165709Z\\envelope.schema.json",
+      "current_path": "D:\\AIOS\\_agent-hub\\v2\\schemas\\envelope.schema.json",
+      "change_summary": "Added additive optional fields: artifact_refs[].chunk_id/chunk_total/is_chunked, payload.text_chunks[], envelope.trace{}.",
+      "before_sha256": "63da94e1ea3e67bbfdc535346d13fea825e86f4b317aa250a7ef89fa8ff84889",
+      "after_sha256": "fcb9288f3fa773b52e4cd33eecc0acbdd74716094831e0897d542ab58eeb0438",
+      "before_size_bytes": 2372,
+      "after_size_bytes": 3634,
+      "size_delta_bytes": 1262
+    },
+    {
+      "file": "src_envelope.py",
+      "backup_path": "D:\\AIOS\\_agent-hub\\v2\\reports\\channel-audit-20260930\\backups\\20260929T165709Z\\src_envelope.py",
+      "current_path": "D:\\AIOS\\_agent-hub\\v2\\src\\envelope.py",
+      "change_summary": "Added envelope_to_chunks(env, max_chunk_size) + envelope_from_chunks(chunks) for 32 KiB chunked large-text (R286 §2.4). DEFAULT_CHUNK_SIZE=32768.",
+      "before_sha256": "bd36602b29350ac2fc54527ca690bf489f584b134378610655923dc5bb7419ce",
+      "after_sha256": "d638914935359c7cd07c3951f113a7c3cf1755595596c9e9b32fef8a129683c6",
+      "before_size_bytes": 2945,
+      "after_size_bytes": 8916,
+      "size_delta_bytes": 5971
+    },
+    {
+      "file": "cli_aiosv2.py",
+      "backup_path": "D:\\AIOS\\_agent-hub\\v2\\reports\\channel-audit-20260930\\backups\\20260929T165709Z\\cli_aiosv2.py",
+      "current_path": "D:\\AIOS\\_agent-hub\\v2\\cli\\aiosv2.py",
+      "change_summary": "Added --chunk-size N flag to cmd_send for chunked payload.text via envelope_to_chunks.",
+      "before_sha256": "f54ad08dc2995b97a7638aaa50f024a4c0a4d68b1b17ad49c0998103d7eeae8a",
+      "after_sha256": "2fdd72a9c49c2b2638129dd28bdd13d20a65d3230f26d648f3b3fbc2b07bf3f8",
+      "before_size_bytes": 15255,
+      "after_size_bytes": 16770,
+      "size_delta_bytes": 1515
+    }
+  ],
+  "unmodified_files": [
+    {
+      "file": "aios_adapter_codex.py",
+      "current_path": "D:\\个人文件\\AI\\Operator\\aios_tools\\aios_adapter_codex.py",
+      "current_sha256": "3580a781e7e4fdd6852374687814f354d925c4566b12201b15fcc2273168c8b7",
+      "current_size_bytes": 5636,
+      "reason": "R286 plan §3.2 row LOW risk -- adapter interfaces accept optional `envelope` via BaseAdapter.extract_envelope_correlation helper. Existing adapter execute(prompt, context) signatures unchanged; envelope propagation is done at the MCP layer in aios_interop_mcp.py."
+    },
+    {
+      "file": "aios_adapter_codex_desktop.py",
+      "current_path": "D:\\个人文件\\AI\\Operator\\aios_tools\\aios_adapter_codex_desktop.py",
+      "current_sha256": "40c28ac5e4cb697e6223c41a5e47e60b0cbb40ae5e73fb3cfaca75e900d464dc",
+      "current_size_bytes": 8736,
+      "reason": "R286 plan §3.2 row LOW risk -- adapter interfaces accept optional `envelope` via BaseAdapter.extract_envelope_correlation helper. Existing adapter execute(prompt, context) signatures unchanged; envelope propagation is done at the MCP layer in aios_interop_mcp.py."
+    },
+    {
+      "file": "aios_adapter_claude.py",
+      "current_path": "D:\\个人文件\\AI\\Operator\\aios_tools\\aios_adapter_claude.py",
+      "current_sha256": "06a7f5749b44748572bc49a0e03742f7699b4ff5c501227b0009dbf4b3a8c5d4",
+      "current_size_bytes": 5233,
+      "reason": "R286 plan §3.2 row LOW risk -- adapter interfaces accept optional `envelope` via BaseAdapter.extract_envelope_correlation helper. Existing adapter execute(prompt, context) signatures unchanged; envelope propagation is done at the MCP layer in aios_interop_mcp.py."
+    },
+    {
+      "file": "aios_adapter_mcp_bridge.py",
+      "current_path": "D:\\个人文件\\AI\\Operator\\aios_tools\\aios_adapter_mcp_bridge.py",
+      "current_sha256": "5bb655681418f982ec4e348fa2cd0d5e681d3c404c7ac94deecd4b07ba156f72",
+      "current_size_bytes": 2744,
+      "reason": "R286 plan §3.2 row LOW risk -- adapter interfaces accept optional `envelope` via BaseAdapter.extract_envelope_correlation helper. Existing adapter execute(prompt, context) signatures unchanged; envelope propagation is done at the MCP layer in aios_interop_mcp.py."
+    }
+  ],
+  "new_files": [
+    {
+      "file": "D:\\AIOS\\_agent-hub\\v2\\src\\v2_consumer.py",
+      "purpose": "Stage 0 multi-recipient v2 consumer: claim/dispatch/ack/result/error with per-recipient locks, capability routing, bounded concurrency (default 2, max 8), DI dispatcher, retry/DLQ, events.ndjson. Skips 3 pre-R320.6 stranded marker files.",
+      "lines": 401
+    },
+    {
+      "file": "D:\\个人文件\\AI\\Operator\\aios_tools\\_aios_v2_supervisor.py",
+      "purpose": "Stage 0 operator wrapper for aiosv2.py watch loop. Singleton msvcrt LK_NBLCK lock. Honors AIOS_V2_ROOT override. --once / --max-ticks. Safe nonzero exit on failure.",
+      "lines": 124
+    },
+    {
+      "file": "D:\\个人文件\\AI\\Operator\\aios_tools\\_aios_v2_consumer_runner.py",
+      "purpose": "Stage 0 operator wrapper for v2_consumer. Singleton lock. Honors AIOS_V2_ROOT. --once (in-process tick) / --max-ticks. Safe nonzero exit on failure.",
+      "lines": 110
+    },
+    {
+      "file": "D:\\个人文件\\AI\\Operator\\aios_tools\\_aios_v2_envelope_bridge.py",
+      "purpose": "Stage 1 internal bridge: dual-write envelope wrapping, ack+result envelope emission, task_submit/transition/heartbeat/cancel/envelope_send/envelope_receive helpers. Decouples canonical v2 source root (for imports) from AIOS_V2_ROOT (for queue I/O).",
+      "lines": 305
+    },
+    {
+      "file": "D:\\AIOS\\_agent-hub\\v2\\tests\\test_09_envelope_chunking.py",
+      "purpose": "Stage 2 chunking tests: 32 KiB split/reassemble, missing/duplicate/mismatched chunks rejected, no_text/small_text returns [].",
+      "lines": 154
+    },
+    {
+      "file": "D:\\AIOS\\_agent-hub\\v2\\tests\\test_10_consumer_dispatch.py",
+      "purpose": "Stage 0 consumer tests: capabilities advertised, ack/result separate, no-route deadletter, DI dispatcher, dispatcher-exception deadletter, legacy marker files NOT consumed, 4 evidence classes (health/call/trace/handoff), bounded concurrency, stats counters.",
+      "lines": 263
+    },
+    {
+      "file": "D:\\AIOS\\_agent-hub\\v2\\tests\\test_11_consumer_restart_lease.py",
+      "purpose": "Stage 0 idempotency + restart + lease: 6 concurrent identical idempotency writers yield exactly 1 logical message; consumer kill/restart via .claimed.* sidecar recovery; lease expiry reaper; bounded concurrency under tick(); recipient filter.",
+      "lines": 145
+    },
+    {
+      "file": "D:\\AIOS\\_agent-hub\\v2\\tests\\test_12_artifact_refs_no_binary.py",
+      "purpose": "Stage 2 artifact refs + no-binary tests: artifact_refs[].path/sha256/content_type SSOT, chunk_id/chunk_total/is_chunked additive; validate_envelope accepts chunked envelopes; reassemble round-trip preserves payload; no raw binary anywhere.",
+      "lines": 110
+    },
+    {
+      "file": "D:\\AIOS\\_agent-hub\\v2\\tests\\test_13_task_lifecycle.py",
+      "purpose": "Stage 2 task lifecycle tests: submit->running->progress->final (success), cancel from queued, cancel via waiting->cancelled, fail->retry->succeed, retry budget exhaustion, input_request+approval via waiting, heartbeat refreshes lease.",
+      "lines": 149
+    },
+    {
+      "file": "D:\\AIOS\\_agent-hub\\v2\\tests\\test_14_cli_chunking_roundtrip.py",
+      "purpose": "Stage 2 CLI tests: --chunk-size N triggers chunking, no-text -> no chunking, --correlation-id propagates, status shape, init creates state.json.",
+      "lines": 109
+    },
+    {
+      "file": "D:\\AIOS\\_agent-hub\\v2\\tests\\test_15_trace_completeness.py",
+      "purpose": "Stage 0/2 trace tests: events.ndjson completeness for task.submitted / task.transition / task.heartbeat / task.retry / task.cancelled / dispatch.ok / dispatch.retry / dispatch.failed.",
+      "lines": 169
+    },
+    {
+      "file": "D:\\AIOS\\_agent-hub\\v2\\tests\\test_16_mcp_bridge_tools.py",
+      "purpose": "Stage 2 MCP bridge tool tests: task_submit/transition/heartbeat/cancel/envelope_send/receive end-to-end via subprocess. Validates required fields, bounds, state machine, invalid envelopes rejected.",
+      "lines": 224
+    },
+    {
+      "file": "D:\\AIOS\\_agent-hub\\v2\\tests\\test_gated_live_smoke_r286.py",
+      "purpose": "GATED LIVE SMOKE (NOT in run_all_tests). Writes R286 marker envelope to live v2 queue, dispatches via consumer.tick() with marker_filter, verifies ack + result envelope separation, asserts 3 pre-R320.6 stranded files untouched, cleans only R286-tagged files.",
+      "lines": 207
+    }
+  ],
+  "test_results_summary": {
+    "source": "D:\\AIOS\\_agent-hub\\v2\\reports\\test_run.json (verbatim)",
+    "started_at": "2026-09-30T05:42:53Z",
+    "ended_at": "2026-09-30T05:43:31Z",
+    "module_count": 18,
+    "total_tests": 129,
+    "pass": 129,
+    "fail": 0,
+    "all_pass": true,
+    "failing": [],
+    "r286_introduced_modules": [
+      "tests.test_09_envelope_chunking (10)",
+      "tests.test_10_consumer_dispatch (10)",
+      "tests.test_11_consumer_restart_lease (5)",
+      "tests.test_12_artifact_refs_no_binary (7)",
+      "tests.test_13_task_lifecycle (7)",
+      "tests.test_14_cli_chunking_roundtrip (6)",
+      "tests.test_15_trace_completeness (7)",
+      "tests.test_16_mcp_bridge_tools (9)",
+      "tests.test_17_codex_quota_handoff (5)",
+      "tests.test_18_codex_desktop_stale_thread (7)"
+    ],
+    "r286_introduced_passes": 90,
+    "r286_introduced_failures": 0,
+    "regressions_vs_pre_r286": 0
+  }
+}

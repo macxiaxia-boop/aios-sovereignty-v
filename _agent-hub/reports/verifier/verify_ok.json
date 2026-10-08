@@ -1,42 +1,54 @@
 {
   "verify_ok": true,
-  "envelope_id": "verify-1791473399",
+  "envelope_id": "verify-1791474449",
   "checks": [
     {
       "name": "adapter_call_no_exception",
       "ok": true,
       "evidence": {
-        "transport": "workbuddy_probe",
-        "adapter": "workbuddy",
-        "duration_ms": 213
+        "transport": "openclaw_http",
+        "adapter": "openclaw",
+        "duration_ms": 29
       }
     },
     {
-      "name": "workbuddy_transport",
+      "name": "openclaw_transport",
       "ok": true,
       "evidence": {
-        "transport": "workbuddy_probe"
+        "transport": "openclaw_http"
       }
     },
     {
-      "name": "workbuddy_daemon_log_independent",
+      "name": "openclaw_independent_healthz",
       "ok": true,
       "evidence": {
-        "path": "C:\\Users\\xinzh\\.workbuddy\\logs\\daemon.log",
-        "age_sec": 16253,
-        "stale": true,
-        "size_bytes": 4010878
+        "status": 200,
+        "body": "{\"ok\":true,\"status\":\"live\"}"
       }
     },
     {
-      "name": "workbuddy_stale_classification_matches",
+      "name": "openclaw_body_matches_adapter",
       "ok": true,
       "evidence": {
-        "adapter_stale": true,
-        "independent_stale": true
+        "independent_body": {
+          "ok": true,
+          "status": "live"
+        },
+        "adapter_body": {
+          "ok": true,
+          "status": "live"
+        }
+      }
+    },
+    {
+      "name": "openclaw_expected_status",
+      "ok": true,
+      "evidence": {
+        "expected": 200,
+        "got": 200
       }
     }
   ],
-  "duration_ms": 214,
-  "verified_at": 1791473399
+  "duration_ms": 31,
+  "verified_at": 1791474449
 }

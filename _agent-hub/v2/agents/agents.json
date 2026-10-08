@@ -1,0 +1,61 @@
+{
+  "version": "v2-2026-09-29",
+  "description": "AIOS Hub v2 agent registry (SSOT for cross-agent identity). Backwards-compatible with _agent-hub/AGENTS.md and AIOS_RECONSTRUCTION/01_REGISTRY/AIOS_AGENT_REGISTRY.json.",
+  "agents": [
+    {
+      "agent_id": "codex",
+      "display_name": "Codex CLI",
+      "system": "CodexCLI",
+      "role": "supervisor",
+      "transport": "file-queue + aios-interop MCP",
+      "inbox_dir": "v2/messages/inbox",
+      "outbox_dir": "v2/messages/outbox",
+      "ping_method": "enqueue heartbeat envelope; expect ack within ttl_ms",
+      "cli_hint": "wscript.exe / D:\\OpenAI.Codex_26.924.2738.0_x64__...\\app\\ChatGPT.exe (portable); relay localhost:19194 (currently DOWN)"
+    },
+    {
+      "agent_id": "claudecode",
+      "display_name": "Claude Code",
+      "system": "ClaudeCode",
+      "role": "executor",
+      "transport": "aios-interop MCP + file-queue",
+      "inbox_dir": "v2/messages/inbox",
+      "outbox_dir": "v2/messages/outbox",
+      "ping_method": "enqueue heartbeat envelope; this CC session IS the consumer",
+      "cli_hint": "running as main session in this Claude Code CLI"
+    },
+    {
+      "agent_id": "workbuddy",
+      "display_name": "WorkBuddy",
+      "system": "WorkBuddy",
+      "role": "orchestrator",
+      "transport": "file-queue",
+      "inbox_dir": "v2/messages/inbox",
+      "outbox_dir": "v2/messages/outbox",
+      "ping_method": "file-system probe of ~/.workbuddy/",
+      "cli_hint": "no CLI detected; uses SOUL.md/USER.md/MEMORY.md/IDENTITY.md hub sync"
+    },
+    {
+      "agent_id": "hermes",
+      "display_name": "Hermes Agent (Nous Research)",
+      "system": "Hermes",
+      "role": "governance",
+      "transport": "shell CLI (hermes.exe)",
+      "inbox_dir": "v2/messages/inbox",
+      "outbox_dir": "v2/messages/outbox",
+      "ping_method": "subprocess 'hermes prompt-size' (BLOCKED_SANDBOX in current CC session); fallback file probe",
+      "cli_hint": "D:\\AIOS\\_relinked\\hermes\\hermes-agent\\.venv\\Scripts\\hermes.exe (v0.15.1)"
+    },
+    {
+      "agent_id": "openclaw",
+      "display_name": "OpenClaw Gateway",
+      "system": "OpenClaw",
+      "role": "channel-gateway",
+      "transport": "HTTP 127.0.0.1:18792 + /healthz",
+      "inbox_dir": "v2/messages/inbox",
+      "outbox_dir": "v2/messages/outbox",
+      "ping_method": "GET http://127.0.0.1:18792/healthz",
+      "cli_hint": "C:\\Users\\xinzh\\.openclaw\\gateway.vbs -> gateway.cmd; current state UNHEALTHY (port 18792 up but /healthz not 200)"
+    }
+  ]
+}

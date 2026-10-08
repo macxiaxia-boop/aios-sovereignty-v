@@ -1,0 +1,16 @@
+{
+  "id": "4c0597dc-fbf1-4e3d-b0fc-81277237ff49",
+  "idempotency_key": "beab8dd1a5c8f0d033dc73d714a170e9c8e7b595ed77ab51bc43118c4813c8d1",
+  "message_type": "task",
+  "payload": {
+    "objective": "P5 final retry",
+    "ts": "now",
+    "workdir": "D:\\AIOS\\_agent-hub\\reports\\p5_real"
+  },
+  "recipient": "claudecode",
+  "retry_count": 0,
+  "schema_version": "1.0",
+  "sender": "codex",
+  "timestamp": "2026-10-08T14:35:55Z",
+  "ttl_ms": 300000
+}

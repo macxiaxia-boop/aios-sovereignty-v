@@ -1,0 +1,22 @@
+{
+  "assignee": "r286-lease-agent",
+  "correlation_envelope_id": null,
+  "created_at": "2026-09-30T01:24:58Z",
+  "description": "",
+  "error": {
+    "code": "LEASE_EXPIRED",
+    "message": "no heartbeat by 2026-09-30T01:25:01Z"
+  },
+  "heartbeat_at": "2026-09-30T01:24:59Z",
+  "input_payload": {},
+  "lease_expires_at": "2026-09-30T01:25:01Z",
+  "max_retries": 2,
+  "output_payload": {},
+  "owner": "claudecode",
+  "retry_count": 1,
+  "state": "queued",
+  "task_id": "832dccb4-3020-4771-ab54-ab17340a9c4e",
+  "timeout_ms": 2000,
+  "title": "r286-lease",
+  "updated_at": "2026-09-30T01:25:06Z"
+}

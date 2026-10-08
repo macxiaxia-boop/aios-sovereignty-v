@@ -1,0 +1,4 @@
+[singleton] acquired PID=35800
+[start_consumer_real] dispatcher = claude_p_adapter
+[start_consumer_real] interval=3.0s max_ticks=1
+{"ok": true, "ticked_at": "2026-10-08T16:06:23Z", "max_concurrent": 2, "max_queue": 8, "totals": {"claimed": 0, "acked": 0, "results": 0, "errors": 0, "deadlettered": 0, "no_route": 0, "skipped_nonv2": 0}, "recipients": {"workbuddy": {"claimed": 0, "acked": 0, "results": 0, "errors": 0, "deadlettered": 0, "no_route": 0, "skipped_nonv2": 0, "ok_count": 0, "items": []}, "hermes": {"claimed": 0, "acked": 0, "results": 0, "errors": 0, "deadlettered": 0, "no_route": 0, "skipped_nonv2": 0, "ok_count": 0, "items": []}, "openclaw": {"claimed": 0, "acked": 0, "results": 0, "errors": 0, "deadlettered": 0, "no_route": 0, "skipped_nonv2": 0, "ok_count": 0, "items": []}}}

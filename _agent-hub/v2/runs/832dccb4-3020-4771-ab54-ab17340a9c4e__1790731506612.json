@@ -1,0 +1,8 @@
+{
+  "attempt": 0,
+  "event": "transition:running->failed",
+  "note": "lease expired at 2026-09-30T01:25:01Z",
+  "state": "failed",
+  "task_id": "832dccb4-3020-4771-ab54-ab17340a9c4e",
+  "ts": "2026-09-30T01:25:06Z"
+}

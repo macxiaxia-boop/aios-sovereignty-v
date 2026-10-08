@@ -1,0 +1,88 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://aios.local/schemas/envelope.schema.json",
+  "title": "AIOS Hub v2 Envelope",
+  "description": "Versioned envelope for all cross-agent messages (message/task/status/result/ack/heartbeat/error).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "schema_version",
+    "message_type",
+    "sender",
+    "recipient",
+    "timestamp",
+    "idempotency_key",
+    "payload"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique envelope id (uuid4).",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    },
+    "correlation_id": {
+      "type": ["string", "null"],
+      "description": "Envelope id this message replies to (required for status/result/ack/error replies).",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "message_type": {
+      "type": "string",
+      "enum": ["message", "task", "status", "result", "ack", "heartbeat", "error"]
+    },
+    "sender": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "recipient": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "description": "Agent id or 'broadcast'."
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO8601 UTC, e.g. 2026-09-29T12:00:00Z"
+    },
+    "idempotency_key": {
+      "type": "string",
+      "description": "sha256 hex of canonical sender+recipient+message_type+payload. 64 hex chars.",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "payload": {
+      "type": "object"
+    },
+    "artifact_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path"],
+        "properties": {
+          "path": { "type": "string" },
+          "sha256": { "type": "string" },
+          "content_type": { "type": "string" }
+        }
+      }
+    },
+    "retry_count": {
+      "type": "integer",
+      "minimum": 0,
+      "default": 0
+    },
+    "ttl_ms": {
+      "type": "integer",
+      "minimum": 0,
+      "default": 300000
+    },
+    "in_reply_to": {
+      "type": ["string", "null"]
+    }
+  }
+}

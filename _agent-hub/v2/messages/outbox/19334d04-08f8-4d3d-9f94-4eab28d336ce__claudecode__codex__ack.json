@@ -1,0 +1,17 @@
+{
+  "correlation_id": "d12a944d-8745-4076-8d97-b77196e2fbb2",
+  "id": "19334d04-08f8-4d3d-9f94-4eab28d336ce",
+  "idempotency_key": "20692ef8d722a49c12b9e8973ebdcce2622ae9ebbd58169529d8bdd65d0349a0",
+  "in_reply_to": "d12a944d-8745-4076-8d97-b77196e2fbb2",
+  "message_type": "ack",
+  "payload": {
+    "ack_of": "d12a944d-8745-4076-8d97-b77196e2fbb2",
+    "note": "received-and-processed-by-independent-cc"
+  },
+  "recipient": "codex",
+  "retry_count": 0,
+  "schema_version": "1.0",
+  "sender": "claudecode",
+  "timestamp": "2026-09-29T05:07:48Z",
+  "ttl_ms": 300000
+}

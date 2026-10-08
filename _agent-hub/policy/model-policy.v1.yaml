@@ -1,0 +1,46 @@
+# === AIOS Model Policy v1 ===
+# SSOT: D:\AIOS\_agent-hub\policy\model-policy.v1.yaml
+# 编辑权限: 仅 user (chmod 444 / ACL 收口)
+policy_id: model-policy.v1
+policy_version: 1
+policy_owner: user
+created_at: "2026-10-08T00:00:00+08:00"
+last_modified: "2026-10-08T00:00:00+08:00"
+approval_evidence: "user-directive-2026-10-08-AIOS-SOVEREIGNTY-V"
+applied_workers:
+  - codex
+  - claudecode
+  - openclaw
+  - hermes
+  - cc-switch
+verification_status: pending
+model_policy:
+  allowed_providers:
+    - id: MiniMax
+      enabled: true
+      models:
+        - id: MiniMax-M3
+          evidence: subscription-2026-Q4
+          enabled: true
+  default_provider: MiniMax
+  default_model: MiniMax-M3
+  allowed_fallbacks: []
+  prohibited_runtime_routes:
+    - any provider other than MiniMax
+    - any cross-provider auto-fallback
+    - any cron/heartbeat/session-restore carrying legacy model
+    - any backup auto-restore overwriting current provider
+    - any unsanctioned model override via env var
+  unavailable_handling:
+    - queue_with_backoff
+    - report_to_audit_log
+    - do_non_model_work
+    - never_silently_swap_provider
+  change_governance:
+    require_explicit_user_approval: true
+    modification_method: atomic_write_with_version
+    audit_log: D:\AIOS\_agent-hub\audit\policy-changes.log
+metadata:
+  sha256: TBD-by-sign-script
+  signature_algo: sha256
+  signature: optional

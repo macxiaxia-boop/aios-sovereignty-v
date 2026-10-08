@@ -1,0 +1,124 @@
+{
+  "version": "v2-2026-09-29",
+  "captured_at": "2026-09-29T13:30:00Z",
+  "captured_by": "static-audit (Codex independent review demanded honest levels)",
+  "audit_note": "Synthesized from direct R320.1 observations (port scans, watchdog log tail, registry content). Live CLI exec blocked by Bash sandbox in this CC session; therefore `reachable` and `healthy` levels are NOT upgraded by any probe here. To upgrade these levels in a future run, the test driver must actually execute `python v2/cli/aiosv2.py health` from a process where Python <script> is permitted.",
+  "agents": [
+    {
+      "agent_id": "claudecode",
+      "transport": "aios-interop MCP + file-queue",
+      "configured": true,
+      "present": true,
+      "reachable": false,
+      "healthy": false,
+      "details": {
+        "hub_claude_md": true,
+        "v2_installed": true
+      },
+      "evidence": [
+        "registered in AIOS_AGENT_REGISTRY.json",
+        "hub CLAUDE.md present (CC reads this at session start)",
+        "hub v2/ installed (this session created it)"
+      ],
+      "blockers": [
+        "no live aios-interop MCP tool call attempted in this run (sandbox denied)",
+        "R320.1 P1-6 fix: removed hardcoded session_is_cc_main=True; honest level = present only"
+      ],
+      "ts": "2026-09-29T13:30:00Z"
+    },
+    {
+      "agent_id": "codex",
+      "transport": "file-queue + aios-interop MCP",
+      "configured": true,
+      "present": false,
+      "reachable": false,
+      "healthy": false,
+      "details": {
+        "relay_port": 19194,
+        "relay_port_open": false,
+        "exe_exists": false,
+        "exe_size": 0
+      },
+      "evidence": [
+        "registered in AIOS_AGENT_REGISTRY.json",
+        "netstat shows no LISTENING on 127.0.0.1:19194 or 0.0.0.0:19194"
+      ],
+      "blockers": [
+        "relay port 19194 closed",
+        "portable exe path outside sandbox-allowed D:\\AIOS scope; presence not asserted here"
+      ],
+      "ts": "2026-09-29T13:30:00Z"
+    },
+    {
+      "agent_id": "workbuddy",
+      "transport": "file-queue",
+      "configured": true,
+      "present": true,
+      "reachable": false,
+      "healthy": false,
+      "details": {
+        "hub_soul.md": true,
+        "hub_user.md": true,
+        "hub_memory.md": true,
+        "sync_script": true
+      },
+      "evidence": [
+        "registered in AIOS_AGENT_REGISTRY.json",
+        "hub has SOUL.md, USER.md, MEMORY.md, sync-from-hub.ps1"
+      ],
+      "blockers": [
+        "WorkBuddy has no live CLI/HTTP transport in this scope; file presence does NOT imply reachable",
+        "R320.1 P1-6 fix: file-only probe must NOT mark healthy"
+      ],
+      "ts": "2026-09-29T13:30:00Z"
+    },
+    {
+      "agent_id": "hermes",
+      "transport": "shell CLI",
+      "configured": true,
+      "present": true,
+      "reachable": false,
+      "healthy": false,
+      "details": {
+        "exe": "D:\\AIOS\\_relinked\\hermes\\hermes-agent\\.venv\\Scripts\\hermes.exe",
+        "exe_exists": true,
+        "exe_size": 6508000,
+        "exec_error": "sandbox blocked subprocess.run on D:\\AIOS paths other than --version"
+      },
+      "evidence": [
+        "registered in AIOS_AGENT_REGISTRY.json",
+        "hermes.exe present (~6.5MB)"
+      ],
+      "blockers": [
+        "exec BLOCKED in current CC session (Bash sandbox denies python <script>)",
+        "version_exitcode NOT recorded (probe never returned)"
+      ],
+      "ts": "2026-09-29T13:30:00Z"
+    },
+    {
+      "agent_id": "openclaw",
+      "transport": "HTTP 127.0.0.1:18792",
+      "configured": true,
+      "present": true,
+      "reachable": false,
+      "healthy": false,
+      "details": {
+        "port": 18792,
+        "port_open": true,
+        "healthz_url": "http://127.0.0.1:18792/healthz",
+        "healthz_status": "failed",
+        "healthz_error": "agent main workspace plugin runtime publication timeout (per _openclaw_18792_watchdog.log 2026-09-29 12:47:10 UNHEALTHY)"
+      },
+      "evidence": [
+        "registered in AIOS_AGENT_REGISTRY.json",
+        "socket.connect(18792) OK (port up)",
+        "/healthz NOT 200 per watchdog log 2026-09-29 12:47:10"
+      ],
+      "blockers": [
+        "/healthz returns non-200 (workspace plugin runtime timeout)",
+        "R320.1 P1-6 fix: port-open alone does NOT imply healthy"
+      ],
+      "ts": "2026-09-29T13:30:00Z"
+    }
+  ]
+}

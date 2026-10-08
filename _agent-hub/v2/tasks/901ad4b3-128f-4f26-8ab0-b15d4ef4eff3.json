@@ -1,0 +1,19 @@
+{
+  "assignee": "codex",
+  "correlation_envelope_id": null,
+  "created_at": "2026-09-29T17:04:14Z",
+  "description": "",
+  "error": null,
+  "heartbeat_at": null,
+  "input_payload": {},
+  "lease_expires_at": null,
+  "max_retries": 3,
+  "output_payload": {},
+  "owner": "claude",
+  "retry_count": 0,
+  "state": "cancelled",
+  "task_id": "901ad4b3-128f-4f26-8ab0-b15d4ef4eff3",
+  "timeout_ms": 60000,
+  "title": "test",
+  "updated_at": "2026-09-30T01:23:44Z"
+}

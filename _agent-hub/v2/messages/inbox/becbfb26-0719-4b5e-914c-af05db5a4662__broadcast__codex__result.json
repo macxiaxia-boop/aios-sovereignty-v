@@ -1,0 +1,23 @@
+{
+  "correlation_id": "2eb92a64-3beb-4d5f-8886-552ac4a2d84c",
+  "id": "becbfb26-0719-4b5e-914c-af05db5a4662",
+  "idempotency_key": "a08433a4341a548867c930edba450d8cf3f037cd41a7bd6bf73bdbedb888ff0f",
+  "in_reply_to": "2eb92a64-3beb-4d5f-8886-552ac4a2d84c",
+  "message_type": "result",
+  "payload": {
+    "output": {
+      "ok": true,
+      "received_id": "2eb92a64-3beb-4d5f-8886-552ac4a2d84c",
+      "received_message_type": "message",
+      "received_recipient": "broadcast",
+      "received_sender": "codex",
+      "transport": "passthrough"
+    }
+  },
+  "recipient": "codex",
+  "retry_count": 0,
+  "schema_version": "1.0",
+  "sender": "broadcast",
+  "timestamp": "2026-10-08T15:16:55Z",
+  "ttl_ms": 300000
+}

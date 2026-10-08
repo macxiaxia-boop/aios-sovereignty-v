@@ -1,0 +1,23 @@
+{
+  "correlation_id": "0b0e717b-6cb5-4e7d-a59d-34865a64a80f",
+  "id": "aa4b74f8-6b8f-4e78-9983-70c6d94262b3",
+  "idempotency_key": "482fb8ab1c754f563113447c2fb7b782d95808e77510db59f5574477a003e412",
+  "in_reply_to": "0b0e717b-6cb5-4e7d-a59d-34865a64a80f",
+  "message_type": "result",
+  "payload": {
+    "output": {
+      "duration_ms": 787,
+      "exit_code": 1,
+      "ok": false,
+      "stderr_tail": "",
+      "stdout_tail": "",
+      "transport": "claude_p_subprocess"
+    }
+  },
+  "recipient": "codex",
+  "retry_count": 0,
+  "schema_version": "1.0",
+  "sender": "claudecode",
+  "timestamp": "2026-10-08T14:33:10Z",
+  "ttl_ms": 300000
+}

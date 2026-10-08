@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://aios.local/schemas/task.schema.json",
+  "title": "AIOS Hub v2 Task",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id",
+    "title",
+    "state",
+    "assignee",
+    "created_at",
+    "updated_at",
+    "retry_count",
+    "max_retries",
+    "timeout_ms"
+  ],
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    },
+    "title": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "description": { "type": "string" },
+    "state": {
+      "type": "string",
+      "enum": ["queued", "running", "waiting", "succeeded", "failed", "cancelled"]
+    },
+    "assignee": { "type": "string", "minLength": 1, "maxLength": 64 },
+    "owner": { "type": "string", "minLength": 1, "maxLength": 64 },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "lease_expires_at": { "type": ["string", "null"], "format": "date-time" },
+    "heartbeat_at": { "type": ["string", "null"], "format": "date-time" },
+    "input_payload": { "type": "object" },
+    "output_payload": { "type": "object" },
+    "error": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "code": { "type": "string" },
+        "message": { "type": "string" },
+        "details": { "type": "object" }
+      }
+    },
+    "retry_count": { "type": "integer", "minimum": 0 },
+    "max_retries": { "type": "integer", "minimum": 0, "default": 3 },
+    "timeout_ms": { "type": "integer", "minimum": 0, "default": 60000 },
+    "correlation_envelope_id": { "type": ["string", "null"] }
+  }
+}

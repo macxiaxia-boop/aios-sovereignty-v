@@ -1,0 +1,23 @@
+{
+  "correlation_id": "327cc57e-0483-4fb7-bf28-840cd5a6d941",
+  "id": "be18ecb5-ddc8-4511-8097-e9b400e45ee0",
+  "idempotency_key": "dddd66c2059cde90bd7fe86dabe2ef676bb48834f28c551135c8f49299725faf",
+  "in_reply_to": "327cc57e-0483-4fb7-bf28-840cd5a6d941",
+  "message_type": "result",
+  "payload": {
+    "output": {
+      "duration_ms": 86,
+      "exit_code": 4294770688,
+      "ok": false,
+      "stderr_tail": "�޷����������Ϊ��ʹ�� -Command �� -EncodedCommand ָ�������\r\n",
+      "stdout_tail": "  用大括号({})括起来。只有在 Windows PowerShell 中运行 PowerShell.exe 时，\r\n    才能指定脚本块。脚本块的结果将作为反序列化的 XML 对象\r\n    (而非活动对象)返回到父 Shell。\r\n\r\n    如果 Command 的值为字符串，则 Command 必须是命令中的\r\n    最后一个参数，因为在命令后面键入的所有字符\r\n    都将解释为命令参数。\r\n\r\n    若要编写运行 Windows PowerShell 命令的字符串，请使用以下格式:\r\n\t\"& {<命令>}\"\r\n    其中，引号表示一个字符串，调用运算符(&)\r\n    导致执行命令。\r\n\r\n-Help, -?, /?\r\n    显示此消息。如果在 Windows PowerShell 中键入 PowerShell.exe\r\n    命令，请在命令参数前面添加连字符(-)，而不是添加正\r\n    斜杠(/)。你可以在 Cmd.exe 中使用连字符或正斜杠。\r\n\r\n示例\r\n    PowerShell -PSConsoleFile SqlSnapIn.Psc1\r\n    PowerShell -version 2.0 -NoLogo -InputFormat text -OutputFormat XML\r\n    PowerShell -ConfigurationName AdminRoles\r\n    PowerShell -Command {Get-EventLog -LogName security}\r\n    PowerShell -Command \"& {Get-EventLog -LogName security}\"\r\n\r\n    # To use the -EncodedCommand parameter:\r\n    $command = 'dir \"c:\\program files\" '\r\n    $bytes = [System.Text.Encoding]::Unicode.GetBytes($command)\r\n    $encodedCommand = [Convert]::ToBase64String($bytes)\r\n    powershell.exe -encodedCommand $encodedCommand\r\n",
+      "transport": "claude_p_subprocess"
+    }
+  },
+  "recipient": "codex",
+  "retry_count": 0,
+  "schema_version": "1.0",
+  "sender": "claudecode",
+  "timestamp": "2026-10-08T14:44:00Z",
+  "ttl_ms": 300000
+}

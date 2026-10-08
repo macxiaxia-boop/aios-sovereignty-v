@@ -1,0 +1,19 @@
+{
+  "id": "83e2d652-eb63-42fc-a0bd-1a422c4f315c",
+  "idempotency_key": "5ef7a85db51ea8547a33827ba53f9f7675a5dc119a4b770636a40d82dcfa8554",
+  "message_type": "task",
+  "payload": {
+    "acceptance": "Evidence-backed audit with exact paths, mechanisms, active/archive/build classification, unresolved candidates, and safe next-phase boundaries.",
+    "contract": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_RETIREMENT_AUDIT_20261008_CONTRACT.md",
+    "objective": "Read the contract at D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_RETIREMENT_AUDIT_20261008_CONTRACT.md and execute the read-only audit exactly as specified. Write the required Markdown and JSON evidence artifacts. Do not delete or modify product code, global policy, history, services, or user data in this phase.",
+    "priority": "P0",
+    "title": "GLOBAL-STRATEGY-RETIREMENT-AUDIT",
+    "workdir": "D:\\AIOS\\_agent-hub\\reports"
+  },
+  "recipient": "claudecode",
+  "retry_count": 0,
+  "schema_version": "1.0",
+  "sender": "codex",
+  "timestamp": "2026-10-08T15:41:54Z",
+  "ttl_ms": 300000
+}

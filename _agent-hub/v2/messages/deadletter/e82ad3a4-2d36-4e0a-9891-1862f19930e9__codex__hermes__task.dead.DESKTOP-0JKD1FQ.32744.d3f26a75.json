@@ -1,0 +1,18 @@
+{
+  "id": "e82ad3a4-2d36-4e0a-9891-1862f19930e9",
+  "idempotency_key": "9a7ca63fa1e8f3b116be43f411ae80d2559adac38318094a535b20e6813f78d1",
+  "message_type": "task",
+  "payload": {
+    "args": [
+      "version"
+    ],
+    "evidence_marker": "P8-T23-DBG-5230a5",
+    "marker": "p8-t23-debug"
+  },
+  "recipient": "hermes",
+  "retry_count": 5,
+  "schema_version": "1.0",
+  "sender": "codex",
+  "timestamp": "2026-10-08T15:41:56Z",
+  "ttl_ms": 300000
+}

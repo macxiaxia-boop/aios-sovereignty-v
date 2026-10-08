@@ -1,0 +1,23 @@
+{
+  "correlation_id": "c8c19bdd-855e-4c3b-a713-d7825159ddbe",
+  "id": "a5565bd5-d1b0-4a1b-b0ee-07199970114b",
+  "idempotency_key": "46a1421c4a6f4163055dbdc4254b4eaeb5cd9d08576ddad3352079bf7a2c1192",
+  "in_reply_to": "c8c19bdd-855e-4c3b-a713-d7825159ddbe",
+  "message_type": "result",
+  "payload": {
+    "output": {
+      "duration_ms": 13697,
+      "exit_code": 0,
+      "ok": true,
+      "stderr_tail": "t and access the new version of auto mode, ask your gateway to implement: https://code.claude.com/docs/en/auto-mode-classifier-billing\n<Objs Version=\"1.1.0.1\" xmlns=\"http://schemas.microsoft.com/powershell/2004/04\"><Obj S=\"progress\" RefId=\"0\"><TN RefId=\"0\"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N=\"SourceId\">1</I64><PR N=\"Record\"><AV>����׼���״�ʹ��ģ�顣</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>",
+      "stdout_tail": "DONE\n",
+      "transport": "claude_p_subprocess"
+    }
+  },
+  "recipient": "codex",
+  "retry_count": 0,
+  "schema_version": "1.0",
+  "sender": "claudecode",
+  "timestamp": "2026-10-08T14:49:32Z",
+  "ttl_ms": 300000
+}

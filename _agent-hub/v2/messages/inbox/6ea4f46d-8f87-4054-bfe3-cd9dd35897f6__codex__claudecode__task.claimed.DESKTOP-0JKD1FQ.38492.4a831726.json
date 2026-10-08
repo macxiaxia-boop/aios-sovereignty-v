@@ -1,0 +1,19 @@
+{
+  "id": "6ea4f46d-8f87-4054-bfe3-cd9dd35897f6",
+  "idempotency_key": "0a98db278f0fec6994d57568db1c9b7fdcc35351f61e68ae66d78be8ca19c275",
+  "message_type": "task",
+  "payload": {
+    "acceptance": "Evidence-backed audit with exact paths, mechanisms, active/archive/build classification, unresolved candidates, and safe next-phase boundaries.",
+    "contract": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_RETIREMENT_AUDIT_20261008_CONTRACT.md",
+    "objective": "Execute the read-only audit in D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_RETIREMENT_AUDIT_20261008_CONTRACT.md. The workdir is D:\\AIOS so you may inspect the full authorized AIOS tree. Write the required Markdown and JSON evidence artifacts; do not delete or modify product code, global policy, history, services, or user data.",
+    "priority": "P0",
+    "title": "GLOBAL-STRATEGY-RETIREMENT-AUDIT-RETRY",
+    "workdir": "D:\\AIOS"
+  },
+  "recipient": "claudecode",
+  "retry_count": 0,
+  "schema_version": "1.0",
+  "sender": "codex",
+  "timestamp": "2026-10-08T15:47:34Z",
+  "ttl_ms": 300000
+}

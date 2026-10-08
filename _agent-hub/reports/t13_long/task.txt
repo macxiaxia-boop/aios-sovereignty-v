@@ -1,0 +1,2 @@
+TEST 1: 3-step with checkpoints
+Write 3 checkpoint lines to D:\AIOS\_agent-hub\reports\t13_long\checkpoint.txt (one per line). Then write D:\AIOS\_agent-hub\reports\t13_long\final.txt with LONG_OK. Print DONE.

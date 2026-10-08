@@ -1,0 +1,174 @@
+{
+  "ok": true,
+  "smoke_run_id": "72f60831-e45a-474a-b426-9581bcbb67fb",
+  "ts": "2026-09-30T05:38:26Z",
+  "host": "DESKTOP-0JKD1FQ",
+  "v2_root": "D:\\AIOS\\_agent-hub\\v2",
+  "input_envelope_id": "c6b602da-1600-497b-9cab-ec43434df2db",
+  "input_marker": "r286_smoke_marker_DO_NOT_REMOVE",
+  "tick_totals": {
+    "claimed": 1,
+    "acked": 1,
+    "results": 1,
+    "errors": 0,
+    "deadlettered": 0,
+    "no_route": 0,
+    "skipped_nonv2": 0
+  },
+  "result_envelopes_count": 1,
+  "result_envelopes": [
+    {
+      "path": "34345f7f-454c-4ba7-9c3a-e4a8a0dab435__codex__claudecode__result.json",
+      "envelope": {
+        "correlation_id": "c6b602da-1600-497b-9cab-ec43434df2db",
+        "id": "34345f7f-454c-4ba7-9c3a-e4a8a0dab435",
+        "idempotency_key": "d3f6988ed6b539be92afcb16e2ed827f30ef2aef6ed873a6dee41e975deb1e4e",
+        "in_reply_to": "c6b602da-1600-497b-9cab-ec43434df2db",
+        "message_type": "result",
+        "payload": {
+          "output": {
+            "ok": true,
+            "received_id": "c6b602da-1600-497b-9cab-ec43434df2db",
+            "received_message_type": "message",
+            "received_recipient": "codex",
+            "received_sender": "claudecode",
+            "transport": "passthrough"
+          }
+        },
+        "recipient": "claudecode",
+        "retry_count": 0,
+        "schema_version": "1.0",
+        "sender": "codex",
+        "timestamp": "2026-09-30T05:38:26Z",
+        "ttl_ms": 300000
+      }
+    }
+  ],
+  "ack_envelopes_count": 1,
+  "ack_envelopes": [
+    {
+      "path": "e4f4ce41-cd21-423a-ad00-3aae6b1aee5e__codex__claudecode__ack.json",
+      "envelope": {
+        "correlation_id": "c6b602da-1600-497b-9cab-ec43434df2db",
+        "id": "e4f4ce41-cd21-423a-ad00-3aae6b1aee5e",
+        "idempotency_key": "f14c9296d669b8860beac503131f86af26a20ae4e54db118588a9ee59d58c023",
+        "in_reply_to": "c6b602da-1600-497b-9cab-ec43434df2db",
+        "message_type": "ack",
+        "payload": {
+          "ack_of": "c6b602da-1600-497b-9cab-ec43434df2db",
+          "note": "v2_consumer_received"
+        },
+        "recipient": "claudecode",
+        "retry_count": 0,
+        "schema_version": "1.0",
+        "sender": "codex",
+        "timestamp": "2026-09-30T05:38:26Z",
+        "ttl_ms": 300000
+      }
+    }
+  ],
+  "legacy_stranded_unchanged": [
+    "messages\\inbox\\41afc2c3-8fd3-4c80-80f2-62943eea25fd__codex__claudecode__ack.json",
+    "messages\\outbox\\0fbf6f33-4eb9-47b6-9400-1c2914b2d72f__codex__claudecode__ack.json",
+    "messages\\outbox\\19334d04-08f8-4d3d-9f94-4eab28d336ce__claudecode__codex__ack.json"
+  ],
+  "legacy_stranded_count": 3,
+  "ai_os_v2_dispatch_asserted": true,
+  "ack_complete": true,
+  "ack_separate_from_result": true,
+  "r286_generated_envelope_ids": [
+    "34345f7f-454c-4ba7-9c3a-e4a8a0dab435",
+    "c6b602da-1600-497b-9cab-ec43434df2db",
+    "e4f4ce41-cd21-423a-ad00-3aae6b1aee5e"
+  ],
+  "stranded_before": [
+    {
+      "label": "before",
+      "stranded_id": "41afc2c3-8fd3-4c80-80f2-62943eea25fd",
+      "path": "messages\\inbox\\41afc2c3-8fd3-4c80-80f2-62943eea25fd__codex__claudecode__ack.json",
+      "exists": true,
+      "sha256": "be6e17087f02221dd5f75eb562a126d208a803d31c1513245c79da7d6c404656",
+      "size": 563
+    },
+    {
+      "label": "before",
+      "stranded_id": "0fbf6f33-4eb9-47b6-9400-1c2914b2d72f",
+      "path": "messages\\outbox\\0fbf6f33-4eb9-47b6-9400-1c2914b2d72f__codex__claudecode__ack.json",
+      "exists": true,
+      "sha256": "0f884c65955de93376322d39841f61d118fec5f02941663e5c5a577a4103196e",
+      "size": 559
+    },
+    {
+      "label": "before",
+      "stranded_id": "19334d04-08f8-4d3d-9f94-4eab28d336ce",
+      "path": "messages\\outbox\\19334d04-08f8-4d3d-9f94-4eab28d336ce__claudecode__codex__ack.json",
+      "exists": true,
+      "sha256": "b09760d830642b72319d25a678f9e9a8ec7c8d91512cd76d5ce719cb35ba75b9",
+      "size": 582
+    }
+  ],
+  "cleaned_files": [
+    "34345f7f-454c-4ba7-9c3a-e4a8a0dab435__codex__claudecode__result.json",
+    "e4f4ce41-cd21-423a-ad00-3aae6b1aee5e__codex__claudecode__ack.json"
+  ],
+  "cleanup_complete": true,
+  "legacy_stranded_after_cleanup": [
+    "messages\\inbox\\41afc2c3-8fd3-4c80-80f2-62943eea25fd__codex__claudecode__ack.json",
+    "messages\\outbox\\0fbf6f33-4eb9-47b6-9400-1c2914b2d72f__codex__claudecode__ack.json",
+    "messages\\outbox\\19334d04-08f8-4d3d-9f94-4eab28d336ce__claudecode__codex__ack.json"
+  ],
+  "stranded_after": [
+    {
+      "label": "after",
+      "stranded_id": "41afc2c3-8fd3-4c80-80f2-62943eea25fd",
+      "path": "messages\\inbox\\41afc2c3-8fd3-4c80-80f2-62943eea25fd__codex__claudecode__ack.json",
+      "exists": true,
+      "sha256": "be6e17087f02221dd5f75eb562a126d208a803d31c1513245c79da7d6c404656",
+      "size": 563
+    },
+    {
+      "label": "after",
+      "stranded_id": "0fbf6f33-4eb9-47b6-9400-1c2914b2d72f",
+      "path": "messages\\outbox\\0fbf6f33-4eb9-47b6-9400-1c2914b2d72f__codex__claudecode__ack.json",
+      "exists": true,
+      "sha256": "0f884c65955de93376322d39841f61d118fec5f02941663e5c5a577a4103196e",
+      "size": 559
+    },
+    {
+      "label": "after",
+      "stranded_id": "19334d04-08f8-4d3d-9f94-4eab28d336ce",
+      "path": "messages\\outbox\\19334d04-08f8-4d3d-9f94-4eab28d336ce__claudecode__codex__ack.json",
+      "exists": true,
+      "sha256": "b09760d830642b72319d25a678f9e9a8ec7c8d91512cd76d5ce719cb35ba75b9",
+      "size": 582
+    }
+  ],
+  "stranded_files": [
+    {
+      "path": "messages\\inbox\\41afc2c3-8fd3-4c80-80f2-62943eea25fd__codex__claudecode__ack.json",
+      "before_exists": true,
+      "before_sha256": "be6e17087f02221dd5f75eb562a126d208a803d31c1513245c79da7d6c404656",
+      "after_exists": true,
+      "after_sha256": "be6e17087f02221dd5f75eb562a126d208a803d31c1513245c79da7d6c404656",
+      "unchanged": true
+    },
+    {
+      "path": "messages\\outbox\\0fbf6f33-4eb9-47b6-9400-1c2914b2d72f__codex__claudecode__ack.json",
+      "before_exists": true,
+      "before_sha256": "0f884c65955de93376322d39841f61d118fec5f02941663e5c5a577a4103196e",
+      "after_exists": true,
+      "after_sha256": "0f884c65955de93376322d39841f61d118fec5f02941663e5c5a577a4103196e",
+      "unchanged": true
+    },
+    {
+      "path": "messages\\outbox\\19334d04-08f8-4d3d-9f94-4eab28d336ce__claudecode__codex__ack.json",
+      "before_exists": true,
+      "before_sha256": "b09760d830642b72319d25a678f9e9a8ec7c8d91512cd76d5ce719cb35ba75b9",
+      "after_exists": true,
+      "after_sha256": "b09760d830642b72319d25a678f9e9a8ec7c8d91512cd76d5ce719cb35ba75b9",
+      "unchanged": true
+    }
+  ],
+  "stranded_diff": [],
+  "legacy_stranded_intact": true
+}

@@ -1,0 +1,23 @@
+{
+  "correlation_id": "f1205fe5-61b4-4d08-9782-64851fa330c8",
+  "id": "c8948802-2aff-400c-9ca2-a283aaff7008",
+  "idempotency_key": "dc7b95564fdeb90d6e358c338a82416890580ff402d3decde4bc25361a36832b",
+  "in_reply_to": "f1205fe5-61b4-4d08-9782-64851fa330c8",
+  "message_type": "result",
+  "payload": {
+    "output": {
+      "ok": true,
+      "received_id": "f1205fe5-61b4-4d08-9782-64851fa330c8",
+      "received_message_type": "task",
+      "received_recipient": "claudecode",
+      "received_sender": "codex",
+      "transport": "passthrough"
+    }
+  },
+  "recipient": "codex",
+  "retry_count": 0,
+  "schema_version": "1.0",
+  "sender": "claudecode",
+  "timestamp": "2026-10-08T14:30:24Z",
+  "ttl_ms": 300000
+}

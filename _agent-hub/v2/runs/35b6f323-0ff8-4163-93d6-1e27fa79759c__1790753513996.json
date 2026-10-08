@@ -1,0 +1,8 @@
+{
+  "attempt": 0,
+  "event": "transition:queued->running",
+  "note": "R349 Phase 3 完成: backup OK + edit OK + feedback-R349 OK · 拓展 A 入轨 · Phase 4-7 进行中",
+  "state": "running",
+  "task_id": "35b6f323-0ff8-4163-93d6-1e27fa79759c",
+  "ts": "2026-09-30T07:31:53Z"
+}

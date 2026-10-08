@@ -1,0 +1,49 @@
+{
+  "artifact_refs": [
+    "W7"
+  ],
+  "id": "87c35a45-2256-4a31-abe4-f233dd535eb0",
+  "idempotency_key": "d04887525f6fddbbdf63948da3dd23cee10e60d2544a2f09ee5a49a4a5247e43",
+  "message_type": "task",
+  "payload": {
+    "artifacts": [
+      "W7"
+    ],
+    "authorizer": "user-2026-10-08T23:55:你就开始",
+    "engineering_thread_id": "01a11c33-c813-7752-9e53-b7c332d00445",
+    "expected_runtime_seconds": 60,
+    "mode": "WRITE_POLICY_YAML",
+    "output_paths": {
+      "T5_done": "D:\\AIOS\\_agent-hub\\reports\\sovereignty-v\\tasks\\T5.done",
+      "W7_sha256": "D:\\AIOS\\_agent-hub\\policy\\model-policy.v1.yaml.sha256",
+      "W7_yaml": "D:\\AIOS\\_agent-hub\\policy\\model-policy.v1.yaml"
+    },
+    "parent_thread_id": "01a11c23-ab7f-7253-9059-7aa7fc204c02",
+    "pending_authorizations": [
+      "allowed_models: 等用户明文给 MiniMax model id 清单后填",
+      "last_modified: 写盘时由 Claude Code 填 ISO8601"
+    ],
+    "phase": "SOVEREIGNTY-V",
+    "policy_yaml_template": "# ModelPolicy v1 — single source of truth\n# policy_id: model-policy\n# policy_version: v1\n# policy_owner: codex-supervisor\n# generated_by: codex 01a11c30\n# authorizer: user-2026-10-08T23:55 (\"你就开始\")\n# generator: claude-code via sovereignty-v:T5 envelope\n# status: pending-model-id-authorization\n\npolicy_id: model-policy\npolicy_version: \"1.0.0\"\npolicy_owner: codex-supervisor\nallowed_providers:\n  - MiniMax\n# allowed_models: 留空 — 等用户明文授权 MiniMax model id 清单后由 Codex 补充\nallowed_models: []\ndefault_provider: MiniMax\n# default_model: 同上，留空\ndefault_model: null\nallowed_fallbacks: []   # 仅 MiniMax 内部已授权选项；当前为空\nprohibited_runtime_routes:\n  - openai\n  - anthropic\n  - google\n  - custom_other\nlast_modified: __FILL_AT_WRITE__\napproval_evidence: AGENTS.md chapter 1 + parent_thread msg_<TODO>\napplied_workers:\n  - codex\n  - claude-code\n  - openclaw\n  - hermes\n  - workbuddy\nverification_status: pending\n\n# 强制约束\nhard_constraints:\n  - id: C1\n    rule: \"不得自动调用历史供应商\"\n  - id: C2\n    rule: \"不允许跨供应商自动 fallback\"\n  - id: C3\n    rule: \"不允许历史会话将旧模型重新设为当前模型\"\n  - id: C4\n    rule: \"不允许后台任务绕开统一策略\"\n  - id: C5\n    rule: \"不允许配置恢复将旧模型重新启用\"\n  - id: C6\n    rule: \"MiniMax 不可用时排队/退避/报告，不擅自换供应商\"\n  - id: C7\n    rule: \"AIOS 升级不得擅自修改本策略\"\n  - id: C8\n    rule: \"更换模型供应商需用户明确批准\"\n  - id: C9\n    rule: \"执行后真实模型来源必须可审计\"\n  - id: C10\n    rule: \"allowed_models 必须由用户授权 id 列表填入，禁止自行编造\"\n",
+    "post_write_actions": [
+      "Get-FileHash -Path model-policy.v1.yaml -Algorithm SHA256 | Out-File model-policy.v1.yaml.sha256",
+      "icacls model-policy.v1.yaml /inheritance:r /grant:r \"$env:USERNAME:(R)\"  # disable inheritance, read-only for owner"
+    ],
+    "red_lines": [
+      "NO_FABRICATE_MODEL_ID",
+      "allowed_models_MUST_BE_EMPTY_ARRAY",
+      "default_model_MUST_BE_NULL",
+      "NO_WRITE_FALLBACK_TO_NON_MINIMAX"
+    ],
+    "supervisor_thread_id": "01a11c30-6f6c-76c0-8c60-a55f3a43ff63",
+    "task_card": "T5",
+    "task_id": "sovereignty-v:T5",
+    "title": "Generate ModelPolicy v1 YAML (sha256 + chmod 444)"
+  },
+  "recipient": "claudecode",
+  "retry_count": 0,
+  "schema_version": "1.0",
+  "sender": "codex",
+  "timestamp": "2026-10-08T15:52:42Z",
+  "ttl_ms": 600000
+}

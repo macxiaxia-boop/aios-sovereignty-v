@@ -1,0 +1,49 @@
+{
+  "artifact_refs": [
+    "W1",
+    "W2"
+  ],
+  "id": "ba8fcb71-c204-41f6-9cfd-0102157f204f",
+  "idempotency_key": "950cc76005a2def4b3435a2a4c6f7c2d4049ef9c3f5abf89399f69389a98ee7f",
+  "message_type": "task",
+  "payload": {
+    "artifacts": [
+      "W1",
+      "W2"
+    ],
+    "authorizer": "user-2026-10-08T23:55",
+    "engineering_thread_id": "01a11c33-c813-7752-9e53-b7c332d00445",
+    "expected_runtime_seconds": 120,
+    "mode": "READ_ONLY_AUDIT",
+    "output_paths": {
+      "T1_done": "D:\\AIOS\\_agent-hub\\reports\\sovereignty-v\\tasks\\T1.done",
+      "W1_config_snapshot": "D:\\AIOS\\_agent-hub\\reports\\sovereignty-v\\audit\\01-config-snapshot.json",
+      "W2_env_snapshot": "D:\\AIOS\\_agent-hub\\reports\\sovereignty-v\\audit\\02-env-snapshot.txt"
+    },
+    "parent_thread_id": "01a11c23-ab7f-7253-9059-7aa7fc204c02",
+    "phase": "SOVEREIGNTY-V",
+    "powershell_commands": [
+      "Get-ChildItem $env:USERPROFILE\\.codex -Recurse -Include *.toml,*.json -ErrorAction SilentlyContinue | Select FullName, Length, LastWriteTime",
+      "Get-ChildItem $env:USERPROFILE\\.claude -Recurse -Include *.toml,*.json,*.yaml -ErrorAction SilentlyContinue | Select FullName, Length, LastWriteTime",
+      "Get-ChildItem env: | Where-Object { $_.Name -match \"OPENAI|ANTHROPIC|MiniMax|MODEL|API\" } | Select Name, Value",
+      "Get-Process -ErrorAction SilentlyContinue | Where-Object { $_.ProcessName -match \"codex|claude\" } | Select Id, ProcessName, Path",
+      "Get-ChildItem \"D:\\AIOS\" -Recurse -Depth 2 -Include *.toml,settings*.json -ErrorAction SilentlyContinue | Where-Object { $_.FullName -notmatch \"_archived|_backup|_patches|_backups|node_modules\" } | Select FullName, Length | Select-Object -First 80"
+    ],
+    "red_lines": [
+      "NO_MODIFY_ANY_FILE",
+      "NO_API_CALL",
+      "NO_SSH_READ",
+      "NO_DELETE"
+    ],
+    "supervisor_thread_id": "01a11c30-6f6c-76c0-8c60-a55f3a43ff63",
+    "task_card": "T1",
+    "task_id": "sovereignty-v:T1",
+    "title": "Codex/Claude Code config + env var scan"
+  },
+  "recipient": "claudecode",
+  "retry_count": 0,
+  "schema_version": "1.0",
+  "sender": "codex",
+  "timestamp": "2026-10-08T15:49:51Z",
+  "ttl_ms": 600000
+}

@@ -1,0 +1,48 @@
+{
+  "artifact_refs": [
+    "W3"
+  ],
+  "id": "4d264d49-0abe-467c-81c7-d853b90cbe1e",
+  "idempotency_key": "a12c4d2cb7dd01a70981cb2b8ebd29e8792a556e24bb658e34b0b5ca9a6e68ca",
+  "message_type": "task",
+  "payload": {
+    "artifacts": [
+      "W3"
+    ],
+    "authorizer": "user-2026-10-08T23:55",
+    "engineering_thread_id": "01a11c33-c813-7752-9e53-b7c332d00445",
+    "expected_runtime_seconds": 180,
+    "mode": "READ_ONLY_AUDIT",
+    "output_paths": {
+      "T_done": "D:\\AIOS\\_agent-hub\\reports\\sovereignty-v\\tasks\\T2.done",
+      "W3_output": "D:\\AIOS\\_agent-hub\\reports\\sovereignty-v\\audit\\03-cc-switch-report.md"
+    },
+    "parent_thread_id": "01a11c23-ab7f-7253-9059-7aa7fc204c02",
+    "phase": "SOVEREIGNTY-V",
+    "powershell_commands": [
+      "Get-Command cc-switch, ccswitch -ErrorAction SilentlyContinue | Select Name, Source, Version",
+      "Get-ChildItem $env:USERPROFILE\\.cc-switch -Recurse -ErrorAction SilentlyContinue | Select FullName, Length, LastWriteTime | Select-Object -First 60",
+      "Get-ChildItem $env:LOCALAPPDATA\\cc-switch,$env:APPDATA\\cc-switch -Recurse -ErrorAction SilentlyContinue | Select FullName, Length | Select-Object -First 60",
+      "Get-ScheduledTask -ErrorAction SilentlyContinue | Where-Object { $_.TaskName -match \"cc-switch|switch|provider\" } | Select TaskName, State, TaskPath",
+      "Get-ItemProperty \"HKCU:\\Software\\cc-switch\",\"HKLM:\\Software\\cc-switch\" -ErrorAction SilentlyContinue"
+    ],
+    "red_lines": [
+      "NO_MODIFY_ANY_FILE",
+      "NO_API_CALL",
+      "NO_SSH_READ",
+      "NO_DELETE",
+      "NO_REGISTRY_WRITE",
+      "NO_TASK_DELETE"
+    ],
+    "supervisor_thread_id": "01a11c30-6f6c-76c0-8c60-a55f3a43ff63",
+    "task_card": "T2",
+    "task_id": "sovereignty-v:T2",
+    "title": "cc-switch state + backup + startup hook scan"
+  },
+  "recipient": "claudecode",
+  "retry_count": 0,
+  "schema_version": "1.0",
+  "sender": "codex",
+  "timestamp": "2026-10-08T15:50:09Z",
+  "ttl_ms": 600000
+}

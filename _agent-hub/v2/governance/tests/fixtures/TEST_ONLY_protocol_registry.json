@@ -1,0 +1,587 @@
+{
+  "schema": 2,
+  "audit_id": "system-audit-20260929-R281.1",
+  "captured_at": "2026-09-29T06:07:08Z",
+  "policy": "current-pointer order: current_by_family[family] > CANONICAL_INDEX pointer > explicit supersedes chain > hash/mtime as evidence only. mtime/hash are NEVER sole selectors.",
+  "totals_by_status": {
+    "current": 22,
+    "candidate": 5,
+    "superseded": 4,
+    "unknown": 1
+  },
+  "totals": {
+    "entries": 32,
+    "families": 29,
+    "current": 22,
+    "unresolved": 7
+  },
+  "current_by_family": {
+    "v2-bidirectional-protocol": "agent-hub-v2-protocol",
+    "v2-envelope-schema": "v2-envelope-schema",
+    "v2-task-schema": "v2-task-schema",
+    "v2-state-schema": "v2-state-schema",
+    "v2-agent-registry": "v2-agent-registry",
+    "v2-paths-ssot": "v2-paths-ssot",
+    "v2-implementation-report": "v2-implementation-report",
+    "reconstruction-system-registry": "reconstruction-system-registry",
+    "reconstruction-agent-registry": "reconstruction-agent-registry",
+    "reconstruction-skill-registry": "reconstruction-skill-registry",
+    "reconstruction-mcp-registry": "reconstruction-mcp-registry",
+    "reconstruction-bridge-registry": "reconstruction-bridge-registry",
+    "reconstruction-capability-graph": "reconstruction-capability-graph",
+    "reconstruction-canonical-candidates": "reconstruction-canonical-candidates",
+    "reconstruction-reality-map": "reconstruction-reality-map",
+    "reconstruction-progress": "reconstruction-progress",
+    "shared-identity-agents": "shared-identity-agents",
+    "shared-identity-claude": "shared-identity-claude",
+    "shared-identity-memory": "shared-identity-memory",
+    "shared-identity-soul": "shared-identity-soul",
+    "shared-identity-user": "shared-identity-user",
+    "shared-identity-bootstrap": "shared-identity-bootstrap",
+    "bridge-claudecode-openclaw": null,
+    "chatgpt-bridge-task-protocol": null,
+    "cloudtech-xml-winsw": null,
+    "reconstruction-broken-bridges-report": null,
+    "reconstruction-tool-registry": null,
+    "shared-identity-identity": null,
+    "v2-health-snapshot": null,
+    "test-family": "test-entry-v2"
+  },
+  "entries": [
+    {
+      "id": "agent-hub-v2-protocol",
+      "title": "AIOS Hub v2 Bidirectional Protocol",
+      "path": "_agent-hub/v2/protocols/v1.md",
+      "version": "1.0",
+      "status": "current",
+      "family": "v2-bidirectional-protocol",
+      "supersedes": [],
+      "superseded_by": null,
+      "evidence": [
+        "Only file under _agent-hub/v2/protocols/",
+        "CHANGELOG 2.0.0..2.0.3 records R320.1 / R320.6 audit + live round-trip",
+        "README.md line 7: 'canonical, versioned, machine-validated extension'"
+      ],
+      "hash": "78cdab2573c310b7a8f84ecef3a32698f6103475d446286c3ee86cd345e6ee5d",
+      "hash_size_bytes": 7079
+    },
+    {
+      "id": "v2-envelope-schema",
+      "title": "AIOS Hub v2 Envelope JSON Schema",
+      "path": "_agent-hub/v2/schemas/envelope.schema.json",
+      "version": "1.0",
+      "status": "current",
+      "family": "v2-envelope-schema",
+      "supersedes": [],
+      "superseded_by": null,
+      "evidence": [
+        "protocols/v1.md line 32: 'SSOT: this file + the JSON Schema it points to'",
+        "src/envelope.py runs validate_envelope on every build_envelope"
+      ],
+      "hash": "63da94e1ea3e67bbfdc535346d13fea825e86f4b317aa250a7ef89fa8ff84889",
+      "hash_size_bytes": 2372
+    },
+    {
+      "id": "v2-task-schema",
+      "title": "AIOS Hub v2 Task Schema",
+      "path": "_agent-hub/v2/schemas/task.schema.json",
+      "version": "1.0",
+      "status": "current",
+      "family": "v2-task-schema",
+      "supersedes": [],
+      "superseded_by": null,
+      "evidence": [
+        "Only task schema; consumed by src/state_machine.py"
+      ],
+      "hash": "2338cc1a0c9bc1d0307052d99c74b179d64ae416720a9d07ef18c55ae6118405",
+      "hash_size_bytes": 1773
+    },
+    {
+      "id": "v2-state-schema",
+      "title": "AIOS Hub v2 State Snapshot Schema",
+      "path": "_agent-hub/v2/schemas/state.schema.json",
+      "version": "1.0",
+      "status": "current",
+      "family": "v2-state-schema",
+      "supersedes": [],
+      "superseded_by": null,
+      "evidence": [
+        "Only state schema; consumed by src/state_machine.py save_state_snapshot"
+      ],
+      "hash": "20b0220e17269a0425eeeffdc61d488321a7ed5059782afb2c66621c57011b40",
+      "hash_size_bytes": 1198
+    },
+    {
+      "id": "v2-agent-registry",
+      "title": "AIOS Hub v2 Cross-Agent Identity Registry (SSOT)",
+      "path": "_agent-hub/v2/agents/agents.json",
+      "version": "v2-2026-09-29",
+      "status": "current",
+      "family": "v2-agent-registry",
+      "supersedes": [],
+      "superseded_by": null,
+      "evidence": [
+        "README.md line 20: 'agents/agents.json ← canonical agent registry (SSOT)'",
+        "Header field: 'SSOT for cross-agent identity'"
+      ],
+      "agents": [
+        "codex",
+        "claudecode",
+        "workbuddy",
+        "hermes",
+        "openclaw"
+      ],
+      "hash": "4a8d62cdd46fc9ae9e327270b2f7f5b06e54082a40ca05b0f61f0b05b64f6bce",
+      "hash_size_bytes": 2519
+    },
+    {
+      "id": "v2-paths-ssot",
+      "title": "AIOS Hub v2 Path Constants (SSOT)",
+      "path": "_agent-hub/v2/src/paths.py",
+      "version": "1.0",
+      "status": "current",
+      "family": "v2-paths-ssot",
+      "supersedes": [],
+      "superseded_by": null,
+      "evidence": [
+        "V2_ROOT constant",
+        "Every other module imports from here"
+      ],
+      "hash": "1bb2b12544326a0721668f6e05e8d08472032dd1184c70d2d3b588ad0482c0d9",
+      "hash_size_bytes": 1031
+    },
+    {
+      "id": "v2-implementation-report",
+      "title": "AIOS Hub v2 Implementation Report",
+      "path": "_agent-hub/v2/reports/IMPLEMENTATION_REPORT.md",
+      "version": "2.0.3",
+      "status": "current",
+      "family": "v2-implementation-report",
+      "supersedes": [],
+      "superseded_by": null,
+      "evidence": [
+        "41KB single source for v2 completion matrix"
+      ],
+      "hash": "6352d722bf4d33b5558138894db0e40a3f645a7024d7267a0f975a0519c105c8",
+      "hash_size_bytes": 41653
+    },
+    {
+      "id": "v2-health-snapshot",
+      "title": "AIOS Hub v2 Health Snapshot",
+      "path": "_agent-hub/v2/reports/health.json",
+      "version": "v2-2026-09-29",
+      "status": "candidate",
+      "family": "v2-health-snapshot",
+      "supersedes": [],
+      "superseded_by": null,
+      "evidence": [
+        "mtime 2026-09-29 12:56 (predates CHANGELOG 2.0.3 timestamp)",
+        "Conflict with CHANGELOG 2.0.3 wording"
+      ],
+      "required_decision": "rerun aiosv2.py health to regenerate",
+      "hash": "3f0acbdd757c6ac375598befac5336843e756a78b40ef5d8191556877dbdeb0a",
+      "hash_size_bytes": 4359
+    },
+    {
+      "id": "reconstruction-system-registry",
+      "title": "AIOS System Registry (R212 step2 v1)",
+      "path": "AIOS_RECONSTRUCTION/01_REGISTRY/AIOS_SYSTEM_REGISTRY.json",
+      "version": "R212-step2-v1",
+      "status": "current",
+      "family": "reconstruction-system-registry",
+      "supersedes": [],
+      "superseded_by": null,
+      "evidence": [
+        "7 systems indexed"
+      ],
+      "hash": "44893d36d2f8695f3c2fa87367cbd4e99204588d91e8251b7199c5a7bcb88d6f",
+      "hash_size_bytes": 2960
+    },
+    {
+      "id": "reconstruction-agent-registry",
+      "title": "AIOS Agent Registry (R212 step4 v1)",
+      "path": "AIOS_RECONSTRUCTION/01_REGISTRY/AIOS_AGENT_REGISTRY.json",
+      "version": "R212-step4-v1",
+      "status": "current",
+      "family": "reconstruction-agent-registry",
+      "supersedes": [],
+      "superseded_by": null,
+      "evidence": [
+        "18 agents indexed"
+      ],
+      "hash": "8731392df34e3c313a851f7fe967274f1b58f3f4de7e183f88f295b51050169c",
+      "hash_size_bytes": 4711
+    },
+    {
+      "id": "reconstruction-skill-registry",
+      "title": "AIOS Skill Registry (R212 step4 v1)",
+      "path": "AIOS_RECONSTRUCTION/01_REGISTRY/AIOS_SKILL_REGISTRY.json",
+      "version": "R212-step4-v1",
+      "status": "current",
+      "family": "reconstruction-skill-registry",
+      "supersedes": [],
+      "superseded_by": null,
+      "evidence": [
+        "11 families / 340 packages / spec#3 rule"
+      ],
+      "hash": "ee79eb0a14053e963fd5f8b3ce720d34febe170e6d7073843a80001432e2ca30",
+      "hash_size_bytes": 2221
+    },
+    {
+      "id": "reconstruction-mcp-registry",
+      "title": "AIOS MCP Registry (R212 step4 v1)",
+      "path": "AIOS_RECONSTRUCTION/01_REGISTRY/AIOS_MCP_REGISTRY.json",
+      "version": "R212-step4-v1",
+      "status": "current",
+      "family": "reconstruction-mcp-registry",
+      "supersedes": [],
+      "superseded_by": null,
+      "evidence": [
+        "11 MCP servers indexed"
+      ],
+      "hash": "2f9fd27842de2c8baa87117b4f97c40e1bb85857c4815850b38c5bcfd376fb89",
+      "hash_size_bytes": 2335
+    },
+    {
+      "id": "reconstruction-tool-registry",
+      "title": "AIOS Tool Registry",
+      "path": "AIOS_RECONSTRUCTION/01_REGISTRY/AIOS_TOOL_REGISTRY.json",
+      "version": "APP_CONNECTOR_FABRIC_PHASE_2_V1",
+      "status": "candidate",
+      "family": "reconstruction-tool-registry",
+      "supersedes": [],
+      "superseded_by": null,
+      "evidence": [
+        "Only registry that does NOT use R212-stepN-v1 namespace",
+        "Freshest mtime among registries (2026-09-27 01:20)",
+        "19 tools + connectors"
+      ],
+      "required_decision": "namespace policy: rename to R212-step5-v1 OR keep separate namespace",
+      "hash": "e139d5309eb5eb3cab2cd0804d58c76fc632c7ba75769049518d6f56031d2821",
+      "hash_size_bytes": 5858
+    },
+    {
+      "id": "reconstruction-bridge-registry",
+      "title": "AIOS Bridge Registry (R212 step4 v1)",
+      "path": "AIOS_RECONSTRUCTION/03_BRIDGES/AIOS_BRIDGE_REGISTRY.json",
+      "version": "R212-step4-v1",
+      "status": "current",
+      "family": "reconstruction-bridge-registry",
+      "supersedes": [],
+      "superseded_by": null,
+      "evidence": [
+        "9 bridges",
+        "Modified 2026-09-29 (today)",
+        "Tracks R320.6 status correction for br-claudecode-openclaw"
+      ],
+      "tension_with": "reconstruction-broken-bridges-report",
+      "hash": "407c139aae530cde70dd2904e46062bf8bdf2fcc72f773fbf466d7c09cf61957",
+      "hash_size_bytes": 4946
+    },
+    {
+      "id": "reconstruction-broken-bridges-report",
+      "title": "AIOS Broken Bridges Report (R212)",
+      "path": "AIOS_RECONSTRUCTION/03_BRIDGES/AIOS_BROKEN_BRIDGES.md",
+      "version": "R212-2026-09-26",
+      "status": "candidate",
+      "family": "reconstruction-broken-bridges-report",
+      "supersedes": [],
+      "superseded_by": null,
+      "evidence": [
+        "mtime 2026-09-27 17:50",
+        "spec#37",
+        "Tracks R211/R260/R265 repairs",
+        "Lists br-claudecode-openclaw as CANDIDATE / unbuilt — CONFLICTS with bridge registry"
+      ],
+      "tension_with": "reconstruction-bridge-registry",
+      "hash": "33a9e43fe9fe946de8e57d671c1cdc441aa032db6cfd4879a3e37c416e2ba1f8",
+      "hash_size_bytes": 4307
+    },
+    {
+      "id": "reconstruction-capability-graph",
+      "title": "AIOS Capability Graph (R212 step8 v1)",
+      "path": "AIOS_RECONSTRUCTION/04_CAPABILITY_GRAPH/AIOS_CAPABILITY_GRAPH.json",
+      "version": "R212-step8-v1",
+      "status": "current",
+      "family": "reconstruction-capability-graph",
+      "supersedes": [],
+      "superseded_by": null,
+      "evidence": [
+        "6 capabilities; spec#34"
+      ],
+      "hash": "8e2f14336dd8e773be5f5c432091b751c4611fef0cc79614ac1075e039a7eb25",
+      "hash_size_bytes": 4388
+    },
+    {
+      "id": "reconstruction-canonical-candidates",
+      "title": "AIOS Canonical Candidates (R212 step3 v1)",
+      "path": "AIOS_RECONSTRUCTION/02_CANONICAL/AIOS_CANONICAL_CANDIDATES.json",
+      "version": "R212-step3-v1",
+      "status": "current",
+      "family": "reconstruction-canonical-candidates",
+      "supersedes": [],
+      "superseded_by": null,
+      "evidence": [
+        "80 candidate AGENTS.md/CLAUDE.md paths"
+      ],
+      "hash": "fe0bd972eb0a5eaa29e8ae08e50e4a21e768001755d854df9338c37ab314ceca",
+      "hash_size_bytes": 23358
+    },
+    {
+      "id": "reconstruction-reality-map",
+      "title": "AIOS Reality Map (R212 step1 v2-targeted)",
+      "path": "AIOS_RECONSTRUCTION/00_REALITY/AIOS_REALITY_MAP.json",
+      "version": "R212-step1-v2-targeted",
+      "status": "current",
+      "family": "reconstruction-reality-map",
+      "supersedes": [],
+      "superseded_by": null,
+      "evidence": [
+        "Only -v2-targeted version field in tree"
+      ],
+      "hash": "88ed48988fef0727c73032d7f36789bb196c285d723527cb4cf39cad03ba6a4e",
+      "hash_size_bytes": 9830
+    },
+    {
+      "id": "reconstruction-progress",
+      "title": "AIOS Reconstruction Progress",
+      "path": "AIOS_RECONSTRUCTION/AIOS_RECONSTRUCTION_PROGRESS.json",
+      "version": "R212-AIOS-RECONSTRUCTION",
+      "status": "current",
+      "family": "reconstruction-progress",
+      "supersedes": [],
+      "superseded_by": null,
+      "evidence": [
+        "Self-reports overall COMPLETE; P2/P6 in_progress; P7-P9 pending"
+      ],
+      "hash": "ee438e0c94419f7b4fae6f1aaa8e2804e4016feb41c8fdacdf79e35b11869e8a",
+      "hash_size_bytes": 5095
+    },
+    {
+      "id": "shared-identity-agents",
+      "title": "Shared AGENTS.md (cross-agent)",
+      "path": "_agent-hub/AGENTS.md",
+      "version": "2026-09-28",
+      "status": "current",
+      "family": "shared-identity-agents",
+      "supersedes": [
+        "shared-identity-agents.workbuddy-bak-2026-09-22"
+      ],
+      "superseded_by": null,
+      "evidence": [
+        "Propagates to ~/.codex/AGENTS.md via install-links.ps1 / sync-from-hub.ps1"
+      ],
+      "hash": "27901fc015e167ee272e3b58eb26a0be6f67eda8a1593926f10a7700cf5805b5",
+      "hash_size_bytes": 2052
+    },
+    {
+      "id": "shared-identity-agents.workbuddy-bak-2026-09-22",
+      "title": "AGENTS.md (workbuddy junction .bak)",
+      "path": "_relinked/workbuddy/AGENTS.md.bak (if exists) or junction source",
+      "version": "2026-09-22",
+      "status": "superseded",
+      "family": "shared-identity-agents",
+      "supersedes": [],
+      "superseded_by": "shared-identity-agents",
+      "evidence": [
+        "backup from 2026-09-22",
+        "path missing at build: _relinked/workbuddy/AGENTS.md.bak (if exists) or junction source"
+      ],
+      "copy_count": 1,
+      "hash": null
+    },
+    {
+      "id": "shared-identity-claude",
+      "title": "Shared CLAUDE.md (cross-agent)",
+      "path": "_agent-hub/CLAUDE.md",
+      "version": "2026-09-28",
+      "status": "current",
+      "family": "shared-identity-claude",
+      "supersedes": [
+        "shared-identity-claude.userhome-bak"
+      ],
+      "superseded_by": null,
+      "evidence": [
+        "Propagates to ~/.claude/CLAUDE.md via sync-from-hub.ps1"
+      ],
+      "hash": "a6595fa55fec0d95cf3a526f4a49f218eb3b4190e3a9ce819b69a8b0b42ede5c",
+      "hash_size_bytes": 1731
+    },
+    {
+      "id": "shared-identity-claude.userhome-bak",
+      "title": "CLAUDE.md (user home .bak)",
+      "path": "C:/Users/xinzh/.claude/CLAUDE.md.bak",
+      "version": "2026-09-28",
+      "status": "superseded",
+      "family": "shared-identity-claude",
+      "supersedes": [],
+      "superseded_by": "shared-identity-claude",
+      "evidence": [
+        "superseded 2026-09-28",
+        "absolute path; hash not computed by this build: C:/Users/xinzh/.claude/CLAUDE.md.bak"
+      ],
+      "copy_count": 1,
+      "hash": null
+    },
+    {
+      "id": "shared-identity-memory",
+      "title": "Shared MEMORY.md (cross-agent)",
+      "path": "_agent-hub/MEMORY.md",
+      "version": "2026-09-28",
+      "status": "current",
+      "family": "shared-identity-memory",
+      "supersedes": [],
+      "superseded_by": null,
+      "evidence": [
+        "CloudTech project context, competitive positioning"
+      ],
+      "hash": "7250537d3b6cc9f685e9de03a2a1ea7b22fb453252e1ddf6f4f5a730533620b4",
+      "hash_size_bytes": 2764
+    },
+    {
+      "id": "shared-identity-soul",
+      "title": "Shared SOUL.md (cross-agent identity)",
+      "path": "_agent-hub/SOUL.md",
+      "version": "2026-09-28",
+      "status": "current",
+      "family": "shared-identity-soul",
+      "supersedes": [],
+      "superseded_by": null,
+      "evidence": [
+        "Single source of truth for 'who I am' across agents"
+      ],
+      "hash": "084f0b7ca14d6e5e547e726734b7da6a8400f49882da8d9ad5354d764bb5e9bf",
+      "hash_size_bytes": 2745
+    },
+    {
+      "id": "shared-identity-user",
+      "title": "Shared USER.md (cross-agent user profile)",
+      "path": "_agent-hub/USER.md",
+      "version": "2026-09-28",
+      "status": "current",
+      "family": "shared-identity-user",
+      "supersedes": [],
+      "superseded_by": null,
+      "evidence": [
+        "CloudTech founder profile, Chinese-speaking, structured output"
+      ],
+      "hash": "d08e26eae602e949c2a78d2d2163e08e49101ded1b987c31e2699a12d69c91be",
+      "hash_size_bytes": 1901
+    },
+    {
+      "id": "shared-identity-bootstrap",
+      "title": "WorkBuddy BOOTSTRAP.md",
+      "path": "_relinked/workbuddy/BOOTSTRAP.md",
+      "version": "2026-09-29",
+      "status": "current",
+      "family": "shared-identity-bootstrap",
+      "supersedes": [],
+      "superseded_by": null,
+      "evidence": [
+        "Only file at workbuddy root; not propagated to other agents"
+      ],
+      "hash": "4b154cb774c7a10201a317e212b9267b759606a9bb83da789c633da484062b22",
+      "hash_size_bytes": 1089
+    },
+    {
+      "id": "shared-identity-identity",
+      "title": "WorkBuddy IDENTITY.md",
+      "path": "_relinked/workbuddy/IDENTITY.md",
+      "version": "2026-09-28",
+      "status": "candidate",
+      "family": "shared-identity-identity",
+      "supersedes": [
+        "shared-identity-identity.workbuddy-bak"
+      ],
+      "superseded_by": null,
+      "evidence": [
+        "Exists only for WorkBuddy; install-links.ps1 also points IDENTITY.md at _agent-hub/SOUL.md"
+      ],
+      "hash": "084f0b7ca14d6e5e547e726734b7da6a8400f49882da8d9ad5354d764bb5e9bf",
+      "hash_size_bytes": 2745
+    },
+    {
+      "id": "shared-identity-identity.workbuddy-bak",
+      "title": "IDENTITY.md (workbuddy .bak)",
+      "path": "_relinked/workbuddy/IDENTITY.md.bak",
+      "version": "2026-09-22",
+      "status": "superseded",
+      "family": "shared-identity-identity",
+      "supersedes": [],
+      "superseded_by": "shared-identity-identity",
+      "evidence": [
+        "backup from 2026-09-22"
+      ],
+      "copy_count": 1,
+      "hash": "ea88682efde077f73d6d7625b03915455c87fec5b4d5add6ca7c5842d8bb92e0",
+      "hash_size_bytes": 582
+    },
+    {
+      "id": "br-claudecode-openclaw",
+      "title": "Bridge: Claude Code ↔ OpenClaw (status entry)",
+      "path": "AIOS_RECONSTRUCTION/03_BRIDGES/AIOS_BRIDGE_REGISTRY.json",
+      "version": "R212-step4-v1",
+      "status": "unknown",
+      "family": "bridge-claudecode-openclaw",
+      "supersedes": [],
+      "superseded_by": null,
+      "evidence": [
+        "bridge registry: status=loopback_only, health=unverified (R320.6)",
+        "broken bridges report: status=CANDIDATE, health=unbuilt — CONFLICTS"
+      ],
+      "required_decision": "loopback_only vs unbuilt — user must confirm",
+      "hash": "407c139aae530cde70dd2904e46062bf8bdf2fcc72f773fbf466d7c09cf61957",
+      "hash_size_bytes": 4946
+    },
+    {
+      "id": "chatgpt-bridge-task-protocol",
+      "title": "TASK_PROTOCOL.md (chatgpt_bridge)",
+      "path": "_backups/chatgpt_bridge_pre_rollback_to_V4P9-FINAL_20260927_151216/TASK_PROTOCOL.md",
+      "version": null,
+      "status": "superseded",
+      "family": "chatgpt-bridge-task-protocol",
+      "supersedes": [],
+      "superseded_by": null,
+      "evidence": [
+        "3 identical copies across _backups/chatgpt_bridge_pre_rollback_*/; legacy bridge module, replaced by v2 hub"
+      ],
+      "copy_count": 3,
+      "hash": "5ca3cd76b38d7cde192951d00c1e95e1c5d5c447467aa4b5da715a336a87f790",
+      "hash_size_bytes": 2101
+    },
+    {
+      "id": "cloudtech-xml-winsw",
+      "title": "CloudTech V22 WinSW Service Descriptor",
+      "path": "cloudtech-saas/cloudtech-saas.xml.bak_C_1790215941",
+      "version": null,
+      "status": "candidate",
+      "family": "cloudtech-xml-winsw",
+      "supersedes": [],
+      "superseded_by": null,
+      "evidence": [
+        "File renamed with .bak_C_1790215941 suffix",
+        "install.cmd references 'cloudtech-saas.xml' (without suffix) which does NOT exist",
+        "install.cmd will fail out-of-the-box"
+      ],
+      "required_decision": "restore xml file or update install.cmd reference",
+      "hash": "509efc60c7d84b6c3c98e56e119f6354326caec711771dcfab70477b624d4b3c",
+      "hash_size_bytes": 1513
+    },
+    {
+      "id": "test-entry-v2",
+      "title": "test-entry-v2",
+      "path": "_agent-hub/v2/protocols/v1.md",
+      "version": "9.9",
+      "status": "current",
+      "family": "test-family",
+      "supersedes": [
+        "agent-hub-v2-protocol"
+      ],
+      "superseded_by": null,
+      "evidence": [
+        "published via protocol_registry.py at 2026-09-29T06:07:08Z"
+      ],
+      "hash": "78cdab2573c310b7a8f84ecef3a32698f6103475d446286c3ee86cd345e6ee5d"
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+checkpoint 1: read task.txt
+checkpoint 2: write checkpoint.txt with 3 lines
+checkpoint 3: write final.txt with LONG_OK

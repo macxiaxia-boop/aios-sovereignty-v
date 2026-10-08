@@ -1,0 +1,107 @@
+{
+  "agents": {},
+  "counters": {
+    "cancelled": 1,
+    "queued": 2,
+    "succeeded": 1
+  },
+  "tasks": {
+    "35b6f323-0ff8-4163-93d6-1e27fa79759c": {
+      "assignee": "claude_code",
+      "correlation_envelope_id": null,
+      "created_at": "2026-09-30T07:30:34Z",
+      "description": "用户原话\"全部做\"· 2 大块: ① 根治 4 步 (backup + edit aios_interop_mcp.py L862-863 + feedback R348 + MEMORY + 红线 #77) ② 拓展 4 件套 A 任务入轨 + B 信封通信 + C 子任务委派 + D RAG 自动挂载",
+      "error": null,
+      "heartbeat_at": "2026-09-30T07:31:53Z",
+      "input_payload": {
+        "phase": "execute",
+        "risk": "low",
+        "rounds": [
+          "backup",
+          "edit",
+          "feedback",
+          "memory",
+          "delegate",
+          "rag",
+          "close"
+        ],
+        "scope": "L1+L2"
+      },
+      "lease_expires_at": null,
+      "max_retries": 1,
+      "output_payload": {},
+      "owner": "claude_code",
+      "retry_count": 0,
+      "state": "succeeded",
+      "task_id": "35b6f323-0ff8-4163-93d6-1e27fa79759c",
+      "timeout_ms": 3600000,
+      "title": "R348 · aios_status stale defaults 根治 + 通道拓展 A/B/C/D 全部上线",
+      "updated_at": "2026-09-30T07:36:49Z"
+    },
+    "782ff34b-f5d0-484e-bae5-d97cff2788ae": {
+      "assignee": "r286-debug-agent",
+      "correlation_envelope_id": null,
+      "created_at": "2026-09-30T01:23:44Z",
+      "description": "",
+      "error": {
+        "code": "LEASE_EXPIRED",
+        "message": "no heartbeat by 2026-09-30T01:23:46Z"
+      },
+      "heartbeat_at": "2026-09-30T01:23:44Z",
+      "input_payload": {},
+      "lease_expires_at": "2026-09-30T01:23:46Z",
+      "max_retries": 2,
+      "output_payload": {},
+      "owner": "claudecode",
+      "retry_count": 1,
+      "state": "queued",
+      "task_id": "782ff34b-f5d0-484e-bae5-d97cff2788ae",
+      "timeout_ms": 2000,
+      "title": "r286-lease-debug",
+      "updated_at": "2026-09-30T01:23:47Z"
+    },
+    "832dccb4-3020-4771-ab54-ab17340a9c4e": {
+      "assignee": "r286-lease-agent",
+      "correlation_envelope_id": null,
+      "created_at": "2026-09-30T01:24:58Z",
+      "description": "",
+      "error": {
+        "code": "LEASE_EXPIRED",
+        "message": "no heartbeat by 2026-09-30T01:25:01Z"
+      },
+      "heartbeat_at": "2026-09-30T01:24:59Z",
+      "input_payload": {},
+      "lease_expires_at": "2026-09-30T01:25:01Z",
+      "max_retries": 2,
+      "output_payload": {},
+      "owner": "claudecode",
+      "retry_count": 1,
+      "state": "queued",
+      "task_id": "832dccb4-3020-4771-ab54-ab17340a9c4e",
+      "timeout_ms": 2000,
+      "title": "r286-lease",
+      "updated_at": "2026-09-30T01:25:06Z"
+    },
+    "901ad4b3-128f-4f26-8ab0-b15d4ef4eff3": {
+      "assignee": "codex",
+      "correlation_envelope_id": null,
+      "created_at": "2026-09-29T17:04:14Z",
+      "description": "",
+      "error": null,
+      "heartbeat_at": null,
+      "input_payload": {},
+      "lease_expires_at": null,
+      "max_retries": 3,
+      "output_payload": {},
+      "owner": "claude",
+      "retry_count": 0,
+      "state": "cancelled",
+      "task_id": "901ad4b3-128f-4f26-8ab0-b15d4ef4eff3",
+      "timeout_ms": 60000,
+      "title": "test",
+      "updated_at": "2026-09-30T01:23:44Z"
+    }
+  },
+  "updated_at": "2026-10-08T14:10:36Z",
+  "version": "v2-2026-09-29"
+}

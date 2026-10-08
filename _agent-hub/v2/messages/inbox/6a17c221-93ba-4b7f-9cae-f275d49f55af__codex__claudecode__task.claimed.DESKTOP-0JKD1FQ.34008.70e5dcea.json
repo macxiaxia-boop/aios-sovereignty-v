@@ -1,0 +1,43 @@
+{
+  "artifact_refs": [
+    "W7_verify"
+  ],
+  "id": "6a17c221-93ba-4b7f-9cae-f275d49f55af",
+  "idempotency_key": "e46c4c34651089d9b4e21158479051c958c2c6b28e09bd3440a7f39bee433f89",
+  "message_type": "task",
+  "payload": {
+    "artifacts": [
+      "W7_verify"
+    ],
+    "authorizer": "user-2026-10-08T23:55:continue-2026-10-09T00:03",
+    "engineering_thread_id": "01a11c33-c813-7752-9e53-b7c332d00445",
+    "expected_runtime_seconds": 30,
+    "expected_sha256": "C0D5648B44AB0298C5543D14C4C00CFEDBC0476B7A26705743322B1F2EF022A2",
+    "mode": "VERIFY_AND_CLOSE_T5",
+    "output_paths": {
+      "T5_done": "D:\\AIOS\\_agent-hub\\reports\\sovereignty-v\\tasks\\T5.done"
+    },
+    "parent_thread_id": "01a11c23-ab7f-7253-9059-7aa7fc204c02",
+    "phase": "SOVEREIGNTY-V",
+    "reason": "Codex supervisor 已写 model-policy.v1.sha256 (real hash C0D5648B...). 请验证 sha256 一致 + 跑 icacls 收口 + 写 T5.done",
+    "red_lines": [
+      "NO_OVERWRITE_POLICY",
+      "VERIFY_SHA256_MATCHES_FILE"
+    ],
+    "supervisor_thread_id": "01a11c30-6f6c-76c0-8c60-a55f3a43ff63",
+    "task_card": "T5-verification",
+    "task_id": "sovereignty-v:T5-verification",
+    "title": "T5 close-out: verify sha256 + icacls + write T5.done",
+    "verification_commands": [
+      "Get-FileHash -Algorithm SHA256 D:\\AIOS\\_agent-hub\\policy\\model-policy.v1.yaml",
+      "icacls D:\\AIOS\\_agent-hub\\policy\\model-policy.v1.yaml /inheritance:r /grant:r \"$env:USERNAME:(R)\"",
+      "Get-Content D:\\AIOS\\_agent-hub\\policy\\model-policy.v1.sha256"
+    ]
+  },
+  "recipient": "claudecode",
+  "retry_count": 0,
+  "schema_version": "1.0",
+  "sender": "codex",
+  "timestamp": "2026-10-08T16:03:06Z",
+  "ttl_ms": 600000
+}
