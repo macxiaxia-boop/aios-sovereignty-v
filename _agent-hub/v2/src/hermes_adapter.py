@@ -27,6 +27,8 @@ import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+from .dispatch_runtime import run_subprocess_with_retry
+
 HERMES_EXE = Path(r"D:\AIOS\_relinked\hermes\hermes-agent\.venv\Scripts\hermes.exe")
 
 # Hard cap so a runaway hermes never ties up the consumer for minutes.
@@ -78,12 +80,8 @@ def _hermes_dispatch_adapter(env: dict, *, recipient: str) -> dict:
 
     started = time.time()
     try:
-        proc = subprocess.run(
-            cmd,
-            cwd=workdir,
-            capture_output=True,
-            timeout=DEFAULT_TIMEOUT_SEC,
-            shell=False,
+        proc, retry = run_subprocess_with_retry(
+            cmd, cwd=workdir, timeout=DEFAULT_TIMEOUT_SEC, shell=False
         )
         duration_ms = int((time.time() - started) * 1000)
         sout = (proc.stdout or b"").decode("utf-8", errors="replace")
@@ -104,6 +102,7 @@ def _hermes_dispatch_adapter(env: dict, *, recipient: str) -> dict:
             "stderr_bytes": len(proc.stderr or b""),
             "duration_ms": duration_ms,
             "dispatched_at": int(started),
+            **retry,
         }
     except subprocess.TimeoutExpired:
         return {
@@ -115,6 +114,7 @@ def _hermes_dispatch_adapter(env: dict, *, recipient: str) -> dict:
             "args": args,
             "command": " ".join(shlex.quote(c) for c in cmd),
             "duration_ms": DEFAULT_TIMEOUT_SEC * 1000,
+            "attempts": 3,
             "envelope_id": env.get("id"),
         }
     except FileNotFoundError as e:

@@ -6,19 +6,17 @@ import base64
 import json
 import os
 import subprocess
-import sys
 import time
 from pathlib import Path
 
+from .dispatch_runtime import run_subprocess_with_retry
+
 CLAUDE_CLI = Path(r"D:\npm-global\claude.ps1")
+DEFAULT_TIMEOUT_SEC = 300
 
 
 def _claude_dispatch_adapter(env: dict, *, recipient: str) -> dict:
-    """For recipient=claudecode + message_type=task: spawn real `claude -p`.
-
-    For other recipients/types: passthrough (echo only).
-    Uses PowerShell -EncodedCommand to avoid quote-escaping issues.
-    """
+    """Spawn real ``claude -p`` with bounded concurrency and retry/backoff."""
     if env.get("recipient") != "claudecode" or env.get("message_type") != "task":
         return {
             "ok": True,
@@ -36,45 +34,50 @@ def _claude_dispatch_adapter(env: dict, *, recipient: str) -> dict:
     if not task_lines:
         task_lines = [json.dumps(payload, ensure_ascii=False)]
     prompt = "\n".join([f"ENV_ID={env.get('id')}", f"SENDER={env.get('sender')}", ""] + task_lines)
-    # Build PS script that includes both the invocation AND the prompt as a
-    # single script block, so -EncodedCommand does not collide with -args.
     ps_script = (
         "& 'D:\\npm-global\\claude.ps1' -p "
         + "'" + prompt.replace("'", "''") + "'"
         + " --add-dir '" + workdir + "'"
     )
     encoded = base64.b64encode(ps_script.encode("utf-16le")).decode("ascii")
-    start = time.time()
+    command = [
+        "powershell", "-NoProfile", "-ExecutionPolicy", "Bypass",
+        "-EncodedCommand", encoded,
+    ]
+    started = time.time()
     try:
-        r = subprocess.run(
-            ["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass",
-             "-EncodedCommand", encoded],
-            capture_output=True, timeout=300,
-        )
+        proc, retry = run_subprocess_with_retry(command, timeout=DEFAULT_TIMEOUT_SEC)
         try:
-            sout = r.stdout.decode("utf-8", errors="replace") if r.stdout else ""
-            serr = r.stderr.decode("utf-8", errors="replace") if r.stderr else ""
-            # PowerShell often emits GBK on Windows-cn hosts; try GBK if UTF-8 decode produced too many replacements
-            if r.stdout and sout.count("�") > 4:
-                try: sout = r.stdout.decode("gbk", errors="replace")
-                except Exception: pass
+            sout = proc.stdout.decode("utf-8", errors="replace") if proc.stdout else ""
+            serr = proc.stderr.decode("utf-8", errors="replace") if proc.stderr else ""
+            if proc.stdout and sout.count("\ufffd") > 4:
+                sout = proc.stdout.decode("gbk", errors="replace")
         except Exception:
-            sout = ""; serr = ""
-        duration = int((time.time() - start) * 1000)
+            sout, serr = "", ""
         return {
-            "ok": r.returncode == 0,
+            "ok": proc.returncode == 0,
             "transport": "claude_p_subprocess",
-            "exit_code": r.returncode,
+            "exit_code": proc.returncode,
             "stdout_tail": (sout or "")[-1000:],
             "stderr_tail": (serr or "")[-500:],
-            "duration_ms": duration,
+            "duration_ms": int((time.time() - started) * 1000),
+            **retry,
         }
     except subprocess.TimeoutExpired:
-        return {"ok": False, "transport": "claude_p_subprocess",
-                "error": "timeout_300s", "duration_ms": 300000}
+        return {
+            "ok": False,
+            "transport": "claude_p_subprocess",
+            "error": f"timeout_{DEFAULT_TIMEOUT_SEC}s",
+            "duration_ms": int((time.time() - started) * 1000),
+            "attempts": 3,
+        }
     except Exception as e:
-        return {"ok": False, "transport": "claude_p_subprocess",
-                "error": f"{type(e).__name__}: {e}"}
+        return {
+            "ok": False,
+            "transport": "claude_p_subprocess",
+            "error": f"{type(e).__name__}: {e}",
+            "duration_ms": int((time.time() - started) * 1000),
+        }
 
 
 _claude_dispatch_adapter.__name__ = "claude_p_adapter"
