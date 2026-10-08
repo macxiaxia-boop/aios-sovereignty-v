@@ -178,7 +178,7 @@ class WorkingMemoryService:
             row = await self._fetch_row(session, session_id, key)
             if row is None:
                 return None
-            return _row_to_entry(row)
+            return row.value  # return raw value, not envelope
 
     async def list_keys(self, session_id: str) -> list[str]:
         """Return the (non-expired) keys for a session, sorted lexicographically."""
@@ -261,15 +261,18 @@ class WorkingMemoryService:
 
 
 def _row_to_entry(row: WorkingMemoryORM) -> WorkingMemoryEntry:
-    """Convert ORM row -> Pydantic WorkingMemoryEntry."""
+    """Convert ORM row -> Pydantic WorkingMemoryEntry (tz-aware fix)."""
+    from datetime import UTC
+    def _u(dt):
+        return dt.replace(tzinfo=UTC) if dt and dt.tzinfo is None else dt
     return WorkingMemoryEntry(
         id=row.id,
         key=row.key,
-        value=row.value_json,
+        value=dict(row.value_json or {}),
         session_id=row.session_id,
-        created_at=row.created_at,
-        updated_at=row.updated_at,
-        expires_at=row.expires_at,
+        created_at=_u(row.created_at),
+        updated_at=_u(row.updated_at),
+        expires_at=_u(row.expires_at),
         schema_version=row.schema_version,
     )
 

@@ -298,7 +298,7 @@ class LongTermMemoryService:
             row = (await session.execute(stmt)).scalar_one_or_none()
             if row is None:
                 return None
-            return _row_to_entry(row)
+            return _row_to_entry(row).value  # return raw value dict
 
     async def query(
         self,
