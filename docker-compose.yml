@@ -1,0 +1,37 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: aios-kernel-postgres
+    environment:
+      POSTGRES_USER: aios
+      POSTGRES_PASSWORD: aios
+      POSTGRES_DB: aios_kernel
+    ports:
+      - "5432:5432"
+    volumes:
+      - aios_kernel_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aios -d aios_kernel"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  temporal:
+    image: temporalio/auto-setup:1.22
+    container_name: aios-kernel-temporal
+    environment:
+      DB: postgresql
+      POSTGRES_USER: aios
+      POSTGRES_PASSWORD: aios
+      POSTGRES_SEEDS: postgres
+    ports:
+      - "7233:7233"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    profiles: ["durable"]
+
+volumes:
+  aios_kernel_pgdata:

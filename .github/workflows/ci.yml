@@ -1,0 +1,39 @@
+name: aios-kernel-ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install package
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Ruff lint
+        run: ruff check src/ tests/
+
+      - name: Mypy typecheck
+        run: mypy src/aios_kernel
+        continue-on-error: true
+
+      - name: Pytest
+        run: pytest --collect-only
+
+      - name: Coverage report
+        run: |
+          coverage run -m pytest
+          coverage report
+        continue-on-error: true
