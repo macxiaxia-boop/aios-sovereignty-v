@@ -1,0 +1,42 @@
+{
+  "verify_ok": true,
+  "envelope_id": "verify-1791473399",
+  "checks": [
+    {
+      "name": "adapter_call_no_exception",
+      "ok": true,
+      "evidence": {
+        "transport": "workbuddy_probe",
+        "adapter": "workbuddy",
+        "duration_ms": 213
+      }
+    },
+    {
+      "name": "workbuddy_transport",
+      "ok": true,
+      "evidence": {
+        "transport": "workbuddy_probe"
+      }
+    },
+    {
+      "name": "workbuddy_daemon_log_independent",
+      "ok": true,
+      "evidence": {
+        "path": "C:\\Users\\xinzh\\.workbuddy\\logs\\daemon.log",
+        "age_sec": 16253,
+        "stale": true,
+        "size_bytes": 4010878
+      }
+    },
+    {
+      "name": "workbuddy_stale_classification_matches",
+      "ok": true,
+      "evidence": {
+        "adapter_stale": true,
+        "independent_stale": true
+      }
+    }
+  ],
+  "duration_ms": 214,
+  "verified_at": 1791473399
+}
