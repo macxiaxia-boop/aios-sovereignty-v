@@ -1,37 +1,39 @@
 version: "3.9"
-
 services:
   postgres:
-    image: postgres:16-alpine
-    container_name: aios-kernel-postgres
+    image: postgres:15-alpine
     environment:
+      POSTGRES_DB: aios_vnext
       POSTGRES_USER: aios
-      POSTGRES_PASSWORD: aios
-      POSTGRES_DB: aios_kernel
-    ports:
-      - "5432:5432"
+      POSTGRES_PASSWORD: ${AIOS_DB_PASSWORD}
     volumes:
-      - aios_kernel_pgdata:/var/lib/postgresql/data
+      - aios_pg_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U aios -d aios_kernel"]
-      interval: 5s
-      timeout: 3s
-      retries: 10
+      test: pg_isready
+      interval: 10s
+    networks: [airgap]
 
-  temporal:
-    image: temporalio/auto-setup:1.22
-    container_name: aios-kernel-temporal
-    environment:
-      DB: postgresql
-      POSTGRES_USER: aios
-      POSTGRES_PASSWORD: aios
-      POSTGRES_SEEDS: postgres
-    ports:
-      - "7233:7233"
+  kernel:
+    build: .
     depends_on:
       postgres:
         condition: service_healthy
-    profiles: ["durable"]
+    environment:
+      AIOS_KERNEL_DATABASE_URL: postgresql+psycopg://aios:${AIOS_DB_PASSWORD}@postgres/aios_vnext
+      AIOS_KERNEL_OFFLINE: "1"
+    networks: [airgap]
+    ports:
+      - "9000:9000"
 
-volumes:
-  aios_kernel_pgdata:
+  verifier:
+    build: .
+    command: ["python", "-m", "aios_kernel.verifier.server"]
+    networks: [airgap]
+    depends_on: [postgres]
+
+networks:
+  airgap:
+    driver: bridge
+    internal: true  # NO external network
+
+# NO services depend on external networks. Airgap enforced.
