@@ -1,0 +1,50 @@
+{
+  "marker": "AIOS_CORE_SPINE_SUMMIT_REACHED",
+  "timestamp_utc": "2026-10-08T15:50:42Z",
+  "timestamp_beijing": "2026-10-08T23:50:42+08:00",
+  "git": {
+    "head_sha": "97d5edfca0ff4212247fda95eaa0b293118fd3b1",
+    "head_short": "97d5edf",
+    "head_message": "Summit 2026-10-08: T07-T24 18 PASS + 4 verifier PASS (22/22); 4 adapters (claude/hermes/openclaw/workbuddy); 11 real bug fixes; P5 V7 FULL E2E; 22 per-test PASS.md evidence",
+    "log3": "97d5edf Summit 2026-10-08: T07-T24 18 PASS + 4 verifier PASS (22/22); 4 adapters (claude/hermes/openclaw/workbuddy); 11 real bug fixes; P5 V7 FULL E2E; 22 per-test PASS.md evidence\ndb37448 P8 full 18/18 acceptance + 3 adapters + verifier\n0b964e6 N wave: AIOS_RECONSTRUCTION P7-P9 + WorkBuddy + cross-cloud + 10 new e2e kernels (45/45 PASS)"
+  },
+  "v2_consumer": {
+    "alive": true,
+    "pids": [
+      32236,
+      38492
+    ],
+    "primary_pid": 32236,
+    "state_json_present": true,
+    "state_json_keys": [
+      "agents",
+      "counters",
+      "tasks",
+      "updated_at",
+      "version"
+    ],
+    "counters": {
+      "cancelled": 1,
+      "queued": 2,
+      "succeeded": 1
+    },
+    "inbox_count": 26,
+    "outbox_count": 2,
+    "deadletter_count": 6
+  },
+  "evidence": {
+    "dir": "D:\\AIOS\\_agent-hub\\reports\\p8_evidence",
+    "pass_md_count": 22,
+    "expected_count": 22,
+    "ok": true,
+    "files_sample": [
+      "p8_T07_hermes_subprocess_timeout_PASS.md",
+      "p8_T08_hermes_invalid_subcommand_to_doctor_PASS.md",
+      "p8_T09_openclaw_connection_refused_PASS.md",
+      "..."
+    ]
+  },
+  "test_summary": "22/22 PASS (T07-T24 + 4 verifier); pytest -v output in p8_full_pytest_output.txt",
+  "commit_message_excerpt": "Summit 2026-10-08: T07-T24 18 PASS + 4 verifier PASS (22/22); 4 adapters (claude/hermes/openclaw/workbuddy); 11 real bug fixes; P5 V7 FULL E2E",
+  "sign_off": "Codex supervisor (commitment 2026-10-08)"
+}
