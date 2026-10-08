@@ -44,11 +44,11 @@ def test_t07_hermes_subprocess_timeout(monkeypatch=None):
         else:
             assert out["exit_code"] == 0
             assert "Hermes" in (out.get("stdout_tail") or "") or len(out.get("stdout_tail") or "") > 0
-        return out
+        result = out
+        assert result
     finally:
         ha.DEFAULT_TIMEOUT_SEC = orig_timeout
 
-
 if __name__ == "__main__":
-    r = test_t07_hermes_subprocess_timeout()
-    print("T07:", r["ok"], r.get("transport"), r.get("error", "ok"))
+    test_t07_hermes_subprocess_timeout()
+    print("PASS: test_t07_hermes_subprocess_timeout")

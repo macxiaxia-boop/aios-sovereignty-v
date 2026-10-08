@@ -17,7 +17,7 @@ sys.path.insert(0, str(ROOT))
 from src.envelope import build_envelope
 from src.v2_consumer import dispatch_envelope, set_dispatcher
 from src.paths import INBOX
-from src.queue import enqueue
+from src.message_queue import enqueue
 from src.hermes_adapter import make_hermes_adapter
 
 
@@ -58,13 +58,13 @@ def test_t20_real_hermes_dispatch_end_to_end():
         stdout_tail = adapter_result.get("stdout_tail", "")
         assert "Hermes" in stdout_tail or "v0.15" in stdout_tail or len(stdout_tail) > 0, \
             f"result stdout missing hermes signature: {stdout_tail!r}"
-        return {"ok": True, "ack_id": ack_id, "result_id": result_id,
+        result = {"ok": True, "ack_id": ack_id, "result_id": result_id,
                 "stdout_tail": stdout_tail[:120],
                 "transport": adapter_result["transport"]}
+        assert result
     finally:
         set_dispatcher(None)
 
-
 if __name__ == "__main__":
-    r = test_t20_real_hermes_dispatch_end_to_end()
-    print(f"T20: ok={r['ok']} transport={r['transport']} stdout={r['stdout_tail'][:60]!r}")
+    test_t20_real_hermes_dispatch_end_to_end()
+    print("PASS: test_t20_real_hermes_dispatch_end_to_end")

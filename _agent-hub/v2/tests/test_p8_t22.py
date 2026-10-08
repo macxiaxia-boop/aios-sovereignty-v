@@ -17,7 +17,7 @@ sys.path.insert(0, str(ROOT))
 from src.envelope import build_envelope
 from src.v2_consumer import dispatch_envelope, set_dispatcher
 from src.paths import INBOX
-from src.queue import enqueue
+from src.message_queue import enqueue
 from src.workbuddy_adapter import make_workbuddy_adapter
 
 
@@ -46,13 +46,13 @@ def test_t22_real_workbuddy_probe_end_to_end():
             f"unexpected transport: {adapter_result.get('transport')}"
         assert adapter_result["probe"]["alive"] is False  # daemon is down
         assert adapter_result["probe"]["checks"]["daemon_log"]["stale"] is True
-        return {"ok": True, "alive": adapter_result["probe"]["alive"],
+        result = {"ok": True, "alive": adapter_result["probe"]["alive"],
                 "daemon_age_sec": adapter_result["probe"]["checks"]["daemon_log"]["age_sec"],
                 "transport": adapter_result["transport"]}
+        assert result
     finally:
         set_dispatcher(None)
 
-
 if __name__ == "__main__":
-    r = test_t22_real_workbuddy_probe_end_to_end()
-    print(f"T22: ok={r['ok']} transport={r['transport']} alive={r['alive']} daemon_age={r['daemon_age_sec']}s")
+    test_t22_real_workbuddy_probe_end_to_end()
+    print("PASS: test_t22_real_workbuddy_probe_end_to_end")

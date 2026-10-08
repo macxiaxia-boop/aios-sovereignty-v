@@ -43,9 +43,9 @@ def test_t11_workbuddy_probe_returns_honest_evidence():
     assert probe["alive"] is False
     # outer ok should be False (probe returns ok = probe.alive)
     assert out["ok"] is False
-    return out
-
+    result = out
+    assert result
 
 if __name__ == "__main__":
-    r = test_t11_workbuddy_probe_returns_honest_evidence()
-    print("T11: alive=", r["probe"]["alive"], "stale=", r["probe"]["checks"]["daemon_log"]["stale"])
+    test_t11_workbuddy_probe_returns_honest_evidence()
+    print("PASS: test_t11_workbuddy_probe_returns_honest_evidence")

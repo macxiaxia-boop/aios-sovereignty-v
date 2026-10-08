@@ -20,7 +20,7 @@ from src.v2_consumer import (
     dispatch_envelope, set_dispatcher, dispatch_to_adapter,
 )
 from src.paths import INBOX, v2_root
-from src.queue import enqueue
+from src.message_queue import enqueue
 from src.hermes_adapter import make_hermes_adapter
 from src.openclaw_adapter import make_openclaw_adapter
 from src.workbuddy_adapter import make_workbuddy_adapter
@@ -94,12 +94,7 @@ def test_t15_set_dispatcher_injects_each_adapter():
     # 4. Default reset
     set_dispatcher(None)
     assert dispatch_to_adapter.__name__ == "dispatch_to_adapter"
-    return {"ok": True, "test": "t15_di_three_adapters",
-            "transports": {"hermes": "hermes_subprocess",
-                           "openclaw": "openclaw_http",
-                           "workbuddy": "workbuddy_probe"}}
-
 
 if __name__ == "__main__":
-    r = test_t15_set_dispatcher_injects_each_adapter()
-    print("T15:", r)
+    test_t15_set_dispatcher_injects_each_adapter()
+    print("PASS: test_t15_set_dispatcher_injects_each_adapter")

@@ -29,9 +29,9 @@ def test_t08_hermes_invalid_subcommand_falls_back_to_doctor():
     assert out["subcommand"] == "doctor", f"expected fallback to doctor, got {out['subcommand']}"
     # Args should preserve the rejected subcommand so it's visible in evidence
     assert "rm-rf" in out["args"], f"args should preserve rejected subcommand: {out['args']}"
-    return out
-
+    result = out
+    assert result
 
 if __name__ == "__main__":
-    r = test_t08_hermes_invalid_subcommand_falls_back_to_doctor()
-    print("T08:", r["ok"], r.get("subcommand"), r.get("args"))
+    test_t08_hermes_invalid_subcommand_falls_back_to_doctor()
+    print("PASS: test_t08_hermes_invalid_subcommand_falls_back_to_doctor")

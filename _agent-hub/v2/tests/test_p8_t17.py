@@ -38,9 +38,9 @@ def test_t17_openclaw_burst_10_envelopes():
     # All should be 200
     statuses = [r["status"] for r in results]
     assert all(s == 200 for s in statuses), f"non-200 statuses: {statuses}"
-    return {"count": len(results), "statuses": statuses}
-
+    result = {"count": len(results), "statuses": statuses}
+    assert result
 
 if __name__ == "__main__":
-    r = test_t17_openclaw_burst_10_envelopes()
-    print(f"T17: {r['count']} ok, statuses={set(r['statuses'])}")
+    test_t17_openclaw_burst_10_envelopes()
+    print("PASS: test_t17_openclaw_burst_10_envelopes")

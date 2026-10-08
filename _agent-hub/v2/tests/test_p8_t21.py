@@ -16,7 +16,7 @@ sys.path.insert(0, str(ROOT))
 from src.envelope import build_envelope
 from src.v2_consumer import dispatch_envelope, set_dispatcher
 from src.paths import INBOX
-from src.queue import enqueue
+from src.message_queue import enqueue
 from src.openclaw_adapter import make_openclaw_adapter
 
 
@@ -47,13 +47,13 @@ def test_t21_real_openclaw_dispatch_end_to_end():
             f"unexpected status: {adapter_result.get('status')}"
         assert adapter_result.get("body_json") == {"ok": True, "status": "live"}, \
             f"unexpected body_json: {adapter_result.get('body_json')}"
-        return {"ok": True, "status": adapter_result["status"],
+        result = {"ok": True, "status": adapter_result["status"],
                 "body_json": adapter_result["body_json"],
                 "transport": adapter_result["transport"]}
+        assert result
     finally:
         set_dispatcher(None)
 
-
 if __name__ == "__main__":
-    r = test_t21_real_openclaw_dispatch_end_to_end()
-    print(f"T21: ok={r['ok']} transport={r['transport']} status={r['status']}")
+    test_t21_real_openclaw_dispatch_end_to_end()
+    print("PASS: test_t21_real_openclaw_dispatch_end_to_end")

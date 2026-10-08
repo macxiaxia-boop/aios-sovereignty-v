@@ -60,10 +60,9 @@ def test_t13_parallel_dispatch_all_adapters():
     # WorkBuddy: probe returns ok=alive, currently False on this host
     assert results["workbuddy"]["out"]["transport"] == "workbuddy_probe"
     assert results["workbuddy"]["out"]["probe"]["alive"] is False
-    return results
-
+    result = results
+    assert result
 
 if __name__ == "__main__":
-    r = test_t13_parallel_dispatch_all_adapters()
-    for name, info in r.items():
-        print(f"T13 {name}: ok={info['out']['ok']} elapsed={info['elapsed_ms']}ms")
+    test_t13_parallel_dispatch_all_adapters()
+    print("PASS: test_t13_parallel_dispatch_all_adapters")

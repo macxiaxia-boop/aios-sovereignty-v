@@ -19,7 +19,7 @@ sys.path.insert(0, str(ROOT))
 from src.envelope import build_envelope
 from src.v2_consumer import dispatch_envelope, set_dispatcher, MAX_RETRIES_PER_ENVELOPE
 from src.paths import INBOX
-from src.queue import enqueue
+from src.message_queue import enqueue
 from src.hermes_adapter import make_hermes_adapter
 
 
@@ -66,10 +66,10 @@ def test_t23_resume_after_partial_failure():
     out2 = dispatch_envelope(target2, env2)
     assert out2["ok"] is True, f"resume failed: {out2}"
     set_dispatcher(None)
-    return {"first_ok": out1["ok"], "resume_ok": out2["ok"],
+    result = {"first_ok": out1["ok"], "resume_ok": out2["ok"],
             "first_error_count": len(err_correlated)}
-
+    assert result
 
 if __name__ == "__main__":
-    r = test_t23_resume_after_partial_failure()
-    print(f"T23: first_ok={r['first_ok']} resume_ok={r['resume_ok']} error_envelopes={r['first_error_count']}")
+    test_t23_resume_after_partial_failure()
+    print("PASS: test_t23_resume_after_partial_failure")

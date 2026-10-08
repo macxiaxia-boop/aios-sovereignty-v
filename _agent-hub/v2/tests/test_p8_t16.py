@@ -44,10 +44,10 @@ def test_t16_hermes_burst_10_envelopes():
     # All should have positive duration_ms < 30s
     durations = [r["duration_ms"] for r in results]
     assert all(0 < d < 30000 for d in durations), f"durations out of range: {durations}"
-    return {"count": len(results), "results": results,
+    result = {"count": len(results), "results": results,
             "total_ms": sum(durations), "max_ms": max(durations)}
-
+    assert result
 
 if __name__ == "__main__":
-    r = test_t16_hermes_burst_10_envelopes()
-    print(f"T16: {r['count']} ok, total={r['total_ms']}ms max={r['max_ms']}ms")
+    test_t16_hermes_burst_10_envelopes()
+    print("PASS: test_t16_hermes_burst_10_envelopes")

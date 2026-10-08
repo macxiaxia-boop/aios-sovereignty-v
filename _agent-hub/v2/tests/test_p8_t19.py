@@ -16,7 +16,7 @@ sys.path.insert(0, str(ROOT))
 from src.envelope import build_envelope
 from src.v2_consumer import dispatch_envelope, set_dispatcher
 from src.paths import INBOX
-from src.queue import enqueue
+from src.message_queue import enqueue
 from src.hermes_adapter import make_hermes_adapter
 
 
@@ -44,13 +44,13 @@ def test_t19_goalguard_allows_normal_hermes_task():
         # If goal_guard block did happen, the result would NOT have these steps.
         assert "claim" in steps, f"missing claim step: {list(steps.keys())}"
         assert "result_envelope" in steps, f"missing result_envelope: {list(steps.keys())}"
-        return {"ok": True,
+        result = {"ok": True,
                 "goal_guard_blocked": "goal_guard" in steps and not steps["goal_guard"]["ok"],
                 "dispatch_transport": "hermes_subprocess"}
+        assert result
     finally:
         set_dispatcher(None)
 
-
 if __name__ == "__main__":
-    r = test_t19_goalguard_allows_normal_hermes_task()
-    print("T19:", r)
+    test_t19_goalguard_allows_normal_hermes_task()
+    print("PASS: test_t19_goalguard_allows_normal_hermes_task")

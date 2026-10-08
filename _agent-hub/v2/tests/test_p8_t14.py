@@ -35,9 +35,9 @@ def test_t14_hermes_large_output_truncation():
     # We don't hard-assert >1500 because hermes DB could be smaller on test host.
     assert out["stdout_bytes"] >= len(out["stdout_tail"]), \
         f"stdout_bytes ({out['stdout_bytes']}) should be >= stdout_tail ({len(out['stdout_tail'])})"
-    return out
-
+    result = out
+    assert result
 
 if __name__ == "__main__":
-    r = test_t14_hermes_large_output_truncation()
-    print(f"T14: stdout_bytes={r['stdout_bytes']} tail_len={len(r['stdout_tail'])} exit={r['exit_code']}")
+    test_t14_hermes_large_output_truncation()
+    print("PASS: test_t14_hermes_large_output_truncation")

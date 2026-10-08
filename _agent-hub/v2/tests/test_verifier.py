@@ -47,8 +47,9 @@ def test_verifier_hermes_subprocess():
         assert ep.exists(), f"evidence file missing: {ep}"
         body = json.loads(ep.read_text(encoding="utf-8"))
         assert body["verify_ok"] is True
-        return {"ok": True, "evidence_path": str(ep),
+        result = {"ok": True, "evidence_path": str(ep),
                 "checks_passed": sum(1 for c in result["checks"] if c["ok"])}
+        assert result
     finally:
         shutil.rmtree(evidence_dir, ignore_errors=True)
 
@@ -72,8 +73,9 @@ def test_verifier_openclaw_http():
         assert "openclaw_expected_status" in check_names
         ep = Path(result["evidence_path"])
         assert ep.exists(), f"evidence file missing: {ep}"
-        return {"ok": True, "evidence_path": str(ep),
+        result = {"ok": True, "evidence_path": str(ep),
                 "checks_passed": sum(1 for c in result["checks"] if c["ok"])}
+        assert result
     finally:
         shutil.rmtree(evidence_dir, ignore_errors=True)
 
@@ -98,10 +100,11 @@ def test_verifier_workbuddy_probe():
         transport_check = next(c for c in result["checks"] if c["name"] == "workbuddy_transport")
         assert transport_check["ok"] is True, f"transport wrong: {transport_check}"
         ep = Path(result["evidence_path"]) if "evidence_path" in result else None
-        return {"ok": True,
+        result = {"ok": True,
                 "evidence_path": str(ep) if ep else None,
                 "checks_passed": sum(1 for c in result["checks"] if c["ok"]),
                 "verify_ok": result["verify_ok"]}
+        assert result
     finally:
         shutil.rmtree(evidence_dir, ignore_errors=True)
 
@@ -141,20 +144,18 @@ def test_verifier_all_three_adapters_combined():
         for name, res in results.items():
             assert "evidence_path" in res, f"{name} no evidence_path: {res}"
             assert Path(res["evidence_path"]).exists(), f"{name} evidence missing"
-        return {"ok": True, "evidence_root": str(evidence_root),
+        result = {"ok": True, "evidence_root": str(evidence_root),
                 "results": {k: {"verify_ok": v["verify_ok"],
                                 "checks_passed": sum(1 for c in v["checks"] if c["ok"]),
                                 "checks_total": len(v["checks"])}
                             for k, v in results.items()}}
+        assert result
     finally:
         shutil.rmtree(evidence_root, ignore_errors=True)
 
-
 if __name__ == "__main__":
-    for fn_name in ["test_verifier_hermes_subprocess",
-                    "test_verifier_openclaw_http",
-                    "test_verifier_workbuddy_probe",
-                    "test_verifier_all_three_adapters_combined"]:
-        fn = globals()[fn_name]
-        r = fn()
-        print(f"  {fn_name}: {r['ok']} checks_passed={r.get('checks_passed')}")
+    test_verifier_hermes_subprocess()
+    test_verifier_openclaw_http()
+    test_verifier_workbuddy_probe()
+    test_verifier_all_three_adapters_combined()
+    print("PASS: test_verifier_hermes_subprocess, test_verifier_openclaw_http, test_verifier_workbuddy_probe, test_verifier_all_three_adapters_combined")

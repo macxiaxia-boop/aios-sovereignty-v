@@ -26,9 +26,9 @@ def test_t12_workbuddy_dispatch_blocked_with_evidence():
     assert out["reason"] == "workbuddy_daemon_not_running"
     assert "evidence" in out
     assert out["evidence"]["alive"] is False
-    return out
-
+    result = out
+    assert result
 
 if __name__ == "__main__":
-    r = test_t12_workbuddy_dispatch_blocked_with_evidence()
-    print("T12:", r["ok"], r["transport"], r["reason"])
+    test_t12_workbuddy_dispatch_blocked_with_evidence()
+    print("PASS: test_t12_workbuddy_dispatch_blocked_with_evidence")

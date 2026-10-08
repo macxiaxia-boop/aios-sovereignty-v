@@ -17,7 +17,7 @@ sys.path.insert(0, str(ROOT))
 from src.envelope import build_envelope
 from src.v2_consumer import dispatch_envelope, set_dispatcher
 from src.paths import INBOX
-from src.queue import enqueue
+from src.message_queue import enqueue
 from src.openclaw_adapter import make_openclaw_adapter
 
 
@@ -42,12 +42,12 @@ def test_t18_idempotent_retry_of_same_envelope():
             raise AssertionError(f"second dispatch raised: {e}")
         assert "ok" in out2
         assert "steps" in out2
-        return {"first_ok": out1["ok"], "second_ok": out2["ok"],
+        result = {"first_ok": out1["ok"], "second_ok": out2["ok"],
                 "second_steps": [s.get("step") for s in out2["steps"]]}
+        assert result
     finally:
         set_dispatcher(None)
 
-
 if __name__ == "__main__":
-    r = test_t18_idempotent_retry_of_same_envelope()
-    print("T18:", r)
+    test_t18_idempotent_retry_of_same_envelope()
+    print("PASS: test_t18_idempotent_retry_of_same_envelope")

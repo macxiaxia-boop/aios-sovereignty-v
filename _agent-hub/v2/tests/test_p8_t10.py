@@ -30,9 +30,9 @@ def test_t10_openclaw_unknown_action_routes_to_health():
     assert out["status"] == 200
     assert "json" in out["content_type"].lower()
     assert out["body_json"] == {"ok": True, "status": "live"}
-    return out
-
+    result = out
+    assert result
 
 if __name__ == "__main__":
-    r = test_t10_openclaw_unknown_action_routes_to_health()
-    print("T10:", r["ok"], r.get("status"), r.get("body_json"))
+    test_t10_openclaw_unknown_action_routes_to_health()
+    print("PASS: test_t10_openclaw_unknown_action_routes_to_health")

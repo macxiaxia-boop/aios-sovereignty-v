@@ -17,7 +17,7 @@ sys.path.insert(0, str(ROOT))
 from src.envelope import build_envelope
 from src.v2_consumer import dispatch_envelope, set_dispatcher
 from src.paths import INBOX
-from src.queue import enqueue
+from src.message_queue import enqueue
 from src.hermes_adapter import make_hermes_adapter
 from src.openclaw_adapter import make_openclaw_adapter
 from src.workbuddy_adapter import make_workbuddy_adapter
@@ -76,10 +76,9 @@ def test_t24_e2e_three_adapters_full_smoke():
     assert out["openclaw"]["transport"] == "openclaw_http"
     assert out["openclaw"]["ok"] is True
     assert out["workbuddy"]["transport"] == "workbuddy_probe"
-    return out
-
+    result = out
+    assert result
 
 if __name__ == "__main__":
-    r = test_t24_e2e_three_adapters_full_smoke()
-    for k, v in r.items():
-        print(f"T24 {k}: ok={v['ok']} transport={v['transport']}")
+    test_t24_e2e_three_adapters_full_smoke()
+    print("PASS: test_t24_e2e_three_adapters_full_smoke")

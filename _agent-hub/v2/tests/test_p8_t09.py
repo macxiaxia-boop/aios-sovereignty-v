@@ -31,11 +31,11 @@ def test_t09_openclaw_connection_refused():
         # url_error or socket_timeout — both acceptable for "no server"
         assert ("url_error" in out["error"]) or ("timeout" in out["error"]), \
             f"expected url_error/timeout, got {out['error']}"
-        return out
+        result = out
+        assert result
     finally:
         oa.OPENCLAW_BASE = orig_base
 
-
 if __name__ == "__main__":
-    r = test_t09_openclaw_connection_refused()
-    print("T09:", r["ok"], r.get("error"))
+    test_t09_openclaw_connection_refused()
+    print("PASS: test_t09_openclaw_connection_refused")
