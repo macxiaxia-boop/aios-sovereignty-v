@@ -5,6 +5,8 @@ Modules (D002-D006):
   promotion recommendation (high-ROI campaigns become reusable skills).
 """
 from aios_kernel.business.marketing_feedback import (
+    DEFAULT_ROI_THRESHOLD,
+    DEFAULT_VALUE_PER_CONVERSION,
     Channel,
     MarketingCampaign,
     MarketingFeedbackService,
@@ -13,6 +15,8 @@ from aios_kernel.business.marketing_feedback import (
 
 __all__ = [
     "Channel",
+    "DEFAULT_VALUE_PER_CONVERSION",
+    "DEFAULT_ROI_THRESHOLD",
     "MarketingCampaign",
     "MarketingFeedbackService",
     "SkillRecommendation",
