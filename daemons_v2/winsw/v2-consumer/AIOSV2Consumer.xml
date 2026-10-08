@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- P1: persistent boot service for the v2 inbox consumer. -->
+<service>
+  <id>AIOSV2Consumer</id>
+  <name>AIOS V2 Consumer (24/7)</name>
+  <description>Boot-persistent v2 inbox consumer with atomic mutex and automatic restart.</description>
+  <executable>C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-windows-x86_64-none\pythonw.exe</executable>
+  <arguments>-u -m src.start_consumer_real --interval 3</arguments>
+  <workingdirectory>D:\AIOS\_agent-hub\v2</workingdirectory>
+  <environment>
+    <var name="AIOS_V2_CHANNEL_ENABLED" value="1"/>
+    <var name="AIOS_V2_ROOT" value="D:\AIOS\_agent-hub\v2"/>
+    <var name="PYTHONPATH" value="D:\AIOS\_agent-hub\v2"/>
+    <var name="PYTHONUNBUFFERED" value="1"/>
+  </environment>
+  <log mode="roll-by-size">
+    <sizeThreshold>10240</sizeThreshold>
+    <keepFiles>5</keepFiles>
+  </log>
+  <onfailure action="restart" delay="15 sec"/>
+  <resetfailureafter>1 min</resetfailureafter>
+  <startmode>Automatic</startmode>
+  <delayedAutoStart>true</delayedAutoStart>
+  <serviceaccount>
+    <username>LocalSystem</username>
+    <allowservicelogon>true</allowservicelogon>
+  </serviceaccount>
+  <stoptimeout>15 sec</stoptimeout>
+</service>
