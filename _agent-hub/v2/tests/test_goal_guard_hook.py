@@ -29,7 +29,7 @@ import pytest  # noqa: E402
 
 from src.envelope import build_envelope  # noqa: E402
 from src.paths import INBOX, v2_root  # noqa: E402
-from src.queue import enqueue  # noqa: E402
+from src.message_queue import enqueue  # noqa: E402
 from src.v2_consumer import (  # noqa: E402
     CAPABILITIES,
     dispatch_envelope,

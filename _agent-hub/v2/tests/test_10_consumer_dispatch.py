@@ -27,7 +27,7 @@ sys.path.insert(0, str(ROOT))
 
 from src.envelope import build_envelope, reply_envelope, verify_envelope
 from src.paths import INBOX, STATE_FILE, EVENTS_LOG, TASKS_DIR, v2_root
-from src.queue import ack as q_ack, claim as q_claim, deadletter, enqueue
+from src.message_queue import ack as q_ack, claim as q_claim, deadletter, enqueue
 from src.v2_consumer import (
     ConsumerStats,
     CAPABILITIES,

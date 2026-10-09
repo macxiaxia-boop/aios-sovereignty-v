@@ -19,7 +19,7 @@ from pathlib import Path
 
 from src.envelope import build_envelope, reply_envelope
 from src.paths import INBOX, OUTBOX, STATE_FILE, EVENTS_LOG, TASKS_DIR
-from src.queue import ack as q_ack, claim as q_claim, enqueue, list_unclaimed
+from src.message_queue import ack as q_ack, claim as q_claim, enqueue, list_unclaimed
 from src.state_machine import build_state_snapshot, save_state_snapshot, submit_task, transition
 
 
@@ -247,7 +247,7 @@ def test_r3206_ack_of_ack_does_not_create_loop():
     assert q_ack(claimed)
 
     # Now A=claudecode_r3206 looks for acks in inbox addressed to itself.
-    from src.queue import list_unclaimed
+    from src.message_queue import list_unclaimed
     items = list_unclaimed(INBOX, limit=1000, recipient=a_id)
     ack_envs = [e for _, e in items if e["message_type"] == "ack"]
     assert len(ack_envs) == 1, (

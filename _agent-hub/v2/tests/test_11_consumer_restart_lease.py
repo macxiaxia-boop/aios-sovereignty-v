@@ -20,7 +20,7 @@ sys.path.insert(0, str(ROOT))
 
 from src.envelope import build_envelope
 from src.paths import INBOX, STATE_FILE, TASKS_DIR
-from src.queue import ack as q_ack, claim as q_claim, enqueue, list_unclaimed
+from src.message_queue import ack as q_ack, claim as q_claim, enqueue, list_unclaimed
 from src.state_machine import reap_expired, submit_task, transition, list_tasks
 
 

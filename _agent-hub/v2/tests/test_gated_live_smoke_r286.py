@@ -44,7 +44,7 @@ sys.path.insert(0, str(ROOT))
 from src.envelope import build_envelope, reply_envelope
 from src.id import idempotency_key, utc_now_iso
 from src.paths import DEADLETTER, INBOX, OUTBOX, TASKS_DIR, EVENTS_LOG, ensure_dirs, v2_root
-from src.queue import enqueue
+from src.message_queue import enqueue
 
 # R286 marker — every R286-generated envelope payload contains this string.
 R286_MARKER = "r286_smoke_marker_DO_NOT_REMOVE"

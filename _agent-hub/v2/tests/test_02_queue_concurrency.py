@@ -9,7 +9,7 @@ import threading
 from pathlib import Path
 
 from src.envelope import build_envelope
-from src.queue import ack, claim, deadletter, enqueue, list_unclaimed
+from src.message_queue import ack, claim, deadletter, enqueue, list_unclaimed
 from src.paths import INBOX, STATE_FILE
 
 

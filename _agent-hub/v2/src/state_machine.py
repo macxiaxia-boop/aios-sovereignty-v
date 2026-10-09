@@ -12,9 +12,139 @@ import uuid
 from pathlib import Path
 from typing import Optional
 
+from .goal_guard_hook import strategy_gate_for_root
 from .id import new_uuid, utc_now_iso
 from .paths import RUNS_DIR, STATE_FILE, TASKS_DIR, ensure_dirs
 from .validation import TERMINAL_TASK_STATES, TASK_STATES, validate_task
+
+
+# ---------------------------------------------------------------- Strategy Gate (Phase-2 correction)
+class StrategyGateRejected(Exception):
+    """Raised when the strategy policy gate refuses a task submission.
+
+    The exception carries the structured gate events (``.events``) and the
+    machine-readable rejection reason (``.reason``). Optional ``.policy_id``
+    and ``.policy_version`` identify the policy version that rejected the
+    submission. Callers may surface a clear error message to CLI users.
+    """
+
+    def __init__(
+        self,
+        message: str,
+        *,
+        events: list,
+        reason: str,
+        policy_id: "str | None" = None,
+        policy_version: "str | None" = None,
+    ) -> None:
+        super().__init__(message)
+        self.events = events
+        self.reason = reason
+        self.policy_id = policy_id
+        self.policy_version = policy_version
+
+
+def _enforce_strategy_gate(
+    *,
+    title: str,
+    description: str,
+    input_payload: "dict | None",
+    owner: str,
+    assignee: str,
+) -> None:
+    """Evaluate the strategy policy gate BEFORE any task file is written.
+
+    Uses the existing ``policy.strategy_gate.StrategyGate`` (loaded via
+    ``goal_guard_hook.strategy_gate_for_root``). On reject:
+
+      - returns nothing and the caller MUST NOT persist any task file
+      - appends an entry to events.ndjson containing both
+        ``policy_gate_rejected: True`` and ``underlying_event_type``
+        (the gate's first non-umbrella event type, or
+        ``POLICY_GATE_REJECTED`` when the policy itself failed to load)
+      - raises :class:`StrategyGateRejected` with the structured events
+
+    Fail-closed: a missing / malformed / hash-mismatched policy rejects
+    the submission with reason ``policy_load_failed``. This matches the
+    Phase-2 contract: policy load / hash / approval failures must fail
+    closed for task creation.
+    """
+    gate = strategy_gate_for_root(None)
+    payload_dict = input_payload if isinstance(input_payload, dict) else {}
+
+    if gate is None:
+        # Policy failed to load — fail closed (Phase-2 contract).
+        events: list = [{
+            "event_type": "POLICY_GATE_REJECTED",
+            "severity": "BLOCK",
+            "message": "strategy policy failed to load; submit_task gate is fail-closed",
+            "ts": time.time(),
+        }]
+        _log_event({
+            "actor": owner,
+            "event": "task.submit_rejected",
+            "policy_gate_rejected": True,
+            "underlying_event_type": "POLICY_GATE_REJECTED",
+            "all_event_types": ["POLICY_GATE_REJECTED"],
+            "reason": "policy_load_failed",
+            "title": title,
+        })
+        raise StrategyGateRejected(
+            "task submission blocked by strategy gate: policy_load_failed",
+            events=events,
+            reason="policy_load_failed",
+        )
+
+    envelope = {
+        "id": f"submit-{new_uuid()}",
+        "sender": owner,
+        "recipient": assignee,
+        "message_type": "task",
+        "payload": {
+            "title": title,
+            "description": description,
+            "text": json.dumps(payload_dict, ensure_ascii=False, default=str),
+        },
+        "schema_version": "1.0",
+    }
+
+    decision = gate.evaluate_envelope(envelope)
+    if decision.allowed:
+        return
+
+    # Reject path — flatten events, pick the first non-umbrella type as
+    # the underlying reason, then raise.
+    events_dicts: list = []
+    underlying = "POLICY_GATE_REJECTED"
+    for e in decision.events:
+        ed = e.to_dict() if hasattr(e, "to_dict") else (e if isinstance(e, dict) else {})
+        events_dicts.append(ed)
+        et = ed.get("event_type") or ""
+        if et and et != "POLICY_GATE_REJECTED" and underlying == "POLICY_GATE_REJECTED":
+            underlying = et
+
+    event_types = [ed.get("event_type", "") for ed in events_dicts]
+    risk = decision.risk_envelope if isinstance(decision.risk_envelope, dict) else {}
+    policy_id = risk.get("policy_id")
+    policy_version = risk.get("policy_version")
+
+    _log_event({
+        "actor": owner,
+        "event": "task.submit_rejected",
+        "policy_gate_rejected": True,
+        "underlying_event_type": underlying,
+        "all_event_types": event_types,
+        "reason": decision.reason,
+        "title": title,
+    })
+    raise StrategyGateRejected(
+        f"task submission blocked by strategy gate: {underlying} "
+        f"(reason={decision.reason})",
+        events=events_dicts,
+        reason=decision.reason,
+        policy_id=policy_id,
+        policy_version=policy_version,
+    )
 
 VALID_TRANSITIONS = {
     "queued": {"running", "cancelled"},
@@ -58,6 +188,16 @@ def submit_task(*, title: str, assignee: str, owner: str, description: str = "",
                 input_payload: Optional[dict] = None,
                 correlation_envelope_id: Optional[str] = None) -> dict:
     ensure_dirs()
+    # Strategy gate (Phase-2 correction). MUST come BEFORE any task file
+    # is written; a rejected submission leaves no trace on disk and
+    # raises StrategyGateRejected so CLI callers see a clear error.
+    _enforce_strategy_gate(
+        title=title,
+        description=description,
+        input_payload=input_payload,
+        owner=owner,
+        assignee=assignee,
+    )
     now = utc_now_iso()
     task = {
         "task_id": new_uuid(),

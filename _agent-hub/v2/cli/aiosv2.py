@@ -37,7 +37,7 @@ from src.id import new_uuid, utc_now_iso
 from src.paths import (DEADLETTER, INBOX, OUTBOX, REPORTS_DIR, STATE_FILE, V2_ROOT,
                         ensure_dirs)
 from src.probes import probe_all
-from src.queue import ack as q_ack, claim as q_claim, deadletter, enqueue, get_envelope_by_id, list_unclaimed
+from src.message_queue import ack as q_ack, claim as q_claim, deadletter, enqueue, get_envelope_by_id, list_unclaimed
 from src.state_machine import (build_state_snapshot, cancel, get_task, heartbeat,
                                 list_tasks, save_state_snapshot, submit_task,
                                 transition)

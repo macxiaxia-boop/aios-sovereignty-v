@@ -27,7 +27,8 @@ def test_t18_idempotent_retry_of_same_envelope():
     try:
         env = build_envelope(
             "codex", "openclaw", "task",
-            {"action": "health",
+            {"title": "OpenClaw idempotent retry",
+             "action": "health",
              "evidence_marker": "P8-T18-" + uuid.uuid4().hex[:8]},
         )
         res = enqueue(env)

@@ -61,7 +61,7 @@ def test_t15_set_dispatcher_injects_each_adapter():
     # 1. Hermes (real subprocess call)
     out = _enqueue_and_dispatch(
         make_hermes_adapter(), "hermes",
-        {"args": ["version"], "evidence_marker": f"P8-T15-HERMES-{nonce}"},
+        {"title": "Hermes version probe", "args": ["version"], "evidence_marker": f"P8-T15-HERMES-{nonce}"},
     )
     assert out["ok"] is True, f"hermes dispatch failed: {out}"
     payload = _result_envelope_payload(out)
@@ -72,7 +72,7 @@ def test_t15_set_dispatcher_injects_each_adapter():
     # 2. OpenClaw (real HTTP GET /healthz)
     out = _enqueue_and_dispatch(
         make_openclaw_adapter(), "openclaw",
-        {"action": "health", "evidence_marker": f"P8-T15-OPENCLAW-{nonce}"},
+        {"title": "OpenClaw health probe", "action": "health", "evidence_marker": f"P8-T15-OPENCLAW-{nonce}"},
     )
     assert out["ok"] is True, f"openclaw dispatch failed: {out}"
     payload = _result_envelope_payload(out)
@@ -84,7 +84,7 @@ def test_t15_set_dispatcher_injects_each_adapter():
     # 3. WorkBuddy (probe - daemon is down, transport is still correct)
     out = _enqueue_and_dispatch(
         make_workbuddy_adapter(), "workbuddy",
-        {"action": "probe", "evidence_marker": f"P8-T15-WORKBUDDY-{nonce}"},
+        {"title": "WorkBuddy probe", "action": "probe", "evidence_marker": f"P8-T15-WORKBUDDY-{nonce}"},
     )
     payload = _result_envelope_payload(out)
     assert payload is not None, f"workbuddy result envelope missing"

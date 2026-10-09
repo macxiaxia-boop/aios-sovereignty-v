@@ -18,7 +18,7 @@ sys.path.insert(0, str(ROOT))
 
 from src.envelope import build_envelope
 from src.paths import EVENTS_LOG, INBOX
-from src.queue import enqueue
+from src.message_queue import enqueue
 from src.state_machine import (
     cancel, heartbeat, list_tasks, reap_expired, submit_task, transition,
 )

@@ -39,7 +39,7 @@ ensure_dirs()
 
 from src.envelope import build_envelope
 from src.paths import DEADLETTER, INBOX, REPORTS_DIR, v2_root
-from src.queue import enqueue
+from src.message_queue import enqueue
 from src.v2_consumer import (
     CodexQuotaExceeded,
     QUOTA_HANDOFF_ENABLED,

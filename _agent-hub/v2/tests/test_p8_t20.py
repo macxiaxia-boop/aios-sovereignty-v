@@ -27,7 +27,7 @@ def test_t20_real_hermes_dispatch_end_to_end():
     try:
         env = build_envelope(
             "codex", "hermes", "task",
-            {"args": ["version"],
+            {"title": "Hermes version e2e", "args": ["version"],
              "evidence_marker": "P8-T20-" + uuid.uuid4().hex[:8]},
         )
         res = enqueue(env)
