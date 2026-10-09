@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
-"""ModelPolicy Reconciler · Mode A + L1 Auto-Rollback · v2.0
-原 v1 由 codex 01a11c30 写 (检测+报告) · v2 加 L1 自动回滚 runtime config
-- 不变量: NEVER auto-modify policy file
-- 不变量: NEVER auto-modify model-policy.v1.yaml / .sha256
-- 允许: L1 drift 自动回滚 runtime config (e.g. 删除新加的非 MiniMax profile 文件)
-- 允许: 写 DriftEvent 到 audit/drift-events.log (含 auto_rollback action)
-
-落盘位置: D:\AIOS\_agent-hub\policy\reconciler\reconciler.py (覆盖原 v1)
-作者: Codex 01a11c23 (supervisor, 接 01a11c30 班)
-授权: user-2026-10-08T23:55 + 你就开始 + 继续 + B+C (2026-10-09)
+"""
+Model Policy Reconciler v3 — 2026-10-09 user directive A+B
+- Reads exception_rules from model-policy.v1.yaml
+- Skips paths/env_vars listed in exception_rules
+- NEVER auto-modify model-policy.v1.yaml
+- NEVER auto-modify model-policy.v1.sha256
+- Only read + write drift events to audit/drift-events.log
+- Single instance enforced via msvcrt file lock
 """
 import argparse, json, time, subprocess, hashlib, sys, os
+import msvcrt, fnmatch
 from pathlib import Path
 
 POLICY_PATH_DEFAULT = r"D:\AIOS\_agent-hub\policy\model-policy.v1.yaml"
@@ -18,24 +17,12 @@ SHA256_PATH_DEFAULT = r"D:\AIOS\_agent-hub\policy\model-policy.v1.sha256"
 DRIFT_LOG           = r"D:\AIOS\_agent-hub\audit\drift-events.log"
 ALERT_LOG           = r"D:\AIOS\_agent-hub\policy\reconciler\alerts.jsonl"
 
-# Codex config 目录 (L1 runtime config 自动回滚目标)
-CODEX_HOME = Path(os.environ.get("USERPROFILE", "")) / ".codex"
-
-PROHIBITED_KEYWORDS = [
-    "deepseek", "qwen", "gpt-4", "gpt-3.5", "claude-3", "claude-sonnet",
-    "gemini", "llama-3", "mistral", "openai.com", "anthropic.com", "googleapis",
-    "gpt-5-codex", "doubao", "ollama", "agnes", "gpt-image", "chatgpt",
+PROHIBITED_KEYWORDS_HARDCODED = [
+    "deepseek", "gpt-4", "gpt-3.5", "claude-3", "claude-sonnet",
+    "gemini", "llama-3", "mistral", "anthropic.com", "googleapis",
+    "gpt-5-codex", "doubao", "agnes", "gpt-image", "codex-openai", "codex_desktop",
 ]
-
-# L1 自动回滚: 删除非 MiniMax 的 profile 文件
-L1_AUTO_DELETE_PATTERNS = [
-    "codex-openai.config.toml",
-    "codex-claude.config.toml",
-    "codex-deepseek.config.toml",
-    "ollama.config.toml",
-    "codex-switch.bat",
-    "codex-switch.py",
-]
+# Note: "openai.com", "qwen", "ollama", "chatgpt" now controlled by yaml exception_rules
 
 def load_yaml(path):
     try:
@@ -59,6 +46,34 @@ def verify_sha256(policy_path, sha_path):
     actual = hashlib.sha256(open(policy_path, "rb").read()).hexdigest().upper()
     return actual == manifest_hash.upper(), f"expected={manifest_hash[:16]}.. actual={actual[:16]}.."
 
+def parse_exception_rules(policy):
+    exceptions = policy.get("model_policy", {}).get("exception_rules", []) or []
+    path_globs = []
+    env_vars = set()
+    for rule in exceptions:
+        rtype = rule.get("type", "")
+        if rtype == "path_globs":
+            globs = rule.get("globs", []) or []
+            keywords = set(rule.get("allowed_keywords", []) or [])
+            for g in globs:
+                path_globs.append((g, keywords))
+        elif rtype == "env_vars":
+            for ev in rule.get("env_vars", []) or []:
+                env_vars.add(ev)
+    return path_globs, env_vars
+
+def is_path_exempt(file_path, path_globs_with_kw, keyword_hit):
+    norm = file_path.replace("\\", "/")
+    for glob, kws in path_globs_with_kw:
+        expanded = os.path.expanduser(glob).replace("\\", "/")
+        if fnmatch.fnmatch(norm, expanded) or fnmatch.fnmatch(norm, glob.replace("\\", "/")):
+            if "*" in kws or keyword_hit in kws:
+                return True
+    return False
+
+def is_env_exempt(env_name, env_vars):
+    return env_name in env_vars
+
 def scan_processes():
     out_list = []
     try:
@@ -76,7 +91,7 @@ def scan_env():
     out = []
     try:
         r = subprocess.run(["powershell", "-NoProfile", "-Command",
-                            "Get-ChildItem env: | Where-Object { $_.Name -match 'OPENAI|ANTHROPIC|MiniMax|MODEL|API' } | ConvertTo-Json -Compress"],
+                            "Get-ChildItem env: | Where-Object { $_.Name -match 'OPENAI|ANTHROPIC|MiniMax|MODEL|API|OLLAMA' } | ConvertTo-Json -Compress"],
                            capture_output=True, text=True, timeout=15)
         if r.stdout.strip():
             out = json.loads(r.stdout)
@@ -84,84 +99,71 @@ def scan_env():
         out = [{"error": str(e)}]
     return out
 
-def scan_codex_profiles():
-    """扫描 ~/.codex/ 下所有 profile 文件"""
-    profiles = []
-    if not CODEX_HOME.exists():
-        return profiles
-    for f in CODEX_HOME.iterdir():
-        if f.is_file() and f.suffix in (".toml", ".bat", ".ps1", ".py"):
+def scan_profile_files():
+    candidates = []
+    all_keywords = PROHIBITED_KEYWORDS_HARDCODED + ["openai.com", "qwen", "ollama", "chatgpt"]
+    for base in ["~/.codex", "~/.claude", "~/.openclaw", "~/.hermes", "D:/AIOS/_agent-hub"]:
+        p = Path(os.path.expanduser(base))
+        if not p.exists():
+            continue
+        for f in p.rglob("*"):
+            if not f.is_file():
+                continue
+            if any(x in f.name for x in [".bak.", ".old", "config.backup."]):
+                continue
             try:
-                text = f.read_text(encoding="utf-8", errors="ignore").lower()
-                hits = [kw for kw in PROHIBITED_KEYWORDS if kw in text]
+                if f.stat().st_size > 1_000_000:
+                    continue
+                txt = f.read_text(encoding="utf-8", errors="ignore")
+                hits = []
+                for kw in all_keywords:
+                    if kw in txt.lower():
+                        hits.append(kw)
                 if hits:
-                    profiles.append({"path": str(f), "name": f.name, "hits": hits, "size": f.stat().st_size})
+                    candidates.append({"path": str(f), "size": f.stat().st_size, "hits": hits})
             except Exception:
                 pass
-    return profiles
+    return candidates
 
-def auto_rollback_l1(drift_items):
-    """L1 自动回滚: 删除 ~/.codex/ 下含禁止关键字的 profile 文件
-    不变量: NEVER modify policy files
-    """
-    actions = []
-    profiles = scan_codex_profiles()
-    for p in profiles:
-        name = p["name"].lower()
-        # 仅回滚明确已知的"非 MiniMax profile" 模式
-        if any(pattern.lower() in name for pattern in L1_AUTO_DELETE_PATTERNS):
-            try:
-                target = Path(p["path"])
-                if target.exists():
-                    target.unlink()
-                    actions.append({
-                        "type": "auto_rollback_l1",
-                        "action": "delete",
-                        "path": p["path"],
-                        "reason": f"L1 drift: contains prohibited keywords {p['hits']}",
-                    })
-            except Exception as e:
-                actions.append({
-                    "type": "auto_rollback_l1_failed",
-                    "path": p["path"],
-                    "error": str(e),
-                })
-    return actions
-
-def check_compliance(policy, procs, envs):
+def check_compliance(policy, procs, envs, profile_files, path_globs_with_kw, env_vars):
     drift = []
+    # 1. process cmdlines
     for p in procs:
         cmd = (p.get("cmd") or "").lower()
         name = (p.get("name") or "").lower()
         if not any(t in name for t in ("codex", "claude", "openclaw", "hermes", "node", "python")):
             continue
-        for kw in PROHIBITED_KEYWORDS:
+        for kw in PROHIBITED_KEYWORDS_HARDCODED:
             if kw in cmd:
                 drift.append({"type": "L2", "source": "proc", "pid": p.get("pid"),
                               "name": name, "reason": f"prohibited_keyword:{kw}",
                               "cmd": cmd[:200]})
                 break
+    # 2. env vars (skip exempt)
     for e in envs:
         name = (e.get("Name") or "").upper()
-        val = (e.get("Value") or "")
-        if "MINIMAX" in val.upper() or "MiniMax" in val:
+        if is_env_exempt(name, env_vars):
             continue
-        if any(kw in val.lower() for kw in PROHIBITED_KEYWORDS):
-            drift.append({"type": "L1", "source": "env", "name": name,
-                          "reason": "non_MiniMax_endpoint", "value_prefix": val[:80]})
-    # L1 profile drift
-    profiles = scan_codex_profiles()
-    for prof in profiles:
-        drift.append({"type": "L1", "source": "profile", "path": prof["path"],
-                      "reason": f"prohibited_profile:{prof['hits']}"})
+        val = (e.get("Value") or "")
+        all_kw = PROHIBITED_KEYWORDS_HARDCODED + ["openai.com", "qwen", "ollama", "chatgpt"]
+        if any(p in val for p in all_kw):
+            if "MiniMax" not in val and "minimax" not in val:
+                drift.append({"type": "L1", "source": "env", "name": name,
+                              "reason": "non_MiniMax_endpoint", "value_prefix": val[:80]})
+    # 3. profile files (skip exempt paths)
+    for pf in profile_files:
+        path = pf["path"]
+        for kw in pf["hits"]:
+            if is_path_exempt(path, path_globs_with_kw, kw):
+                continue
+            drift.append({"type": "L1", "source": "profile", "path": path,
+                          "reason": f"prohibited_profile:[{kw}]"})
     return drift
 
 def append_jsonl(path, obj):
     Path(path).parent.mkdir(parents=True, exist_ok=True)
     with open(path, "a", encoding="utf-8") as f:
         f.write(json.dumps(obj, ensure_ascii=False) + "\n")
-
-import msvcrt
 
 
 def acquire_single_instance_lock():
@@ -171,18 +173,19 @@ def acquire_single_instance_lock():
     f = open(lock_path, "w")
     try:
         msvcrt.locking(f.fileno(), msvcrt.LK_NBLCK, 1)
-        return f  # caller must keep f alive (don't close)
+        return f
     except OSError:
         f.close()
         return None
+
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--policy", default=POLICY_PATH_DEFAULT)
     ap.add_argument("--sha256-manifest", default=SHA256_PATH_DEFAULT)
     ap.add_argument("--once", action="store_true")
-    ap.add_argument("--auto-rollback", action="store_true", default=True,
-                    help="Auto rollback L1 drift (default: True)")
+    ap.add_argument("--no-scan", action="store_true",
+                    help="Skip slow scans (profile files) for fast test/audit mode")
     args = ap.parse_args()
     _lock_f = acquire_single_instance_lock()
     if _lock_f is None:
@@ -191,51 +194,34 @@ def main():
 
     policy = load_yaml(args.policy)
     if not policy:
-        print("FATAL: cannot load policy", file=sys.stderr)
-        sys.exit(2)
-
+        print("FATAL: cannot load policy", file=sys.stderr); sys.exit(2)
     ok, info = verify_sha256(args.policy, args.sha256_manifest)
     if not ok:
-        print(f"FATAL: sha256 mismatch ({info})", file=sys.stderr)
-        sys.exit(3)
+        print(f"FATAL: sha256 mismatch ({info})", file=sys.stderr); sys.exit(3)
 
+    path_globs, env_vars = parse_exception_rules(policy)
     procs = scan_processes()
     envs = scan_env()
-    drift = check_compliance(policy, procs, envs)
+    if args.no_scan:
+        profiles = []
+    else:
+        profiles = scan_profile_files()
 
-    # L1 自动回滚
-    rollback_actions = []
-    l1_drift = [d for d in drift if d.get("type") == "L1"]
-    if l1_drift and args.auto_rollback:
-        rollback_actions = auto_rollback_l1(l1_drift)
-
-    event = {
-        "ts": time.time(),
-        "policy_id": policy.get("policy_id"),
-        "policy_version": policy.get("policy_version"),
-        "proc_count": len(procs),
-        "env_count": len(envs),
-        "drift_count": len(drift),
-        "drift": drift,
-        "rollback_actions": rollback_actions,
-    }
+    drift = check_compliance(policy, procs, envs, profiles, path_globs, env_vars)
+    event = {"ts": time.time(),
+             "policy_id": policy.get("policy_id"),
+             "policy_version": policy.get("policy_version"),
+             "proc_count": len(procs), "env_count": len(envs),
+             "profile_count": len(profiles),
+             "exception_globs": len(path_globs), "exception_envs": sorted(env_vars),
+             "drift_count": len(drift), "drift": drift}
     append_jsonl(DRIFT_LOG, event)
-
-    # 漂移仍存在 (L2 或 L1 回滚失败) → 告警
-    residual_drift = [d for d in drift if d.get("type") == "L2"]
-    failed_rollbacks = [a for a in rollback_actions if "failed" in a.get("type", "")]
-    if residual_drift or failed_rollbacks:
+    if drift:
         append_jsonl(ALERT_LOG, event)
-        print(f"ALERT: residual={len(residual_drift)} rollback_fail={len(failed_rollbacks)}", file=sys.stderr)
+        print(f"ALERT: {len(drift)} drift(s) found. See {ALERT_LOG}")
         sys.exit(1)
-
-    if rollback_actions:
-        print(f"OK+ROLLBACK: procs={len(procs)} env={len(envs)} drift={len(drift)} actions={len(rollback_actions)}")
-        sys.exit(0)
-
-    print(f"OK: procs={len(procs)} env={len(envs)} drift=0")
+    print(f"OK: procs={len(procs)} env={len(envs)} profiles={len(profiles)} drift=0")
     sys.exit(0)
 
 if __name__ == "__main__":
     main()
-

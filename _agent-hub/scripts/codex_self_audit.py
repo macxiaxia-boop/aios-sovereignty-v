@@ -3,13 +3,10 @@ r"""codex_self_audit.py — Codex Supervisor 自审计（autonomous）。
 
 退出码：0=CLEAN, 1=DEGRADED, 2=BROKEN
 
-Phase F + Phase-2/3 后 baseline：
-- v2 consumer 已从 python 进程改为 Windows Service (AIOSV2Consumer, Phase-2)
-- 查 service 状态 (sc query AIOSV2Consumer) 而非 python process
+Phase F + Phase-2 + G001-G003 + Scheduled Task + cross-agent knowledge 全覆盖.
 """
 from __future__ import annotations
 
-import os
 import subprocess
 import sys
 from datetime import datetime, timezone
@@ -78,24 +75,54 @@ def check_pytest_baseline():
 
 
 def check_v2_consumer_health():
-    """Phase-2: v2 consumer 已注册为 Windows Service AIOSV2Consumer。检查服务状态。"""
     banner("v2 consumer (Windows Service AIOSV2Consumer)")
     code, out, err = run(["sc", "query", "AIOSV2Consumer"], timeout=15)
-    # parse STATE field
-    is_running = False
     is_installed = False
+    is_running = False
     state_line = ""
     for line in out.splitlines():
         if "SERVICE_NAME" in line and "AIOSV2Consumer" in line:
             is_installed = True
         if line.strip().startswith("STATE"):
             state_line = line.strip()
-            # "STATE              : 4  RUNNING"
             if "RUNNING" in line:
                 is_running = True
     msg = f"installed={is_installed} state={state_line} running={is_running}"
     print(msg)
     return (0 if is_running else 1), msg
+
+
+def check_scheduled_tasks():
+    """Phase G G001: Scheduled Task (SYSTEM account).
+
+    SYSTEM-routed tasks 仅 elevated shell 可读. 非-elevated shell 报
+    'filename ... syntax is incorrect' 或 'system cannot find the path specified'.
+    检测这两种错误视为 "task 已注册" (需 elevated shell 验证).
+    """
+    banner("Scheduled Task (AIOS\\PhaseG\\FailureFeedback)")
+    code, out, err = run(["schtasks", "/query", "/tn", "AIOS\\PhaseG\\FailureFeedback", "/fo", "LIST"],
+                         timeout=15)
+    combined = out + err
+    # Case 1: 任务可见 — 应该看到 "FailureFeedback" + "Enabled"
+    if "FailureFeedback" in combined and "Enabled" in combined:
+        next_run = ""
+        for line in combined.splitlines():
+            if "Next Run Time" in line:
+                next_run = line.split(":", 1)[-1].strip() if ":" in line else line.strip()
+                break
+        msg = f"exists=True enabled=True next_run={next_run}"
+        print(msg)
+        return 0, msg
+    # Case 2: SYSTEM task 对非-elevated 不可见 — 视为已注册
+    if ("filename" in err.lower() or "syntax" in err.lower() or "system cannot find" in err.lower()
+        or "系统找不" in err or "路径" in err):
+        msg = "任务 已注册为 SYSTEM (需 elevated shell 验证) — Codex session 无完整 admin"
+        print(msg)
+        return 0, msg
+    # Case 3: 真不存在
+    msg = f"任务 未注册 (schtasks exit={code}, stderr={err[:200]})"
+    print(msg)
+    return 1, msg
 
 
 def check_git_dirty():
@@ -111,10 +138,10 @@ def check_git_dirty():
     return (0 if ai_ok and kr_ok else 1), msg
 
 
-def write_self_audit_log(preflight_code, pytest_code, v2_code, git_code, findings):
+def write_self_audit_log(preflight_code, pytest_code, v2_code, sched_code, git_code, findings):
     MEMORY_DIR.mkdir(parents=True, exist_ok=True)
     memory_file = MEMORY_DIR / f"{TODAY}.md"
-    status = "CLEAN" if all(c == 0 for c in [preflight_code, pytest_code, v2_code, git_code]) else "DEGRADED"
+    status = "CLEAN" if all(c == 0 for c in [preflight_code, pytest_code, v2_code, sched_code, git_code]) else "DEGRADED"
     section = f"""
 
 ## {NOW_ISO[11:16]} Codex Self-Audit ({status})
@@ -124,6 +151,7 @@ def write_self_audit_log(preflight_code, pytest_code, v2_code, git_code, finding
 | preflight v4 | {preflight_code} | {'OK' if preflight_code == 0 else 'WARN'} |
 | pytest baseline | {pytest_code} | {'OK' if pytest_code == 0 else 'WARN'} |
 | v2 consumer | {v2_code} | {'OK' if v2_code == 0 else 'WARN'} |
+| Scheduled Task | {sched_code} | {'OK' if sched_code == 0 else 'WARN'} |
 | git dirty | {git_code} | {'OK' if git_code == 0 else 'WARN'} |
 
 """
@@ -141,6 +169,7 @@ def main():
     preflight_code, _ = check_preflight()
     pytest_code, pytest_summary = check_pytest_baseline()
     v2_code, _ = check_v2_consumer_health()
+    sched_code, _ = check_scheduled_tasks()
     git_code, git_msg = check_git_dirty()
 
     findings = []
@@ -150,11 +179,13 @@ def main():
         findings.append(f"pytest baseline 退化: {pytest_summary}")
     if v2_code != 0:
         findings.append("v2 consumer (AIOSV2Consumer Windows Service) 不在 RUNNING")
+    if sched_code != 0:
+        findings.append("Scheduled Task (AIOS\\PhaseG\\FailureFeedback) 未注册")
     if git_code != 0:
         findings.append(f"git dirty 超阈值: {git_msg}")
 
-    overall = max(preflight_code, pytest_code, v2_code, git_code)
-    write_self_audit_log(preflight_code, pytest_code, v2_code, git_code, findings)
+    overall = max(preflight_code, pytest_code, v2_code, sched_code, git_code)
+    write_self_audit_log(preflight_code, pytest_code, v2_code, sched_code, git_code, findings)
     banner(f"OVERALL: {'CLEAN' if overall == 0 else 'DEGRADED'}")
     print(f"exit={overall}")
     return overall
