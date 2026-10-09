@@ -50,3 +50,6 @@ scripts/persistence/migrations/versions/__pycache__/
 # Local env
 .env
 .env.local
+
+NUL
+
