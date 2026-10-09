@@ -11,9 +11,13 @@ from aios_kernel.context.long_term_memory import (
     RetentionPolicyError,
 )
 from aios_kernel.context.compiler import (
+    CandidateChunk,
     CompiledContext,
     ContextChunk,
     ContextCompiler,
+    DefaultContextCompiler,
+    StubSourceProvider,
+    WordTokenizer,
 )
 from aios_kernel.context.models import (
     ContextSource,
@@ -50,5 +54,8 @@ __all__ = [
     "cosine",
     "hash_embed",
 ]
+
+
+
 
 

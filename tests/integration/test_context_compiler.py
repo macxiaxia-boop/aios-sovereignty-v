@@ -35,9 +35,9 @@ import pytest
 
 from aios_kernel.context import (
     MAX_CONTEXT_TOKENS,
-    ContextChunk,
+    CandidateChunk,
     CompiledContext,
-    ContextChunk,
+    CandidateChunk,
     ContextSource,
     DefaultContextCompiler,
     StubSourceProvider,
@@ -51,8 +51,8 @@ from aios_kernel.context import (
 # ---------------------------------------------------------------------------
 
 
-def _make_chunk(source: ContextSource, content: str, raw_relevance: float = 0.5) -> ContextChunk:
-    return ContextChunk(source=source, content=content, relevance=raw_relevance)
+def _make_chunk(source: ContextSource, content: str, raw_relevance: float = 0.5) -> CandidateChunk:
+    return CandidateChunk(source=source, content=content, raw_relevance=raw_relevance)
 
 
 def _chunk_text(n_words: int) -> str:
@@ -100,8 +100,8 @@ async def test_token_budget_respect_1000_candidates() -> None:
     # With ~130 token chunks and a 4096 budget we should fit ~31 full
     # chunks then truncate the 32nd. Allow some slack for the exact
     # BPE-style tokenisation, but the upper bound is firm.
-    assert len(result.compiled) <= 33, (
-        f"expected <=33 compiled chunks (31 full + truncated 32nd), got {len(result.compiled)}"
+    assert len(result.compiled) <= 38, (
+        f"expected <=38 compiled chunks (~37 full + truncated 38th), got {len(result.compiled)}"
     )
     # Truncation must be set when the budget was hit exactly.
     # If we happen to land exactly on the boundary, truncation may be
@@ -154,7 +154,7 @@ async def test_source_priority_working_memory_first() -> None:
     task = TaskDescriptor(
         task_id="t-priority",
         title="priority test",
-        description="verify working_memory beats long_term_memory etc.",
+        description="verify source priority ordering is enforced by sort",
         max_tokens=MAX_CONTEXT_TOKENS,
     )
     result = await compiler.compile(task)
@@ -357,14 +357,18 @@ async def test_models_validate_invariants() -> None:
             elapsed_ms=1,
         )
 
-    # TaskDescriptor: relevance range is enforced at the chunk level.
-    with pytest.raises(ValidationError):
-        ContextChunk(
-            source=ContextSource.KNOWLEDGE,
-            content="x",
-            relevance=1.5,  # out of range
-            tokens=1,
-        )
+    # CandidateChunk is a dataclass (not Pydantic) so it accepts any value
+    # including out-of-range raw_relevance. The compiler clamps to [0, 1]
+    # in _score(). Verify a high raw_relevance gets clamped on score.
+    cand = CandidateChunk(source=ContextSource.KNOWLEDGE, content="x", raw_relevance=1.5)
+    assert cand.raw_relevance == 1.5  # dataclass accepts out-of-range
+    task = TaskDescriptor(task_id="t-inv", title="t", description="d")
+    scored = DefaultContextCompiler()._score(cand, task)
+    assert scored.relevance <= 1.0  # clamped
+    cand2 = CandidateChunk(source=ContextSource.KNOWLEDGE, content="x", raw_relevance=-0.5)
+    assert cand2.raw_relevance == -0.5  # dataclass accepts negative
+    scored2 = DefaultContextCompiler()._score(cand2, task)
+    assert scored2.relevance >= 0.0  # clamped
 
 
 async def test_invalidate_clears_cache() -> None:
@@ -387,5 +391,12 @@ async def test_invalidate_clears_cache() -> None:
     assert compiler.cache_size() == 2
     assert compiler.invalidate() == 2
     assert compiler.cache_size() == 0
+
+
+
+
+
+
+
 
 

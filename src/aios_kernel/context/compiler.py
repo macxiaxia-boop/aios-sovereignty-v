@@ -194,7 +194,7 @@ class StubSourceProvider:
                 CandidateChunk(
                     source=source,
                     content=content,
-                    relevance=float(relevance),
+                    raw_relevance=float(relevance),
                     tags=list(tags or []),
                     evidence_id=evidence_id,
                 )
@@ -210,7 +210,7 @@ class StubSourceProvider:
             CandidateChunk(
                 source=self.source,
                 content=content,
-                relevance=float(relevance),
+                raw_relevance=float(relevance),
                 tags=list(tags or []),
                 evidence_id=evidence_id,
             )
@@ -393,7 +393,7 @@ class DefaultContextCompiler:
         chunk_words = self._normalise_words(cand.content)
         if task_words and chunk_words:
             overlap = len(task_words & chunk_words) / max(len(task_words), 1)
-            overlap_boost = min(0.30, overlap * 0.50)
+            overlap_boost = min(0.30, (1.0 - base) * overlap * 0.05)
         else:
             overlap_boost = 0.0
 
@@ -404,7 +404,7 @@ class DefaultContextCompiler:
             ctags = {t.strip().lower() for t in cand.tags if t.strip()}
             if ttags and ctags:
                 tag_overlap = len(ttags & ctags) / max(len(ttags), 1)
-                tag_boost = min(0.20, tag_overlap * 0.30)
+                tag_boost = min(0.20, (1.0 - base) * tag_overlap * 0.03)
             else:
                 tag_boost = 0.0
         else:
@@ -496,4 +496,8 @@ __all__ = [
     "default_compiler",
     "MAX_CONTEXT_TOKENS",
 ]
+
+
+
+
 
