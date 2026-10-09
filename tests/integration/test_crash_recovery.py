@@ -111,7 +111,7 @@ async def test_cr1_goal_create_mid_crash_rolls_back(injector, db_url, result_dir
         db_url, mode="goal_create", config=config, result_dir=result_dir
     )
     try:
-        assert injector.wait_for_marker(kp, timeout_s=10.0), (
+        assert injector.wait_for_marker(kp, timeout_s=5.0), (
             "worker did not reach crash_before_commit hook"
         )
         _kill_and_reap(injector, kp)
@@ -163,7 +163,7 @@ async def test_cr2_workflow_resume_does_not_redo_step_a(
         db_url, mode="workflow_run", config=config, result_dir=result_dir
     )
     try:
-        assert injector.wait_for_marker(kp, timeout_s=10.0), (
+        assert injector.wait_for_marker(kp, timeout_s=5.0), (
             "worker did not reach crash_after_step_a hook"
         )
         _kill_and_reap(injector, kp)
@@ -250,7 +250,7 @@ async def test_cr3_plan_revert_crash_leaves_consistent_state(
         db_url, mode="plan_revert", config=config_crash, result_dir=result_dir
     )
     try:
-        assert injector.wait_for_marker(kp, timeout_s=10.0), (
+        assert injector.wait_for_marker(kp, timeout_s=5.0), (
             "worker did not reach crash_after_old_inactive hook"
         )
         _kill_and_reap(injector, kp)
@@ -310,7 +310,7 @@ async def test_cr4_verifier_call_mid_crash_atomic_evidence(
         db_url, mode="verifier_call", config=config_crash, result_dir=result_dir
     )
     try:
-        assert injector.wait_for_marker(kp, timeout_s=10.0), (
+        assert injector.wait_for_marker(kp, timeout_s=5.0), (
             "worker did not reach crash_after_record hook"
         )
         _kill_and_reap(injector, kp)
@@ -373,7 +373,7 @@ async def test_cr5_budget_check_mid_crash_no_double_deduct(
         db_url, mode="budget_check", config=config, result_dir=result_dir
     )
     try:
-        assert injector.wait_for_marker(kp, timeout_s=10.0), (
+        assert injector.wait_for_marker(kp, timeout_s=5.0), (
             "worker did not reach crash_mid_deduct hook"
         )
         _kill_and_reap(injector, kp)
@@ -420,7 +420,7 @@ async def test_cr6_evidence_write_mid_crash_atomic(
         result_dir=result_dir,
     )
     try:
-        assert injector.wait_for_marker(kp, timeout_s=10.0), (
+        assert injector.wait_for_marker(kp, timeout_s=5.0), (
             "worker did not reach crash_before_final_commit hook"
         )
         _kill_and_reap(injector, kp)
@@ -479,7 +479,7 @@ async def test_cr7_five_consecutive_crashes_recover_to_completed(
             db_url, mode="workflow_run", config=config, result_dir=result_dir
         )
         try:
-            assert injector.wait_for_marker(kp, timeout_s=10.0), (
+            assert injector.wait_for_marker(kp, timeout_s=5.0), (
                 f"cycle {i}: worker did not reach crash hook"
             )
             _kill_and_reap(injector, kp)
@@ -693,7 +693,7 @@ async def test_cr10_workflow_run_id_preserved_across_restart(
         db_url, mode="workflow_run", config=cfg_crash, result_dir=result_dir
     )
     try:
-        assert injector.wait_for_marker(kp, timeout_s=10.0)
+        assert injector.wait_for_marker(kp, timeout_s=5.0)
         _kill_and_reap(injector, kp)
     finally:
         injector.cleanup(kp)
@@ -740,4 +740,3 @@ async def test_cr10_workflow_run_id_preserved_across_restart(
     assert run_post["current_step"] in ("b", "c"), (
         f"current_step not advanced: {run_post['current_step']!r}"
     )
-
