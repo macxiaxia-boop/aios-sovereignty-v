@@ -1,0 +1,18 @@
+{
+  "type": "goal_guard_risk",
+  "goal_id": "",
+  "verdict": "fatal",
+  "failed_checks": [
+    "required_fields_missing: ['success_criteria', 'budget', 'owner', 'status', 'failure_modes', 'missing_evidence', 'autonomous_scope', 'requires_authorization']",
+    "failure_modes_empty (surface success trap risk)",
+    "permission_overrun: ['permission_scope_empty']"
+  ],
+  "passed_checks": [
+    "autonomous_vs_authorization_disjoint",
+    "missing_evidence_empty_ok"
+  ],
+  "original_envelope_id": "145d868d-783f-463a-85b5-4207b7a51f8a",
+  "original_envelope_type": "message",
+  "created_at": "2026-10-09T07:41:26Z",
+  "ts": "2026-10-09T07:41:26Z"
+}

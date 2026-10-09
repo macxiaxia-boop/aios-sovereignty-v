@@ -1,0 +1,18 @@
+{
+  "id": "145d868d-783f-463a-85b5-4207b7a51f8a",
+  "idempotency_key": "4c82c475cfb70e4e1bfcc3c9a4073ef309ad86deb321c1d5b15210dd8f61c6e9",
+  "message_type": "message",
+  "payload": {
+    "__r286_f005_test__": true,
+    "goal": {
+      "title": "Build a thing"
+    },
+    "text": "Please dispatch"
+  },
+  "recipient": "codex",
+  "retry_count": 0,
+  "schema_version": "1.0",
+  "sender": "claudecode",
+  "timestamp": "2026-10-09T07:41:26Z",
+  "ttl_ms": 300000
+}

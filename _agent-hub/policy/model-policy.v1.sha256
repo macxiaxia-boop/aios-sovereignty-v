@@ -1,12 +1,12 @@
 # ModelPolicy v1 签名 manifest
-# computed by codex 01a11c23 (supervisor) at 2026-10-09T10:48+08:00
-# v2: 实证 model 目录 + 用户授权 900亿/账号/月 quota + router v2 + 4 env 清完
-sha256: BAF3D091AFC946C35AD53720FE5E4340893DA1BC49D93FD9E29553A14BFF3B27
+# v2.1: R1342 EXT-A 加 EX-005~010 消除 1849 假阳性 (2026-10-09 user directive 5 项全开)
+# 改动由 Codex (supervisor) 实施 · 仅 additive (EX-001~004 不动)
+# sign: codex-supervisor 2026-10-09T15:30+08:00
+sha256: E8A9DEA3E055B3ABFDC1D6F0381F91D25A789410EB70589678797605F9CF6B71
 file: D:\AIOS\_agent-hub\policy\model-policy.v1.yaml
-size_bytes: 4641
-signed_at: 2026-10-09T10:48:00+08:00
-signer: codex-01a11c23-supervisor
+size_bytes: 8595
+signed_at: 2026-10-09T15:30:00+08:00
+signer: codex-supervisor
 algo: sha256
-quota_evidence: 300亿/账号/月 × 3账号 = 900亿/月
+change_governance: atomic_write_with_version
 # verify: Get-FileHash -Algorithm SHA256 D:\AIOS\_agent-hub\policy\model-policy.v1.yaml
-

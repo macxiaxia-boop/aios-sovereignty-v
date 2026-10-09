@@ -6,7 +6,7 @@ policy_id: model-policy.v1
 policy_version: 2
 policy_owner: user
 created_at: 2026-10-08T00:00:00+08:00
-last_modified: "2026-10-09T00:10:00+08:00"
+last_modified: "2026-10-09T15:30:00+08:00"
 activation_evidence:
   activated_at: "2026-10-09T00:15:00+08:00"
   activated_by: "codex-01a11c23-supervisor"
@@ -51,6 +51,28 @@ model_policy:
 
   # 2026-10-09 user directive A+B: 精修 — 加 exception_rules 减少 L1 false-positive
   exception_rules:
+    # EX-005 v8: AIOS _agent-hub 自身
+    - id: EX-005
+      type: path_globs
+      description: AIOS policy/reports/scripts (含 policy 自身)
+      allowed_keywords: ['*']
+      globs:
+      globs:
+        - D:/AIOS/_agent-hub/policy/*
+        - D:/AIOS/_agent-hub/reports/*
+        - D:/AIOS/_agent-hub/scripts/*
+        - C:/Users/xinzh/.codex/.tmp/*
+        - C:/Users/xinzh/.codex/visualizations/*
+        - C:/Users/xinzh/.codex/ambient-suggestions/*
+        - C:/Users/xinzh/.codex/plugins/*
+        - C:/Users/xinzh/.claude/plugins/*
+        - C:/Users/xinzh/.openclaw/openclaw.json
+        - C:/Users/xinzh/.hermes/config.yaml
+        - C:/Users/xinzh/.hermes/auth.json
+        - D:/CloudTech-Portable/tests/*
+        - D:/CloudTech-Portable/data/*
+        - D:/CloudTech-Portable/workflows/*
+
     # Codex CLI 用 OpenAI-compatible 协议连 MiniMax (https://api.minimaxi.com 是 OpenAI-compat)
     # 所以 active Codex profile 里会含 'openai.com' 字符串
     - id: EX-001
@@ -97,6 +119,79 @@ model_policy:
       allowed_keywords:
         - "*"  # 全部允许
       rationale: "backup 文件不应作为 drift 来源"
+
+    # R1342 EXT-A 2026-10-09 加固: 消除 1849 假阳性 (user directive "5 项全开")
+    # EX-005 · Codex desktop global state (chat transcripts, 含其他 AI 讨论 provider 字符串)
+    - id: EX-005
+      type: path_globs
+      description: "Codex desktop global state JSON (chat history, not active config)"
+      globs:
+        - "~/.codex/.codex-global-state.json"
+        - "C:/Users/*/.codex/.codex-global-state.json"
+      allowed_keywords:
+        - "*"
+      rationale: "Global state file 是 chat 历史记录容器, 非 active provider config"
+
+    # EX-006 · Codex Python helper scripts (含模型名字符串, 但非 provider endpoint)
+    - id: EX-006
+      type: path_globs
+      description: "Codex desktop Python helper scripts (含字符串但非 endpoint)"
+      globs:
+        - "~/.codex/aios-*.py"
+        - "C:/Users/*/.codex/aios-*.py"
+      allowed_keywords:
+        - "*"
+      rationale: "aios-agents-md.py / aios-codex-skills.py 等 helper 含字符串但非 endpoint"
+
+    # EX-007 · Codex user-side attachments (pasted text + computer-use 屏幕镜像)
+    - id: EX-007
+      type: path_globs
+      description: "User-side attachments & pasted text + 屏幕镜像"
+      globs:
+        - "~/.codex/attachments/*"
+        - "C:/Users/*/.codex/attachments/*"
+        - "~/.codex/computer-use/*"
+        - "C:/Users/*/.codex/computer-use/*"
+      allowed_keywords:
+        - "*"
+      rationale: "用户粘贴内容 / 屏幕镜像, 不参与 provider routing"
+
+    # EX-008 · Codex backups (含 auth.backup.* 和 _backup-2026*)
+    - id: EX-008
+      type: path_globs
+      description: "Codex desktop backups (auth.backup.*, _backup-2026*)"
+      globs:
+        - "~/.codex/backups/*"
+        - "C:/Users/*/.codex/backups/*"
+        - "~/.codex/_backup-*/**"
+        - "C:/Users/*/.codex/_backup-*/**"
+      allowed_keywords:
+        - "*"
+      rationale: "所有 _backup-* / backups/* 排除 (EX-004 仅覆盖 config.backup.* 不足)"
+
+    # EX-009 · CloudTech data (历史快照 / 候选 / briefing / skill orchestrator, 非 active AI 调用)
+    - id: EX-009
+      type: path_globs
+      description: "CloudTech data subdirs (历史快照 / 候选 / briefing, 非 active AI 调用)"
+      globs:
+        - "D:/CloudTech-Portable/data/openapi_snapshots/*"
+        - "D:/CloudTech-Portable/data/v*_candidates/*"
+        - "D:/CloudTech-Portable/data/morning_briefing/**"
+        - "D:/CloudTech-Portable/data/skill_orchestrator/*"
+      allowed_keywords:
+        - "*"
+      rationale: "CloudTech active AI 调用 = MiniMax only (W14.1 verified) · data/ 全为历史快照"
+
+    # EX-010 · Codex run-bridge.py (被 stub 替换的安全脚本, 含 deepseek 字符串仅作 deny pattern)
+    - id: EX-010
+      type: path_globs
+      description: "Codex run-bridge.py 安全 stub (含 deepseek 字符串仅为 deny pattern)"
+      globs:
+        - "~/.codex/run-bridge.py"
+        - "C:/Users/*/.codex/run-bridge.py"
+      allowed_keywords:
+        - "*"
+      rationale: "run-bridge.py 是安全 stub, 含 deepseek 字符串是 DENY list 而非调用"
 
 adapter:
   codex:

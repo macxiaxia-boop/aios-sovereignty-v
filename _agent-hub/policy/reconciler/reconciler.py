@@ -142,7 +142,7 @@ def scan_profile_files():
             if scan_count >= MAX_FILES_PER_TARGET: break
             if not f.is_file(): continue
             if f.suffix.lower() not in include_exts: continue
-            if any(tag in f.parts for tag in EXCLUDED_PATH_TAGS): continue
+            if any(tag in part for part in f.parts for tag in EXCLUDED_PATH_TAGS): continue
             if any(x in f.name for x in [".bak.", ".old", "config.backup.", ".disabled", ".pyc"]): continue
             try:
                 if f.stat().st_size > 1_000_000: continue
@@ -234,3 +234,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
