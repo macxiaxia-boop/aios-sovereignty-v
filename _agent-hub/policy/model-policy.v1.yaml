@@ -49,31 +49,7 @@ model_policy:
     modification_method: atomic_write_with_version
     audit_log: D:\AIOS\_agent-hub\audit\policy-changes.log
 
-  # 2026-10-09 user directive A+B: 精修 — 加 exception_rules 减少 L1 false-positive
-  exception_rules:
-    # EX-005 v8: AIOS _agent-hub 自身
-    - id: EX-005
-      type: path_globs
-      description: AIOS policy/reports/scripts (含 policy 自身)
-      allowed_keywords: ['*']
-      globs:
-      globs:
-        - D:/AIOS/_agent-hub/policy/*
-        - D:/AIOS/_agent-hub/reports/*
-        - D:/AIOS/_agent-hub/scripts/*
-        - C:/Users/xinzh/.codex/.tmp/*
-        - C:/Users/xinzh/.codex/visualizations/*
-        - C:/Users/xinzh/.codex/ambient-suggestions/*
-        - C:/Users/xinzh/.codex/plugins/*
-        - C:/Users/xinzh/.claude/plugins/*
-        - C:/Users/xinzh/.openclaw/openclaw.json
-        - C:/Users/xinzh/.hermes/config.yaml
-        - C:/Users/xinzh/.hermes/auth.json
-        - D:/CloudTech-Portable/tests/*
-        - D:/CloudTech-Portable/data/*
-        - D:/CloudTech-Portable/workflows/*
-
-    # Codex CLI 用 OpenAI-compatible 协议连 MiniMax (https://api.minimaxi.com 是 OpenAI-compat)
+  # Codex CLI 用 OpenAI-compatible 协议连 MiniMax (https://api.minimaxi.com 是 OpenAI-compat)
     # 所以 active Codex profile 里会含 'openai.com' 字符串
     - id: EX-001
       type: path_globs
@@ -210,3 +186,4 @@ metadata:
   sha256: __FILL_AFTER_HASH__
   signature_algo: sha256
   signature: optional
+

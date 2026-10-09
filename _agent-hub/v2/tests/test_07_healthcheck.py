@@ -27,6 +27,22 @@ def _run_cli_assert_rc(args, *, label, timeout=60):
     return out
 
 
+
+
+# Test isolation: each test gets its own AIOS_V2_ROOT
+# in the same pytest session dont pollute shared dirs
+import os as _os
+import shutil as _shutil
+import tempfile as _tempfile
+from pathlib import Path as _Path
+import pytest as _pytest
+
+@_pytest.fixture(autouse=True)
+def _test_07_isolated_v2_root(monkeypatch):
+    tmp = _Path(_tempfile.mkdtemp(prefix='test07_v2_root_')).resolve()
+    monkeypatch.setenv('AIOS_V2_ROOT', str(tmp))
+    yield
+    _shutil.rmtree(str(tmp), ignore_errors=True)
 def test_cli_init():
     out = _run_cli_assert_rc(["init"], label="init")
     j = json.loads(out)
