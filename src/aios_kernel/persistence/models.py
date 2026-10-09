@@ -454,8 +454,8 @@ def plan_to_orm(p):
         description=p.description,
         rollback_to=p.rollback_to,
         created_by=p.created_by,
-        steps=[s.model_dump() for s in p.steps],
-        dependencies=[d.model_dump() for d in p.dependencies],
+        steps=[s.model_dump(mode='json') for s in p.steps],
+        dependencies=[d.model_dump(mode='json') for d in p.dependencies],
         metadata_=dict(p.metadata),
         envelope_json=envelope_json_of(p),
         schema_version=p.schema_version,
@@ -512,7 +512,7 @@ def trace_to_orm(p):
         task_id=p.task_id,
         workflow_run_id=p.workflow_run_id,
         name=p.name,
-        spans=[s.model_dump() for s in p.spans],
+        spans=[s.model_dump(mode='json') for s in p.spans],
         metadata_=dict(p.metadata),
         envelope_json=envelope_json_of(p),
         schema_version=p.schema_version,
@@ -789,3 +789,4 @@ def decision_to_orm(p):
         created_at=p.created_at,
         updated_at=p.updated_at,
     )
+
