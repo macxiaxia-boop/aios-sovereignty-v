@@ -462,7 +462,7 @@ def dispatch_envelope(env_path: Path, env: dict, *, dispatcher: Optional[Callabl
     _gg_allowed, _gg_risk = guard_dispatch(env, _gg_root)
     if not _gg_allowed:
         write_risk_envelope(_gg_root, _gg_risk)
-        out["steps"].append({"step": "goal_guard", "ok": False, "reason": _gg_risk.get("envelope_type", _gg_risk.get("reason", "blocked"))})
+        out["steps"].append({"step": "goal_guard", "ok": False, "verdict": _gg_risk.get("verdict", "risk_block"), "reason": _gg_risk.get("envelope_type", _gg_risk.get("reason", "blocked"))})
         return out
 
     # R320.7 loop-guard: terminal message types (result/ack/status/heartbeat/error)
@@ -688,12 +688,13 @@ def tick(recipients: Optional[list[str]] = None, *,
     # R320.7.1: codex is supervisor (reads its own inbox via aiosv2.py receive);
     # consumer must NOT process codex's inbound -- otherwise result/ack from
     # workers get re-dispatched and generate infinite feedback loops.
+    # Always initialize stats first so early-return paths can include totals.
+    stats = ConsumerStats()
     recipients = [r for r in recipients if r != "codex"]
     if not recipients:
-        return {"ok": False, "reason": "no_recipients", "ticked_at": _now_iso()}
+        return {"ok": False, "reason": "no_recipients", "ticked_at": _now_iso(), "totals": stats.snapshot()}
 
     sem = threading.BoundedSemaphore(MAX_CONCURRENT)
-    stats = ConsumerStats()
     results = {}
 
     def _run_one(recipient: str) -> None:

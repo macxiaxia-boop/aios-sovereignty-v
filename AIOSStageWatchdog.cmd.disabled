@@ -1,8 +1,0 @@
-@echo off
-REM ============================================================
-REM AIOSStageWatchdog wrapper (R272 立 - 2026-09-29)
-REM 根治任务栏闪烁: 直接 pythonw.exe 启动 _stage_watchdog.py, 不经 cmd.exe
-REM Encoding: GBK no BOM (redline #29)
-REM ============================================================
-
-"C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-windows-x86_64-none\pythonw.exe" -u "D:\Tools\TikTokDownloader\watchdog\_stage_watchdog.py"

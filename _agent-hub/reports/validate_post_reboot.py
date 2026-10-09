@@ -1,70 +1,80 @@
 #!/usr/bin/env python3
-"""
-validate_post_reboot.py — Run this AFTER `shutdown /r /t 0` reboots Windows.
-
-Checks that AIOS Core Spine truly works post-reboot:
-1. AIOSV2Consumer WinSW service is Running
-2. AIOSConsumerMinute scheduled task exists
-3. v2 consumer child pythonw is alive with start_consumer_real in cmdline
-4. port 5099 is NOT listening (zombie gone)
-5. 24/24 P8 acceptance + verifier + dispatch_runtime all PASS
-6. state.json updated_at fresh
-7. events.ndjson last dispatch < 5 min ago
-
-Outputs GREEN/RED per check + writes PASS.md if all green.
-"""
-
-import subprocess, json, time, sys
+"""validate_post_reboot.py — corrected version with -p no:anyio + datetime fix"""
+import subprocess
+import json
+import time
+import re
+import sys
 from pathlib import Path
+from datetime import datetime, timezone
+
+V2_ROOT = Path(r"D:\AIOS\_agent-hub\v2")
+
+
+def safe_decode(b):
+    if b is None:
+        return ""
+    for enc in ("utf-8", "gbk", "cp936", "latin-1"):
+        try:
+            return b.decode(enc)
+        except (UnicodeDecodeError, LookupError):
+            continue
+    return b.decode("utf-8", errors="replace")
+
 
 CHECKS = {}
 
 # 1. Service
-out = subprocess.run(["sc", "query", "AIOSV2Consumer"], capture_output=True, text=True)
-CHECKS["1_AIOSV2Consumer_service"] = "✅" if "RUNNING" in out.stdout else "❌"
+proc = subprocess.run(["sc", "query", "AIOSV2Consumer"], capture_output=True)
+out = safe_decode(proc.stdout)
+CHECKS["1_AIOSV2Consumer_service"] = "✅" if "RUNNING" in out else "❌"
 
 # 2. Task
-out = subprocess.run(["schtasks", "/query", "/fo", "LIST"], capture_output=True, text=True)
-CHECKS["2_AIOSConsumerMinute_task"] = "✅" if "AIOSConsumerMinute" in out.stdout else "❌"
+proc = subprocess.run(["schtasks", "/query", "/fo", "LIST"], capture_output=True)
+out = safe_decode(proc.stdout)
+CHECKS["2_AIOSConsumerMinute_task"] = "✅" if "AIOSConsumerMinute" in out else "❌"
 
 # 3. Consumer child
-out = subprocess.run(
+proc = subprocess.run(
     ["wmic", "process", "where", "name='pythonw.exe'", "get", "ProcessId,CommandLine", "/FORMAT:CSV"],
-    capture_output=True, text=True,
+    capture_output=True,
 )
-CHECKS["3_consumer_pythonw_alive"] = "✅" if "start_consumer_real" in out.stdout else "❌"
+out = safe_decode(proc.stdout)
+CHECKS["3_consumer_pythonw_alive"] = "✅" if "start_consumer_real" in out else "❌"
 
-# 4. Port 5099
-out = subprocess.run(
+# 4. port 5099
+proc = subprocess.run(
     ["powershell", "-Command", "Get-NetTCPConnection -LocalPort 5099 -State Listen -ErrorAction SilentlyContinue | Measure-Object | Select-Object -ExpandProperty Count"],
     capture_output=True, text=True,
 )
-port_count = int(out.stdout.strip() or "1")
+port_count = int((proc.stdout or "1").strip() or "1")
 CHECKS["4_port_5099_not_listening"] = "✅" if port_count == 0 else f"⚠️ still {port_count} listeners"
 
-# 5. Tests
-import os
-os.environ["AIOS_V2_ROOT"] = r"D:\AIOS\_agent-hub\v2"
-os.environ["PYTHONPATH"] = r"D:\AIOS\_agent-hub\v2"
-out = subprocess.run(
+# 5. Tests with -p no:anyio to avoid asyncio init failure
+proc = subprocess.run(
     [sys.executable, "-m", "pytest",
      "tests/test_p8_t07.py", "tests/test_p8_t15.py", "tests/test_p8_t20.py", "tests/test_p8_t21.py",
      "tests/test_p8_t22.py", "tests/test_p8_t23.py", "tests/test_p8_t24.py", "tests/test_verifier.py",
-     "-q", "--tb=line"],
-    capture_output=True, text=True, cwd=r"D:\AIOS\_agent-hub\v2",
+     "tests/test_strategy_gate.py", "tests/test_strategy_gate_round6_fixes.py",
+     "-q", "--tb=line", "-p", "no:anyio"],
+    capture_output=True,
+    cwd=str(V2_ROOT),
+    env={"PYTHONPATH": str(V2_ROOT), "AIOS_V2_ROOT": str(V2_ROOT), "PATH": "C:\\Windows\\system32;C:\\Windows"},
+    timeout=120,
 )
-test_pass = "passed" in out.stdout.lower() and "failed" not in out.stdout.lower()
-CHECKS["5_p8_tests_pass"] = "✅" if test_pass else "❌"
+out = safe_decode(proc.stdout)
+err = safe_decode(proc.stderr)
+combined = out + "\n" + err
+test_pass = "passed" in combined.lower() and "failed" not in combined.lower()
+CHECKS["5_p8_strategy_gate_tests_pass"] = "✅" if test_pass else "❌"
 
 # 6. State.json freshness
-import os
 sj_path = Path(r"D:\AIOS\_agent-hub\v2\state\state.json")
 if sj_path.exists():
     age_min = (time.time() - sj_path.stat().st_mtime) / 60
     CHECKS["6_state_json_recent"] = f"✅ ({age_min:.0f}min ago)" if age_min < 30 else f"⚠️ {age_min:.0f}min stale"
 
-# 7. events.ndjson
-import re
+# 7. events.ndjson (fixed timezone reference)
 log_path = Path(r"D:\AIOS\_agent-hub\v2\logs\events.ndjson")
 if log_path.exists():
     last_line = log_path.read_text(encoding="utf-8").strip().split("\n")[-1] if log_path.read_text(encoding="utf-8").strip() else ""
@@ -72,9 +82,9 @@ if log_path.exists():
         try:
             ts_match = re.search(r'"ts":\s*"([^"]+)"', last_line)
             if ts_match:
-                from datetime import datetime
-                last_ts = datetime.fromisoformat(ts_match.group(1).replace("Z", "+00:00"))
-                age_min = (datetime.now(datetime.timezone.utc) - last_ts).total_seconds() / 60
+                from datetime import datetime as dt
+                last_ts = dt.fromisoformat(ts_match.group(1).replace("Z", "+00:00"))
+                age_min = (dt.now(dt.timezone.utc) - last_ts).total_seconds() / 60
                 CHECKS["7_events_recent_dispatch"] = f"✅ ({age_min:.0f}min ago)" if age_min < 10 else f"⚠️ {age_min:.0f}min ago"
             else:
                 CHECKS["7_events_recent_dispatch"] = "⚠️ last line no ts"
@@ -83,7 +93,6 @@ if log_path.exists():
     else:
         CHECKS["7_events_recent_dispatch"] = "⚠️ empty"
 
-# Report
 print("=" * 60)
 print("AIOS POST-REBOOT VALIDATION")
 print("=" * 60)

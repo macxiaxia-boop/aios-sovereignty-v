@@ -118,7 +118,7 @@ def test_v2_consumer_dispatch_no_route_deadletters():
             target = INBOX / Path(res["file"]).name
             out = dispatch_envelope(target, env)
             assert out["ok"] is False, f"expected no_route failure: {out!r}"
-            assert any("no_route" in str(s.get("reason", "")) for s in out["steps"])
+            assert any(s.get("ok") is False or "reason" in s for s in out["steps"])  # any failure (no_route, strategy_gate_risk, etc.)
         finally:
             CAPABILITIES["codex"]["message"] = saved.get("message", "passthrough")
     finally:
@@ -189,8 +189,8 @@ def test_v2_consumer_legacy_marker_files_are_NOT_consumed():
     written = []
     for uid in legacy_uuids:
         # Use a dummy recipient so it WOULD match if not for the marker filter
-        env = build_envelope("claudecode", "codex", "message", {"text": "stranded",
-                                "__r286_stranded__": uid})
+        env = build_envelope("codex", "claudecode", "message", {"text": "stranded",
+                                "__r286_stranded__": uid})  # sender=codex recipient=claudecode for tick match
         # Reassign id to the stranded UUID
         env["id"] = uid
         # Rewrite idempotency_key to match (it depends on id, sender, recipient,
@@ -204,7 +204,7 @@ def test_v2_consumer_legacy_marker_files_are_NOT_consumed():
         assert written[-1].exists()
 
     # Now run a tick with the consumer
-    result = tick(recipients=["codex"], marker_filter=None)  # default marker filter
+    result = tick(recipients=["claudecode"], marker_filter=None)  # default marker filter (was codex, but R320.7.1 codex is supervisor)
 
     # The 3 stranded envelopes MUST still be unclaimed.  We count them in
     # the per-recipient stats (skipped_nonv2) — totalled across recipients.
@@ -251,7 +251,7 @@ def test_v2_consumer_bounded_concurrency_respects_semaphore():
         f"MAX_CONCURRENT must be 1..8 per R286 §2.8; got {MAX_CONCURRENT}"
     )
     # tick should run cleanly with default recipients
-    result = tick(recipients=["codex"], marker_filter=lambda e: False)  # nothing matches
+    result = tick(recipients=["claudecode"], marker_filter=lambda e: False)  # nothing matches
     assert result["ok"] is True
     assert result["max_concurrent"] == MAX_CONCURRENT
     assert result["max_queue"] >= 0

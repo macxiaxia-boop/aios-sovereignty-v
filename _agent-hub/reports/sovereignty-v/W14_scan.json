@@ -1,0 +1,19 @@
+{
+  "phase": "W14.1",
+  "scan_root": "D:\\CloudTech-Portable",
+  "ts": 1791514844.6785653,
+  "elapsed_seconds": 8.482901096343994,
+  "policy_id": "model-policy.v1",
+  "policy_version": 2,
+  "stats": {
+    "files_scanned": 3000,
+    "files_skipped_excluded": 36782,
+    "files_skipped_too_big": 5,
+    "files_skipped_extension": 1166,
+    "files_with_findings": 0,
+    "total_findings": 0,
+    "by_classification": {},
+    "findings_by_keyword": {}
+  },
+  "findings": []
+}

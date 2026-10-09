@@ -1,0 +1,14 @@
+{
+  "id": "a4647939-fbfc-4e8c-ad7c-35ab12f42ce7",
+  "idempotency_key": "c9288421504219c2510c992920e9eb0aafa422f8cba071b565e846f1ffa95604",
+  "message_type": "message",
+  "payload": {
+    "__r286_no_route__": true
+  },
+  "recipient": "codex",
+  "retry_count": 0,
+  "schema_version": "1.0",
+  "sender": "a",
+  "timestamp": "2026-10-09T07:34:11Z",
+  "ttl_ms": 300000
+}

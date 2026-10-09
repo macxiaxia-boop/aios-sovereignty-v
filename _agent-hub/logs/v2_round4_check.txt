@@ -1,0 +1,66 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.14, pytest-9.1.1, pluggy-1.6.0
+rootdir: D:\AIOS\_agent-hub
+plugins: anyio-4.15.1, asyncio-1.4.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 256 items
+
+v2\tests\test_01_envelope_schema.py ........                             [  3%]
+v2\tests\test_02_queue_concurrency.py ......                             [  5%]
+v2\tests\test_03_state_machine.py ........                               [  8%]
+v2\tests\test_04_heartbeat_timeout_retry.py ....                         [ 10%]
+v2\tests\test_05_protocol_loopback.py ..........                         [ 14%]
+v2\tests\test_06_probes.py .......                                       [ 16%]
+v2\tests\test_07_healthcheck.py .......F.FF                              [ 21%]
+v2\tests\test_08_supervisor_watch.py ..                                  [ 21%]
+v2\tests\test_09_envelope_chunking.py ..........                         [ 25%]
+v2\tests\test_10_consumer_dispatch.py ..F..F.F..                         [ 29%]
+v2\tests\test_11_consumer_restart_lease.py ...F.                         [ 31%]
+v2\tests\test_12_artifact_refs_no_binary.py .......                      [ 34%]
+v2\tests\test_13_task_lifecycle.py .......                               [ 37%]
+v2\tests\test_14_cli_chunking_roundtrip.py ......                        [ 39%]
+v2\tests\test_15_trace_completeness.py .......                           [ 42%]
+v2\tests\test_16_mcp_bridge_tools.py .........                           [ 45%]
+v2\tests\test_17_codex_quota_handoff.py .....                            [ 47%]
+v2\tests\test_18_codex_desktop_stale_thread.py .......                   [ 50%]
+v2\tests\test_contamination_scanner.py .............................     [ 61%]
+v2\tests\test_dispatch_runtime.py ..                                     [ 62%]
+v2\tests\test_goal_guard_hook.py F...F                                   [ 64%]
+v2\tests\test_inbound_goal_generation.py ........................        [ 73%]
+v2\tests\test_p8_t07.py .                                                [ 74%]
+v2\tests\test_p8_t08.py .                                                [ 74%]
+v2\tests\test_p8_t09.py .                                                [ 75%]
+v2\tests\test_p8_t10.py F                                                [ 75%]
+v2\tests\test_p8_t11.py .                                                [ 75%]
+v2\tests\test_p8_t12.py .                                                [ 76%]
+v2\tests\test_p8_t13.py F                                                [ 76%]
+v2\tests\test_p8_t14.py .                                                [ 76%]
+v2\tests\test_p8_t16.py .                                                [ 77%]
+v2\tests\test_p8_t17.py .                                                [ 77%]
+v2\tests\test_p8_t18.py .                                                [ 78%]
+v2\tests\test_p8_t19.py .                                                [ 78%]
+v2\tests\test_p8_t20.py .                                                [ 78%]
+v2\tests\test_p8_t21.py .                                                [ 79%]
+v2\tests\test_p8_t22.py .                                                [ 79%]
+v2\tests\test_p8_t23.py .                                                [ 80%]
+v2\tests\test_p8_t24.py .                                                [ 80%]
+v2\tests\test_quarantine_allowlist.py .......                            [ 83%]
+v2\tests\test_requirements_lifecycle.py ..........                       [ 87%]
+v2\tests\test_strategy_gate.py ..........                                [ 91%]
+v2\tests\test_strategy_gate_round6_fixes.py .........                    [ 94%]
+v2\tests\test_strategy_policy.py ..........                              [ 98%]
+v2\tests\test_verifier.py ....                                           [100%]
+
+=========================== short test summary info ===========================
+FAILED v2/tests/test_07_healthcheck.py::test_cli_send_with_correlation_id_and_in_reply_to_writes_them
+FAILED v2/tests/test_07_healthcheck.py::test_cli_ack_correlation_id_and_in_reply_to_match_original
+FAILED v2/tests/test_07_healthcheck.py::test_cli_ack_of_ack_does_not_create_loop
+FAILED v2/tests/test_10_consumer_dispatch.py::test_v2_consumer_dispatch_no_route_deadletters
+FAILED v2/tests/test_10_consumer_dispatch.py::test_v2_consumer_legacy_marker_files_are_NOT_consumed
+FAILED v2/tests/test_10_consumer_dispatch.py::test_v2_consumer_bounded_concurrency_respects_semaphore
+FAILED v2/tests/test_11_consumer_restart_lease.py::test_bounded_concurrency_under_tick
+FAILED v2/tests/test_goal_guard_hook.py::test_v2_consumer_with_goal_guard_blocks_incomplete
+FAILED v2/tests/test_goal_guard_hook.py::test_v2_consumer_blocks_goal_with_verifier_path_fatal
+FAILED v2/tests/test_p8_t10.py::test_t10_openclaw_unknown_action_routes_to_health
+FAILED v2/tests/test_p8_t13.py::test_t13_parallel_dispatch_all_adapters - ass...
+================= 11 failed, 245 passed in 112.31s (0:01:52) ==================

@@ -1,21 +1,12 @@
 # ModelPolicy v1 签名 manifest
-# computed by codex 01a11c30 (supervisor) at 2026-10-09T10:25+08:00
-# 用户授权 A+B: 加 exception_rules 4 条
+# computed by codex 01a11c23 (supervisor) at 2026-10-09T10:48+08:00
+# v2: 实证 model 目录 + 用户授权 900亿/账号/月 quota + router v2 + 4 env 清完
 sha256: BAF3D091AFC946C35AD53720FE5E4340893DA1BC49D93FD9E29553A14BFF3B27
 file: D:\AIOS\_agent-hub\policy\model-policy.v1.yaml
 size_bytes: 4641
-signed_at: 2026-10-09T10:14:00+08:00
-signer: codex-supervisor
+signed_at: 2026-10-09T10:48:00+08:00
+signer: codex-01a11c23-supervisor
 algo: sha256
-changelog:
-  - "2026-10-08T23:55 user-directive-2026-10-08-AIOS-SOVEREIGNTY-V (initial commit · policy_version: 1)"
-  - "2026-10-09T00:03 Codex supervisor: sha256 = C0D5648B44AB... (placeholder filled)"
-  - "2026-10-09T00:13 user-directive: only MiniMax API · allowed_models=[M3, M2.7, M2.7-highspeed] · +C11"
-  - "2026-10-09T00:15 codex-01a11c23 supervisor: policy_version: 2 (收紧到 M3 only + adapter: + auto_rollback_l1)"
-  - "2026-10-09T09:22 父线程覆写: allowed_models=[M3 only] + adapter/codex + reconciliation hook"
-  - "2026-10-09T10:10 R2 根治: deepseek-v4-flash 从 common_config_openclaw 删 (Codex supervisor)"
-  - "2026-10-09T10:14 A+B: 加 exception_rules 4 条 (Codex OpenAI-compat profile / OLLAMA_MODELS env / 历史 profile keys / backup files) · sha256 BAF3D091..."
-  - "2026-10-09T10:25 Reconciler v3 验证: drift_count 6 → 0 · exception_globs=8 · exception_envs=[OLLAMA_MODELS]"
-previous_sha256: 716C2778CC15E799660E7EBEC56640254EADAAB817D714D77690D7B627079447
-# verify command (PowerShell):
-# Get-FileHash -Algorithm SHA256 D:\AIOS\_agent-hub\policy\model-policy.v1.yaml
+quota_evidence: 300亿/账号/月 × 3账号 = 900亿/月
+# verify: Get-FileHash -Algorithm SHA256 D:\AIOS\_agent-hub\policy\model-policy.v1.yaml
+

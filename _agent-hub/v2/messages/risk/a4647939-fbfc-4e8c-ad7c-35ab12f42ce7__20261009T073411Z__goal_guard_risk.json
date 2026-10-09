@@ -1,0 +1,21 @@
+{
+  "envelope_type": "strategy_gate_risk",
+  "original_envelope_id": "a4647939-fbfc-4e8c-ad7c-35ab12f42ce7",
+  "original_sender": "a",
+  "reason": "strategy_gate_blocked",
+  "events": [
+    {
+      "event_type": "INVALID_TASK_GENERATED",
+      "severity": "BLOCK",
+      "message": "task payload missing title/text",
+      "matched_token": null,
+      "matched_id": null,
+      "source_classification": "UNKNOWN",
+      "ts": 1791531251.9678378
+    }
+  ],
+  "ts": 1791531251.9678433,
+  "policy_id": "GLOBAL_PRODUCT_STRATEGY",
+  "policy_version": "2026-10-08",
+  "schema_version": "1.0"
+}

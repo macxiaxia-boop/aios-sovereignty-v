@@ -195,7 +195,7 @@ def test_21():
         try: lock_path.unlink()
         except: pass
     try:
-        r = subprocess.run([sys.executable, str(RECON_PY), "--once", "--no-scan"], capture_output=True, text=True, timeout=20)
+        r = subprocess.run([sys.executable, str(RECON_PY), "--once"], capture_output=True, text=True, timeout=5)
         # exit 0 = OK, exit 1 = ALERT (drift), exit 2/3 = FATAL
         check(r.returncode in (0, 1), f"Reconciler 退出码正常 (got={r.returncode})")
         # SKIP 表示锁被持 (orphan), 也算 OK (锁机制工作)

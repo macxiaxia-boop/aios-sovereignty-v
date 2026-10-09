@@ -83,7 +83,7 @@ def test_consumer_kill_restart_recovery_via_unclaimed_list():
 
     We simulate this by: enqueue → claim (rename to .claimed.*) → kill
     (do nothing) → confirm the envelope still exists and can be ack'd."""
-    env = build_envelope("claudecode", "codex", "message",
+    env = build_envelope("codex", "claudecode", "message",  # swap sender/recipient for tick recipients=[claudecode]
                          {"text": "kill-restart", "__r286_test__": "test_restart"})
     res = enqueue(env)
     target = INBOX / Path(res["file"]).name
@@ -223,10 +223,10 @@ def test_bounded_concurrency_under_tick():
         # Enqueue MAX_CONCURRENT + 4 envelopes
         n_extra = MAX_CONCURRENT + 4
         for i in range(n_extra):
-            env = build_envelope("claudecode", "codex", "message",
+            env = build_envelope("codex", "claudecode", "message",  # swap sender/recipient for tick recipients=[claudecode]
                                  {"text": f"concur-{i}", "__r286_test__": "test_concurrency"})
             enqueue(env)
-        result = tick(recipients=["codex"],
+        result = tick(recipients=["claudecode"],  # R320.7.1 codex is supervisor
                       marker_filter=lambda e: e.get("payload", {}).get("__r286_test__") == "test_concurrency")
         assert result["ok"] is True
         # Max concurrent observed MUST be ≤ MAX_CONCURRENT
