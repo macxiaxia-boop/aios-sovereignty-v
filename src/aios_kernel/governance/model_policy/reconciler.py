@@ -4,11 +4,12 @@ Reads model-policy.v1.yaml, runs all 4 adapters, returns aggregate DriftReport.
 
 CLI:
     python -m aios_kernel.governance.model_policy.reconciler --mode scheduled [--dry-run]
+    python -m aios_kernel.governance.model_policy.reconciler --mode daemon --interval 30
 
 Modes:
-    scheduled  → invoked by AIOS_Sovereignty_Reconcile_5min Task Scheduler
+    scheduled  → invoked by AIOS_Sovereignty_Reconcile_5min Task Scheduler (5min tick)
     onstart    → invoked by PowerShell profile hook
-    daemon     → invoked by WinSW service (v2)
+    daemon     → invoked by WinSW service (v2, --interval 30s loop)
 """
 from __future__ import annotations
 
@@ -16,6 +17,7 @@ import argparse
 import json
 import os
 import sys
+import time
 from pathlib import Path
 from typing import List
 
@@ -62,6 +64,76 @@ def reconcile(policy: PolicySnapshot, adapters: list = None, dry_run: bool = Fal
     return reports
 
 
+def aggregate_severity_of(reports: List[DriftReport]) -> str:
+    agg = "ok"
+    for r in reports:
+        if r.severity == "fail_closed":
+            return "fail_closed"
+        if r.severity == "warn" and agg == "ok":
+            agg = "warn"
+    return agg
+
+
+def emit_json(policy: PolicySnapshot, mode: str, dry_run: bool, reports: List[DriftReport]) -> None:
+    agg = aggregate_severity_of(reports)
+    out = {
+        "policy_id": policy.policy_id,
+        "mode": mode,
+        "dry_run": dry_run,
+        "aggregate_severity": agg,
+        "reports": [
+            {
+                "adapter": r.adapter_name,
+                "drift_kind": r.drift_kind,
+                "severity": r.severity,
+                "recommended_action": r.recommended_action,
+                "affected_paths": r.affected_paths,
+            }
+            for r in reports
+        ],
+    }
+    print(json.dumps(out, indent=2))
+
+
+def emit_text(reports: List[DriftReport]) -> None:
+    for r in reports:
+        print(
+            f"[{r.adapter_name}] drift={r.drift_kind} "
+            f"severity={r.severity} action={r.recommended_action} "
+            f"paths={len(r.affected_paths)}"
+        )
+
+
+def run_once(args, policy) -> int:
+    reports = reconcile(policy, dry_run=args.dry_run)
+    if args.json:
+        emit_json(policy, args.mode, args.dry_run, reports)
+    else:
+        emit_text(reports)
+    return 0 if aggregate_severity_of(reports) != "fail_closed" else 1
+
+
+def run_daemon(args) -> int:
+    sys.stderr.write(
+        f"[reconciler/daemon] loop mode: interval={args.interval}s policy_id="
+        f"{load_policy(Path(args.policy), Path(args.pub_key)).policy_id}\n"
+    )
+    while True:
+        try:
+            policy = load_policy(Path(args.policy), Path(args.pub_key))
+        except Exception as e:
+            sys.stderr.write(f"[reconciler/daemon] reload error: {e}\n")
+            time.sleep(args.interval)
+            continue
+        try:
+            reports = reconcile(policy, dry_run=args.dry_run)
+            agg = aggregate_severity_of(reports)
+            sys.stderr.write(f"[reconciler/daemon] tick: {agg}\n")
+        except Exception as e:
+            sys.stderr.write(f"[reconciler/daemon] tick error: {e}\n")
+        time.sleep(args.interval)
+
+
 def main(argv: list = None) -> int:
     parser = argparse.ArgumentParser(
         prog="aios_kernel.governance.model_policy.reconciler",
@@ -75,8 +147,15 @@ def main(argv: list = None) -> int:
         default="scheduled",
     )
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument(
+        "--interval", type=int, default=0,
+        help="Daemon mode loop interval in seconds (0 = one-shot)",
+    )
     parser.add_argument("--json", action="store_true", help="emit JSON output")
     args = parser.parse_args(argv)
+
+    if args.mode == "daemon" and args.interval > 0:
+        return run_daemon(args)
 
     try:
         policy = load_policy(Path(args.policy), Path(args.pub_key))
@@ -90,42 +169,7 @@ def main(argv: list = None) -> int:
         f"optional={len(policy.optional)} dry_run={args.dry_run}\n"
     )
 
-    reports = reconcile(policy, dry_run=args.dry_run)
-    aggregate_severity = "ok"
-    for r in reports:
-        if r.severity == "fail_closed":
-            aggregate_severity = "fail_closed"
-            break
-        if r.severity == "warn" and aggregate_severity == "ok":
-            aggregate_severity = "warn"
-
-    if args.json:
-        out = {
-            "policy_id": policy.policy_id,
-            "mode": args.mode,
-            "dry_run": args.dry_run,
-            "aggregate_severity": aggregate_severity,
-            "reports": [
-                {
-                    "adapter": r.adapter_name,
-                    "drift_kind": r.drift_kind,
-                    "severity": r.severity,
-                    "recommended_action": r.recommended_action,
-                    "affected_paths": r.affected_paths,
-                }
-                for r in reports
-            ],
-        }
-        print(json.dumps(out, indent=2))
-    else:
-        for r in reports:
-            print(
-                f"[{r.adapter_name}] drift={r.drift_kind} "
-                f"severity={r.severity} action={r.recommended_action} "
-                f"paths={len(r.affected_paths)}"
-            )
-
-    return 0 if aggregate_severity != "fail_closed" else 1
+    return run_once(args, policy)
 
 
 if __name__ == "__main__":
