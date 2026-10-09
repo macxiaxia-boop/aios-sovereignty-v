@@ -31,6 +31,15 @@ Event types emitted (per `gate_event_types` in the policy):
         loader.
 
     POLICY_GATE_REJECTED
+    L1_FAIL
+        Functional success failed: feature missing / mock / wrong I-O.
+        Emitted by dr-verifier or worker supervisor; not by gate alone.
+    L2_FAIL
+        Engineering success failed: tests not run / regression / no rollback drill.
+    L3_FAIL
+        User success failed: journey blocked / no real-user signoff.
+    L4_FAIL
+        Business success failed or NOT_YET_MEASURED violation.
         Generic catch-all when the gate refuses dispatch.
 
 The gate is fail-CLOSED: if the policy itself fails to load, every
@@ -152,6 +161,33 @@ class StrategyGate:
 
 
     # ----- Public entry
+
+    # ---------------------------------------------------------------- AIPM_FOUNDATION_02 / D3
+    # Additive only. Existing methods unchanged.
+    def emit_l1_fail(self, message: str, matched_id: str = "") -> "GateEvent":
+        """Emit an L1_FAIL event (functional deficiency)."""
+        return self._mk_event("L1_FAIL", "BLOCK",
+                              message or "L1 functional check failed",
+                              matched_id=matched_id or None)
+
+    def emit_l2_fail(self, message: str, matched_id: str = "") -> "GateEvent":
+        """Emit an L2_FAIL event (engineering deficiency)."""
+        return self._mk_event("L2_FAIL", "BLOCK",
+                              message or "L2 engineering check failed",
+                              matched_id=matched_id or None)
+
+    def emit_l3_fail(self, message: str, matched_id: str = "") -> "GateEvent":
+        """Emit an L3_FAIL event (user journey / signoff missing)."""
+        return self._mk_event("L3_FAIL", "BLOCK",
+                              message or "L3 user check failed",
+                              matched_id=matched_id or None)
+
+    def emit_l4_fail(self, message: str, matched_id: str = "") -> "GateEvent":
+        """Emit an L4_FAIL event (business value not measured / fabricated ROI)."""
+        return self._mk_event("L4_FAIL", "BLOCK",
+                              message or "L4 business check failed",
+                              matched_id=matched_id or None)
+
     def evaluate_envelope(self, envelope: dict) -> GateDecision:
         """Evaluate an envelope payload.
 
