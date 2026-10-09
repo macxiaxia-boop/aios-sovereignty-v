@@ -3,12 +3,13 @@ r"""codex_self_audit.py — Codex Supervisor 自审计（autonomous）。
 
 退出码：0=CLEAN, 1=DEGRADED, 2=BROKEN
 
-Phase F evidence 大量文件（每个 dev sub-agent 都写 evidence/，+ new scripts/），
-git dirty 自然超 100。Phase F 验收完应做一次 commit 把阈值降下来；本脚本检测
-时按 Phase F 后 baseline 调整阈值。
+Phase F + Phase-2/3 后 baseline：
+- v2 consumer 已从 python 进程改为 Windows Service (AIOSV2Consumer, Phase-2)
+- 查 service 状态 (sc query AIOSV2Consumer) 而非 python process
 """
 from __future__ import annotations
 
+import os
 import subprocess
 import sys
 from datetime import datetime, timezone
@@ -20,7 +21,6 @@ MEMORY_DIR = AIOS_ROOT / "_agent-hub" / "memory"
 TODAY = datetime.now().strftime("%Y-%m-%d")
 NOW_ISO = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
-# Phase F 后 baseline 阈值（pre-F 是 <100；F 后 evidence 多自然 200+）
 AIOS_DIRTY_MAX = 500
 KERNEL_DIRTY_MAX = 100
 
@@ -78,19 +78,24 @@ def check_pytest_baseline():
 
 
 def check_v2_consumer_health():
-    banner("v2 consumer health")
-    code, out, err = run(["tasklist", "/FI", "IMAGENAME eq python.exe", "/FO", "CSV"], timeout=15)
-    proc_count = sum(1 for l in out.splitlines() if "python.exe" in l.lower())
-    wcode, wout, werr = run(
-        ["wmic", "process", "where", "name='python.exe'",
-         "get", "CommandLine", "/format:list"],
-        timeout=20,
-    )
-    wout_safe = wout or ""
-    has_consumer = ("start_consumer_real" in wout_safe or "v2_consumer" in wout_safe)
-    msg = f"python_procs={proc_count} consumer_cmdline_found={has_consumer}"
+    """Phase-2: v2 consumer 已注册为 Windows Service AIOSV2Consumer。检查服务状态。"""
+    banner("v2 consumer (Windows Service AIOSV2Consumer)")
+    code, out, err = run(["sc", "query", "AIOSV2Consumer"], timeout=15)
+    # parse STATE field
+    is_running = False
+    is_installed = False
+    state_line = ""
+    for line in out.splitlines():
+        if "SERVICE_NAME" in line and "AIOSV2Consumer" in line:
+            is_installed = True
+        if line.strip().startswith("STATE"):
+            state_line = line.strip()
+            # "STATE              : 4  RUNNING"
+            if "RUNNING" in line:
+                is_running = True
+    msg = f"installed={is_installed} state={state_line} running={is_running}"
     print(msg)
-    return (0 if has_consumer else 1), msg
+    return (0 if is_running else 1), msg
 
 
 def check_git_dirty():
@@ -144,7 +149,7 @@ def main():
     if pytest_code != 0:
         findings.append(f"pytest baseline 退化: {pytest_summary}")
     if v2_code != 0:
-        findings.append("v2 consumer 未在跑 (P5 V7 长跑 daemon 不健康)")
+        findings.append("v2 consumer (AIOSV2Consumer Windows Service) 不在 RUNNING")
     if git_code != 0:
         findings.append(f"git dirty 超阈值: {git_msg}")
 
