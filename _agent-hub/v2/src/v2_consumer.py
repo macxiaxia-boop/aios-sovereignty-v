@@ -462,7 +462,7 @@ def dispatch_envelope(env_path: Path, env: dict, *, dispatcher: Optional[Callabl
     _gg_allowed, _gg_risk = guard_dispatch(env, _gg_root)
     if not _gg_allowed:
         write_risk_envelope(_gg_root, _gg_risk)
-        out["steps"].append({"step": "goal_guard", "ok": False, "verdict": _gg_risk["verdict"]})
+        out["steps"].append({"step": "goal_guard", "ok": False, "reason": _gg_risk.get("envelope_type", _gg_risk.get("reason", "blocked"))})
         return out
 
     # R320.7 loop-guard: terminal message types (result/ack/status/heartbeat/error)
