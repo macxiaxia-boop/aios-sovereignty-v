@@ -1,0 +1,48 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.14, pytest-9.1.1, pluggy-1.6.0 -- D:\AIOS\kernel\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: D:\AIOS\kernel
+configfile: pyproject.toml
+plugins: asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 23 items
+
+tests/unit/test_decision_audit.py::test_decision_audit_required_fields PASSED [  4%]
+tests/unit/test_decision_audit.py::test_decision_actor_enum_5_values PASSED [  8%]
+tests/unit/test_decision_audit.py::test_decision_outcome_enum_4_values PASSED [ 13%]
+tests/unit/test_decision_audit.py::test_confidence_must_be_0_to_1 PASSED [ 17%]
+tests/unit/test_decision_audit.py::test_rationale_required_min_length PASSED [ 21%]
+tests/unit/test_decision_audit.py::test_mark_outcome_succeeded PASSED    [ 26%]
+tests/unit/test_decision_audit.py::test_mark_outcome_failed PASSED       [ 30%]
+tests/unit/test_decision_audit.py::test_mark_outcome_blocked PASSED      [ 34%]
+tests/unit/test_decision_audit.py::test_decision_audit_json_roundtrip PASSED [ 39%]
+tests/unit/test_decision_audit.py::test_decision_service_record PASSED   [ 43%]
+tests/unit/test_decision_audit.py::test_decision_service_update_outcome PASSED [ 47%]
+tests/unit/test_decision_audit.py::test_decision_service_get_by_goal PASSED [ 52%]
+tests/unit/test_decision_audit.py::test_decision_service_get_by_actor PASSED [ 56%]
+tests/unit/test_decision_audit.py::test_decision_service_get_pending_outcomes PASSED [ 60%]
+tests/unit/test_decision_audit.py::test_alembic_upgrade_002_creates_decision_audit_table PASSED [ 65%]
+tests/unit/test_decision_audit.py::test_alembic_downgrade_002_drops_decision_audit_table FAILED [ 69%]
+tests/unit/test_decision_audit.py::test_decision_audit_goal_id_indexed PASSED [ 73%]
+tests/unit/test_decision_audit.py::test_decision_audit_actor_indexed PASSED [ 78%]
+tests/unit/test_decision_audit.py::test_decision_audit_outcome_indexed PASSED [ 82%]
+tests/unit/test_decision_audit.py::test_existing_models_still_valid PASSED [ 86%]
+tests/unit/test_decision_audit.py::test_decision_audit_orm_roundtrip PASSED [ 91%]
+tests/unit/test_decision_audit.py::test_link_to_goal_fk_constraint FAILED [ 95%]
+tests/unit/test_decision_audit.py::test_decision_audit_chain_for_one_goal PASSED [100%]
+
+================================== FAILURES ===================================
+E   AssertionError: assert 'decision_audit' not in ['alembic_version', 'artifacts', 'decision_audit', 'evidences', 'goals', 'plans', ...]
+D:\AIOS\kernel\tests\unit\test_decision_audit.py:357: AssertionError: assert 'decision_audit' not in ['alembic_version', 'artifacts', 'decision_audit', 'evidences', 'goals', 'plans', ...]
+E   Failed: DID NOT RAISE IntegrityError
+D:\AIOS\kernel\tests\unit\test_decision_audit.py:479: Failed: DID NOT RAISE IntegrityError
+============================== warnings summary ===============================
+tests/unit/test_decision_audit.py::test_decision_audit_required_fields
+  D:\AIOS\kernel\.venv\Lib\site-packages\pytest_asyncio\plugin.py:916: PytestDeprecationWarning: Overriding the "event_loop_policy" fixture is deprecated and will be removed in a future version of pytest-asyncio. Use the "pytest_asyncio_loop_factories" hook to customize event loop creation.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/unit/test_decision_audit.py::test_alembic_downgrade_002_drops_decision_audit_table
+FAILED tests/unit/test_decision_audit.py::test_link_to_goal_fk_constraint - F...
+================== 2 failed, 21 passed, 1 warning in 10.80s ===================

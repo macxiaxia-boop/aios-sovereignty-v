@@ -1,0 +1,20 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.14, pytest-9.1.1, pluggy-1.6.0 -- D:\AIOS\kernel\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: D:\AIOS\kernel
+configfile: pyproject.toml
+plugins: asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 1 item
+
+tests/integration/test_crash_recovery.py::test_cr10_workflow_run_id_preserved_across_restart FAILED
+
+================================== FAILURES ===================================
+_____________ test_cr10_workflow_run_id_preserved_across_restart ______________
+tests\integration\test_crash_recovery.py:705: in test_cr10_workflow_run_id_preserved_across_restart
+    run_pre = state_pre["workflow_run"]
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   KeyError: 'workflow_run'
+=========================== short test summary info ===========================
+FAILED tests/integration/test_crash_recovery.py::test_cr10_workflow_run_id_preserved_across_restart
+============================== 1 failed in 1.91s ==============================

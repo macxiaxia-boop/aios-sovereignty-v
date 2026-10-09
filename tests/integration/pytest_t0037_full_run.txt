@@ -1,0 +1,78 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.14, pytest-9.1.1, pluggy-1.6.0 -- D:\AIOS\kernel\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: D:\AIOS\kernel
+configfile: pyproject.toml
+plugins: asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 10 items
+
+tests/integration/test_crash_recovery.py::test_cr1_goal_create_mid_crash_rolls_back PASSED [ 10%]
+tests/integration/test_crash_recovery.py::test_cr2_workflow_resume_does_not_redo_step_a PASSED [ 20%]
+tests/integration/test_crash_recovery.py::test_cr3_plan_revert_crash_leaves_consistent_state FAILED [ 30%]
+tests/integration/test_crash_recovery.py::test_cr4_verifier_call_mid_crash_atomic_evidence FAILED [ 40%]
+tests/integration/test_crash_recovery.py::test_cr5_budget_check_mid_crash_no_double_deduct PASSED [ 50%]
+tests/integration/test_crash_recovery.py::test_cr6_evidence_write_mid_crash_atomic FAILED [ 60%]
+tests/integration/test_crash_recovery.py::test_cr7_five_consecutive_crashes_recover_to_completed FAILED [ 70%]
+tests/integration/test_crash_recovery.py::test_cr8_daemon_unaffected_by_kernel_crash FAILED [ 80%]
+tests/integration/test_crash_recovery.py::test_cr9_db_disconnect_then_restart_rebuilds_connection FAILED [ 90%]
+tests/integration/test_crash_recovery.py::test_cr10_workflow_run_id_preserved_across_restart FAILED [100%]
+
+================================== FAILURES ===================================
+_____________ test_cr3_plan_revert_crash_leaves_consistent_state ______________
+tests\integration\test_crash_recovery.py:253: in test_cr3_plan_revert_crash_leaves_consistent_state
+    assert injector.wait_for_marker(kp, timeout_s=5.0), (
+E   AssertionError: worker did not reach crash_after_old_inactive hook
+E   assert False
+E    +  where False = wait_for_marker(KernelProcess(proc=<Popen: returncode: 0 args: ['D:\\AIOS\\kernel\\.venv\\Scripts\\python.exe',...>, pid=15732, db_url='sqlite+aiosqlite:///D:/UsersTemp/aios_cr_8miai3rq/cr_3a957ee5.db', mode='plan_revert', config={'goal_title': 'cr3-goal', 'crash_hook': 'crash_after_old_inactive', 'marker_path': 'D:\\UsersTemp\\aios_cr_8miai3rq\\results\\result_29360_1791432810750209300.marker'}, result_path=WindowsPath('D:/UsersTemp/aios_cr_8miai3rq/results/result_29360_1791432810750209300.json'), marker_path=WindowsPath('D:/UsersTemp/aios_cr_8miai3rq/results/result_29360_1791432810750209300.marker'), started_at=1791432810.7578268, log_path=WindowsPath('D:/UsersTemp/aios_cr_8miai3rq/results/worker_29360_1791432810750403200.log')), timeout_s=5.0)
+E    +    where wait_for_marker = <tests.integration.crash_injector.CrashInjector object at 0x000001C12DE61090>.wait_for_marker
+______________ test_cr4_verifier_call_mid_crash_atomic_evidence _______________
+tests\integration\test_crash_recovery.py:347: in test_cr4_verifier_call_mid_crash_atomic_evidence
+    assert len(evs_after) == 1, (
+E   AssertionError: expected exactly 1 evidence after clean run; got 0: []
+E   assert 0 == 1
+E    +  where 0 = len([])
+__________________ test_cr6_evidence_write_mid_crash_atomic ___________________
+tests\integration\test_crash_recovery.py:455: in test_cr6_evidence_write_mid_crash_atomic
+    assert len(state_after.get("evidences", [])) == 1
+E   AssertionError: assert 0 == 1
+E    +  where 0 = len([])
+E    +    where [] = <built-in method get of dict object at 0x000001C12B9FDF40>('evidences', [])
+E    +      where <built-in method get of dict object at 0x000001C12B9FDF40> = {'ts': '2026-10-08T04:13:45.719179+00:00', 'goals': [{'id': 'e34b4072-e953-46a1-a4a2-f2c222961930', 'title': 'evidence-write-test', 'status': 'Pending', 'budget': 10.0, ...}, {'id': 'b9b0529b-4007-48a2-9c7d-da7880cdbcbe', 'title': 'evidence-write-test', 'status': 'Pending', 'budget': 10.0, ...}], 'evidence': [{'id': '495d8260-d8c5-4edc-9291-63b5c1d27c0c', 'task_id': '144cd0e9-edba-44fc-8eff-aa79fda4c2a9', 'verifier_id': 'test-verifier', 'verdict': 'PASS', ...}]}.get
+___________ test_cr7_five_consecutive_crashes_recover_to_completed ____________
+tests\integration\test_crash_recovery.py:482: in test_cr7_five_consecutive_crashes_recover_to_completed
+    assert injector.wait_for_marker(kp, timeout_s=5.0), (
+E   AssertionError: cycle 1: worker did not reach crash hook
+E   assert False
+E    +  where False = wait_for_marker(KernelProcess(proc=<Popen: returncode: 0 args: ['D:\\AIOS\\kernel\\.venv\\Scripts\\python.exe',...>, pid=36964, db_url='sqlite+aiosqlite:///D:/UsersTemp/aios_cr_8iyxpb74/cr_561c9258.db', mode='workflow_run', config={'run_id': 'cr7-f8c8f6d6', 'workflow_mode': 'kill_at_b', 'crash_hook': 'crash_after_step_a', 'marker_path': 'D:\\UsersTemp\\aios_cr_8iyxpb74\\results\\result_29360_1791432827672810900.marker'}, result_path=WindowsPath('D:/UsersTemp/aios_cr_8iyxpb74/results/result_29360_1791432827672810900.json'), marker_path=WindowsPath('D:/UsersTemp/aios_cr_8iyxpb74/results/result_29360_1791432827672810900.marker'), started_at=1791432827.679267, log_path=WindowsPath('D:/UsersTemp/aios_cr_8iyxpb74/results/worker_29360_1791432827672980600.log')), timeout_s=5.0)
+E    +    where wait_for_marker = <tests.integration.crash_injector.CrashInjector object at 0x000001C12DE69E10>.wait_for_marker
+_________________ test_cr8_daemon_unaffected_by_kernel_crash __________________
+tests\integration\test_crash_recovery.py:573: in test_cr8_daemon_unaffected_by_kernel_crash
+    assert daemon_payload.get("daemon_pid") == daemon_kp.pid, (
+E   AssertionError: daemon PID mismatch: {'daemon_pid': 14400, 'task_id': '53636fec-490b-4016-b741-7d6e823a994f', 'heartbeat_count': 19, 'ts': '2026-10-08T04:13:54.336341+00:00'}
+E   assert 14400 == 37816
+E    +  where 14400 = <built-in method get of dict object at 0x000001C12DEE0800>('daemon_pid')
+E    +    where <built-in method get of dict object at 0x000001C12DEE0800> = {'daemon_pid': 14400, 'task_id': '53636fec-490b-4016-b741-7d6e823a994f', 'heartbeat_count': 19, 'ts': '2026-10-08T04:13:54.336341+00:00'}.get
+E    +  and   37816 = KernelProcess(proc=<Popen: returncode: 0 args: ['D:\\AIOS\\kernel\\.venv\\Scripts\\python.exe',...>, pid=37816, db_url='sqlite+aiosqlite:///D:/UsersTemp/aios_cr_z22pe31q/cr_9b25865f.db', mode='verifier_daemon', config={'duration_s': 4.0, 'marker_path': None}, result_path=WindowsPath('D:/UsersTemp/aios_cr_z22pe31q/results/result_29360_1791432828357341600.json'), marker_path=None, started_at=1791432828.363807, log_path=WindowsPath('D:/UsersTemp/aios_cr_z22pe31q/results/worker_29360_1791432828357442700.log')).pid
+___________ test_cr9_db_disconnect_then_restart_rebuilds_connection ___________
+tests\integration\test_crash_recovery.py:625: in test_cr9_db_disconnect_then_restart_rebuilds_connection
+    assert len(state1.get("evidences", [])) == 1, "seed data missing"
+E   AssertionError: seed data missing
+E   assert 0 == 1
+E    +  where 0 = len([])
+E    +    where [] = <built-in method get of dict object at 0x000001C12DEFC140>('evidences', [])
+E    +      where <built-in method get of dict object at 0x000001C12DEFC140> = {'ts': '2026-10-08T04:13:58.011517+00:00', 'goals': [{'id': 'aa692931-6589-4036-9027-4d3f9157c6fd', 'title': 'verifier-crash-test', 'status': 'Pending', 'budget': 10.0, ...}], 'evidence': [{'id': '20d141e8-d072-4e2f-8ede-03c52a229b94', 'task_id': '47bb0fdd-fe24-4db8-8f4a-d9d9c3ff0a20', 'verifier_id': 'test-verifier', 'verdict': 'PASS', ...}]}.get
+_____________ test_cr10_workflow_run_id_preserved_across_restart ______________
+tests\integration\test_crash_recovery.py:705: in test_cr10_workflow_run_id_preserved_across_restart
+    run_pre = state_pre["workflow_run"]
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   KeyError: 'workflow_run'
+=========================== short test summary info ===========================
+FAILED tests/integration/test_crash_recovery.py::test_cr3_plan_revert_crash_leaves_consistent_state
+FAILED tests/integration/test_crash_recovery.py::test_cr4_verifier_call_mid_crash_atomic_evidence
+FAILED tests/integration/test_crash_recovery.py::test_cr6_evidence_write_mid_crash_atomic
+FAILED tests/integration/test_crash_recovery.py::test_cr7_five_consecutive_crashes_recover_to_completed
+FAILED tests/integration/test_crash_recovery.py::test_cr8_daemon_unaffected_by_kernel_crash
+FAILED tests/integration/test_crash_recovery.py::test_cr9_db_disconnect_then_restart_rebuilds_connection
+FAILED tests/integration/test_crash_recovery.py::test_cr10_workflow_run_id_preserved_across_restart
+======================== 7 failed, 3 passed in 39.55s =========================

@@ -8,9 +8,11 @@ NOT do workflow scheduling (T0033), worker dispatch (T0034), or verification
     GoalService.create_goal(input) -> Goal   # allocate id, persist
     TaskService.transition(task, new) -> Task  # state machine, persist
     PlanService.create_version(plan) -> Plan   # auto-increment, persist
+    DecisionService.record(...) -> DecisionAudit  # F003
 """
+from aios_kernel.domain.services.decision_service import DecisionService
 from aios_kernel.domain.services.goal_service import GoalService
 from aios_kernel.domain.services.plan_service import PlanService
 from aios_kernel.domain.services.task_service import TaskService
 
-__all__ = ["GoalService", "TaskService", "PlanService"]
+__all__ = ["GoalService", "TaskService", "PlanService", "DecisionService"]

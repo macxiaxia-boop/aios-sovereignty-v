@@ -51,6 +51,18 @@ class GoalORM(Base):
     tags: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
     plan_ids: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
     metadata_: Mapped[dict] = mapped_column("metadata", JSON, nullable=False, default=dict)
+
+    # ----- Phase F F001: 10 new GoalContract fields (nullable JSON) -----
+    inferred_intent: Mapped[str | None] = mapped_column(String(1000), nullable=True)
+    preserve_capabilities: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
+    known_constraints: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
+    environment_context: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    failure_modes: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
+    permission_scope: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    missing_evidence: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
+    approved_tradeoffs: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
+    autonomous_scope: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
+    requires_authorization: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
     envelope_json: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
     schema_version: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
@@ -274,6 +286,39 @@ class VerifierRunORM(Base):
 
 # Pydantic -> ORM helpers
 def goal_to_orm(p):
+    """Convert Goal (Pydantic 12-field GoalContract) -> GoalORM.
+
+    The 10 new Phase F F001 fields are mapped 1:1 to JSON columns. Each
+    sub-model (Constraint, EnvSnapshot, FailureMode, PermissionScope,
+    EvidenceRequest, Tradeoff, OpType) is dumped to dict via
+    ``model_dump(mode='json')`` so the resulting JSON is JSON-portable
+    (datetimes -> ISO strings). The companion ``goal_from_orm`` reconstructs
+    the Pydantic models from the same JSON.
+    """
+    import json as _json
+    from aios_kernel.domain.goal import (
+        Constraint,
+        EnvSnapshot,
+        EvidenceRequest,
+        FailureMode,
+        OpType,
+        PermissionScope,
+        Tradeoff,
+    )
+
+    def _dump(items, model_cls):
+        # Each item is already a model instance; round-trip via model_dump
+        # so we get JSON-friendly dicts (datetime -> ISO, Enum -> value).
+        return [_json.loads(item.model_dump_json()) if isinstance(item, model_cls)
+                else dict(item) for item in (items or [])]
+
+    def _dump_one(obj, model_cls):
+        if obj is None:
+            return None
+        if isinstance(obj, model_cls):
+            return _json.loads(obj.model_dump_json())
+        return dict(obj)
+
     return GoalORM(
         id=p.id,
         title=p.title,
@@ -286,10 +331,86 @@ def goal_to_orm(p):
         tags=list(p.tags),
         plan_ids=list(p.plan_ids),
         metadata_=dict(p.metadata),
+        # Phase F F001: 10 new fields (JSON dump)
+        inferred_intent=p.inferred_intent,
+        preserve_capabilities=list(p.preserve_capabilities or []),
+        known_constraints=_dump(p.known_constraints, Constraint),
+        environment_context=_dump_one(p.environment_context, EnvSnapshot),
+        failure_modes=_dump(p.failure_modes, FailureMode),
+        permission_scope=_dump_one(p.permission_scope, PermissionScope),
+        missing_evidence=_dump(p.missing_evidence, EvidenceRequest),
+        approved_tradeoffs=_dump(p.approved_tradeoffs, Tradeoff),
+        autonomous_scope=_dump(p.autonomous_scope, OpType),
+        requires_authorization=_dump(p.requires_authorization, OpType),
         envelope_json=envelope_json_of(p),
         schema_version=p.schema_version,
         created_at=p.created_at,
         updated_at=p.updated_at,
+    )
+
+
+def goal_from_orm(o):
+    """Convert GoalORM -> Goal (12-field GoalContract).
+
+    Companion to ``goal_to_orm``. Re-hydrates the 7 sub-models from their
+    JSON columns. Missing/None entries are coerced to the default empty
+    value so an old (Phase A) row that never had the new columns can still
+    be loaded.
+    """
+    from aios_kernel.domain.goal import (
+        Constraint,
+        EnvSnapshot,
+        EvidenceRequest,
+        FailureMode,
+        Goal,
+        GoalStatus,
+        OpType,
+        PermissionScope,
+        Tradeoff,
+    )
+
+    def _load_list(items, model_cls):
+        if not items:
+            return []
+        return [model_cls.model_validate(item) for item in items]
+
+    def _load_one(obj, model_cls):
+        if obj is None:
+            return None
+        return model_cls.model_validate(obj)
+
+    status_value = o.status if hasattr(o.status, "__str__") else str(o.status)
+    try:
+        status = GoalStatus(status_value)
+    except ValueError:
+        status = GoalStatus.PENDING
+
+    return Goal(
+        id=o.id,
+        title=o.title,
+        description=o.description,
+        success_criteria=o.success_criteria,
+        budget=o.budget,
+        deadline=o.deadline,
+        owner=o.owner,
+        status=status,
+        tags=list(o.tags or []),
+        plan_ids=list(o.plan_ids or []),
+        metadata=dict(o.metadata_ or {}),
+        # Phase F F001: 10 new fields (JSON load)
+        inferred_intent=getattr(o, "inferred_intent", None),
+        preserve_capabilities=list(getattr(o, "preserve_capabilities", []) or []),
+        known_constraints=_load_list(getattr(o, "known_constraints", []) or [], Constraint),
+        environment_context=_load_one(getattr(o, "environment_context", None), EnvSnapshot),
+        failure_modes=_load_list(getattr(o, "failure_modes", []) or [], FailureMode),
+        permission_scope=_load_one(getattr(o, "permission_scope", None), PermissionScope),
+        missing_evidence=_load_list(getattr(o, "missing_evidence", []) or [], EvidenceRequest),
+        approved_tradeoffs=_load_list(getattr(o, "approved_tradeoffs", []) or [], Tradeoff),
+        autonomous_scope=_load_list(getattr(o, "autonomous_scope", []) or [], OpType),
+        requires_authorization=_load_list(getattr(o, "requires_authorization", []) or [], OpType),
+        schema_version=getattr(o, "schema_version", 2),
+        created_at=o.created_at,
+        updated_at=o.updated_at,
     )
 
 
@@ -411,13 +532,16 @@ __all__ = [
     "WorkerRunORM",
     "VerifierRunORM",
     "LongTermMemoryORM",
+    "DecisionAuditORM",
     "goal_to_orm",
+    "goal_from_orm",
     "task_to_orm",
     "plan_to_orm",
     "artifact_to_orm",
     "evidence_to_orm",
     "trace_to_orm",
     "long_term_memory_to_orm",
+    "decision_to_orm",
     "envelope_json_of",
 ]
 
@@ -596,4 +720,72 @@ class EmbeddingORM(Base):
     __table_args__ = (
         Index("ix_embeddings_chunk_id", "chunk_id"),
         Index("ix_embeddings_model", "model"),
+    )
+# ---------------------------------------------------------------------------
+# Phase F F003 - Decision Audit Log (every AIOS decision gets one row).
+# ---------------------------------------------------------------------------
+class DecisionAuditORM(Base):
+    """DecisionAudit persistence layer.
+
+    One row per auditable decision (route dispatch / GoalContract parse /
+    failure merge / intent interpretation / operator override). Indexes on
+    goal_id (per-goal chain lookup), actor (per-actor history), and outcome
+    (pending-list sweep).
+
+    FK goal_id -> goals.id ON DELETE CASCADE: when a Goal is purged, its
+    audit chain disappears with it. Schema mirrors the Pydantic
+    DecisionAudit exactly (see aios_kernel.domain.decision).
+    """
+
+    __tablename__ = "decision_audit"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True)
+    goal_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey("goals.id", ondelete="CASCADE"), nullable=False
+    )
+    actor: Mapped[str] = mapped_column(String(64), nullable=False)
+    rationale: Mapped[str] = mapped_column(Text, nullable=False)
+    alternatives: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
+    chosen: Mapped[str] = mapped_column(String(64), nullable=False)
+    outcome: Mapped[str] = mapped_column(String(20), nullable=False, default="pending")
+    outcome_detail: Mapped[str | None] = mapped_column(Text, nullable=True)
+    confidence: Mapped[float] = mapped_column(Float, nullable=False, default=1.0)
+    tags: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
+    envelope_json: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
+    schema_version: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+    __table_args__ = (
+        Index("ix_decision_audit_goal_id", "goal_id"),
+        Index("ix_decision_audit_actor", "actor"),
+        Index("ix_decision_audit_outcome", "outcome"),
+    )
+
+
+def decision_to_orm(p):
+    """Convert DecisionAudit (Pydantic) -> DecisionAuditORM.
+
+    Mirrors the existing to_orm pattern (Goal/Task/...). Enums are flattened
+    to their string values so SQLite/JSONB lookups stay portable.
+    """
+    from aios_kernel.domain.decision import DecisionAudit
+
+    if not isinstance(p, DecisionAudit):
+        raise TypeError(f"expected DecisionAudit, got {type(p).__name__}")
+    return DecisionAuditORM(
+        id=p.id,
+        goal_id=p.goal_id,
+        actor=p.actor.value if hasattr(p.actor, "value") else str(p.actor),
+        rationale=p.rationale,
+        alternatives=list(p.alternatives),
+        chosen=p.chosen,
+        outcome=p.outcome.value if hasattr(p.outcome, "value") else str(p.outcome),
+        outcome_detail=p.outcome_detail,
+        confidence=float(p.confidence),
+        tags=list(p.tags),
+        envelope_json=envelope_json_of(p),
+        schema_version=p.schema_version,
+        created_at=p.created_at,
+        updated_at=p.updated_at,
     )

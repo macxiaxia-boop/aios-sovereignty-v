@@ -1,4 +1,4 @@
-"""__init__.py - aios_kernel.learning (Phase C)."""
+"""__init__.py - aios_kernel.learning (Phase C + Phase F + Phase G)."""
 from aios_kernel.learning.trace_miner import TraceMiner, TracePattern
 from aios_kernel.learning.failure_detector import FailureCluster, FailureDetector
 from aios_kernel.learning.skill_usage import SkillUsage, SkillUsageTracker
@@ -11,6 +11,15 @@ from aios_kernel.learning.canary import (
     CANARY_STEPS_ORDER,
     DEFAULT_ERROR_RATE_THRESHOLD,
     DEFAULT_LATENCY_RATIO_THRESHOLD,
+)
+
+# Phase G G001 - Failure cluster -> GoalContract.failure_modes feedback service.
+# Re-exports the public surface; the heavy implementation lives in
+# ``failure_feedback`` (Pydantic-agnostic) and ``failure_feedback_runner`` (CLI).
+from aios_kernel.learning.failure_feedback import (
+    DEFAULT_MIN_OCCURRENCE_FOR_FEEDBACK,
+    MAX_MODES_PER_APPLY,
+    FailureFeedbackService,
 )
 
 __all__ = [
@@ -28,4 +37,8 @@ __all__ = [
     "CanaryMetric",
     "CanaryDeployment",
     "CanaryDeployer",
+    # Phase G G001
+    "FailureFeedbackService",
+    "DEFAULT_MIN_OCCURRENCE_FOR_FEEDBACK",
+    "MAX_MODES_PER_APPLY",
 ]

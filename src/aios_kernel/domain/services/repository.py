@@ -86,6 +86,16 @@ class Repository(Protocol):
     async def flush(self):
         ...
 
+    async def find(self, model, **filters):
+        """Filter lookup. Returns a list of ORM/Pydantic rows.
+
+        ``limit`` is honoured when supplied (int). Other keyword
+        arguments are matched as ``column == value``. The semantics of
+        what's returned depends on the concrete impl (Pydantic for the
+        in-memory store, ORM rows for the SQL impl).
+        """
+        ...
+
 
 # ---------- In-memory repository for unit tests ------------------------------
 
@@ -122,6 +132,32 @@ class InMemoryRepository:
 
     async def flush(self):
         return None
+
+    async def find(self, model, **filters):
+        """In-memory equality filter.
+
+        Mirrors SqlAlchemyRepository.find semantics for unit tests.
+        Returns the stored Pydantic objects (not ORM rows).
+        """
+        bucket = self._store.get(model, {})
+        results = []
+        limit = filters.pop("limit", None)
+        for obj in bucket.values():
+            match = True
+            for key, value in filters.items():
+                if not hasattr(obj, key):
+                    match = False
+                    break
+                attr = getattr(obj, key)
+                attr_value = attr.value if hasattr(attr, "value") else attr
+                if attr_value != value:
+                    match = False
+                    break
+            if match:
+                results.append(obj)
+        if limit is not None:
+            results = results[: int(limit)]
+        return results
 
     def all(self, model):
         return list(self._store.get(model, {}).values())

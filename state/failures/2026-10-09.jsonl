@@ -1,0 +1,6 @@
+{"timestamp":"2026-10-09T0","error_type":"TimeoutError","id":"t-1","error_message":"timeout while connecting 1"}
+{"timestamp":"2026-10-09T0","error_type":"TimeoutError","id":"t-2","error_message":"timeout while connecting 2"}
+{"timestamp":"2026-10-09T0","error_type":"TimeoutError","id":"t-3","error_message":"timeout while connecting 3"}
+{"timestamp":"2026-10-09T0","error_type":"TimeoutError","id":"t-4","error_message":"timeout while connecting 4"}
+{"timestamp":"2026-10-09T0","error_type":"TimeoutError","id":"t-5","error_message":"timeout while connecting 5"}
+{"timestamp":"2026-10-09T0","error_type":"TimeoutError","id":"t-6","error_message":"timeout while connecting 6"}

@@ -1,0 +1,362 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.14, pytest-9.1.1, pluggy-1.6.0 -- D:\AIOS\kernel\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: D:\AIOS\kernel
+configfile: pyproject.toml
+plugins: asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 10 items
+
+tests/integration/test_crash_recovery.py::test_cr1_goal_create_mid_crash_rolls_back PASSED [ 10%]
+tests/integration/test_crash_recovery.py::test_cr2_workflow_resume_does_not_redo_step_a PASSED [ 20%]
+tests/integration/test_crash_recovery.py::test_cr3_plan_revert_crash_leaves_consistent_state FAILED [ 30%]
+tests/integration/test_crash_recovery.py::test_cr4_verifier_call_mid_crash_atomic_evidence FAILED [ 40%]
+tests/integration/test_crash_recovery.py::test_cr5_budget_check_mid_crash_no_double_deduct PASSED [ 50%]
+tests/integration/test_crash_recovery.py::test_cr6_evidence_write_mid_crash_atomic FAILED [ 60%]
+tests/integration/test_crash_recovery.py::test_cr7_five_consecutive_crashes_recover_to_completed FAILED [ 70%]
+tests/integration/test_crash_recovery.py::test_cr8_daemon_unaffected_by_kernel_crash FAILED [ 80%]
+tests/integration/test_crash_recovery.py::test_cr9_db_disconnect_then_restart_rebuilds_connection FAILED [ 90%]
+tests/integration/test_crash_recovery.py::test_cr10_workflow_run_id_preserved_across_restart FAILED [100%]
+
+================================== FAILURES ===================================
+_____________ test_cr3_plan_revert_crash_leaves_consistent_state ______________
+
+injector = <tests.integration.crash_injector.CrashInjector object at 0x0000024DB9561090>
+db_url = 'sqlite+aiosqlite:///D:/UsersTemp/aios_cr_74qrp26h/cr_fe2b954a.db'
+result_dir = WindowsPath('D:/UsersTemp/aios_cr_74qrp26h/results')
+
+    async def test_cr3_plan_revert_crash_leaves_consistent_state(
+        injector, db_url, result_dir
+    ):
+        """Plan reversion flips v1.is_active=False then adds v2. If killed
+        after mark_inactive but before commit, the transaction must roll back
+        (v1 stays active). On restart without crash hook, the reversion
+        completes cleanly: v1 inactive, v2 active.
+        """
+        goal_title = "cr3-goal"
+        config_crash = {
+            "goal_title": goal_title,
+            "crash_hook": "crash_after_old_inactive",
+        }
+    
+        kp = injector.start_kernel(
+            db_url, mode="plan_revert", config=config_crash, result_dir=result_dir
+        )
+        try:
+>           assert injector.wait_for_marker(kp, timeout_s=5.0), (
+                "worker did not reach crash_after_old_inactive hook"
+            )
+E           AssertionError: worker did not reach crash_after_old_inactive hook
+E           assert False
+E            +  where False = wait_for_marker(KernelProcess(proc=<Popen: returncode: 0 args: ['D:\\AIOS\\kernel\\.venv\\Scripts\\python.exe',...>, pid=30240, db_url='sqlite+aiosqlite:///D:/UsersTemp/aios_cr_74qrp26h/cr_fe2b954a.db', mode='plan_revert', config={'goal_title': 'cr3-goal', 'crash_hook': 'crash_after_old_inactive', 'marker_path': 'D:\\UsersTemp\\aios_cr_74qrp26h\\results\\result_36700_1791432784289019600.marker'}, result_path=WindowsPath('D:/UsersTemp/aios_cr_74qrp26h/results/result_36700_1791432784289019600.json'), marker_path=WindowsPath('D:/UsersTemp/aios_cr_74qrp26h/results/result_36700_1791432784289019600.marker'), started_at=1791432784.295169, log_path=WindowsPath('D:/UsersTemp/aios_cr_74qrp26h/results/worker_36700_1791432784289163800.log')), timeout_s=5.0)
+E            +    where wait_for_marker = <tests.integration.crash_injector.CrashInjector object at 0x0000024DB9561090>.wait_for_marker
+
+tests\integration\test_crash_recovery.py:253: AssertionError
+______________ test_cr4_verifier_call_mid_crash_atomic_evidence _______________
+
+injector = <tests.integration.crash_injector.CrashInjector object at 0x0000024DB94CBE10>
+db_url = 'sqlite+aiosqlite:///D:/UsersTemp/aios_cr_2g8zk3u0/cr_beb57a1f.db'
+result_dir = WindowsPath('D:/UsersTemp/aios_cr_2g8zk3u0/results')
+
+    async def test_cr4_verifier_call_mid_crash_atomic_evidence(
+        injector, db_url, result_dir
+    ):
+        """VerifierCall adds an Evidence row but crashes before the
+        session commit. Atomicity -> no evidence row in DB.
+        Then we run verifier_call cleanly -> 1 evidence row.
+        """
+        config_crash = {"crash_hook": "crash_after_record"}
+        kp = injector.start_kernel(
+            db_url, mode="verifier_call", config=config_crash, result_dir=result_dir
+        )
+        try:
+            assert injector.wait_for_marker(kp, timeout_s=5.0), (
+                "worker did not reach crash_after_record hook"
+            )
+            _kill_and_reap(injector, kp)
+        finally:
+            injector.cleanup(kp)
+    
+        # After crash: no evidence row in DB.
+        state = injector.verify_state(
+            db_url, include_evidence=True, result_dir=result_dir
+        )
+        evidences = state.get("evidences", [])
+        assert evidences == [], (
+            f"atomic rollback failed: evidence leaked after crash: {evidences}"
+        )
+    
+        # Now do a clean verifier_call -> exactly one evidence row.
+        kp2 = injector.start_kernel(
+            db_url,
+            mode="verifier_call",
+            config={"crash_hook": "none"},
+            result_dir=result_dir,
+        )
+        try:
+            result = kp2.read_result(timeout_s=10.0)
+            assert result is not None, "clean verifier_call produced no result"
+            assert "evidence_id" in result, f"missing evidence_id: {result}"
+        finally:
+            injector.cleanup(kp2)
+    
+        state_after = injector.verify_state(
+            db_url, include_evidence=True, result_dir=result_dir
+        )
+        evs_after = state_after.get("evidences", [])
+>       assert len(evs_after) == 1, (
+            f"expected exactly 1 evidence after clean run; got {len(evs_after)}: {evs_after}"
+        )
+E       AssertionError: expected exactly 1 evidence after clean run; got 0: []
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests\integration\test_crash_recovery.py:347: AssertionError
+__________________ test_cr6_evidence_write_mid_crash_atomic ___________________
+
+injector = <tests.integration.crash_injector.CrashInjector object at 0x0000024DB95570B0>
+db_url = 'sqlite+aiosqlite:///D:/UsersTemp/aios_cr_ekp1abgt/cr_05909969.db'
+result_dir = WindowsPath('D:/UsersTemp/aios_cr_ekp1abgt/results')
+
+    async def test_cr6_evidence_write_mid_crash_atomic(
+        injector, db_url, result_dir
+    ):
+        """EvidenceWrite: in one transaction, writes a Task + Evidence.
+        Crashes before final commit -> both must roll back. Then a clean run
+        produces exactly one evidence row.
+        """
+        config_crash = {"crash_hook": "crash_before_final_commit"}
+        kp = injector.start_kernel(
+            db_url,
+            mode="evidence_write",
+            config=config_crash,
+            result_dir=result_dir,
+        )
+        try:
+            assert injector.wait_for_marker(kp, timeout_s=5.0), (
+                "worker did not reach crash_before_final_commit hook"
+            )
+            _kill_and_reap(injector, kp)
+        finally:
+            injector.cleanup(kp)
+    
+        state = injector.verify_state(
+            db_url, include_evidence=True, result_dir=result_dir
+        )
+        evidences = state.get("evidences", [])
+        assert evidences == [], (
+            f"atomic rollback failed: evidence present after crash: {evidences}"
+        )
+    
+        # Clean run.
+        kp2 = injector.start_kernel(
+            db_url,
+            mode="evidence_write",
+            config={"crash_hook": "none"},
+            result_dir=result_dir,
+        )
+        try:
+            result = kp2.read_result(timeout_s=10.0)
+            assert result is not None
+            assert "evidence_id" in result
+        finally:
+            injector.cleanup(kp2)
+    
+        state_after = injector.verify_state(
+            db_url, include_evidence=True, result_dir=result_dir
+        )
+>       assert len(state_after.get("evidences", [])) == 1
+E       AssertionError: assert 0 == 1
+E        +  where 0 = len([])
+E        +    where [] = <built-in method get of dict object at 0x0000024DB95B5480>('evidences', [])
+E        +      where <built-in method get of dict object at 0x0000024DB95B5480> = {'ts': '2026-10-08T04:13:17.663497+00:00', 'goals': [{'id': '46a7362d-7881-4a85-bf24-5028ab8ea375', 'title': 'evidence-write-test', 'status': 'Pending', 'budget': 10.0, ...}, {'id': '885022d8-2be0-4714-8a44-ea3628f0e318', 'title': 'evidence-write-test', 'status': 'Pending', 'budget': 10.0, ...}], 'evidence': [{'id': '722d6a02-2030-4ed7-836c-67119a8b39d5', 'task_id': '5171e378-e882-4433-b0b3-89ede391d8c9', 'verifier_id': 'test-verifier', 'verdict': 'PASS', ...}]}.get
+
+tests\integration\test_crash_recovery.py:455: AssertionError
+___________ test_cr7_five_consecutive_crashes_recover_to_completed ____________
+
+injector = <tests.integration.crash_injector.CrashInjector object at 0x0000024DB9569E10>
+db_url = 'sqlite+aiosqlite:///D:/UsersTemp/aios_cr_0f_wx1z_/cr_415eae24.db'
+result_dir = WindowsPath('D:/UsersTemp/aios_cr_0f_wx1z_/results')
+
+    async def test_cr7_five_consecutive_crashes_recover_to_completed(
+        injector, db_url, result_dir
+    ):
+        """Loop: start workflow with crash hook, kill, resume, repeat.
+        After 5 cycles the run must be Completed and step A's history must
+        still show attempt=1 only (idempotency holds across many cycles).
+        """
+        run_id = f"cr7-{uuid.uuid4().hex[:8]}"
+    
+        for i in range(5):
+            config = {
+                "run_id": run_id,
+                "workflow_mode": "kill_at_b",
+                "crash_hook": "crash_after_step_a",
+            }
+            kp = injector.start_kernel(
+                db_url, mode="workflow_run", config=config, result_dir=result_dir
+            )
+            try:
+>               assert injector.wait_for_marker(kp, timeout_s=5.0), (
+                    f"cycle {i}: worker did not reach crash hook"
+                )
+E               AssertionError: cycle 1: worker did not reach crash hook
+E               assert False
+E                +  where False = wait_for_marker(KernelProcess(proc=<Popen: returncode: 0 args: ['D:\\AIOS\\kernel\\.venv\\Scripts\\python.exe',...>, pid=30920, db_url='sqlite+aiosqlite:///D:/UsersTemp/aios_cr_0f_wx1z_/cr_415eae24.db', mode='workflow_run', config={'run_id': 'cr7-33fec2f6', 'workflow_mode': 'kill_at_b', 'crash_hook': 'crash_after_step_a', 'marker_path': 'D:\\UsersTemp\\aios_cr_0f_wx1z_\\results\\result_36700_1791432800422524400.marker'}, result_path=WindowsPath('D:/UsersTemp/aios_cr_0f_wx1z_/results/result_36700_1791432800422524400.json'), marker_path=WindowsPath('D:/UsersTemp/aios_cr_0f_wx1z_/results/result_36700_1791432800422524400.marker'), started_at=1791432800.4318972, log_path=WindowsPath('D:/UsersTemp/aios_cr_0f_wx1z_/results/worker_36700_1791432800422774200.log')), timeout_s=5.0)
+E                +    where wait_for_marker = <tests.integration.crash_injector.CrashInjector object at 0x0000024DB9569E10>.wait_for_marker
+
+tests\integration\test_crash_recovery.py:482: AssertionError
+_________________ test_cr8_daemon_unaffected_by_kernel_crash __________________
+
+injector = <tests.integration.crash_injector.CrashInjector object at 0x0000024DB956A030>
+db_url = 'sqlite+aiosqlite:///D:/UsersTemp/aios_cr_a3u7up8d/cr_67ed2dc3.db'
+result_dir = WindowsPath('D:/UsersTemp/aios_cr_a3u7up8d/results')
+
+    async def test_cr8_daemon_unaffected_by_kernel_crash(
+        injector, db_url, result_dir
+    ):
+        """A verifier daemon runs as a separate subprocess writing
+        heartbeat evidence. Concurrently, we crash a workflow. The daemon
+        must keep writing heartbeats. PID must be different.
+        """
+        daemon_cfg = {"duration_s": 4.0}
+        daemon_kp = injector.start_kernel(
+            db_url,
+            mode="verifier_daemon",
+            config=daemon_cfg,
+            result_dir=result_dir,
+        )
+        try:
+            # Give daemon a moment to write at least one heartbeat.
+            time.sleep(0.3)
+    
+            # Now crash a workflow subprocess.
+            run_id = f"cr8-{uuid.uuid4().hex[:8]}"
+            wf_cfg = {
+                "run_id": run_id,
+                "workflow_mode": "kill_at_b",
+                "crash_hook": "crash_after_step_a",
+            }
+            wf_kp = injector.start_kernel(
+                db_url, mode="workflow_run", config=wf_cfg, result_dir=result_dir
+            )
+            try:
+                assert injector.wait_for_marker(wf_kp, timeout_s=5.0)
+                _kill_and_reap(injector, wf_kp)
+            finally:
+                injector.cleanup(wf_kp)
+    
+            # PID isolation
+            assert wf_kp.pid != daemon_kp.pid, (
+                f"daemon and workflow shared pid {wf_kp.pid}"
+            )
+    
+            # Wait for daemon to finish its loop.
+            rc = injector.wait_for_exit(daemon_kp, timeout_s=15.0)
+            daemon_payload = daemon_kp.read_result(timeout_s=2.0)
+        finally:
+            injector.cleanup(daemon_kp)
+    
+        assert daemon_payload is not None, "daemon produced no result"
+>       assert daemon_payload.get("daemon_pid") == daemon_kp.pid, (
+            f"daemon PID mismatch: {daemon_payload}"
+        )
+E       AssertionError: daemon PID mismatch: {'daemon_pid': 39292, 'task_id': '24834656-121a-45cc-a0e0-5154909bf563', 'heartbeat_count': 19, 'ts': '2026-10-08T04:13:28.349548+00:00'}
+E       assert 39292 == 20248
+E        +  where 39292 = <built-in method get of dict object at 0x0000024DB9765F00>('daemon_pid')
+E        +    where <built-in method get of dict object at 0x0000024DB9765F00> = {'daemon_pid': 39292, 'task_id': '24834656-121a-45cc-a0e0-5154909bf563', 'heartbeat_count': 19, 'ts': '2026-10-08T04:13:28.349548+00:00'}.get
+E        +  and   20248 = KernelProcess(proc=<Popen: returncode: 0 args: ['D:\\AIOS\\kernel\\.venv\\Scripts\\python.exe',...>, pid=20248, db_url='sqlite+aiosqlite:///D:/UsersTemp/aios_cr_a3u7up8d/cr_67ed2dc3.db', mode='verifier_daemon', config={'duration_s': 4.0, 'marker_path': None}, result_path=WindowsPath('D:/UsersTemp/aios_cr_a3u7up8d/results/result_36700_1791432801837057500.json'), marker_path=None, started_at=1791432801.8570573, log_path=WindowsPath('D:/UsersTemp/aios_cr_a3u7up8d/results/worker_36700_1791432801837412000.log')).pid
+
+tests\integration\test_crash_recovery.py:573: AssertionError
+___________ test_cr9_db_disconnect_then_restart_rebuilds_connection ___________
+
+injector = <tests.integration.crash_injector.CrashInjector object at 0x0000024DB96E5150>
+db_url = 'sqlite+aiosqlite:///D:/UsersTemp/aios_cr_epodr1in/cr_bcd3e500.db'
+result_dir = WindowsPath('D:/UsersTemp/aios_cr_epodr1in/results')
+tmp_test_dir = WindowsPath('D:/UsersTemp/aios_cr_epodr1in')
+
+    async def test_cr9_db_disconnect_then_restart_rebuilds_connection(
+        injector, db_url, result_dir, tmp_test_dir
+    ):
+        """Simulate 'DB connection断开时 crash':
+          1) start a worker, let it write data, kill it (committed data
+             must survive)
+          2) move the DB file aside (simulating connection loss / file gone)
+          3) restart with same URL -> engine must re-init cleanly, returning
+             an empty fresh DB (no panic, no leaked connection)
+    
+        This proves restart-after-disconnect works: the engine builds a new
+        connection without holding on to a stale handle.
+        """
+        # Step 1: seed data via clean verifier_call.
+        kp = injector.start_kernel(
+            db_url, mode="verifier_call", config={"crash_hook": "none"}, result_dir=result_dir
+        )
+        try:
+            result = kp.read_result(timeout_s=10.0)
+            assert result is not None and "evidence_id" in result
+        finally:
+            injector.cleanup(kp)
+    
+        # Confirm seed.
+        state1 = injector.verify_state(
+            db_url, include_evidence=True, result_dir=result_dir
+        )
+>       assert len(state1.get("evidences", [])) == 1, "seed data missing"
+E       AssertionError: seed data missing
+E       assert 0 == 1
+E        +  where 0 = len([])
+E        +    where [] = <built-in method get of dict object at 0x0000024DB9771A00>('evidences', [])
+E        +      where <built-in method get of dict object at 0x0000024DB9771A00> = {'ts': '2026-10-08T04:13:31.150314+00:00', 'goals': [{'id': '5b028812-b106-4e09-9972-f1ab898655f6', 'title': 'verifier-crash-test', 'status': 'Pending', 'budget': 10.0, ...}], 'evidence': [{'id': '9179e1e4-1131-444b-8ffc-a95f363ee551', 'task_id': 'baa394c6-e792-49ea-8d4d-90736c970808', 'verifier_id': 'test-verifier', 'verdict': 'PASS', ...}]}.get
+
+tests\integration\test_crash_recovery.py:625: AssertionError
+_____________ test_cr10_workflow_run_id_preserved_across_restart ______________
+
+injector = <tests.integration.crash_injector.CrashInjector object at 0x0000024DB96E5F50>
+db_url = 'sqlite+aiosqlite:///D:/UsersTemp/aios_cr_7e9kfrd2/cr_bdad7282.db'
+result_dir = WindowsPath('D:/UsersTemp/aios_cr_7e9kfrd2/results')
+
+    async def test_cr10_workflow_run_id_preserved_across_restart(
+        injector, db_url, result_dir
+    ):
+        """Same as CR2 but the explicit assertion is that the resumed run
+        carries the SAME run_id (not a new UUID), and its status moves from
+        running/failed -> completed.
+    
+        The 'state continuous' part: the workflow_run row is the same row
+        (no second INSERT); only UPDATE happened.
+        """
+        run_id = f"cr10-{uuid.uuid4().hex[:8]}"
+    
+        cfg_crash = {
+            "run_id": run_id,
+            "workflow_mode": "kill_at_b",
+            "crash_hook": "crash_after_step_a",
+        }
+        kp = injector.start_kernel(
+            db_url, mode="workflow_run", config=cfg_crash, result_dir=result_dir
+        )
+        try:
+            assert injector.wait_for_marker(kp, timeout_s=5.0)
+            _kill_and_reap(injector, kp)
+        finally:
+            injector.cleanup(kp)
+    
+        # Read the run before resume.
+        state_pre = injector.verify_state(
+            db_url, expected_run_id=run_id, result_dir=result_dir
+        )
+>       run_pre = state_pre["workflow_run"]
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'workflow_run'
+
+tests\integration\test_crash_recovery.py:705: KeyError
+=========================== short test summary info ===========================
+FAILED tests/integration/test_crash_recovery.py::test_cr3_plan_revert_crash_leaves_consistent_state
+FAILED tests/integration/test_crash_recovery.py::test_cr4_verifier_call_mid_crash_atomic_evidence
+FAILED tests/integration/test_crash_recovery.py::test_cr6_evidence_write_mid_crash_atomic
+FAILED tests/integration/test_crash_recovery.py::test_cr7_five_consecutive_crashes_recover_to_completed
+FAILED tests/integration/test_crash_recovery.py::test_cr8_daemon_unaffected_by_kernel_crash
+FAILED tests/integration/test_crash_recovery.py::test_cr9_db_disconnect_then_restart_rebuilds_connection
+FAILED tests/integration/test_crash_recovery.py::test_cr10_workflow_run_id_preserved_across_restart
+======================== 7 failed, 3 passed in 35.08s =========================

@@ -26,6 +26,13 @@ async def async_engine():
     from aios_kernel.domain.services.repository import make_engine
     from aios_kernel.persistence import create_all, drop_all
     engine = make_engine()
+    # Phase F F003: enable SQLite foreign-key enforcement so that
+    # decision_audit.goal_id FK constraints are actually checked.
+    # SQLite requires PRAGMA foreign_keys = ON per connection.
+    from sqlalchemy import text as sa_text
+    async with engine.connect() as conn:
+        await conn.execute(sa_text("PRAGMA foreign_keys = ON"))
+        await conn.commit()
     await create_all(engine)
     try:
         yield engine

@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0",
+  "title": "T0040 simulation harness e2e",
+  "generated_at": "2026-10-08T03:52:03.133296+00:00",
+  "wall_clock_seconds": 1.0662,
+  "checks": [
+    {
+      "check": "determinism_100_tasks_5x20",
+      "passed": true,
+      "expected": 100,
+      "observed": 100
+    },
+    {
+      "check": "worker_coverage_6_types",
+      "passed": true
+    },
+    {
+      "check": "evidence_verify_tamper_reject",
+      "passed": true
+    },
+    {
+      "check": "time_compression_3_weeks",
+      "passed": true,
+      "weeks_simulated": 3,
+      "compression": 86400
+    },
+    {
+      "check": "crash_5x_kill_restart_state_persists",
+      "passed": true,
+      "kills": 5,
+      "restarts": 5
+    },
+    {
+      "check": "runner_10/10_pass",
+      "passed": 10,
+      "total": 10
+    }
+  ],
+  "all_passed": true,
+  "runner_summary": {
+    "criteria_total": 10,
+    "criteria_passed": 10,
+    "criteria_failed": 0,
+    "wall_clock_seconds": 0.0625
+  },
+  "time_compression": {
+    "before": "2026-10-08T00:00:00+00:00",
+    "after": "2026-10-29T00:00:00+00:00",
+    "weeks_simulated": 3,
+    "compression_ratio": "1 wall-second == 1 simulated day (time_compression=86400)"
+  }
+}

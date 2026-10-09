@@ -1,0 +1,313 @@
+{
+  "schema_version": "1.0",
+  "title": "AIOS Phase A acceptance criteria (T0040 simulation harness)",
+  "generated_at": "2026-10-08T03:01:21.138121+00:00",
+  "wall_clock_seconds": 0.0418,
+  "criteria_total": 10,
+  "criteria_passed": 10,
+  "criteria_failed": 0,
+  "criteria": [
+    {
+      "id": "AC1",
+      "title": "Goal \u6301\u4e45\u5316",
+      "passed": true,
+      "expected": 100,
+      "observed": 100,
+      "duration_s": 0.0003,
+      "details": {
+        "all_active": true
+      }
+    },
+    {
+      "id": "AC2",
+      "title": "Task \u72b6\u6001\u673a (8 \u8f6c\u6362)",
+      "passed": true,
+      "expected": 8,
+      "observed": 8,
+      "duration_s": 0.0,
+      "details": {
+        "transitions": [
+          {
+            "src": "Pending",
+            "dst": "Running",
+            "valid": true
+          },
+          {
+            "src": "Running",
+            "dst": "Verifying",
+            "valid": true
+          },
+          {
+            "src": "Verifying",
+            "dst": "Done",
+            "valid": true
+          },
+          {
+            "src": "Verifying",
+            "dst": "Failed",
+            "valid": true
+          },
+          {
+            "src": "Verifying",
+            "dst": "Blocked",
+            "valid": true
+          },
+          {
+            "src": "Failed",
+            "dst": "Pending",
+            "valid": true
+          },
+          {
+            "src": "Blocked",
+            "dst": "Pending",
+            "valid": true
+          },
+          {
+            "src": "Retrying",
+            "dst": "Running",
+            "valid": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "AC3",
+      "title": "Plan \u7248\u672c\u5316 (v1..v5)",
+      "passed": true,
+      "expected": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "observed": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "duration_s": 0.0,
+      "details": {
+        "plans": [
+          {
+            "id": "plan-001",
+            "version": 1,
+            "steps": [
+              "step-1-a",
+              "step-1-b"
+            ],
+            "created_at": "2026-10-08T01:00:00+00:00"
+          },
+          {
+            "id": "plan-002",
+            "version": 2,
+            "steps": [
+              "step-2-a",
+              "step-2-b"
+            ],
+            "created_at": "2026-10-08T02:00:00+00:00"
+          },
+          {
+            "id": "plan-003",
+            "version": 3,
+            "steps": [
+              "step-3-a",
+              "step-3-b"
+            ],
+            "created_at": "2026-10-08T03:00:00+00:00"
+          },
+          {
+            "id": "plan-004",
+            "version": 4,
+            "steps": [
+              "step-4-a",
+              "step-4-b"
+            ],
+            "created_at": "2026-10-08T04:00:00+00:00"
+          },
+          {
+            "id": "plan-005",
+            "version": 5,
+            "steps": [
+              "step-5-a",
+              "step-5-b"
+            ],
+            "created_at": "2026-10-08T05:00:00+00:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "AC4",
+      "title": "Durable Execution (crash + resume)",
+      "passed": true,
+      "expected": "a1 \u4e0d\u91cd\u8dd1 + a2/a3 \u63a5\u7eed",
+      "observed": {
+        "a1": 1,
+        "a2": 1,
+        "a3": 1
+      },
+      "duration_s": 0.0,
+      "details": {
+        "checkpoint_resume_during_workflow": true
+      }
+    },
+    {
+      "id": "AC5",
+      "title": "Worker \u53ef\u66ff\u6362 (swap \u2192 100% \u4e1a\u52a1\u8fde\u7eed)",
+      "passed": true,
+      "expected": "30/30 \u901a\u8fc7 (\u524d\u540e)",
+      "observed": "30+30",
+      "duration_s": 0.0008,
+      "details": {
+        "worker_a_passes": 30,
+        "worker_b_passes": 30
+      }
+    },
+    {
+      "id": "AC6",
+      "title": "Crash \u53ef\u6062\u590d (5 \u6b21\u8fde\u7eed kill+restart)",
+      "passed": true,
+      "expected": {
+        "kills": 5,
+        "restarts": 5,
+        "state": 5
+      },
+      "observed": {
+        "kills": 5,
+        "restarts": 5,
+        "state": 5
+      },
+      "duration_s": 0.0,
+      "details": {
+        "events": 11,
+        "kills": 5,
+        "restarts": 5,
+        "history": [
+          {
+            "event": "spawn",
+            "pid": 999,
+            "ts": 1791428481.0974505
+          },
+          {
+            "event": "kill",
+            "pid": 999,
+            "ts": 1791428481.0974543
+          },
+          {
+            "event": "restart",
+            "pid": 1000,
+            "ts": 1791428481.097457
+          },
+          {
+            "event": "kill",
+            "pid": 1000,
+            "ts": 1791428481.0974586
+          },
+          {
+            "event": "restart",
+            "pid": 1001,
+            "ts": 1791428481.0974605
+          },
+          {
+            "event": "kill",
+            "pid": 1001,
+            "ts": 1791428481.0974615
+          },
+          {
+            "event": "restart",
+            "pid": 1002,
+            "ts": 1791428481.0974622
+          },
+          {
+            "event": "kill",
+            "pid": 1002,
+            "ts": 1791428481.097463
+          },
+          {
+            "event": "restart",
+            "pid": 1003,
+            "ts": 1791428481.0974634
+          },
+          {
+            "event": "kill",
+            "pid": 1003,
+            "ts": 1791428481.0974636
+          },
+          {
+            "event": "restart",
+            "pid": 1004,
+            "ts": 1791428481.097464
+          }
+        ]
+      }
+    },
+    {
+      "id": "AC7",
+      "title": "100-task \u95ed\u73af (100/100 verifier PASS)",
+      "passed": true,
+      "expected": "100/100",
+      "observed": "100/100",
+      "duration_s": 0.0018,
+      "details": {
+        "evidence_records": 100
+      }
+    },
+    {
+      "id": "AC8",
+      "title": "False Completion \u963b\u6b62 (5/5 \u62d2\u7edd)",
+      "passed": true,
+      "expected": "5/5 rejected",
+      "observed": "5/5 rejected",
+      "duration_s": 0.0004,
+      "details": {
+        "sample_ids": [
+          "task-file_summary-000",
+          "task-file_summary-001",
+          "task-file_summary-002",
+          "task-file_summary-003",
+          "task-file_summary-004"
+        ]
+      }
+    },
+    {
+      "id": "AC9",
+      "title": "Evidence \u5b8c\u6574 (artifacts + verifier report + cost)",
+      "passed": true,
+      "expected": "100/100 with all 3 components",
+      "observed": {
+        "with_artifacts": 100,
+        "evidence_records": 100,
+        "cost_records": 100
+      },
+      "duration_s": 0.0017,
+      "details": {
+        "currency": "CNY"
+      }
+    },
+    {
+      "id": "AC10",
+      "title": "Verifier \u72ec\u7acb (worker_pid != verifier_pid)",
+      "passed": true,
+      "expected": "worker_pid != verifier_pid",
+      "observed": {
+        "worker_pid": 13244,
+        "verifier_pid": 29684
+      },
+      "duration_s": 0.0365,
+      "details": {
+        "independence_method": "subprocess"
+      }
+    }
+  ],
+  "time_compression": {
+    "before": "2026-10-08T00:00:00+00:00",
+    "after": "2026-10-29T00:00:00+00:00",
+    "weeks_simulated": 3,
+    "compression_ratio": "1 wall-second == 1 simulated day (time_compression=86400)"
+  },
+  "seed": 42,
+  "task_total": 100
+}
