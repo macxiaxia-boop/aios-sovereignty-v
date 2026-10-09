@@ -161,6 +161,21 @@ def append_jsonl(path, obj):
     with open(path, "a", encoding="utf-8") as f:
         f.write(json.dumps(obj, ensure_ascii=False) + "\n")
 
+import msvcrt
+
+
+def acquire_single_instance_lock():
+    """Windows 文件锁 (msvcrt) 强制单实例; 已有实例在跑则本进程退出"""
+    lock_path = r"D:\AIOS\_agent-hub\policy\reconciler\.lock"
+    Path(lock_path).parent.mkdir(parents=True, exist_ok=True)
+    f = open(lock_path, "w")
+    try:
+        msvcrt.locking(f.fileno(), msvcrt.LK_NBLCK, 1)
+        return f  # caller must keep f alive (don't close)
+    except OSError:
+        f.close()
+        return None
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--policy", default=POLICY_PATH_DEFAULT)
@@ -169,6 +184,10 @@ def main():
     ap.add_argument("--auto-rollback", action="store_true", default=True,
                     help="Auto rollback L1 drift (default: True)")
     args = ap.parse_args()
+    _lock_f = acquire_single_instance_lock()
+    if _lock_f is None:
+        print('SKIP: another reconciler instance running', file=sys.stderr)
+        sys.exit(0)
 
     policy = load_yaml(args.policy)
     if not policy:
@@ -219,3 +238,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

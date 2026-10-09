@@ -124,7 +124,7 @@ def _minimal_yaml_load(text: str) -> dict:
                     last_key = list(parent.keys())[-1]
                     parent[last_key].append(_parse_scalar(value))
                 else:
-                    raise RuntimeError(f"yaml fallback: unexpected list at indent {indent}")
+                    raise RuntimeError(f"yaml_minimal_loader: unexpected list at indent {indent}")
             continue
         # key: value
         if ":" in stripped:
@@ -203,25 +203,61 @@ def _check_prohibited_routes(policy: dict, model: str, provider: str) -> str | N
     """第 5 步：检查 prohibited_runtime_routes。
 
     spec §"validate 校验顺序" 5 — 不命中 prohibited 列表；命中即拒绝。
-    返回命中原因字符串 / None。
+
+    设计原则（红线 NO_FABRICATE_MODEL_ID 兼容）：
+      - 只把"显式关键词列表"型 route 视作可执行规则。
+      - 句子型 route (如 "any provider other than MiniMax" / "any cross-provider
+        auto-fallback" / "any cron/heartbeat/session-restore carrying legacy model")
+        是元规则, 已在 step 1 (provider 白名单) 覆盖, 这里跳过。
+      - 关键词提取优先级: ① 括号内 slash 列表 ② slash/逗号分隔的纯 token 行。
     """
     routes = policy.get("model_policy", {}).get("prohibited_runtime_routes", []) or []
     if not isinstance(routes, list):
         return None
-    # 简化匹配: 任一 route 关键词在 model/provider 串中 → 拒绝
+
     composite = f"{provider}::{model}".lower()
     for r in routes:
         if not isinstance(r, str):
             continue
-        kw = r.lower()
-        # 取 route 字符串里"具区分度"的 token 匹配
-        for token in re.findall(r"[A-Za-z0-9_./:-]+", kw):
-            if len(token) < 3:
-                continue
-            if token in composite or token in kw:
-                # 任何 prohibited 路由的具体 token 命中 → 拒绝
-                if token in composite:
-                    return f"{REASON_ROUTE_PROHIBITED}:{r}"
+        # 跳过元规则（已在 step 1/2/3/4 覆盖）
+        lower_r = r.lower()
+        if "other than" in lower_r or "auto-fallback" in lower_r or \
+           "auto-restore" in lower_r or "env var" in lower_r or \
+           "cron" in lower_r or "session-restore" in lower_r or \
+           "heartbeat" in lower_r:
+            continue
+
+        # 提取显式关键词 token
+        keywords: list[str] = []
+        # ① 括号内 "...(kw1/kw2/kw3)" 形式
+        paren = re.search(r"\(([^)]+)\)", r)
+        if paren:
+            for tok in re.split(r"[/,\s]+", paren.group(1)):
+                tok = tok.strip().lower()
+                if tok and len(tok) >= 3:
+                    keywords.append(tok)
+        # ② "kw1 / kw2 profiles" 形式
+        if "/" in r and "profiles" in lower_r:
+            head = r.split("profiles")[0]
+            for tok in re.split(r"[/,\s]+", head):
+                tok = tok.strip().lower()
+                if tok and len(tok) >= 3 and tok not in ("in", "config"):
+                    keywords.append(tok)
+        # ③ "any X containing Y" 形式 — 提取 Y 后的关键词
+        m_contain = re.search(r"containing\s+([A-Za-z0-9_./-]+)", lower_r)
+        if m_contain:
+            keywords.append(m_contain.group(1).lower())
+
+        if not keywords:
+            continue
+
+        for kw in keywords:
+            # 显式匹配: model 或 provider 直接等于或包含此关键词
+            # 注意避免 false-positive: "minimax" 不会命中 (它就是当前 provider)
+            if kw == provider.lower() or kw == model.lower():
+                return f"{REASON_ROUTE_PROHIBITED}:{r}"
+            if kw in model.lower() or kw in provider.lower():
+                return f"{REASON_ROUTE_PROHIBITED}:{r}"
     return None
 
 
@@ -358,18 +394,12 @@ if __name__ == "__main__":
     arg = sys.argv[1] if len(sys.argv) > 1 else ""
     if arg == "--self-test":
         n = _self_test()
-        print(f"=== self-test: {len([c for c in [
-            ('MiniMax-M3','MiniMax','selftest-1',True,'default ok'),
-            ('MiniMax-M2.7','MiniMax','selftest-2',True,'alt model ok'),
-            ('MiniMax-M2.7-highspeed','MiniMax','selftest-3',True,'highspeed ok'),
-            ('claude-sonnet-4.5','MiniMax','selftest-4',False,'fabricated model denied'),
-            ('MiniMax-M3','anthropic','selftest-5',False,'other provider denied'),
-            ('','MiniMax','selftest-6',False,'empty model denied'),
-        ])} - {n} FAIL ===")
+        total = 6
+        print("=== self-test: " + str(total) + " - " + str(n) + " FAIL ===")
         sys.exit(0 if n == 0 else 1)
     elif arg == "--smoke":
         ok, reason = validate("MiniMax-M3", "MiniMax", request_id="smoke-1")
-        print(f"smoke: allowed={ok} reason={reason!r}")
+        print("smoke: allowed=" + str(ok) + " reason=" + repr(reason))
         sys.exit(0 if ok else 1)
     else:
         print("usage: codex_runtime.py [--self-test|--smoke]")
