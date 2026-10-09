@@ -115,34 +115,6 @@ class GateDecision:
         }
 
 
-
-
-    def _scan_for_prohibited_assets(self, text: str) -> list[str]:
-        """F-NEW-1 fix: Scan for prohibited_active_assets[].summary mentions.
-        
-        Each PA-XX has a 'summary' field. If envelope text mentions any of these
-        active assets (e.g. "CloudTech V22 Gateway", "WorkBuddy user profile"),
-        it should be blocked as DEPRECATED_ASSET_REFERENCED.
-        """
-        hits = []
-        if not self.policy:
-            return hits
-        for pa in self.policy.get("prohibited_active_assets", []) or []:
-            pa_id = pa.get("id", "")
-            summary = pa.get("summary", "") or ""
-            # Match the leading keyword phrase from the summary
-            # e.g. "CloudTech V22 Unified Gateway" → match "CloudTech V22"
-            # Use first 3 words as a fingerprint
-            tokens = summary.split()[:3]
-            if len(tokens) < 2:
-                continue
-            fingerprint = " ".join(tokens)
-            if fingerprint in text:
-                hits.append(f"{pa_id}({fingerprint})")
-        return hits
-
-# ---------------------------------------------------------------- Gate
-
 @dataclass
 class _QuickAllow:
     """Lightweight allow GateDecision (defense-in-depth)."""
@@ -177,6 +149,7 @@ class StrategyGate:
             quarantine_root=quarantine_root,
             archived_roots=archived_roots,
         )
+
 
     # ----- Public entry
     def evaluate_envelope(self, envelope: dict) -> GateDecision:
@@ -394,6 +367,22 @@ class StrategyGate:
                 out.append(key)
         return sorted(set(out))
 
+
+    def _scan_for_prohibited_assets(self, text: str) -> list[str]:
+        """F-NEW-1 + Round 6 A-1: alphanumeric token fingerprint."""
+        import re as _re_pa
+        hits = []
+        if not self.policy:
+            return hits
+        text_lower = text.lower()
+        for pa in self.policy.get("prohibited_active_assets", []) or []:
+            pa_id = pa.get("id", "")
+            summary = pa.get("summary", "") or ""
+            tokens = [t for t in _re_pa.findall(r"[A-Za-z0-9-]+", summary) if len(t) >= 4][:5]
+            hit_tokens = [t for t in tokens if t.lower() in text_lower]
+            if len(hit_tokens) >= 1:
+                hits.append(f"{pa_id}({','.join(hit_tokens[:2])})")
+        return hits
     def _scan_for_quarantine_paths(self, text: str) -> list[str]:
         """A-2 fix: scan for any policy-defined quarantine_paths match."""
         hits = []

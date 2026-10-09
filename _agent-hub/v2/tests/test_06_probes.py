@@ -134,7 +134,12 @@ def test_probe_workbuddy_mapping_consistency():
     assert r["reachable"] is False
 
 
-def test_probe_claudecode_mapping_consistency():
+def test_probe_claudecode_mapping_consistency(monkeypatch):
+    # Round 3: monkeypatch _resolve_claude_cli to None — blocks live CLI call.
+    # Phase-2 装 claudecode MCP 后, 默认 probe 真实跑 `claude --version`, reachable=True.
+    # 本 test 假设 "no live MCP call" — 必须 controlled environment.
+    monkeypatch.setattr("src.probes._resolve_claude_cli", lambda: None)
+
     r = probe_claudecode()
     _assert_levels_keys("claudecode", r)
     _assert_reverse_implications("claudecode", r)
