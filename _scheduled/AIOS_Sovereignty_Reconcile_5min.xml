@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-16"?>
+<Task version="1.4" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
+  <RegistrationInfo>
+    <Author>AIOS Codex Supervisor</Author>
+    <Description>AIOS Sovereignty Reconciler v1 · every 5 min enforce model-policy.v1.yaml on 4 adapters (Codex / CC / OpenClaw / Hermes). Owner: codex-supervisor · R2026-10-09 sovereignty-V T7.</Description>
+    <URI>\AIOS\AIOS_Sovereignty_Reconcile_5min</URI>
+  </RegistrationInfo>
+  <Triggers>
+    <TimeTrigger>
+      <Repetition>
+        <Interval>PT5M</Interval>
+        <StopAtDurationEnd>false</StopAtDurationEnd>
+      </Repetition>
+      <StartBoundary>2026-10-09T00:00:00</StartBoundary>
+      <Enabled>true</Enabled>
+    </TimeTrigger>
+  </Triggers>
+  <Settings>
+    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>
+    <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>
+    <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>
+    <AllowHardTerminate>true</AllowHardTerminate>
+    <StartWhenAvailable>true</StartWhenAvailable>
+    <RunOnlyIfNetworkAvailable>false</RunOnlyIfNetworkAvailable>
+    <AllowStartOnDemand>true</AllowStartOnDemand>
+    <Enabled>true</Enabled>
+    <Hidden>false</Hidden>
+    <ExecutionTimeLimit>PT2M</ExecutionTimeLimit>
+    <Priority>7</Priority>
+  </Settings>
+  <Actions>
+    <Exec>
+      <Command>D:\AIOS\kernel\.venv\Scripts\python.exe</Command>
+      <Arguments>-m aios_kernel.governance.model_policy.reconciler --mode scheduled</Arguments>
+      <WorkingDirectory>D:\AIOS\kernel</WorkingDirectory>
+    </Exec>
+  </Actions>
+</Task>

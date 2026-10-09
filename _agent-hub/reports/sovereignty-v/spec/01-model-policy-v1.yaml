@@ -1,0 +1,113 @@
+# ModelPolicy v1 YAML 示例 — 待用户授权后复制到 D:\AIOS\kernel\etc\sovereignty\model-policy.v1.yaml
+schema_version: "1.0.0"
+policy_id: "mp-2026-10-09-0001-draft"
+created_at: "2026-10-09T00:00:00+08:00"
+created_by: "codex-supervisor"
+authorizer: "user-2026-10-08T23:55"
+status: "DRAFT_NOT_SIGNED"
+hash_alg: "sha256"
+sig_alg: "ed25519"
+
+allowlist:
+  providers:
+    - id: "MiniMax"
+      display_name: "MiniMax"
+      type: "primary"
+      base_urls:
+        - "https://api.minimaxi.com/v1"
+        - "https://api.minimaxi.com/anthropic"
+      auth:
+        env_keys: ["MINIMAX_API_KEY", "MINIMAX_CN_API_KEY", "ANTHROPIC_AUTH_TOKEN"]
+        token_ref: "mcp_credentials.env"
+      models:
+        - id: "MiniMax-M3"
+          role: [main, fallback, opus]
+          reasoning_effort: [high, medium, low, none]
+          context_window: 100000
+          max_output: 8000
+          thinking_budget: 32000
+        - id: "MiniMax-M2.7"
+          role: [subagent, haiku, fallback]
+          reasoning_effort: [medium, low]
+          context_window: 100000
+          max_output: 8000
+        - id: "MiniMax-M2.7-highspeed"
+          role: [haiku, small_fast]
+          reasoning_effort: [low, none]
+          context_window: 100000
+          max_output: 8000
+
+  denylist:
+    - { id: "deepseek-v4-pro",       reason: "R262 用户决策 — 默认 MiniMax, 不 fallback deepseek" }
+    - { id: "deepseek-v4-flash",     reason: "同上" }
+    - { id: "qwen3:14b",             reason: "ollama local — 用户已不再用 ollama 默认" }
+    - { id: "qwen2.5:7b",            reason: "同上" }
+    - { id: "qwen3-coder-plus",      reason: "未授权为 canonical" }
+    - { id: "qwen3.7-flash",         reason: "同上" }
+    - { id: "agnes-2.5-flash",       reason: "R159b 旧 agnes 已淘汰" }
+    - { id: "glm-4-flash",           reason: "智谱非 canonical" }
+    - { id: "glm-4.7-flash",         reason: "同上" }
+    - { id: "gpt-5.6-sol",           reason: "OpenAI Atlas 非 canonical" }
+    - { id: "openai/gpt-5.6-sol",    reason: "同上 hermes 镜像" }
+
+  optional:
+    - { id: "MiniMax-M3",             note: "primary 默认" }
+    - { id: "MiniMax-M2.7",           note: "subagent 默认" }
+    - { id: "MiniMax-M2.7-highspeed", note: "小模型/快速" }
+    - { id: "agnes-2.5-pro-alpha",    note: "可选 — 用户原话'用agensII', R152b 留口子但非默认" }
+    - { id: "agnes-3.0-flash",        note: "可选" }
+    - { id: "agnes-2.0-flash",        note: "可选" }
+
+enforcement:
+  cc_switch:
+    common_config_claude:
+      ANTHROPIC_DEFAULT_OPUS_MODEL: "MiniMax-M3"
+      ANTHROPIC_DEFAULT_SONNET_MODEL: "MiniMax-M3"
+      ANTHROPIC_DEFAULT_HAIKU_MODEL: "MiniMax-M2.7"
+      ANTHROPIC_SMALL_FAST_MODEL: "MiniMax-M2.7-highspeed"
+      CLAUDE_CODE_SUBAGENT_MODEL: "MiniMax-M2.7"
+      ANTHROPIC_DEFAULT_OPUS_MODEL_FALLBACK: "MiniMax-M3"
+      ANTHROPIC_DEFAULT_SONNET_MODEL_FALLBACK: "MiniMax-M2.7"
+      ANTHROPIC_DEFAULT_HAIKU_MODEL_FALLBACK: "MiniMax-M2.7"
+    common_config_codex:
+      model_reasoning_effort: "high"
+    common_config_openclaw:
+      meta.migrations.modelPolicyAllowlist: true
+  codex_config_toml:
+    profiles_legacy_cleanup: [ollama, qwen25]
+    allowed_profiles: []
+  cc_settings_json:
+    frozen: true
+    reconcile_strategy: "warn_only"   # 不覆盖 _meta.modify_protocol 锁定的 settings.json
+  openclaw:
+    sqlite_table: "policy_allowlist"
+    yaml_mirror: "~/.openclaw/etc/policy.yaml"
+    gateway_hook: "aios_kernel.governance.model_policy_hook"
+  hermes:
+    cli_config_provider_first: [minimax, minimax-cn]
+    cli_config_provider_denylist:
+      - openrouter - nous - nous-api - openai-codex - copilot - gemini - zai - kimi-coding
+      - huggingface - nvidia - xiaomi - arcee - ollama-cloud - kilocode
+      - azure-foundry - lmstudio - lmstudio-cloud
+
+credential_sync:
+  ssot: "mcp_credentials.env"
+  mirrors: ["~/.openclaw/.env", "~/.claude/settings.json", "~/.codex/auth.json", "process.env"]
+  rotation_protocol: "红线 #62 双轨 SSOT"
+
+governance:
+  owner: "codex-supervisor"
+  required_signers: [codex-supervisor-ed25519]
+  quorum: 1
+  mutation_window:
+    min_interval_seconds: 60
+    max_changes_per_day: 10
+  audit:
+    log_table: decision_audit
+    append_only: true
+    boundary_check: "aios_kernel.governance.decision_service.DecisionService"
+
+signature:
+  alg: ed25519
+  public_key_path: "D:\\AIOS\\kernel\\etc\\sovereignty\\model-policy.v1.pub"
+  value: "<PENDING_USER_AUTHORIZE>"

@@ -1,0 +1,42 @@
+T5-DONE: 2026-10-09T00:13+08:00 by Codex 01a11c30 (supervisor · model list filled per user directive).
+
+## 用户授权更新（2026-10-09）
+> "我目前只用了一个api就是MiniMax"
+
+## W7 artifact
+- 文件: `policy/model-policy.v1.yaml` (3197 bytes · 从 1431 扩到 3197)
+- sha256 manifest: `policy/model-policy.v1.sha256` (920 bytes · 新 hash)
+- **新 sha256**: `858458996FA8FF24FE2C82DB6E3990D1D06105A2CAB22A8885FEA2C0901AE255`
+- 旧 sha256: `C0D5648B44AB0298C5543D14C4C00CFEDBC0476B7A26705743322B1F2EF022A2`
+- manifest 含 changelog · 含 previous_sha256 引用
+
+## allowed_models (从 W1 audit 真实数据提取)
+| model id | evidence (W1 line) |
+|---|---|
+| MiniMax-M3 | line 67 `ANTHROPIC_MODEL` env + codex_settings.json default |
+| MiniMax-M2.7 | line 69 `CLAUDE_CODE_SUBAGENT_MODEL` env |
+| MiniMax-M2.7-highspeed | line 68 `ANTHROPIC_SMALL_FAST_MODEL` env |
+
+## allowed_fallbacks (MiniMax 内部)
+- MiniMax-M2.7
+- MiniMax-M2.7-highspeed
+
+## default_provider + default_model
+- provider: MiniMax
+- model: MiniMax-M3
+
+## prohibited_runtime_routes 新增
+- `deepseek-v4-flash fallback` (R2 risk · W3 audit · 待 user 决定如何处理)
+- `ollama / qwen profiles` (Codex config 旧 profile · 不在 active use)
+
+## hard_constraints 新增
+- C11: "用户当前只用一个 API：MiniMax。任何其他 provider 调用必须拒绝并告警"
+
+## 验证
+- python regression_tests.py → 24/18 PASS · 0 FAIL · EXIT=0
+- python reconciler.py --once → OK procs=1 env=11 drift=0 · EXIT=0
+- sha256 manifest 与实际文件 hash 100% 一致 (test_13 PASS)
+
+## 红线维持
+- 用户没授权其他 model id → Codex 不自行编造 (C10)
+- 任何 allowed_models 字段变更需用户明文授权

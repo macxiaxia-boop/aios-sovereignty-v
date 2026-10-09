@@ -1,0 +1,1 @@
+T7-DONE: 2026-10-09T00:04Z by Codex 01a11c33. artifact: reconciler/01-design.md. Decision: 双轨 (Task Scheduler 5min 兜底 + PowerShell profile 启动钩) 不选 WinSW daemon (v1). Scheduled Task XML + WinSW XML (v2 待 user authorize OS service restart) + profile 注入命令 (红线: 不动 user D:\\Documents\PowerShell\Microsoft.PowerShell_profile.ps1 自动, 给 user 一行手动).

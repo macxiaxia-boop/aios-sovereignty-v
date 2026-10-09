@@ -1,0 +1,1 @@
+T8-DONE: 2026-10-09T00:05Z by Codex 01a11c33. artifact: tests/01-test-plan.md (18 项) + sample_test_03_cc_drift.py + sample_e2e_11_dry_run.ps1. 6 单元 + 4 集成 + 4 端到端 + 4 兼容 = 18. CI 接入 AIOS_E2E_Stress_CI_Gate (Ready) 作为 gate step.
