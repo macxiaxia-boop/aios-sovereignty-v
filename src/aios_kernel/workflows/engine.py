@@ -130,9 +130,19 @@ class PGCheckpointerEngine:
 
         `run_id`: optional explicit run id (default = uuid4 hex). Useful for
         tests that want to predict the id.
+
+        R1348B (N6 / AIPM_FOUNDATION_02 Stage B-1): if `run_id` already exists
+        in DB and its status is `completed`, we delete the prior row plus
+        its checkpoints and activity history, then insert a fresh run row.
+        This makes engine.start() idempotent across crash/recovery loops
+        (test_cr7 cycles 1..N reach the new step A as expected).
+        Other statuses (pending / crashed / failed / running) keep the
+        existing INSERT-OR-IGNORE behavior.
         """
         rid = run_id or new_run_id()
         in_payload = input or {}
+        if rid is not None and run_id is not None:
+            await self._reset_completed_run_for_replay(rid)
         async with self._session_factory() as session:
             await insert_run(
                 session,
@@ -143,6 +153,36 @@ class PGCheckpointerEngine:
             await session.commit()
         # drive
         return await self._drive(workflow, rid, resume_from=None)
+
+    async def _reset_completed_run_for_replay(self, run_id: str) -> None:
+        """N6: if the given run_id already exists with status='completed',
+        delete its row + checkpoints + activity history so a fresh start
+        can reach step A again. Safe: only fires on completed; other
+        statuses left untouched."""
+        from aios_kernel.workflows.persistence import (
+            WorkflowRunRow,
+            WorkflowCheckpointRow,
+            ActivityHistoryRow,
+        )
+        async with self._session_factory() as session:
+            row = await session.get(WorkflowRunRow, run_id)
+            if row is None:
+                return
+            if row.status != "completed":
+                return
+            # delete child rows first (checkpoints + history)
+            await session.execute(
+                __import__("sqlalchemy").delete(WorkflowCheckpointRow).where(
+                    WorkflowCheckpointRow.run_id == run_id
+                )
+            )
+            await session.execute(
+                __import__("sqlalchemy").delete(ActivityHistoryRow).where(
+                    ActivityHistoryRow.run_id == run_id
+                )
+            )
+            await session.delete(row)
+            await session.commit()
 
     async def resume(self, workflow: Workflow, run_id: str) -> WorkflowRun:
         """Resume a run that was started but not finished. The engine looks up
