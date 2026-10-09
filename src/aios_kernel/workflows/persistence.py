@@ -292,3 +292,4 @@ def safe_json_loads(raw: Any) -> dict[str, Any]:
         except json.JSONDecodeError:
             return {"_raw": raw}
     return {"_value": str(raw)}
+
