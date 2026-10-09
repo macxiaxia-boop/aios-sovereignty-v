@@ -17,7 +17,7 @@ ADAPTER_SPEC = REPO / "_agent-hub" / "policy" / "adapter-spec.v1.md"
 W1 = REPO / "_agent-hub" / "reports" / "sovereignty-v" / "audit" / "01-codex-claude-config-snapshot.md"
 W3 = REPO / "_agent-hub" / "reports" / "sovereignty-v" / "audit" / "03-cc-switch-state-report.md"
 W4 = REPO / "_agent-hub" / "reports" / "sovereignty-v" / "audit" / "04-openclaw-models-report.md"
-W6 = REPO / "_agent-hub" / "reports" / "sovereignty-v" / "audit" / "06-windows-autorun-report.md"
+W6 = REPO / "_agent-hub" / "reports" / "sovereignty-v" / "audit" / "06-windows-autorun.md"
 
 PASS, FAIL = 0, 0
 def check(cond, msg):
@@ -230,3 +230,4 @@ if __name__ == "__main__":
         print()
     print(f"=== SUMMARY: {PASS}/{len(TESTS)} PASS · {FAIL} FAIL ===")
     sys.exit(0 if FAIL == 0 else 1)
+

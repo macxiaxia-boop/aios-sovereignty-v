@@ -1,0 +1,12 @@
+Setup: g1=1504d4c3, g2=b8879520, g3=161420a3 (pending)
+  Initial failure_modes: g1=0, g2=0, g3=0
+Collected 7 traces
+Clusters: 2
+  - TimeoutError root_cause=timeout occ=5
+  - IOError root_cause=unknown:IOError occ=2
+apply_clusters_to_active_goals results:
+  1504d4c3: added 1 FailureMode(s)
+    - [timeout] TimeoutError (occurs 5x)
+  b8879520: added 1 FailureMode(s)
+    - [timeout] TimeoutError (occurs 5x)
+g3 (pending) failure_modes after: 0

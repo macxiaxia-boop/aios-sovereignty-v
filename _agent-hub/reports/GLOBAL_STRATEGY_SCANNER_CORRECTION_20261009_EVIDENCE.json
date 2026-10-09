@@ -1,0 +1,106 @@
+{
+  "evidence_id": "GLOBAL_STRATEGY_SCANNER_CORRECTION_20261009",
+  "policy_id": "GLOBAL_PRODUCT_STRATEGY",
+  "policy_version": "2026-10-08",
+  "correction_date_utc": "2026-10-09",
+  "executed_by": "Claude Code 2.1.285 (MiniMax-M3) — executor",
+  "contract_path": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_SCANNER_CORRECTION_20261009.md",
+  "scope": "bounded scanner/index correction; preserve services, backups, product code, and user data",
+  "changed_paths": {
+    "modified": [
+      "D:\\AIOS\\_agent-hub\\policy\\contamination_scanner.py",
+      "D:\\AIOS\\_agent-hub\\policy\\strategy_index.json",
+      "D:\\AIOS\\_agent-hub\\v2\\tests\\test_contamination_scanner.py"
+    ],
+    "created": [
+      "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_SCANNER_CORRECTION_20261009_EVIDENCE.md",
+      "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_SCANNER_CORRECTION_20261009_EVIDENCE.json"
+    ]
+  },
+  "untouched_red_lines": [
+    "D:\\AIOS\\_agent-hub\\AGENTS.md",
+    "D:\\AIOS\\_agent-hub\\policy\\product_strategy.v1.json",
+    "D:\\AIOS\\_agent-hub\\policy\\product_strategy.v1.schema.json",
+    "D:\\AIOS\\_agent-hub\\policy\\product_strategy.v1.sha256",
+    "D:\\AIOS\\_agent-hub\\policy\\strategy_policy.py",
+    "D:\\AIOS\\_agent-hub\\policy\\requirements_lifecycle.py",
+    "D:\\AIOS\\_agent-hub\\policy\\strategy_gate.py",
+    "D:\\AIOS\\_agent-hub\\policy\\quarantine.py",
+    "D:\\AIOS\\_agent-hub\\v2\\src\\state_machine.py",
+    "D:\\AIOS\\_agent-hub\\v2\\src\\goal_guard_hook.py",
+    "D:\\AIOS\\_agent-hub\\v2\\src\\v2_consumer.py",
+    "D:\\AIOS\\kernel\\src\\aios_kernel\\verifier\\deterministic.py",
+    "5 kernel domain models (Goal/Plan/Task/Trace/Evidence)",
+    "D:\\AIOS\\_agent-hub\\policy\\model-policy.v1.yaml",
+    "D:\\AIOS\\_agent-hub\\sovereignty-v\\",
+    "D:\\AIOS\\AIOS_SOURCE_OF_TRUTH_FINAL\\",
+    "D:\\AIOS\\AIOS_RECONSTRUCTION\\",
+    "D:\\AIOS\\cloudtech-saas\\",
+    "D:\\CloudTech-* (out-of-scope)",
+    "E:\\AI_Backup\\",
+    "no service starts/stops/restarts/installs",
+    "no git history rewrites"
+  ],
+  "v2_consumer_diff_lines": 0,
+  "agilis_md_untouched": true,
+  "model_policy_yaml_untouched": true,
+  "verifier_untouched": true,
+  "kernel_models_untouched": true,
+  "tests": {
+    "command": "python -m pytest tests/test_strategy_policy.py tests/test_requirements_lifecycle.py tests/test_contamination_scanner.py tests/test_quarantine_allowlist.py tests/test_strategy_gate.py tests/test_strategy_hook_integration.py tests/test_03_state_machine.py tests/test_strategy_gate_submit_task.py",
+    "cwd": "D:\\AIOS\\_agent-hub\\v2",
+    "result": "96 passed, 0 failed, 0 warnings",
+    "previous_count_before_correction": 73,
+    "new_tests_added": 15,
+    "new_tests": [
+      "test_scanner_quarantined_file_with_retired_content_emits_archived_reference",
+      "test_scanner_active_loadable_file_with_retired_content_emits_active_violation",
+      "test_scanner_active_file_with_blocked_industry_preset_in_content_emits_active_violation",
+      "test_scanner_active_file_with_prohibited_asset_path_in_content_emits_active_violation",
+      "test_scanner_binary_file_is_skipped",
+      "test_scanner_secret_file_is_never_opened",
+      "test_scanner_oversize_file_is_skipped",
+      "test_scanner_nonexistent_path_with_path_keyword_only",
+      "test_scanner_clean_file_content_emits_no_finding",
+      "test_scanner_path_only_behavior_preserved_for_nonexistent_file",
+      "test_scanner_content_token_set_includes_required_kinds",
+      "test_scanner_content_no_recursion",
+      "test_scanner_gbk_encoded_content_is_inspected",
+      "test_scanner_real_quarantined_memory_file_now_finds_content",
+      "test_strategy_index_evidence_path_points_to_real_evidence"
+    ],
+    "contract_required_tests_status": {
+      "quarantined_file_with_retired_content_is_ARCHIVED_REFERENCE": "PASS (test_scanner_quarantined_file_with_retired_content_emits_archived_reference)",
+      "active_file_with_retired_content_is_ACTIVE_VIOLATION": "PASS (test_scanner_active_loadable_file_with_retired_content_emits_active_violation)",
+      "binary_or_unknown_source_is_UNVERIFIED_or_skipped": "PASS (test_scanner_binary_file_is_skipped, test_scanner_oversize_file_is_skipped, test_scanner_secret_file_is_never_opened)",
+      "clean_content_yields_no_finding": "PASS (test_scanner_clean_file_content_emits_no_finding)"
+    }
+  },
+  "safety_rails": {
+    "no_recursion": "scan_path() never calls os.walk / os.rglob / Path.rglob; tested by test_scanner_content_no_recursion",
+    "secrets_excluded": "SECRET_BASENAMES + SECRET_EXTENSIONS + SECRET_BASENAME_MARKERS refuse .env, .key, .pem, .p12, .pfx, .keystore, .token, .secret, .credentials and basename markers (token, secret, password, apikey, api_key, private_key); tested by test_scanner_secret_file_is_never_opened",
+    "binary_skipped": "_looks_binary() detects NUL byte in first 4 KiB; tested by test_scanner_binary_file_is_skipped",
+    "size_cap": "DEFAULT_CONTENT_MAX_BYTES = 1 MiB; tested by test_scanner_oversize_file_is_skipped",
+    "encoding_fallback": "utf-8 -> utf-8-sig -> gbk -> latin-1; tested by test_scanner_gbk_encoded_content_is_inspected",
+    "caller_paths_only": "scan_path opens the literal path only; no filesystem walking outside caller input",
+    "source_classification_load_bearing": "content hits combined with classify_source(); quarantine/archive/read_only/inert/dormant -> ARCHIVED_REFERENCE; active loadable -> ACTIVE_VIOLATION; file missing/binary/secret/oversize -> skipped (zero findings, per contract 'UNVERIFIED or skipped')"
+  },
+  "strategy_index_fix": {
+    "before": "D:\\AIOS\\_agent-hub\\v2\\reports\\strategy_phase2_evidence.json (non-existent)",
+    "after": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_RETIREMENT_PHASE2_20261009_EVIDENCE.json (verified present, 12396 bytes)",
+    "test": "test_strategy_index_evidence_path_points_to_real_evidence PASSED"
+  },
+  "contract_requirements_satisfied": {
+    "1_scan_path_inspects_readable_text_files": true,
+    "2_combines_content_with_source_classification": true,
+    "3_keyword_remains_auxiliary": true,
+    "4_path_only_api_compatibility_preserved": true,
+    "5_no_recursion_by_default": true,
+    "6_no_secrets_read": true,
+    "7_four_required_tests_added": true,
+    "8_strategy_index_evidence_path_corrected": true,
+    "9_all_strategy_tests_pass": true,
+    "10_evidence_files_written": true
+  },
+  "followups": "none — bounded correction; no deferred items"
+}

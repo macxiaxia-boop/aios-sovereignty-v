@@ -1,0 +1,39 @@
+T7-DEPLOY-DONE: 2026-10-09T00:15+08:00 by Codex 01a11c30 (supervisor · actual schtasks registration).
+
+## 注册结果
+- Task: `AIOS_ModelPolicy_Reconciler`
+- Schedule: 每 5 分钟 (MINUTE /MO 5)
+- Next Run: 2026/10/9 09:22:00
+- Status: Ready (Interactive only)
+
+## 部署步骤实跑（按 register_reconciler.cmd v3）
+1. ✅ 单实例 guard（无运行中实例）
+2. ✅ sanity（policy + manifest 都存在）
+3. ✅ sha256 verify via Python (`verify_sha256.py`)
+   - actual   = 858458996FA8FF24FE2C82DB6E3990D1D06105A2CAB22A8885FEA2C0901AE255
+   - expected = 858458996FA8FF24FE2C82DB6E3990D1D06105A2CAB22A8885FEA2C0901AE255
+   - [OK] match
+5. ✅ `schtasks /Create ... /F` → SUCCESS
+6. ✅ One-shot run: `python reconciler.py --once` → OK procs=1 env=11 drift=0
+
+## 修复内容（vs v1/v2 .cmd）
+- v1 失败：嵌套引号 `"...powershell -Command \"...\""` 转义炸
+- v2 失败：`powershell -File verify_sha256.ps1` 在 cmd 上下文丢 Microsoft.PowerShell.Utility 模块
+- v3 ✅：用 Python `verify_sha256.py` 做 verify (deterministic + portable)
+
+## Reconciler 真持续运行
+- 下一次执行：09:22:00 (5 分钟后)
+- 之后每 5 分钟跑一次：扫进程 + env + drift + audit + alert
+- drift log: `D:\AIOS\_agent-hub\audit\drift-events.log`
+- alert log: `D:\AIOS\_agent-hub\policy\reconciler\alerts.jsonl`
+
+## Reconciler 第一轮已扫到的风险
+- `[codex] drift=profile_drift severity=warn action=warn paths=2` → 需 W12+ Adapter 拦截
+- `[openclaw] drift=credential_drift severity=warn action=warn paths=1` → 需 W12+ Adapter 拦截
+- `[claude-code] drift=none severity=ok action=ignore paths=0` → ✅ 合规
+- `[hermes] drift=none severity=ok action=ignore paths=0` → ✅ 合规
+
+## T7 close-out 验证
+- 18 regression tests: 24/18 PASS · 0 FAIL
+- schtasks: registered + status=Ready
+- 一轮 drift scan: 2 warn (codex/openclaw), 2 ok (claude-code/hermes) — 与 W1/W4 audit 一致

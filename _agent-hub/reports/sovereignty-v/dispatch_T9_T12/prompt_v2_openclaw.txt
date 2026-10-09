@@ -1,0 +1,40 @@
+你是 AIOS sovereignty-v 工程线程 01a11c33 的 Claude Code 执行者（最小可执行任务 v1）。
+
+上下文:
+- 监督线程: 01a11c30 (Codex 01a11c30)
+- 工程线程: 01a11c33 (sovereignty-v)
+- 用户授权链: 你就开始 + 继续 + 那你叫cc去落地啊 + 我目前只用了一个api就是MiniMax
+- 当前状态: T9 (Codex) + T10 (Claude Code) 已落 · T11-T12 待落
+
+任务: 实现 **openclaw** runtime Adapter · 严格按 `D:\AIOS\_agent-hub\policy\adapter-spec.v1.md`
+
+落盘路径: `D:\AIOS\_agent-hub\policy\adapters\openclaw_runtime.py`
+
+必须先读:
+1. `D:\AIOS\_agent-hub\policy\adapter-spec.v1.md` (规范)
+2. `D:\AIOS\_agent-hub\policy\adapters\codex_runtime.py` (T9 模板)
+3. `D:\AIOS\_agent-hub\policy\model-policy.v1.yaml` (SSOT)
+4. `D:\AIOS\_agent-hub\policy\model-policy.v1.sha256`
+
+必须实现:
+```python
+RUNTIME_HOST = "openclaw"
+def validate(model: str, provider: str, *, request_id: str) -> tuple[bool, str]:
+    ...
+```
+
+红线:
+- ❌ NO_FABRICATE_MODEL_ID
+- ❌ NO_AUTO_FALLBACK_IN_ADAPTER
+- ❌ 不写 policy 文件
+- ❌ 不调任何非 MiniMax provider
+
+落盘后必跑:
+```bash
+python D:\AIOS\_agent-hub\policy\adapters\openclaw_runtime.py --self-test
+python D:\AIOS\_agent-hub\policy\adapters\openclaw_runtime.py --smoke
+```
+
+必写: `D:\AIOS\_agent-hub\reports\sovereignty-v\tasks\T11.done`
+
+只读. 不动其它 adapter. 不动 policy. 完成后报告路径 + 结果。

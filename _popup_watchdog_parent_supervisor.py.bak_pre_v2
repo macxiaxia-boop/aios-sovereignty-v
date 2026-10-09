@@ -1,0 +1,182 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+_popup_watchdog_parent_supervisor.py - R270 立 (2026-09-29)
+
+R269 watchdog_parent 自身的死亡没被监管 (5-10 分钟必死).
+R270 治本: 写一个 watchdog_parent 的 supervisor, 它持续拉起 watchdog_parent.
+- supervisor 自己只写心跳 (超轻量, 几乎不死)
+- watchdog_parent 死了 supervisor 立即拉起
+- supervisor 死了 → 用户开机/重登录 → HKCU Run 自动恢复
+
+弹窗真凶 (R267-R269 已治本):
+- AutoPlay 等 92 个系统 AUMID 锁
+- Codex 启用 (Enabled=1) + IsToastEnabled=0
+- WeType / cc-switch 持续杀 (popup_cure)
+- 控制台窗口隐藏 (hide_console_windows) → R269
+- watchdog 死亡循环 → R270 supervisor
+"""
+import subprocess
+import os
+import sys
+import time
+import ctypes
+import argparse
+from ctypes import wintypes
+from datetime import datetime
+from pathlib import Path
+
+PROCESS_QUERY_LIMITED_INFORMATION = 0x1000
+STILL_ACTIVE = 259
+CREATE_NO_WINDOW = 0x08000000
+DETACHED_PROCESS = 0x00000008
+
+_kernel32 = ctypes.windll.kernel32
+_OpenProcess = _kernel32.OpenProcess
+_OpenProcess.argtypes = [ctypes.c_uint32, ctypes.c_bool, ctypes.c_uint32]
+_OpenProcess.restype = ctypes.c_void_p
+_GetExitCodeProcess = _kernel32.GetExitCodeProcess
+_GetExitCodeProcess.argtypes = [ctypes.c_void_p, ctypes.POINTER(wintypes.DWORD)]
+_GetExitCodeProcess.restype = ctypes.c_bool
+_CloseHandle = _kernel32.CloseHandle
+
+if sys.platform == "win32":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
+
+PYTHONW = r"C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-windows-x86_64-none\pythonw.exe"
+
+SUP_LOG = Path(r"D:\AIOS\_popup_watchdog_parent_supervisor.log")
+SUP_PID = Path(r"D:\AIOS\_popup_watchdog_parent_supervisor.pid")
+
+SUPERVISED = [
+    {
+        "name": "watchdog_parent",
+        "cmd": [PYTHONW, "-u", r"D:\AIOS\_popup_watchdog_parent.py", "--interval", "3"],
+        "cwd": r"D:\AIOS",
+        "pid_file": r"D:\AIOS\_popup_watchdog_parent.pid",
+    },
+    {
+        "name": "hide_console_windows",
+        "cmd": [PYTHONW, "-u", r"D:\AIOS\_hide_console_windows.py"],
+        "cwd": r"D:\AIOS",
+        "pid_file": r"D:\AIOS\_hide_console_windows.pid",
+    },
+]
+
+_last_restart: dict = {}
+MIN_RESTART_INTERVAL = 30
+
+
+def log(msg):
+    line = "[" + datetime.now().isoformat() + "] " + str(msg)
+    print(line, flush=True)
+    try:
+        with open(SUP_LOG, "a", encoding="utf-8") as f:
+            f.write(line + "\n")
+    except Exception:
+        pass
+
+
+def alive_pid(pid):
+    try:
+        h = _OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, False, int(pid))
+        if not h: return False
+        try:
+            code = wintypes.DWORD(0)
+            if _GetExitCodeProcess(h, ctypes.byref(code)):
+                return code.value == STILL_ACTIVE
+            return False
+        finally:
+            _CloseHandle(h)
+    except Exception:
+        return False
+
+
+def read_pid(pid_file):
+    p = Path(pid_file)
+    if not p.exists():
+        return None
+    try:
+        import json
+        d = json.loads(p.read_text(encoding="utf-8"))
+        if isinstance(d, dict):
+            return int(d.get("pid", 0))
+        return int(d)
+    except Exception:
+        try:
+            return int(p.read_text(encoding="utf-8").strip())
+        except Exception:
+            return None
+
+
+def start_proc(spec):
+    name = spec["name"]
+    if name in _last_restart and (time.time() - _last_restart[name]) < MIN_RESTART_INTERVAL:
+        log(f"R270 THROTTLE [{name}] 跳过")
+        return False
+    try:
+        proc = subprocess.Popen(
+            spec["cmd"],
+            cwd=spec["cwd"],
+            creationflags=CREATE_NO_WINDOW | DETACHED_PROCESS,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            stdin=subprocess.DEVNULL,
+            close_fds=True,
+        )
+        log(f"R270 START [{name}] PID={proc.pid} cmd={spec['cmd'][0]} {spec['cmd'][-1] if len(spec['cmd'])>1 else ''}")
+        _last_restart[name] = time.time()
+        time.sleep(2)
+        return proc.pid
+    except Exception as e:
+        log(f"R270 ERR [{name}] {repr(e)}")
+        return False
+
+
+def main_loop(interval):
+    log("=" * 60)
+    log(f"R270 _popup_watchdog_parent_supervisor v1 (2026-09-29)")
+    log(f"监管 {len(SUPERVISED)} 个进程: " + ", ".join(s['name'] for s in SUPERVISED))
+    log(f"检查间隔: {interval}s, PID: {os.getpid()}")
+    log("=" * 60)
+
+    try:
+        SUP_PID.write_text(str(os.getpid()), encoding="utf-8")
+    except Exception:
+        pass
+
+    cycle = 0
+    while True:
+        cycle += 1
+        try:
+            for spec in SUPERVISED:
+                pid = read_pid(spec["pid_file"])
+                if pid is None:
+                    log(f"R270 [{spec['name']}] PID 文件不存在 → 拉起")
+                    start_proc(spec)
+                elif not alive_pid(pid):
+                    log(f"R270 [{spec['name']}] PID={pid} 进程已死 → 拉起")
+                    start_proc(spec)
+                elif cycle % 30 == 0:
+                    log(f"[CYCLE {cycle}] [{spec['name']}] PID={pid} alive")
+        except Exception as e:
+            log(f"[CYCLE {cycle}] ERR: {repr(e)}")
+
+        # 更新 PID 文件 mtime (让外部监控知道 supervisor 活着)
+        if cycle % 6 == 0:
+            try:
+                SUP_PID.write_text(str(os.getpid()), encoding="utf-8")
+            except Exception:
+                pass
+
+        time.sleep(interval)
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--interval", type=int, default=5)
+    args = parser.parse_args()
+    main_loop(args.interval)

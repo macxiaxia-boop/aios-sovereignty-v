@@ -1,0 +1,2 @@
+﻿"Path","Name","Value"
+"Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\WmiApRpl\Performance","Performance","System.Object[]"

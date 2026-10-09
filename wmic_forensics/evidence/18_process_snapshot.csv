@@ -1,0 +1,358 @@
+﻿"Name","ProcessId","ParentProcessId","CreationDate","ExecutablePath"
+"System Idle Process","0","0","2026/9/28 15:43:12",
+"System","4","0","2026/9/28 15:43:12",
+"Secure System","88","4","2026/9/28 15:43:09",
+"Registry","156","4","2026/9/28 15:43:09",
+"smss.exe","568","4","2026/9/28 15:43:12",
+"csrss.exe","852","740","2026/9/28 15:43:18",
+"wininit.exe","956","740","2026/9/28 15:43:21",
+"csrss.exe","964","948","2026/9/28 15:43:21",
+"services.exe","112","956","2026/9/28 15:43:21",
+"LsaIso.exe","688","956","2026/9/28 15:43:21",
+"lsass.exe","696","956","2026/9/28 15:43:21",
+"winlogon.exe","1064","948","2026/9/28 15:43:21",
+"svchost.exe","1136","112","2026/9/28 15:43:21",
+"fontdrvhost.exe","1188","956","2026/9/28 15:43:21",
+"fontdrvhost.exe","1196","1064","2026/9/28 15:43:21",
+"WUDFHost.exe","1212","112","2026/9/28 15:43:21",
+"svchost.exe","1356","112","2026/9/28 15:43:21",
+"svchost.exe","1412","112","2026/9/28 15:43:21",
+"svchost.exe","1548","112","2026/9/28 15:43:21",
+"svchost.exe","1552","112","2026/9/28 15:43:21",
+"svchost.exe","1576","112","2026/9/28 15:43:21",
+"svchost.exe","1588","112","2026/9/28 15:43:21",
+"svchost.exe","1620","112","2026/9/28 15:43:21",
+"svchost.exe","1768","112","2026/9/28 15:43:21",
+"svchost.exe","1812","112","2026/9/28 15:43:21",
+"svchost.exe","1820","112","2026/9/28 15:43:21",
+"svchost.exe","1908","112","2026/9/28 15:43:21",
+"svchost.exe","1932","112","2026/9/28 15:43:21",
+"svchost.exe","1960","112","2026/9/28 15:43:21",
+"svchost.exe","1988","112","2026/9/28 15:43:21",
+"dwm.exe","736","1064","2026/9/28 15:43:21",
+"svchost.exe","952","112","2026/9/28 15:43:21",
+"svchost.exe","2084","112","2026/9/28 15:43:21",
+"svchost.exe","2128","112","2026/9/28 15:43:21",
+"svchost.exe","2148","112","2026/9/28 15:43:21",
+"svchost.exe","2168","112","2026/9/28 15:43:21",
+"WUDFHost.exe","2224","112","2026/9/28 15:43:21",
+"svchost.exe","2260","112","2026/9/28 15:43:21",
+"svchost.exe","2356","112","2026/9/28 15:43:21",
+"svchost.exe","2388","112","2026/9/28 15:43:21",
+"vmms.exe","2460","112","2026/9/28 15:43:21",
+"svchost.exe","2556","112","2026/9/28 15:43:21",
+"powershell.exe","2636","2128","2026/9/28 15:43:21",
+"NVDisplay.Container.exe","2708","112","2026/9/28 15:43:21",
+"svchost.exe","2752","112","2026/9/28 15:43:21",
+"svchost.exe","2792","112","2026/9/28 15:43:21",
+"svchost.exe","2804","112","2026/9/28 15:43:21",
+"svchost.exe","2812","112","2026/9/28 15:43:21",
+"svchost.exe","2884","112","2026/9/28 15:43:21",
+"svchost.exe","2964","112","2026/9/28 15:43:21",
+"svchost.exe","3024","112","2026/9/28 15:43:21",
+"svchost.exe","3036","112","2026/9/28 15:43:21",
+"svchost.exe","3052","112","2026/9/28 15:43:21",
+"svchost.exe","3144","112","2026/9/28 15:43:21",
+"svchost.exe","3152","112","2026/9/28 15:43:21",
+"svchost.exe","3168","112","2026/9/28 15:43:21",
+"svchost.exe","3300","112","2026/9/28 15:43:21",
+"svchost.exe","3396","112","2026/9/28 15:43:22",
+"vmcompute.exe","3600","112","2026/9/28 15:43:22",
+"NVDisplay.Container.exe","3608","2708","2026/9/28 15:43:22",
+"WmiPrvSE.exe","3644","1136","2026/9/28 15:43:22",
+"svchost.exe","3804","112","2026/9/28 15:43:22",
+"svchost.exe","3916","112","2026/9/28 15:43:22",
+"svchost.exe","4032","112","2026/9/28 15:43:22",
+"svchost.exe","4040","112","2026/9/28 15:43:22",
+"svchost.exe","4212","112","2026/9/28 15:43:23",
+"conhost.exe","4276","2636","2026/9/28 15:43:23",
+"svchost.exe","4336","112","2026/9/28 15:43:23",
+"spoolsv.exe","4404","112","2026/9/28 15:43:23",
+"svchost.exe","4468","112","2026/9/28 15:43:23",
+"svchost.exe","4656","112","2026/9/28 15:43:23",
+"svchost.exe","4664","112","2026/9/28 15:43:23",
+"svchost.exe","4672","112","2026/9/28 15:43:23",
+"svchost.exe","4680","112","2026/9/28 15:43:23",
+"svchost.exe","4704","112","2026/9/28 15:43:23",
+"svchost.exe","4712","112","2026/9/28 15:43:23",
+"svchost.exe","4728","112","2026/9/28 15:43:23",
+"svchost.exe","4736","112","2026/9/28 15:43:23",
+"svchost.exe","4744","112","2026/9/28 15:43:23",
+"svchost.exe","4752","112","2026/9/28 15:43:23",
+"svchost.exe","4760","112","2026/9/28 15:43:23",
+"svchost.exe","4768","112","2026/9/28 15:43:23",
+"ssh-agent.exe","4780","112","2026/9/28 15:43:23",
+"launcher-x64.exe","4788","112","2026/9/28 15:43:23",
+"WifiAutoInstall.exe","4804","112","2026/9/28 15:43:23",
+"nvcontainer.exe","4816","112","2026/9/28 15:43:23",
+"wslservice.exe","4824","112","2026/9/28 15:43:23",
+"MsMpEng.exe","4832","112","2026/9/28 15:43:23",
+"jhi_service.exe","4840","112","2026/9/28 15:43:23",
+"WDDriveService.exe","4856","112","2026/9/28 15:43:23",
+"WMIRegistrationService.exe","4872","112","2026/9/28 15:43:23",
+"MpDefenderCoreService.exe","4904","112","2026/9/28 15:43:23",
+"ToDesk.exe","4972","112","2026/9/28 15:43:23",
+"svchost.exe","5200","112","2026/9/28 15:43:23",
+"conhost.exe","5436","4788","2026/9/28 15:43:23",
+"codex-windows-sandbox-service.exe","5452","112","2026/9/28 15:43:23",
+"tailscaled.exe","5496","112","2026/9/28 15:43:23",
+"svchost.exe","5760","112","2026/9/28 15:43:23",
+"svchost.exe","5956","112","2026/9/28 15:43:23",
+"svchost.exe","6072","112","2026/9/28 15:43:24",
+"WUDFHost.exe","6860","112","2026/9/28 15:43:24",
+"svchost.exe","7052","112","2026/9/28 15:43:24",
+"tailscaled.exe","6388","5496","2026/9/28 15:43:24",
+"svchost.exe","7252","112","2026/9/28 15:43:25",
+"dasHost.exe","7344","2792","2026/9/28 15:43:25",
+"svchost.exe","7364","112","2026/9/28 15:43:25",
+"dllhost.exe","7656","1136","2026/9/28 15:43:25",
+"dasHost.exe","7204","2792","2026/9/28 15:43:25",
+"sshd.exe","7944","2636","2026/9/28 15:43:27",
+"DefenderAiPlatformHost.exe","8124","4832","2026/9/28 15:43:28",
+"NisSrv.exe","1120","112","2026/9/28 15:43:28",
+"WmiPrvSE.exe","8268","1136","2026/9/28 15:43:30",
+"DefenderSessionHelper.exe","7932","4832","2026/9/28 15:44:04","C:\ProgramData\Microsoft\Windows Defender\Platform\4.18.26080.4-0\DefenderSessionHelper.exe"
+"sihost.exe","8452","2356","2026/9/28 15:44:04","C:\WINDOWS\system32\sihost.exe"
+"svchost.exe","2060","112","2026/9/28 15:44:04","C:\WINDOWS\system32\svchost.exe"
+"svchost.exe","8536","112","2026/9/28 15:44:04","C:\WINDOWS\system32\svchost.exe"
+"nvcontainer.exe","8480","4816","2026/9/28 15:44:04","C:\Program Files\NVIDIA Corporation\NvContainer\nvcontainer.exe"
+"svchost.exe","8548","112","2026/9/28 15:44:04","C:\WINDOWS\system32\svchost.exe"
+"wscript.exe","1100","2128","2026/9/28 15:44:04","C:\WINDOWS\System32\WScript.exe"
+"cmd.exe","8732","2128","2026/9/28 15:44:04","C:\WINDOWS\SYSTEM32\cmd.exe"
+"svchost.exe","8792","112","2026/9/28 15:44:04",
+"conhost.exe","6800","8732","2026/9/28 15:44:04","C:\WINDOWS\system32\conhost.exe"
+"explorer.exe","6348","8840","2026/9/28 15:44:04","C:\WINDOWS\Explorer.EXE"
+"svchost.exe","1248","112","2026/9/28 15:44:04",
+"svchost.exe","1456","112","2026/9/28 15:44:04",
+"ctfmon.exe","2608","1456","2026/9/28 15:44:04",
+"taskhostw.exe","7112","2128","2026/9/28 15:44:04","C:\WINDOWS\system32\taskhostw.exe"
+"SearchIndexer.exe","5056","112","2026/9/28 15:44:04",
+"SearchProtocolHost.exe","8284","5056","2026/9/28 15:44:05",
+"powershell.exe","4544","8732","2026/9/28 15:44:05","C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe"
+"ChsIME.exe","9376","1136","2026/9/28 15:44:05",
+"cmd.exe","9856","1100","2026/9/28 15:44:05","C:\WINDOWS\system32\cmd.exe"
+"conhost.exe","9892","9856","2026/9/28 15:44:05","C:\WINDOWS\system32\conhost.exe"
+"svchost.exe","9932","112","2026/9/28 15:44:06","C:\WINDOWS\system32\svchost.exe"
+"node.exe","10140","9856","2026/9/28 15:44:06","C:\Users\xinzh\node.exe"
+"StartMenuExperienceHost.exe","9680","1136","2026/9/28 15:44:06","C:\Windows\SystemApps\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\StartMenuExperienceHost.exe"
+"svchost.exe","9704","112","2026/9/28 15:44:06",
+"RuntimeBroker.exe","10392","1136","2026/9/28 15:44:06","C:\Windows\System32\RuntimeBroker.exe"
+"SearchApp.exe","10728","1136","2026/9/28 15:44:07","C:\Windows\SystemApps\Microsoft.Windows.Search_cw5n1h2txyewy\SearchApp.exe"
+"RuntimeBroker.exe","10924","1136","2026/9/28 15:44:07","C:\Windows\System32\RuntimeBroker.exe"
+"svchost.exe","11156","112","2026/9/28 15:44:07",
+"ToDesk.exe","4236","4972","2026/9/28 15:44:07","D:\1\ToDesk\ToDesk.exe"
+"svchost.exe","11288","112","2026/9/28 15:44:07",
+"smartscreen.exe","11536","1136","2026/9/28 15:44:07","C:\Windows\System32\smartscreen.exe"
+"TextInputHost.exe","2192","1136","2026/9/28 15:44:09","C:\Windows\SystemApps\MicrosoftWindows.Client.CBS_cw5n1h2txyewy\TextInputHost.exe"
+"svchost.exe","2408","112","2026/9/28 15:44:09",
+"svchost.exe","12892","112","2026/9/28 15:44:10",
+"svchost.exe","12976","112","2026/9/28 15:44:10",
+"svchost.exe","9028","112","2026/9/28 15:44:14",
+"WorkBuddy.exe","13412","6348","2026/9/28 15:44:16","D:\Desktop\WorkBuddy\WorkBuddy.exe"
+"WorkBuddy.exe","13704","13412","2026/9/28 15:44:17","D:\Desktop\WorkBuddy\WorkBuddy.exe"
+"SecurityHealthSystray.exe","13760","6348","2026/9/28 15:44:17","C:\Windows\System32\SecurityHealthSystray.exe"
+"WorkBuddy.exe","13768","13412","2026/9/28 15:44:17","D:\Desktop\WorkBuddy\WorkBuddy.exe"
+"SecurityHealthService.exe","13880","112","2026/9/28 15:44:17",
+"RAVCpl64.exe","14148","6348","2026/9/28 15:44:18","C:\Program Files\Realtek\Audio\HDA\RAVCpl64.exe"
+"svchost.exe","14312","112","2026/9/28 15:44:18",
+"WorkBuddy.exe","10388","13412","2026/9/28 15:44:19","D:\Desktop\WorkBuddy\WorkBuddy.exe"
+"WorkBuddy.exe","9596","13412","2026/9/28 15:44:19","D:\Desktop\WorkBuddy\WorkBuddy.exe"
+"clash-verge.exe","10544","6348","2026/9/28 15:44:19","D:\1\Clash Verge\clash-verge.exe"
+"Code.exe","14256","6348","2026/9/28 15:44:19","C:\Users\xinzh\AppData\Local\Programs\Microsoft VS Code\Code.exe"
+"OneDrive.exe","10640","6348","2026/9/28 15:44:20","C:\Users\xinzh\AppData\Local\Microsoft\OneDrive\OneDrive.exe"
+"Code.exe","10452","14256","2026/9/28 15:44:20","C:\Users\xinzh\AppData\Local\Programs\Microsoft VS Code\Code.exe"
+"msedgewebview2.exe","14424","10544","2026/9/28 15:44:20","C:\Program Files (x86)\Microsoft\EdgeWebView\Application\153.0.4234.48\msedgewebview2.exe"
+"Code.exe","14492","14256","2026/9/28 15:44:20","C:\Users\xinzh\AppData\Local\Programs\Microsoft VS Code\Code.exe"
+"Code.exe","14540","14256","2026/9/28 15:44:20","C:\Users\xinzh\AppData\Local\Programs\Microsoft VS Code\Code.exe"
+"msedgewebview2.exe","14636","14424","2026/9/28 15:44:20","C:\Program Files (x86)\Microsoft\EdgeWebView\Application\153.0.4234.48\msedgewebview2.exe"
+"msedgewebview2.exe","15052","14424","2026/9/28 15:44:20","C:\Program Files (x86)\Microsoft\EdgeWebView\Application\153.0.4234.48\msedgewebview2.exe"
+"msedgewebview2.exe","15056","14424","2026/9/28 15:44:20","C:\Program Files (x86)\Microsoft\EdgeWebView\Application\153.0.4234.48\msedgewebview2.exe"
+"msedgewebview2.exe","15132","14424","2026/9/28 15:44:20","C:\Program Files (x86)\Microsoft\EdgeWebView\Application\153.0.4234.48\msedgewebview2.exe"
+"Code.exe","15144","14256","2026/9/28 15:44:20","C:\Users\xinzh\AppData\Local\Programs\Microsoft VS Code\Code.exe"
+"msedgewebview2.exe","14380","14424","2026/9/28 15:44:20","C:\Program Files (x86)\Microsoft\EdgeWebView\Application\153.0.4234.48\msedgewebview2.exe"
+"WorkBuddy.exe","15740","9596","2026/9/28 15:44:21","D:\Desktop\WorkBuddy\WorkBuddy.exe"
+"CastSrv.exe","15996","1136","2026/9/28 15:44:21","C:\Windows\System32\CastSrv.exe"
+"sandbox-center.exe","16076","13412","2026/9/28 15:44:21","D:\Desktop\WorkBuddy\resources\app.asar.unpacked\cli\vendor\sandbox\5.5.5\sandbox-center.exe"
+"conhost.exe","16084","16076","2026/9/28 15:44:21","C:\WINDOWS\system32\conhost.exe"
+"Code.exe","16244","14256","2026/9/28 15:44:22","C:\Users\xinzh\AppData\Local\Programs\Microsoft VS Code\Code.exe"
+"WorkBuddy.exe","16184","13412","2026/9/28 15:44:22","D:\Desktop\WorkBuddy\WorkBuddy.exe"
+"Code.exe","16440","14256","2026/9/28 15:44:22","C:\Users\xinzh\AppData\Local\Programs\Microsoft VS Code\Code.exe"
+"Code.exe","17072","14256","2026/9/28 15:44:23","C:\Users\xinzh\AppData\Local\Programs\Microsoft VS Code\Code.exe"
+"Code.exe","17120","14256","2026/9/28 15:44:23","C:\Users\xinzh\AppData\Local\Programs\Microsoft VS Code\Code.exe"
+"svchost.exe","7400","112","2026/9/28 15:44:24",
+"Code.exe","3616","14256","2026/9/28 15:44:24","C:\Users\xinzh\AppData\Local\Programs\Microsoft VS Code\Code.exe"
+"tailscale-ipn.exe","17352","6348","2026/9/28 15:44:25","C:\Program Files\Tailscale\tailscale-ipn.exe"
+"copilot-runtime.exe","5384","16244","2026/9/28 15:44:26","c:\Users\xinzh\AppData\Local\Programs\Microsoft VS Code\04c0d99f4f\resources\app\node_modules.asar.unpacked\@github\copilot-sdk-win32-x64\prebuilds\win32-x64\copilot-runtime.exe"
+"conhost.exe","15640","5384","2026/9/28 15:44:26","C:\WINDOWS\system32\conhost.exe"
+"WD Discovery.exe","17360","4252","2026/9/28 15:44:26","C:\Program Files (x86)\Western Digital\Discovery\Current\WD Discovery.exe"
+"pet.exe","17864","16440","2026/9/28 15:44:28","c:\Users\xinzh\.vscode\extensions\ms-python.vscode-python-envs-1.38.0-win32-x64\python-env-tools\bin\pet.exe"
+"conhost.exe","17884","17864","2026/9/28 15:44:28","C:\WINDOWS\system32\conhost.exe"
+"WD Discovery.exe","17932","17360","2026/9/28 15:44:28","C:\Program Files (x86)\Western Digital\Discovery\Current\WD Discovery.exe"
+"Code.exe","16944","14256","2026/9/28 15:44:28","C:\Users\xinzh\AppData\Local\Programs\Microsoft VS Code\Code.exe"
+"OpenConsole.exe","18020","16944","2026/9/28 15:44:29","c:\Users\xinzh\AppData\Local\Programs\Microsoft VS Code\04c0d99f4f\resources\app\node_modules.asar.unpacked\node-pty\build\Release\conpty\OpenConsole.exe"
+"OpenConsole.exe","17780","16944","2026/9/28 15:44:29","c:\Users\xinzh\AppData\Local\Programs\Microsoft VS Code\04c0d99f4f\resources\app\node_modules.asar.unpacked\node-pty\build\Release\conpty\OpenConsole.exe"
+"powershell.exe","18076","16944","2026/9/28 15:44:29","C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe"
+"WD Discovery.exe","17696","17360","2026/9/28 15:44:29","C:\Program Files (x86)\Western Digital\Discovery\Current\WD Discovery.exe"
+"powershell.exe","18116","16944","2026/9/28 15:44:29","C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe"
+"WD Discovery.exe","17544","17360","2026/9/28 15:44:30","C:\Program Files (x86)\Western Digital\Discovery\Current\WD Discovery.exe"
+"claude.exe","19260","16440","2026/9/28 15:44:31","c:\Users\xinzh\.vscode\extensions\anthropic.claude-code-2.1.283-win32-x64\resources\native-binary\claude.exe"
+"conhost.exe","19276","19260","2026/9/28 15:44:31","C:\WINDOWS\system32\conhost.exe"
+"WDDiscoveryMonitor.exe","19352","19200","2026/9/28 15:44:31","C:\Program Files (x86)\Western Digital\Discovery\Current\WDDiscoveryMonitor.exe"
+"wscript.exe","16996","6348","2026/9/28 15:44:31","C:\WINDOWS\System32\WScript.exe"
+"WD Discovery.exe","18980","17360","2026/9/28 15:44:32","C:\Program Files (x86)\Western Digital\Discovery\Current\WD Discovery.exe"
+"cmd.exe","18716","16996","2026/9/28 15:44:32","C:\WINDOWS\system32\cmd.exe"
+"conhost.exe","17384","18716","2026/9/28 15:44:32","C:\WINDOWS\system32\conhost.exe"
+"node.exe","19040","18716","2026/9/28 15:44:32","C:\Users\xinzh\node.exe"
+"python.exe","17508","19260","2026/9/28 15:44:33","C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-windows-x86_64-none\python.exe"
+"conhost.exe","17524","17508","2026/9/28 15:44:33","C:\WINDOWS\system32\conhost.exe"
+"cmd.exe","19252","19260","2026/9/28 15:44:33","C:\WINDOWS\system32\cmd.exe"
+"conhost.exe","19408","19252","2026/9/28 15:44:33","C:\WINDOWS\system32\conhost.exe"
+"node.exe","7360","19252","2026/9/28 15:44:33","C:\Users\xinzh\node.exe"
+"cmd.exe","19600","19260","2026/9/28 15:44:34","C:\WINDOWS\system32\cmd.exe"
+"conhost.exe","19624","19600","2026/9/28 15:44:34","C:\WINDOWS\system32\conhost.exe"
+"node.exe","19820","19600","2026/9/28 15:44:35","C:\Users\xinzh\node.exe"
+"Code.exe","19692","16440","2026/9/28 15:44:37","C:\Users\xinzh\AppData\Local\Programs\Microsoft VS Code\Code.exe"
+"WD Device Agent.exe","19524","2128","2026/9/28 15:44:38",
+"cmd.exe","10004","19260","2026/9/28 15:44:40","C:\WINDOWS\system32\cmd.exe"
+"conhost.exe","17496","10004","2026/9/28 15:44:40","C:\WINDOWS\system32\conhost.exe"
+"node.exe","20164","10004","2026/9/28 15:44:40","C:\Users\xinzh\node.exe"
+"Code.exe","20804","14256","2026/9/28 15:44:42","C:\Users\xinzh\AppData\Local\Programs\Microsoft VS Code\Code.exe"
+"svchost.exe","24932","112","2026/9/28 15:44:46",
+"WDDiscoveryService.exe","25412","2128","2026/9/28 15:44:49",
+"claude.exe","18948","16440","2026/9/28 15:44:52","c:\Users\xinzh\.vscode\extensions\anthropic.claude-code-2.1.283-win32-x64\resources\native-binary\claude.exe"
+"conhost.exe","18672","18948","2026/9/28 15:44:52","C:\WINDOWS\system32\conhost.exe"
+"python.exe","25560","18948","2026/9/28 15:44:52","C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-windows-x86_64-none\python.exe"
+"conhost.exe","24680","25560","2026/9/28 15:44:52","C:\WINDOWS\system32\conhost.exe"
+"cmd.exe","14564","18948","2026/9/28 15:44:53","C:\WINDOWS\system32\cmd.exe"
+"conhost.exe","5740","14564","2026/9/28 15:44:53","C:\WINDOWS\system32\conhost.exe"
+"node.exe","24280","14564","2026/9/28 15:44:53","C:\Users\xinzh\node.exe"
+"cmd.exe","15544","18948","2026/9/28 15:44:53","C:\WINDOWS\system32\cmd.exe"
+"conhost.exe","20436","15544","2026/9/28 15:44:53","C:\WINDOWS\system32\conhost.exe"
+"node.exe","18480","15544","2026/9/28 15:44:53","C:\Users\xinzh\node.exe"
+"cmd.exe","19256","18948","2026/9/28 15:44:54","C:\WINDOWS\system32\cmd.exe"
+"conhost.exe","24892","19256","2026/9/28 15:44:54","C:\WINDOWS\system32\conhost.exe"
+"node.exe","3840","19256","2026/9/28 15:44:54","C:\Users\xinzh\node.exe"
+"WorkBuddy.exe","1860","9596","2026/9/28 15:44:55","D:\Desktop\WorkBuddy\WorkBuddy.exe"
+"editor_sdk.exe","25312","9596","2026/9/28 15:44:59","D:\Desktop\WorkBuddy\resources\app.asar.unpacked\node_modules\@tencent\tencent-docs-ai-engine\bin\win32-x64\editor_sdk.exe"
+"conhost.exe","24640","25312","2026/9/28 15:44:59","C:\WINDOWS\system32\conhost.exe"
+"WorkBuddy.exe","19876","9596","2026/9/28 15:44:59","D:\Desktop\WorkBuddy\WorkBuddy.exe"
+"WorkBuddy.exe","25340","1860","2026/9/28 15:44:59","D:\Desktop\WorkBuddy\WorkBuddy.exe"
+"WorkBuddy.exe","19880","1860","2026/9/28 15:44:59","D:\Desktop\WorkBuddy\WorkBuddy.exe"
+"cmd.exe","25384","25340","2026/9/28 15:44:59","C:\WINDOWS\system32\cmd.exe"
+"node.exe","20204","19880","2026/9/28 15:44:59","C:\Users\xinzh\.workbuddy\binaries\node\versions\22.22.2-3\node.EXE"
+"conhost.exe","25468","20204","2026/9/28 15:44:59","C:\WINDOWS\system32\conhost.exe"
+"conhost.exe","10496","25384","2026/9/28 15:44:59","C:\WINDOWS\system32\conhost.exe"
+"node.exe","4484","25384","2026/9/28 15:44:59","C:\Users\xinzh\.workbuddy\binaries\node\versions\22.22.2-3\node.exe"
+"WorkBuddy.exe","1028","1860","2026/9/28 15:45:02","D:\Desktop\WorkBuddy\WorkBuddy.exe"
+"sandbox-cli.exe","25296","1028","2026/9/28 15:45:02","D:\Desktop\WorkBuddy\resources\app.asar.unpacked\cli\vendor\sandbox\5.5.5\sandbox-cli.exe"
+"conhost.exe","19620","25296","2026/9/28 15:45:02","C:\WINDOWS\system32\conhost.exe"
+"sandbox-cli-gc.exe","6528","25296","2026/9/28 15:45:03","D:\Desktop\WorkBuddy\resources\app.asar.unpacked\cli\vendor\sandbox\5.5.5\sandbox-cli-gc.exe"
+"claude.exe","23504","16440","2026/9/28 15:45:05","c:\Users\xinzh\.vscode\extensions\anthropic.claude-code-2.1.283-win32-x64\resources\native-binary\claude.exe"
+"conhost.exe","17924","23504","2026/9/28 15:45:05","C:\WINDOWS\system32\conhost.exe"
+"python.exe","11112","23504","2026/9/28 15:45:05","C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-windows-x86_64-none\python.exe"
+"conhost.exe","25492","11112","2026/9/28 15:45:06","C:\WINDOWS\system32\conhost.exe"
+"cmd.exe","18864","23504","2026/9/28 15:45:06","C:\WINDOWS\system32\cmd.exe"
+"conhost.exe","23752","18864","2026/9/28 15:45:06","C:\WINDOWS\system32\conhost.exe"
+"node.exe","25552","18864","2026/9/28 15:45:06","C:\Users\xinzh\node.exe"
+"cmd.exe","21756","23504","2026/9/28 15:45:06","C:\WINDOWS\system32\cmd.exe"
+"conhost.exe","24968","21756","2026/9/28 15:45:06","C:\WINDOWS\system32\conhost.exe"
+"cmd.exe","20284","23504","2026/9/28 15:45:06","C:\WINDOWS\system32\cmd.exe"
+"conhost.exe","19836","20284","2026/9/28 15:45:06","C:\WINDOWS\system32\conhost.exe"
+"node.exe","25576","20284","2026/9/28 15:45:06","C:\Users\xinzh\node.exe"
+"node.exe","24528","21756","2026/9/28 15:45:06","C:\Users\xinzh\node.exe"
+"AIOSCentralCollector-svc.exe","26292","112","2026/9/28 15:45:25",
+"AIOSCentralCollector.exe","26500","26292","2026/9/28 15:45:26",
+"conhost.exe","26264","26500","2026/9/28 15:45:26",
+"AIOSSelfHeal-svc.exe","26272","112","2026/9/28 15:45:26",
+"AIOSCentralCollector.exe","21036","26500","2026/9/28 15:45:26",
+"AIOSSelfHeal.exe","21336","26272","2026/9/28 15:45:27",
+"conhost.exe","21500","21336","2026/9/28 15:45:27",
+"AIOSSupervisor-svc.exe","21780","112","2026/9/28 15:45:27",
+"AIOSSelfHeal.exe","9180","21336","2026/9/28 15:45:27",
+"AIOSSupervisor.exe","22444","21780","2026/9/28 15:45:28",
+"conhost.exe","22484","22444","2026/9/28 15:45:28",
+"AIOS_Autonomy_Daemon-svc.exe","23820","112","2026/9/28 15:45:28",
+"AIOSSupervisor.exe","25840","22444","2026/9/28 15:45:28",
+"AIOS_Autonomy_Daemon.exe","25852","23820","2026/9/28 15:45:29",
+"conhost.exe","25848","25852","2026/9/28 15:45:29",
+"svchost.exe","25832","112","2026/9/28 15:45:29",
+"AIOS_Autonomy_Daemon.exe","25940","25852","2026/9/28 15:45:29",
+"svchost.exe","25992","112","2026/9/28 15:45:29",
+"svchost.exe","8412","112","2026/9/28 15:45:30",
+"svchost.exe","14568","112","2026/9/28 15:45:30","C:\WINDOWS\system32\svchost.exe"
+"svchost.exe","19328","112","2026/9/28 15:45:39",
+"ShellExperienceHost.exe","4384","1136","2026/9/28 15:45:42","C:\Windows\SystemApps\ShellExperienceHost_cw5n1h2txyewy\ShellExperienceHost.exe"
+"RuntimeBroker.exe","704","1136","2026/9/28 15:45:42","C:\Windows\System32\RuntimeBroker.exe"
+"SystemSettings.exe","10984","1136","2026/9/28 15:45:44","C:\Windows\ImmersiveControlPanel\SystemSettings.exe"
+"ApplicationFrameHost.exe","25252","1136","2026/9/28 15:45:44","C:\WINDOWS\system32\ApplicationFrameHost.exe"
+"dllhost.exe","22916","1136","2026/9/28 15:45:48","C:\WINDOWS\system32\DllHost.exe"
+"svchost.exe","24564","112","2026/9/28 15:45:50",
+"svchost.exe","21916","112","2026/9/28 15:45:58",
+"node.exe","21080","19040","2026/9/28 15:46:26","C:\Users\xinzh\node.exe"
+"cmd.exe","20832","21080","2026/9/28 15:46:26","C:\WINDOWS\System32\cmd.exe"
+"conhost.exe","16428","20832","2026/9/28 15:46:26","C:\WINDOWS\system32\conhost.exe"
+"node.exe","17624","20832","2026/9/28 15:46:26","C:\Users\xinzh\node.exe"
+"svchost.exe","8460","112","2026/9/28 15:46:59",
+"svchost.exe","6740","112","2026/9/28 15:46:59",
+"taskhostw.exe","25844","2128","2026/9/28 15:47:06","C:\WINDOWS\system32\taskhostw.exe"
+"node.exe","23292","10140","2026/9/28 15:47:08","C:\Users\xinzh\node.exe"
+"cmd.exe","17668","23292","2026/9/28 15:47:08","C:\WINDOWS\System32\cmd.exe"
+"conhost.exe","2068","17668","2026/9/28 15:47:08","C:\WINDOWS\system32\conhost.exe"
+"node.exe","17748","17668","2026/9/28 15:47:08","C:\Users\xinzh\node.exe"
+"Code.exe","22828","16440","2026/9/28 15:47:18","C:\Users\xinzh\AppData\Local\Programs\Microsoft VS Code\Code.exe"
+"WorkBuddy.exe","10100","13412","2026/9/28 15:47:29","D:\Desktop\WorkBuddy\WorkBuddy.exe"
+"bash.exe","17096","18948","2026/9/28 15:48:34","D:\1\Git\bin\bash.exe"
+"bash.exe","12852","17096","2026/9/28 15:48:34","D:\1\Git\bin\..\usr\bin\bash.exe"
+"conhost.exe","12936","12852","2026/9/28 15:48:34","C:\WINDOWS\system32\conhost.exe"
+"bash.exe","12820","12852","2026/9/28 15:48:34","D:\1\Git\bin\..\usr\bin\bash.exe"
+"powershell.exe","26376","12820","2026/9/28 15:48:34","C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe"
+"Code.exe","25192","16440","2026/9/28 15:48:54","C:\Users\xinzh\AppData\Local\Programs\Microsoft VS Code\Code.exe"
+"pythonw.exe","12400","2128","2026/9/28 15:49:00","D:\Tools\TikTokDownloader\.venv-decompose\Scripts\pythonw.exe"
+"pythonw.exe","9132","12400","2026/9/28 15:49:00","C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-windows-x86_64-none\pythonw.exe"
+"ollama.exe","24440","9132","2026/9/28 15:49:04","C:\Users\xinzh\AppData\Local\Programs\Ollama\ollama.exe"
+"msedge.exe","3096","3252","2026/9/28 15:49:05","C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+"msedge.exe","22148","3096","2026/9/28 15:49:05","C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+"msedge.exe","22844","3096","2026/9/28 15:49:05","C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+"msedge.exe","22236","3096","2026/9/28 15:49:05","C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+"msedge.exe","23392","3096","2026/9/28 15:49:05","C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+"msedge.exe","24320","3096","2026/9/28 15:49:05","C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+"cmd.exe","18860","3096","2026/9/28 15:49:06","C:\WINDOWS\system32\cmd.exe"
+"conhost.exe","24048","18860","2026/9/28 15:49:06","C:\WINDOWS\system32\conhost.exe"
+"extension-host.exe","5000","18860","2026/9/28 15:49:06","C:\Users\xinzh\.codex\plugins\cache\openai-bundled\chrome\latest\extension-host\windows\x64\extension-host.exe"
+"msedge.exe","22248","3096","2026/9/28 15:49:18","C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+"msedge.exe","21452","3096","2026/9/28 15:50:21","C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+"conhost.exe","12320","4948","2026/9/28 15:50:24","C:\WINDOWS\system32\conhost.exe"
+"nohup.exe","6176","8204","2026/9/28 15:50:24","D:\1\Git\usr\bin\nohup.exe"
+"python.exe","23396","6176","2026/9/28 15:50:24","D:\Tools\TikTokDownloader\.venv-decompose\Scripts\python.exe"
+"python.exe","22524","23396","2026/9/28 15:50:24","C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-windows-x86_64-none\python.exe"
+"python.exe","16872","22524","2026/9/28 15:50:24","C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-windows-x86_64-none\python.exe"
+"conhost.exe","8404","16872","2026/9/28 15:50:24","C:\WINDOWS\system32\conhost.exe"
+"SearchFilterHost.exe","10804","5056","2026/9/28 15:50:24",
+"conhost.exe","11280","23136","2026/9/28 15:50:54","C:\WINDOWS\system32\conhost.exe"
+"nohup.exe","15356","23536","2026/9/28 15:50:56","D:\1\Git\usr\bin\nohup.exe"
+"python.exe","24776","15356","2026/9/28 15:50:56","D:\Tools\TikTokDownloader\.venv-decompose\Scripts\python.exe"
+"python.exe","13944","24776","2026/9/28 15:50:56","C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-windows-x86_64-none\python.exe"
+"python.exe","21228","13944","2026/9/28 15:50:56","C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-windows-x86_64-none\python.exe"
+"conhost.exe","23144","21228","2026/9/28 15:50:56","C:\WINDOWS\system32\conhost.exe"
+"msedge.exe","24516","3096","2026/9/28 15:51:06","C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+"RuntimeBroker.exe","18268","1136","2026/9/28 15:51:06","C:\Windows\System32\RuntimeBroker.exe"
+"SearchProtocolHost.exe","24124","5056","2026/9/28 15:51:07","C:\WINDOWS\system32\SearchProtocolHost.exe"
+"msedge.exe","11232","3096","2026/9/28 15:51:47","C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+"msedge.exe","19436","3096","2026/9/28 15:51:53","C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+"msedge.exe","16924","3096","2026/9/28 15:51:57","C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+"bash.exe","5312","19260","2026/9/28 15:52:02","D:\1\Git\bin\bash.exe"
+"bash.exe","2412","5312","2026/9/28 15:52:02","D:\1\Git\bin\..\usr\bin\bash.exe"
+"conhost.exe","21144","2412","2026/9/28 15:52:02","C:\WINDOWS\system32\conhost.exe"
+"sleep.exe","24308","1608","2026/9/28 15:52:02","D:\1\Git\usr\bin\sleep.exe"
+"bash.exe","20016","18948","2026/9/28 15:52:02","D:\1\Git\bin\bash.exe"
+"bash.exe","24264","20016","2026/9/28 15:52:02","D:\1\Git\bin\..\usr\bin\bash.exe"
+"conhost.exe","25144","24264","2026/9/28 15:52:02","C:\WINDOWS\system32\conhost.exe"
+"bash.exe","8376","24264","2026/9/28 15:52:02","D:\1\Git\bin\..\usr\bin\bash.exe"
+"powershell.exe","14164","8376","2026/9/28 15:52:02","C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe"
+"wetype_update.exe","22204","3096","2026/9/28 15:52:03","C:\Program Files\Tencent\WeType\2.1.4.6\wetype_update.exe"
+"wetype_server.exe","13492","3096","2026/9/28 15:52:03","C:\Program Files\Tencent\WeType\2.1.4.6\wetype_server.exe"
+"conhost.exe","18820","13492","2026/9/28 15:52:03","C:\WINDOWS\system32\conhost.exe"
+"wetype_renderer.exe","23308","3096","2026/9/28 15:52:03",
+"dllhost.exe","25116","1136","2026/9/28 15:52:03","C:\WINDOWS\system32\DllHost.exe"
+"bash.exe","26208","23504","2026/9/28 15:52:04","D:\1\Git\bin\bash.exe"
+"conhost.exe","18220","26208","2026/9/28 15:52:04","C:\WINDOWS\system32\conhost.exe"

@@ -1,0 +1,38 @@
+{
+  "_comment": "Codex PreToolUse Hook 落盘参考 (Phase I.3 / T23 · 2026-10-09) · 真正生效在 ~/.codex/config.toml 的 [hooks] 段 (TOCTOU 守门) + ~/.codex/hooks.json 的 PreToolUse Write|Edit (即时拦截). 本文件仅作 policy-side 文档, 不被 codex runtime 直接读取.",
+  "thread": "01a11c33-c813-7752-9e53-b7c332d00445",
+  "supervisor": "01a11c30-6f6c-76c0-8c60-a55f3a43ff63",
+  "executor": "Claude Code 01a11c33",
+  "policy_version": "v1",
+  "policy_sha256_manifest": "D:\\AIOS\\_agent-hub\\policy\\model-policy.v1.sha256",
+  "adapter_path": "D:\\AIOS\\_agent-hub\\policy\\codex_adapter.py",
+  "adapter_self_test_log": "D:\\AIOS\\_agent-hub\\policy\\adapters\\codex_selftest.log",
+  "hooks": {
+    "config_toml_section": {
+      "_comment": "落盘位置: ~/.codex/config.toml 末尾追加. 不动现有 trust / mcp_servers / profile 配置.",
+      "section": "[hooks]",
+      "entries": [
+        {
+          "key": "pre_tool_use",
+          "value": "\"C:/Users/xinzh/.workbuddy/binaries/python/versions/3.13.12/python.exe D:/AIOS/_agent-hub/policy/codex_adapter.py\""
+        }
+      ]
+    },
+    "hooks_json_entry": {
+      "_comment": "已在 ~/.codex/hooks.json 注册(PreToolUse Write|Edit 第 2 条). 仅供交叉验证.",
+      "matcher": "Write|Edit",
+      "index": 1,
+      "command": "C:/Users/xinzh/.workbuddy/binaries/python/versions/3.13.12/python.exe D:/AIOS/_agent-hub/policy/codex_adapter.py"
+    }
+  },
+  "verifies": [
+    "Get-Content ~/.codex/config.toml | Select-String -Pattern '\\[hooks\\]'",
+    "Get-Content ~/.codex/config.toml | Select-String -Pattern 'pre_tool_use'",
+    "Get-Content ~/.codex/hooks.json | Select-String -Pattern 'codex_adapter.py'"
+  ],
+  "exit_codes": {
+    "0": "ALLOW",
+    "1": "DENY (含 prohibited provider keyword)",
+    "2": "DENY (Policy 损坏 / sha256 mismatch)"
+  }
+}

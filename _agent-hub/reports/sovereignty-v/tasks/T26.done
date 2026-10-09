@@ -1,0 +1,6 @@
+T26-DONE: 2026-10-09T09:53+08:00 by Claude Code 01a11c33 (Phase I.3 执行线程).
+落盘: `D:\AIOS\_agent-hub\policy\adapters\__init__.py` (7525 bytes · 7.5 KB).
+实现: 含 `load_all_adapters()` 函数 · enumerate 4 个 runtime (codex / claude_code / openclaw / hermes) · 验证签名一致 (UNIFIED_INTERFACE_REQUIRED) · 输出运行时状态.
+实证: `python -c "from adapters import load_all_adapters; print(load_all_adapters())"` → 4/4 loaded · 4/4 sig_ok · 4/4 audit_log 接入.
+回归: `import adapters; adapters.load_all_adapters()` 0 raise.
+红线: 不改 policy · 不写 allowed_models · 不调非 SDK.

@@ -1,0 +1,34 @@
+﻿
+ChildCmd                                                                       
+--------                                                                       
+C:\WINDOWS\system32\cmd.exe /d /s /c "C:\Users\xinzh\.workbuddy\plugins\cache\w
+orkbuddy-builtin\weixinpay\1.6.110\bin\run-node ^"C:\Users\xinzh\.workbuddy\plu
+gins\cache\workbuddy-builtin\weixinpay\1.6                                     
+C:\WINDOWS\system32\cmd.exe /d /s /c "npx ^"-y^" ^"@playwright/mcp@latest^""   
+C:\WINDOWS\system32\cmd.exe /d /s /c "D:\npm-global\mcp-server-filesystem ^"C:/
+Users/xinzh^" ^"D:/个人文件/AI^""                                                  
+C:\WINDOWS\system32\cmd.exe /d /s /c "D:\npm-global\mcp-server-memory"         
+C:\WINDOWS\system32\cmd.exe /d /s /c "D:\npm-global\mcp-server-sequential-think
+ing"                                                                           
+C:\WINDOWS\system32\cmd.exe /d /s /c "npx ^"-y^" ^"atlascloud-mcp^""           
+C:\WINDOWS\system32\cmd.exe /d /s /c playwright-mcp                            
+C:\WINDOWS\system32\cmd.exe /d /s /c atlascloud-mcp                            
+C:\WINDOWS\system32\cmd.exe /d /s /c "npx ^"-y^" ^"@playwright/mcp@latest^""   
+C:\WINDOWS\system32\cmd.exe /d /s /c "D:\npm-global\mcp-server-filesystem ^"C:/
+Users/xinzh^" ^"D:/个人文件/AI^""                                                  
+C:\WINDOWS\system32\cmd.exe /d /s /c "D:\npm-global\mcp-server-memory"         
+C:\WINDOWS\system32\cmd.exe /d /s /c "D:\npm-global\mcp-server-sequential-think
+ing"                                                                           
+C:\WINDOWS\system32\cmd.exe /d /s /c "npx ^"-y^" ^"atlascloud-mcp^""           
+C:\WINDOWS\system32\cmd.exe /d /s /c playwright-mcp                            
+C:\WINDOWS\system32\cmd.exe /d /s /c atlascloud-mcp                            
+"C:\WINDOWS\system32\cmd.exe" /d /s /c call ./scripts/launch_codex_app_tools_mc
+p.cmd ./server.mjs                                                             
+cmd.exe /e:ON /v:OFF /d /c ""C:\Users\xinzh\AppData\Roaming\npm\npx.cmd" @playw
+right/mcp --browser msedge --headless"                                         
+C:\WINDOWS\system32\cmd.exe /d /s /c playwright-mcp --browser msedge --headless
+"C:\WINDOWS\System32\cmd.exe" /d /s /c "C:\Users\xinzh\node.exe --max-old-space
+-size=4096 D:\npm-global\node_modules\openclaw\dist\index.js gateway --port 187
+92 --task-supervisor-child=772622314"                                          
+
+

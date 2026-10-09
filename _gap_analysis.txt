@@ -1,0 +1,18 @@
+﻿=== 漏掉的弹窗源扫描 (12:15) ===
+--- 1. 所有 ENABLED 的 AUMID (没被锁的弹窗源) ---
+
+PSChildName                    Enabled          LastNotif
+-----------                    -------          ---------
+com.lynxce.cn                        1 134342802496504838
+com.openai.codex                     1 134343537280564296
+OpenAI.Codex_2p2nqsd0c76g0!App       1 134343087813332301
+
+
+--- 2. HKLM 系统级通知 ---
+Microsoft.MessagingSkype_8wekyb3d8bbwe!App
+Microsoft.MessagingSkype_8wekyb3d8bbwe!SkypeVideo
+Microsoft.MessagingSkype_8wekyb3d8bbwe!x27e26f40ye031y48a6yb130yd1f20388991ax
+Microsoft.Messaging_8wekyb3d8bbwe!SkypeVide
+--- 3. WPN DB 最近 24h toast 写入 (有 Enabled=1 的 app 在发) ---
+--- 4. 浏览器通知 (Edge / Chrome) ---
+--- 5. 工作流相关应用列表 ---

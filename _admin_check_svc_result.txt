@@ -1,0 +1,4 @@
+is_admin=1
+OpenSCManager ok
+OpenService ok
+state=STOPPED, exit_code=1066, checkpoint=0, wait_hint=0

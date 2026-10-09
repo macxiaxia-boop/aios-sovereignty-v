@@ -1,0 +1,20 @@
+{
+  "id": "c30e47bf-096b-422a-9193-9d912ac9a2a5",
+  "created_at": "2026-10-09T01:41:21.450304+00:00",
+  "updated_at": "2026-10-09T01:41:21.450304+00:00",
+  "schema_version": 1,
+  "agent": "human",
+  "failure_clusters": [],
+  "capability_index": [
+    {
+      "skill_id": "human_core",
+      "use_cases": [
+        "human agent self-managed task execution",
+        "cross-agent knowledge reference (G003)"
+      ],
+      "confidence": 1.0
+    }
+  ],
+  "failure_count_total": 0,
+  "last_updated": "2026-10-09T01:41:21.450304Z"
+}

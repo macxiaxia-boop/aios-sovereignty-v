@@ -46,10 +46,10 @@
       "from": "Claude Code",
       "to": "OpenClaw",
       "type": "indirect",
-      "status": "candidate",
-      "transport": "via AIOS",
-      "health": "unbuilt",
-      "evidence": "R211 SwarmClaw 评估 works with OpenClaw gateways"
+      "status": "loopback_only",
+      "transport": "D:\\AIOS\\_agent-hub\\v2\\messages\\{inbox,outbox} (file-queue envelope v1.0)",
+      "health": "unverified",
+      "evidence": "R320.6 (2026-09-29T05:19:02Z aiosv2.py health) status correction: OpenClaw gateway 127.0.0.1:18792 is port_open=true AND GET /healthz returns 200 body={\"ok\":true,\"status\":\"live\"} (this replaces the earlier 12:47:10 UNHEALTHY entry — OpenClaw self-health probe is now healthy). HOWEVER the bridge health='unverified' is NOT because OpenClaw is unhealthy; it is unverified because no real CC↔OpenClaw v2 queue consumer round-trip has been proven — i.e. no OpenClaw process has been observed consuming v2 inbox envelopes and emitting ack/result back. v2 file-queue + envelope v1.0 protocol is implemented (v2/cli/aiosv2.py + v2/schemas/envelope.schema.json + v2/src/queue.py); test_05_protocol_loopback.py is single-process loopback; Codex↔CC two-process round-trip is VERIFIED (envelope 37531663-..., d8c5884b-..., 3a9d9f27-..., 41afc2c3-...) but OpenClaw↔v2 is NOT. R320.1 ROLLBACK FROM R320 overclaim still holds — 'built' was incorrect; 'loopback_only / unverified' is the honest state. To upgrade to 'built': one OpenClaw-side process must consume a v2 inbox envelope and emit a real ack/result back, plus that evidence log must be captured. No service-health fix is required for this bridge upgrade."
     },
     {
       "id": "br-aios-codex-relay",

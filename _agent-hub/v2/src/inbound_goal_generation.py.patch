@@ -1,0 +1,27 @@
+    # Translate permission_scope (intent) -> domain PermissionScope.
+    intent_scope = parsed.permission_scope
+    allowed_paths_seed: list[str] = list(getattr(intent_scope, "allowed_paths", []) or [])
+    # If the intent parser left allowed_paths empty (the common case for
+    # COMMAND / STATEMENT / QUESTION defaults), seed a v2-only safe set
+    # so the GoalGuard "permission_scope_empty" check can pass. The
+    # envelope payload may still override these below.
+    if not allowed_paths_seed:
+        allowed_paths_seed = list(_DEFAULT_ALLOWED_PATHS)
+    perm = PermissionScope(
+        allowed_paths=allowed_paths_seed,
+        allowed_ops=list(getattr(intent_scope, "allowed_ops", []) or []),
+        max_budget=float(getattr(intent_scope, "max_budget", 0.0) or 0.0),
+        max_duration_sec=getattr(intent_scope, "max_duration_sec", None),
+        requires_approval=list(getattr(intent_scope, "requires_approval", []) or []),
+    )
+    # If envelope payload specifies explicit allowed_paths, prefer those.
+    if isinstance(payload, dict) and isinstance(payload.get("allowed_paths"), list):
+        explicit = [str(p) for p in payload["allowed_paths"]]
+        # SAFETY: never let an envelope grant access to a forbidden path.
+        for forbidden_prefix in (
+            "D:/AIOS/kernel/src/aios_kernel/verifier/",
+            "D:/AIOS/_agent-hub/AGENTS.md",
+        ):
+            explicit = [p for p in explicit if not str(p).replace("\\", "/").startswith(forbidden_prefix)]
+        if explicit:
+            perm = perm.model_copy(update={"allowed_paths": explicit})

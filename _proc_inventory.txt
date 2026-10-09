@@ -1,0 +1,30 @@
+﻿
+Name                     Count
+----                     -----
+svchost.exe                 91
+conhost.exe                 36
+pythonw.exe                 26
+Doubao.exe                  13
+WorkBuddy.exe               12
+ChatGPT.exe                 12
+node.exe                    10
+WeChatAppEx.exe             10
+python.exe                   9
+msedge.exe                   8
+cmd.exe                      7
+msedgewebview2.exe           6
+Weixin.exe                   6
+WD Discovery.exe             5
+sandbox-cli.exe              4
+WUDFHost.exe                 3
+dllhost.exe                  2
+ToDesk.exe                   2
+tailscaled.exe               2
+taskhostw.exe                2
+AIOSSupervisor.exe           2
+AIOSSelfHeal.exe             2
+AIOSCentralCollector.exe     2
+dasHost.exe                  2
+RuntimeBroker.exe            2
+
+

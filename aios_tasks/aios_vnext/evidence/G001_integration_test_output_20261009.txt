@@ -1,0 +1,21 @@
+failure_feedback: goal=d3c6c710-62a8-4ec2-b2a0-2fade26f6a81 failed in batch: 2 validation errors for Goal
+created_at
+  Value error, datetime must be tz-aware (use datetime.now(UTC) or aios_kernel.domain.envelope.utcnow()) [type=value_error, input_value=datetime.datetime(2026, 10, 9, 1, 50, 48, 292056), input_type=datetime]
+    For further information visit https://errors.pydantic.dev/2.13/v/value_error
+updated_at
+  Value error, datetime must be tz-aware (use datetime.now(UTC) or aios_kernel.domain.envelope.utcnow()) [type=value_error, input_value=datetime.datetime(2026, 10, 9, 1, 50, 48, 292060), input_type=datetime]
+    For further information visit https://errors.pydantic.dev/2.13/v/value_error
+failure_feedback: goal=9e23d77d-600f-45dc-853a-35c78c11448a failed in batch: 2 validation errors for Goal
+created_at
+  Value error, datetime must be tz-aware (use datetime.now(UTC) or aios_kernel.domain.envelope.utcnow()) [type=value_error, input_value=datetime.datetime(2026, 10, 9, 1, 50, 48, 292221), input_type=datetime]
+    For further information visit https://errors.pydantic.dev/2.13/v/value_error
+updated_at
+  Value error, datetime must be tz-aware (use datetime.now(UTC) or aios_kernel.domain.envelope.utcnow()) [type=value_error, input_value=datetime.datetime(2026, 10, 9, 1, 50, 48, 292222), input_type=datetime]
+    For further information visit https://errors.pydantic.dev/2.13/v/value_error
+Using DB: sqlite+aiosqlite:///D:\UsersTemp\aios_g001_7qh2tyqd/aios_kernel.db
+inserted g1=d3c6c710-62a8-4ec2-b2a0-2fade26f6a81 g2=9e23d77d-600f-45dc-853a-35c78c11448a
+clusters: 1 occ=5
+results: per_goal added counts = [('d3c6c710-62a8-4ec2-b2a0-2fade26f6a81', 0), ('9e23d77d-600f-45dc-853a-35c78c11448a', 0)]
+clusters applied to 2 active goals
+goal 9e23d77d-600f-45dc-853a-35c78c11448a failure_modes in DB: []
+goal d3c6c710-62a8-4ec2-b2a0-2fade26f6a81 failure_modes in DB: []

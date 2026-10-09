@@ -1,0 +1,12 @@
+{
+  "executed_at": "2026-10-08T17:42:45.1213699Z",
+  "actor": "Codex supervisor",
+  "action": "deleted three newly-created Phase-3 ad-hoc helper scripts after read-only verification",
+  "paths": [
+    "D:\\AIOS\\_agent-hub\\scripts\\_phase3_pre_hashes.py",
+    "D:\\AIOS\\_agent-hub\\scripts\\_phase3_move_reversible.py",
+    "D:\\AIOS\\_agent-hub\\scripts\\_phase3_evidence_builder.py"
+  ],
+  "all_absent": true,
+  "reason": "Central SSOT prohibits new ad-hoc patch/debug scripts; no active references found."
+}

@@ -1,0 +1,119 @@
+﻿=== 所有 cmd/powershell + 父进程 ===
+
+  PID Name           Cmd                                                       
+  --- ----           ---                                                       
+13944 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4                   
+16236 pythonw.exe    "C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-
+                     windows-x86_64-none\py                                    
+16296 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-w
+                     indows-x86_64-none\pyt                                    
+18280 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-w
+                     indows-x86_64-none\pyt                                    
+19272 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4                   
+19596 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-w
+                     indows-x86_64-none\pyt                                    
+21744 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4                   
+21912 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4                   
+ 4472 pythonw.exe    "D:\Tools\TikTokDownloader\.venv-decompose\Scripts\pythonw
+                     .exe" -u D:\Tools\TikT                                    
+19656 pythonw.exe    "C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-
+                     windows-x86_64-none\py                                    
+21576 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-w
+                     indows-x86_64-none\pyt                                    
+ 2348 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-w
+                     indows-x86_64-none\pyt                                    
+ 2652 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-w
+                     indows-x86_64-none\pyt                                    
+ 9036 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-w
+                     indows-x86_64-none\pyt                                    
+27536 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-w
+                     indows-x86_64-none\pyt                                    
+10036 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-w
+                     indows-x86_64-none\pyt                                    
+28532 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-w
+                     indows-x86_64-none\pyt                                    
+25848 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-w
+                     indows-x86_64-none\pyt                                    
+ 1424 cmd.exe        C:\WINDOWS\system32\cmd.exe /d /s /c "C:\Users\xinzh\.work
+                     buddy\plugins\cache\wo                                    
+13152 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4                   
+ 5956 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4                   
+ 8156 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4                   
+22068 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-w
+                     indows-x86_64-none\pyt                                    
+22700 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4                   
+24308 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-w
+                     indows-x86_64-none\pyt                                    
+29288 cmd.exe        "C:\WINDOWS\system32\cmd.exe" /d /s /c call ./scripts/laun
+                     ch_codex_app_tools_mcp                                    
+29116 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4                   
+10608 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4                   
+29640 cmd.exe        cmd.exe /e:ON /v:OFF /d /c ""C:\Users\xinzh\.workbuddy\bin
+                     aries\node\versions\22                                    
+13672 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4                   
+28140 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4                   
+23768 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4                   
+ 7364 python.exe     "C:\Users\xinzh\AppData\Roaming\uv\tools\windows-mcp\Scrip
+                     ts\python.exe" "C:\Use                                    
+13348 python.exe     "C:\Users\xinzh\AppData\Roaming\uv\tools\windows-mcp\Scrip
+                     ts\python.exe" "C:\Use                                    
+ 3144 cmd.exe        C:\WINDOWS\system32\cmd.exe /d /s /c playwright-mcp --brow
+                     ser msedge --headless                                     
+28028 cmd.exe        C:\WINDOWS\system32\cmd.exe /d /s /c "C:\Users\xinzh\.work
+                     buddy\plugins\cache\wo                                    
+26336 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4                   
+11844 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4                   
+14600 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4                   
+24648 cmd.exe        C:\WINDOWS\system32\cmd.exe /d /s /c "C:\Users\xinzh\.work
+                     buddy\plugins\cache\wo                                    
+ 8992 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4                   
+23056 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4                   
+26240 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4                   
+25408 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4                   
+10168 cmd.exe        C:\WINDOWS\system32\cmd.exe /d /s /c "C:\Users\xinzh\.work
+                     buddy\plugins\cache\wo                                    
+27792 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4                   
+28540 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4                   
+12312 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4                   
+ 9516 pwsh.exe       "C:\Users\xinzh\.cache\codex-runtimes\codex-primary-runtim
+                     e\dependencies\native\                                    
+22200 python.exe     C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-w
+                     indows-x86_64-none\pyt                                    
+24684 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4                   
+27436 cmd.exe        C:\WINDOWS\system32\cmd.exe /d /s /c "npx ^"-y^" ^"@playwr
+                     ight/mcp@latest^""                                        
+28836 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4                   
+19976 cmd.exe        C:\WINDOWS\system32\cmd.exe /d /s /c "D:\npm-global\mcp-se
+                     rver-filesystem ^"C:/U                                    
+28476 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4                   
+ 2988 cmd.exe        C:\WINDOWS\system32\cmd.exe /d /s /c "D:\npm-global\mcp-se
+                     rver-memory"                                              
+26280 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4                   
+ 9652 cmd.exe        C:\WINDOWS\system32\cmd.exe /d /s /c "D:\npm-global\mcp-se
+                     rver-sequential-thinki                                    
+ 9300 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4                   
+14256 cmd.exe        C:\WINDOWS\system32\cmd.exe /d /s /c playwright-mcp       
+13112 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4                   
+25076 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4                   
+ 7432 conhost.exe    \\?\C:\WINDOWS\system32\conhost.exe --headless --width 80 
+                     --height 30 --signal 0                                    
+13056 powershell.exe C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE 
+                     -NoProfile -NonInterac                                    
+
+
+=== 谁 spawn 最多 cmd/powershell (TOP 10 父进程) ===
+
+ParentPID Count
+--------- -----
+2884          4
+26732         3
+27152         3
+10168         1
+24400         1
+20436         1
+29156         1
+8300          1
+25520         1
+6528          1
+
+

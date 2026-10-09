@@ -1,0 +1,212 @@
+﻿[
+    {
+        "Status":  "Unknown",
+        "Class":  "Net",
+        "FriendlyName":  "Microsoft Wi-Fi Direct Virtual Adapter",
+        "InstanceId":  "{5D624F94-8850-40C3-A3FA-A4FD2080BAF3}\\VWIFIMP_WFD\\6\u00268690082\u00260\u002611",
+        "Problem":  45
+    },
+    {
+        "Status":  "Unknown",
+        "Class":  "Net",
+        "FriendlyName":  "Microsoft Wi-Fi Direct Virtual Adapter #2",
+        "InstanceId":  "{5D624F94-8850-40C3-A3FA-A4FD2080BAF3}\\VWIFIMP_WFD\\6\u00268690082\u00260\u002613",
+        "Problem":  45
+    },
+    {
+        "Status":  "Unknown",
+        "Class":  "Net",
+        "FriendlyName":  "Microsoft Wi-Fi Direct Virtual Adapter #11",
+        "InstanceId":  "{5D624F94-8850-40C3-A3FA-A4FD2080BAF3}\\VWIFIMP_WFD\\7\u00262D86F647\u00260\u002624",
+        "Problem":  45
+    },
+    {
+        "Status":  "Unknown",
+        "Class":  "Net",
+        "FriendlyName":  "Microsoft Wi-Fi Direct Virtual Adapter #12",
+        "InstanceId":  "{5D624F94-8850-40C3-A3FA-A4FD2080BAF3}\\VWIFIMP_WFD\\7\u00262D86F647\u00260\u002625",
+        "Problem":  45
+    },
+    {
+        "Status":  "Unknown",
+        "Class":  "Net",
+        "FriendlyName":  "Realtek RTL8188EU Wireless LAN 802.11n USB 2.0 Network Adapter #2",
+        "InstanceId":  "USB\\VID_0BDA\u0026PID_8179\\6\u002628AC3298\u00260\u00261",
+        "Problem":  45
+    },
+    {
+        "Status":  "Unknown",
+        "Class":  "Net",
+        "FriendlyName":  "Microsoft Hosted Network Virtual Adapter #3",
+        "InstanceId":  "{5D624F94-8850-40C3-A3FA-A4FD2080BAF3}\\VWIFIMP_SAP\\7\u00262D86F647\u00260\u002623",
+        "Problem":  45
+    },
+    {
+        "Status":  "Unknown",
+        "Class":  "Net",
+        "FriendlyName":  "Microsoft Wi-Fi Direct Virtual Adapter #3",
+        "InstanceId":  "{5D624F94-8850-40C3-A3FA-A4FD2080BAF3}\\VWIFIMP_WFD\\7\u002636D43EBB\u00260\u002614",
+        "Problem":  45
+    },
+    {
+        "Status":  "Unknown",
+        "Class":  "Net",
+        "FriendlyName":  "Microsoft Wi-Fi Direct Virtual Adapter #4",
+        "InstanceId":  "{5D624F94-8850-40C3-A3FA-A4FD2080BAF3}\\VWIFIMP_WFD\\7\u002636D43EBB\u00260\u002615",
+        "Problem":  45
+    },
+    {
+        "Status":  "Unknown",
+        "Class":  "Net",
+        "FriendlyName":  "Microsoft Wi-Fi Direct Virtual Adapter #13",
+        "InstanceId":  "{5D624F94-8850-40C3-A3FA-A4FD2080BAF3}\\VWIFIMP_WFD\\7\u00261C838469\u00260\u002627",
+        "Problem":  45
+    },
+    {
+        "Status":  "Unknown",
+        "Class":  "Net",
+        "FriendlyName":  "Microsoft Wi-Fi Direct Virtual Adapter #14",
+        "InstanceId":  "{5D624F94-8850-40C3-A3FA-A4FD2080BAF3}\\VWIFIMP_WFD\\7\u00261C838469\u00260\u002628",
+        "Problem":  45
+    },
+    {
+        "Status":  "Unknown",
+        "Class":  "Net",
+        "FriendlyName":  "Microsoft Hosted Network Virtual Adapter #4",
+        "InstanceId":  "{5D624F94-8850-40C3-A3FA-A4FD2080BAF3}\\VWIFIMP_SAP\\7\u00261C838469\u00260\u002626",
+        "Problem":  45
+    },
+    {
+        "Status":  "Unknown",
+        "Class":  "Net",
+        "FriendlyName":  "Microsoft Hosted Network Virtual Adapter",
+        "InstanceId":  "{5D624F94-8850-40C3-A3FA-A4FD2080BAF3}\\VWIFIMP_SAP\\6\u00268690082\u00260\u002612",
+        "Problem":  45
+    },
+    {
+        "Status":  "Unknown",
+        "Class":  "Net",
+        "FriendlyName":  "Realtek RTL8188EU Wireless LAN 802.11n USB 2.0 Network Adapter #3",
+        "InstanceId":  "USB\\VID_0BDA\u0026PID_8179\\5\u00262C359F98\u00260\u00268",
+        "Problem":  45
+    },
+    {
+        "Status":  "Unknown",
+        "Class":  "Net",
+        "FriendlyName":  "Microsoft Wi-Fi Direct Virtual Adapter #17",
+        "InstanceId":  "{5D624F94-8850-40C3-A3FA-A4FD2080BAF3}\\VWIFIMP_WFD\\7\u002627CE0DD7\u00260\u002633",
+        "Problem":  45
+    },
+    {
+        "Status":  "Unknown",
+        "Class":  "Net",
+        "FriendlyName":  "Microsoft Wi-Fi Direct Virtual Adapter #18",
+        "InstanceId":  "{5D624F94-8850-40C3-A3FA-A4FD2080BAF3}\\VWIFIMP_WFD\\7\u002627CE0DD7\u00260\u002634",
+        "Problem":  45
+    },
+    {
+        "Status":  "Unknown",
+        "Class":  "Net",
+        "FriendlyName":  "Bluetooth Device (Personal Area Network) #2",
+        "InstanceId":  "BTH\\MS_BTHPAN\\7\u00261D4CAC78\u00260\u00262",
+        "Problem":  45
+    },
+    {
+        "Status":  "Unknown",
+        "Class":  "Net",
+        "FriendlyName":  "Microsoft Hosted Network Virtual Adapter #6",
+        "InstanceId":  "{5D624F94-8850-40C3-A3FA-A4FD2080BAF3}\\VWIFIMP_SAP\\7\u002627CE0DD7\u00260\u002632",
+        "Problem":  45
+    },
+    {
+        "Status":  "Unknown",
+        "Class":  "Net",
+        "FriendlyName":  "Microsoft Wi-Fi Direct Virtual Adapter #7",
+        "InstanceId":  "{5D624F94-8850-40C3-A3FA-A4FD2080BAF3}\\VWIFIMP_WFD\\6\u002638526FC6\u00260\u002618",
+        "Problem":  45
+    },
+    {
+        "Status":  "Unknown",
+        "Class":  "Net",
+        "FriendlyName":  "Microsoft Wi-Fi Direct Virtual Adapter #8",
+        "InstanceId":  "{5D624F94-8850-40C3-A3FA-A4FD2080BAF3}\\VWIFIMP_WFD\\6\u002638526FC6\u00260\u002619",
+        "Problem":  45
+    },
+    {
+        "Status":  "Unknown",
+        "Class":  "Net",
+        "FriendlyName":  "Realtek 8188GU Wireless LAN 802.11n USB NIC",
+        "InstanceId":  "USB\\VID_0BDA\u0026PID_B711\\00E04CB82101",
+        "Problem":  45
+    },
+    {
+        "Status":  "Unknown",
+        "Class":  "Net",
+        "FriendlyName":  "Microsoft Wi-Fi Direct Virtual Adapter #5",
+        "InstanceId":  "{5D624F94-8850-40C3-A3FA-A4FD2080BAF3}\\VWIFIMP_WFD\\7\u0026DC2F592\u00260\u002616",
+        "Problem":  45
+    },
+    {
+        "Status":  "Unknown",
+        "Class":  "Net",
+        "FriendlyName":  "Microsoft Wi-Fi Direct Virtual Adapter #6",
+        "InstanceId":  "{5D624F94-8850-40C3-A3FA-A4FD2080BAF3}\\VWIFIMP_WFD\\7\u0026DC2F592\u00260\u002617",
+        "Problem":  45
+    },
+    {
+        "Status":  "Unknown",
+        "Class":  "Net",
+        "FriendlyName":  "Microsoft Wi-Fi Direct Virtual Adapter #9",
+        "InstanceId":  "{5D624F94-8850-40C3-A3FA-A4FD2080BAF3}\\VWIFIMP_WFD\\7\u00261138FAFB\u00260\u002621",
+        "Problem":  45
+    },
+    {
+        "Status":  "Unknown",
+        "Class":  "Net",
+        "FriendlyName":  "Microsoft Wi-Fi Direct Virtual Adapter #10",
+        "InstanceId":  "{5D624F94-8850-40C3-A3FA-A4FD2080BAF3}\\VWIFIMP_WFD\\7\u00261138FAFB\u00260\u002622",
+        "Problem":  45
+    },
+    {
+        "Status":  "Unknown",
+        "Class":  "Net",
+        "FriendlyName":  "Microsoft Hosted Network Virtual Adapter #2",
+        "InstanceId":  "{5D624F94-8850-40C3-A3FA-A4FD2080BAF3}\\VWIFIMP_SAP\\7\u00261138FAFB\u00260\u002620",
+        "Problem":  45
+    },
+    {
+        "Status":  "Unknown",
+        "Class":  "Net",
+        "FriendlyName":  "Intel(R) Ethernet Connection (17) I219-V",
+        "InstanceId":  "PCI\\VEN_8086\u0026DEV_1A1D\u0026SUBSYS_00008086\u0026REV_11\\3\u002611583659\u00260\u0026FE",
+        "Problem":  45
+    },
+    {
+        "Status":  "Unknown",
+        "Class":  "Net",
+        "FriendlyName":  "Microsoft Wi-Fi Direct Virtual Adapter #15",
+        "InstanceId":  "{5D624F94-8850-40C3-A3FA-A4FD2080BAF3}\\VWIFIMP_WFD\\7\u0026223C6CD9\u00260\u002630",
+        "Problem":  45
+    },
+    {
+        "Status":  "Unknown",
+        "Class":  "Net",
+        "FriendlyName":  "Microsoft Wi-Fi Direct Virtual Adapter #16",
+        "InstanceId":  "{5D624F94-8850-40C3-A3FA-A4FD2080BAF3}\\VWIFIMP_WFD\\7\u0026223C6CD9\u00260\u002631",
+        "Problem":  45
+    },
+    {
+        "Status":  "Unknown",
+        "Class":  "Net",
+        "FriendlyName":  "Microsoft Hosted Network Virtual Adapter #5",
+        "InstanceId":  "{5D624F94-8850-40C3-A3FA-A4FD2080BAF3}\\VWIFIMP_SAP\\7\u0026223C6CD9\u00260\u002629",
+        "Problem":  45
+    },
+    {
+        "Status":  "Unknown",
+        "Class":  "Net",
+        "FriendlyName":  "Realtek RTL8188EU Wireless LAN 802.11n USB 2.0 Network Adapter",
+        "InstanceId":  "USB\\VID_0BDA\u0026PID_8179\\6\u00262C19EAB0\u00260\u00261",
+        "Problem":  45
+    }
+]

@@ -1,0 +1,6 @@
+T23-DONE: 2026-10-09T09:53+08:00 by Claude Code 01a11c33 (Phase I.3 执行线程).
+落盘: `D:\AIOS\_agent-hub\policy\hooks\codex_pre_tool_use_hook.json` (1853 bytes · sha256 computed via Get-FileHash).
+注册: `~/.codex/config.toml` [hooks] 段新增 pre_tool_use 指向 `D:\AIOS\_agent-hub\policy\codex_adapter.py` (PreToolUse Write|Edit hook).
+验证: `Get-Content ~/.codex/config.toml` 可见 [hooks] 段 + pre_tool_use = codex_adapter.py 引用。
+挂钩语义: 写盘前 exit 0 (allow) 或 exit 1 (deny) · 拒绝原因写 `D:\AIOS\_agent-hub\audit\adapter-rejects.log` JSONL。
+红线: 不动 trust / mcp_servers / profile 既有段 · 仅追加 [hooks]. 5 红线全过 (NO_FABRICATE_MODEL_ID/UNIFIED_INTERFACE_REQUIRED/NO_AUTO_FALLBACK_IN_ADAPTER/NO_AUTO_MODIFY_POLICY/NO_SILENT_DROP_DENY).

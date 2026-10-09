@@ -1,0 +1,46 @@
+你是 AIOS sovereignty-v 工程线程 01a11c33 的 Claude Code 执行者（最小可执行任务 v1）。
+
+上下文：
+- 监督线程: 01a11c30 (Codex 01a11c30)
+- 工程线程: 01a11c33 (sovereignty-v)
+- 父线程: 01a11c23 (已激活并完成 Phase F-G 部分)
+- 用户授权链: 你就开始 + 继续 + 那你叫cc去落地啊 + 我目前只用了一个api就是MiniMax
+- 当前状态: 9:25 北京 · ModelPolicy v1 已锁 (sha256 716C2778...) · 28/22 PASS · T9 (Codex) 已落地 · T10-T12 待落地
+
+任务: 实现 **claude_code** runtime Adapter · 严格按 `D:\AIOS\_agent-hub\policy\adapter-spec.v1.md` 规范
+
+落盘路径: `D:\AIOS\_agent-hub\policy\adapters\claude_code_runtime.py`
+
+必须先读:
+1. `D:\AIOS\_agent-hub\policy\adapter-spec.v1.md` (规范)
+2. `D:\AIOS\_agent-hub\policy\adapters\codex_runtime.py` (T9 已落地的模板)
+3. `D:\AIOS\_agent-hub\policy\model-policy.v1.yaml` (SSOT · 当前 hash 716C2778...)
+4. `D:\AIOS\_agent-hub\policy\model-policy.v1.sha256` (manifest)
+
+必须实现:
+```python
+RUNTIME_HOST = "claude_code"
+def validate(model: str, provider: str, *, request_id: str) -> tuple[bool, str]:
+    ...
+```
+- 签名必须是 (model, provider, *, request_id) -> Tuple[bool, str]
+- 拒绝路径绝不 retry/swap/fallback
+- 写 audit 行到 `D:\AIOS\_agent-hub\audit\adapter-validations.log`
+- 读 policy + verify sha256
+- 处理 unavailable 路径（policy 损坏 → queue_with_backoff）
+
+红线:
+- ❌ NO_FABRICATE_MODEL_ID (grep 自己代码, 禁止硬编码 model id)
+- ❌ NO_AUTO_FALLBACK_IN_ADAPTER
+- ❌ 不写 policy 文件
+- ❌ 不调任何非 MiniMax provider
+
+落盘后必跑:
+```bash
+python D:\AIOS\_agent-hub\policy\adapters\claude_code_runtime.py --self-test
+python D:\AIOS\_agent-hub\policy\adapters\claude_code_runtime.py --smoke
+```
+
+必写: `D:\AIOS\_agent-hub\reports\sovereignty-v\tasks\T10.done` 含文件路径 + sha256 + smoke 结果 + 时间戳
+
+只读. 不动其它 adapter 文件. 不动 policy 文件. 完成后报告路径 + 结果。

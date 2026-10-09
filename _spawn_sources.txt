@@ -1,0 +1,112 @@
+﻿
+ProcessId ParentProcessId Name           CmdLine                               
+--------- --------------- ----           -------                               
+    24152           19784 cmd.exe        C:\WINDOWS\system32\cmd.exe /d /s /c "
+                                         C:\Users\xinzh\.workbuddy\plugins\cach
+                                         e\workbuddy-builtin\weixinpay\1.6.110\
+                                         bin\run-node ^"C:\Users\xinzh\.workbud
+                                         dy\plugins\cache\workbuddy-builtin\wei
+                                         xinpay\1.6                            
+     2396           19848 cmd.exe        C:\WINDOWS\system32\cmd.exe /d /s /c "
+                                         "C:\Users\xinzh\.codex\plugins\cache\o
+                                         penai-bundled\chrome\latest\extension-
+                                         host\windows\x64\extension-host.exe" c
+                                         hrome-extension://odlomjlbamekndcpllcn
+                                         ffbgeohgkm                            
+    28540           14960 powershell.exe C:\WINDOWS\System32\WindowsPowerShell\
+                                         v1.0\powershell.exe -noexit -command "
+                                         try { . \"c:\Users\xinzh\AppData\Local
+                                         \Programs\Microsoft VS Code\04c0d99f4f
+                                         \resources\app\out\vs\workbench\contri
+                                         b\terminal                            
+     6108           26932 cmd.exe        C:\WINDOWS\system32\cmd.exe /d /s /c "
+                                         npx ^"-y^" ^"@playwright/mcp@latest^""
+    34076           26932 cmd.exe        C:\WINDOWS\system32\cmd.exe /d /s /c "
+                                         D:\npm-global\mcp-server-filesystem ^"
+                                         C:/Users/xinzh^" ^"D:/个人文件/AI^""      
+    19052           26932 cmd.exe        C:\WINDOWS\system32\cmd.exe /d /s /c "
+                                         D:\npm-global\mcp-server-memory"      
+    27028           26932 cmd.exe        C:\WINDOWS\system32\cmd.exe /d /s /c "
+                                         D:\npm-global\mcp-server-sequential-th
+                                         inking"                               
+    33936           26932 cmd.exe        C:\WINDOWS\system32\cmd.exe /d /s /c "
+                                         npx ^"-y^" ^"atlascloud-mcp^""        
+    12780           11748 cmd.exe        C:\WINDOWS\system32\cmd.exe /d /s /c p
+                                         laywright-mcp                         
+    23640           25040 cmd.exe        C:\WINDOWS\system32\cmd.exe /d /s /c a
+                                         tlascloud-mcp                         
+    34920           18780 cmd.exe        C:\WINDOWS\system32\cmd.exe /d /s /c "
+                                         npx ^"-y^" ^"@playwright/mcp@latest^""
+    21340           18780 cmd.exe        C:\WINDOWS\system32\cmd.exe /d /s /c "
+                                         D:\npm-global\mcp-server-filesystem ^"
+                                         C:/Users/xinzh^" ^"D:/个人文件/AI^""      
+    19812           18780 cmd.exe        C:\WINDOWS\system32\cmd.exe /d /s /c "
+                                         D:\npm-global\mcp-server-memory"      
+    29776           18780 cmd.exe        C:\WINDOWS\system32\cmd.exe /d /s /c "
+                                         D:\npm-global\mcp-server-sequential-th
+                                         inking"                               
+    34360           18780 cmd.exe        C:\WINDOWS\system32\cmd.exe /d /s /c "
+                                         npx ^"-y^" ^"atlascloud-mcp^""        
+     8796           19800 cmd.exe        C:\WINDOWS\system32\cmd.exe /d /s /c p
+                                         laywright-mcp                         
+    14296           28428 cmd.exe        C:\WINDOWS\system32\cmd.exe /d /s /c a
+                                         tlascloud-mcp                         
+     2184           14960 powershell.exe C:\WINDOWS\System32\WindowsPowerShell\
+                                         v1.0\powershell.exe -NoProfile -Execut
+                                         ionPolicy Bypass -Command "Import-Modu
+                                         le 'D:\OpenClaw\VSCodeConfig\extension
+                                         s\ms-vscode.powershell-2025.4.0\module
+                                         s\PowerShe                            
+    12088           25808 cmd.exe        "C:\WINDOWS\system32\cmd.exe" /d /s /c
+                                          call ./scripts/launch_codex_app_tools
+                                         _mcp.cmd ./server.mjs                 
+    18628           25808 cmd.exe        cmd.exe /e:ON /v:OFF /d /c ""C:\Users\
+                                         xinzh\AppData\Roaming\npm\npx.cmd" @pl
+                                         aywright/mcp --browser msedge --headle
+                                         ss"                                   
+    18216           20988 cmd.exe        C:\WINDOWS\system32\cmd.exe /d /s /c p
+                                         laywright-mcp --browser msedge --headl
+                                         ess                                   
+    15168           25808 cmd.exe        "C:\WINDOWS\system32\cmd.exe" /d /s /c
+                                          call ./scripts/launch_codex_app_tools
+                                         _mcp.cmd ./server.mjs                 
+    28280           25808 cmd.exe        cmd.exe /e:ON /v:OFF /d /c ""C:\Users\
+                                         xinzh\AppData\Roaming\npm\npx.cmd" @pl
+                                         aywright/mcp --browser msedge --headle
+                                         ss"                                   
+     8088            2216 powershell.exe "powershell.exe" -NoProfile -Execution
+                                         Policy Bypass -File D:\AIOS\_AIOSWatch
+                                         dogAliveCheck_v3.ps1                  
+    14744            7688 cmd.exe        cmd.exe /c C:\Users\xinzh\.openclaw\ga
+                                         teway.cmd                             
+    34152            2216 cmd.exe        C:\WINDOWS\SYSTEM32\cmd.exe /c ""D:\AI
+                                         OS\_openclaw_18792_watchdog_runner.cmd
+                                         ""                                    
+     3512           32468 powershell.exe C:\WINDOWS\System32\WindowsPowerShell\
+                                         v1.0\powershell.exe -NoProfile -Comman
+                                         d "                                   
+                                         '---AFTER 70s---'                     
+                                         Test-NetConnection 127.0.0.1 -Port 187
+                                         92 -InformationLevel Quiet -WarningAct
+                                         ion SilentlyContinue                  
+                                         '---O                                 
+    12512           35236 powershell.exe                                       
+    34348           21776 powershell.exe C:\WINDOWS\System32\WindowsPowerShell\
+                                         v1.0\powershell.EXE -NoProfile -NonInt
+                                         eractive -Command "if (-not (Get-Varia
+                                         ble -Name CODEBUDDY_SAFE_DELETE_PS_REA
+                                         DY -Scope Global -ErrorAction Silently
+                                         Continue))                            
+    15192            6640 tasklist.exe   tasklist /FI "IMAGENAME eq WorkBuddy.e
+                                         xe" /FO CSV /NH                       
+    21880            2148 powershell.exe powershell -NoProfile -Command "Get-Pr
+                                         ocess -Name node -ErrorAction Silently
+                                         Continue | Where-Object { (Get-CimInst
+                                         ance Win32_Process -Filter \\\"Process
+                                         Id=$($_.Id)\\\").CommandLine -match 'o
+                                         penclaw' }                            
+    11972            2888 cmd.exe        C:\WINDOWS\system32\cmd.exe /c D:\个人文件
+                                         \AI\Operator\aios_tools\bin\codex.bat 
+                                         --version                             
+
+

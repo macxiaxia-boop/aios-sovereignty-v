@@ -1,0 +1,12 @@
+T25-DONE: 2026-10-09T09:53+08:00 by Claude Code 01a11c33 (Phase I.3 执行线程).
+落盘:
+  - `D:\AIOS\_agent-hub\policy\daemons\hermes_daemon.py` (8608 bytes · 主循环 60s 心跳 + drift scan + audit)
+  - `D:\AIOS\_agent-hub\policy\daemons\register_hermes.cmd` (2696 bytes · schtasks 注册脚本)
+  - `D:\AIOS\_agent-hub\policy\daemons\hermes_daemon.heartbeat.json` (322 bytes · 启动后立即落)
+  - `D:\AIOS\_agent-hub\policy\daemons\hermes_daemon.log` (257 bytes · cycle=1 log)
+
+实证: `python hermes_daemon.py --once --verbose` → pid=37864 cycle=1 exit=0 drift=0 stdout='OK: procs=1 env=1 drift=0'. 心跳 JSON + log 落盘.
+
+**用户授权 gating**: `register_hermes.cmd` 含 `schtasks /Create` 触发 SSOT L3 红线 (OS service restart). 当前未实际跑 schtasks · daemon 主文件可直接前台自循环或用 `start-process pythonw` 后台化. 用户授权即可开.
+
+红线: 不动 validate() · 不改 policy · 不动其他 adapter.

@@ -1,0 +1,2 @@
+﻿"Consumer","CreatorSID","DeliverSynchronously","DeliveryQoS","Filter","MaintainSecurityContext","SlowDownProviders","PSComputerName"
+"NTEventLogEventConsumer (Name = ""SCM Event Log Consumer"")","System.Byte[]","False",,"__EventFilter (Name = ""SCM Event Log Filter"")","False","False",

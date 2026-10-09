@@ -1,0 +1,358 @@
+{
+  "contract": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_CROSS_SESSION_TEST_CONTRACT_20261009.md",
+  "executed_at_utc": "2026-10-08T17:49:07Z",
+  "actor": "Claude Code 2.1.285 (MiniMax-M3) — executor",
+  "totals": {
+    "tests": 18,
+    "PASS": 17,
+    "DEFERRED": 1,
+    "FAIL": 0
+  },
+  "tests": [
+    {
+      "id": "T01",
+      "name": "Policy loader produces ACTIVE policy from fresh files",
+      "verdict": "PASS",
+      "evidence": "D:\\AIOS\\_agent-hub\\policy\\product_strategy.v1.json",
+      "reason": "policy file parses, sidecar hash matches, schema validates, identity fields OK",
+      "details": {
+        "policy_path": "D:\\AIOS\\_agent-hub\\policy\\product_strategy.v1.json",
+        "sha256": "270B9A02C76D0F9F904E3E1F9693CDE167C63D96B02B45DA3B8D29D7971FED74",
+        "reason_code": "",
+        "errors": []
+      },
+      "ts": 1791481746.9353068
+    },
+    {
+      "id": "T02",
+      "name": "Policy SHA-256 sidecar matches on-disk content",
+      "verdict": "PASS",
+      "evidence": "D:\\AIOS\\_agent-hub\\policy\\product_strategy.v1.sha256",
+      "reason": "file hash matches sidecar hash (subprocess-verified)",
+      "details": {
+        "file": "270B9A02C76D0F9F904E3E1F9693CDE167C63D96B02B45DA3B8D29D7971FED74",
+        "sidecar": "270B9A02C76D0F9F904E3E1F9693CDE167C63D96B02B45DA3B8D29D7971FED74",
+        "match": true
+      },
+      "ts": 1791481746.9974658
+    },
+    {
+      "id": "T03",
+      "name": "Strategy gate uses STRUCTURED decision (not bare keyword)",
+      "verdict": "PASS",
+      "evidence": "D:\\AIOS\\_agent-hub\\v2\\src\\goal_guard_hook.py",
+      "reason": "non-structured-field alias hit WARN-only; structured-field alias hit BLOCK",
+      "details": {
+        "bare_text_events": [],
+        "structured_events": [
+          "STRATEGY_DRIFT_DETECTED",
+          "STRATEGY_DRIFT_DETECTED"
+        ],
+        "out_allowed": true,
+        "in_allowed": false
+      },
+      "ts": 1791481746.998806
+    },
+    {
+      "id": "T04",
+      "name": "Strategy gate emits all 6 policy.gate_event_types",
+      "verdict": "PASS",
+      "evidence": "D:\\AIOS\\_agent-hub\\v2\\tests\\test_strategy_gate.py",
+      "reason": "all 6 gate_event_types reachable",
+      "details": {
+        "produced": {
+          "RETIRED_REQUIREMENT_REACTIVATED": true,
+          "STRATEGY_DRIFT_DETECTED": true,
+          "DEPRECATED_ASSET_REFERENCED": true,
+          "INVALID_TASK_GENERATED": true,
+          "ARCHIVE_LEAK_DETECTED": true,
+          "POLICY_GATE_REJECTED": true
+        },
+        "missing": [],
+        "policy_event_types": [
+          "STRATEGY_DRIFT_DETECTED",
+          "RETIRED_REQUIREMENT_REACTIVATED",
+          "DEPRECATED_ASSET_REFERENCED",
+          "INVALID_TASK_GENERATED",
+          "ARCHIVE_LEAK_DETECTED",
+          "POLICY_GATE_REJECTED"
+        ]
+      },
+      "ts": 1791481746.9998057
+    },
+    {
+      "id": "T05",
+      "name": "Scanner source classification is STRUCTURED (not bare keyword)",
+      "verdict": "PASS",
+      "evidence": "D:\\AIOS\\_agent-hub\\policy\\contamination_scanner.py",
+      "reason": "all 5 sub-path surfaces classified correctly",
+      "details": {
+        "cases": {
+          "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\memory\\x.md": {
+            "expected": "quarantine",
+            "got": "quarantine",
+            "ok": true
+          },
+          "D:\\AIOS\\AIOS_SOURCE_OF_TRUTH_FINAL\\roadmap\\P3-01.md": {
+            "expected": "read_only",
+            "got": "read_only",
+            "ok": true
+          },
+          "D:\\AIOS\\AIOS_RECONSTRUCTION\\recon.md": {
+            "expected": "read_only",
+            "got": "read_only",
+            "ok": true
+          },
+          "D:\\AIOS\\kernel\\src\\aios_kernel\\goal.py": {
+            "expected": "active",
+            "got": "active",
+            "ok": true
+          },
+          "D:\\AIOS\\_out\\tmp\\foo.txt": {
+            "expected": "inert",
+            "got": "inert",
+            "ok": true
+          }
+        },
+        "cloudtech_root_path_observation": {
+          "D:\\CloudTech-Portable\\foo.txt": "active",
+          "D:\\CloudTech-Vault\\foo.txt": "active"
+        },
+        "note": "CloudTech-* root paths classify as 'active' (marker regex requires sub-segment)"
+      },
+      "ts": 1791481747.0006258
+    },
+    {
+      "id": "T06",
+      "name": "Scanner content-aware classification emits ACTIVE_VIOLATION",
+      "verdict": "PASS",
+      "evidence": "D:\\UsersTemp\\cross_session_T06_ee444c03.md",
+      "reason": "active loadable file with retired tokens -> ACTIVE_VIOLATION finding",
+      "details": {
+        "classifications": [
+          "ACTIVE_VIOLATION",
+          "ACTIVE_VIOLATION",
+          "ACTIVE_VIOLATION",
+          "ACTIVE_VIOLATION",
+          "ACTIVE_VIOLATION"
+        ],
+        "matched_tokens": [
+          "D:\\CloudTech-Portable",
+          "R-007",
+          "医美",
+          "灵策智算",
+          "装企"
+        ],
+        "findings_count": 5
+      },
+      "ts": 1791481747.0040681
+    },
+    {
+      "id": "T07",
+      "name": "Lifecycle valid transitions PROPOSED→APPROVED→ACTIVE→COMPLETED→ARCHIVED",
+      "verdict": "PASS",
+      "evidence": "in-test",
+      "reason": "traversed ['APPROVED', 'ACTIVE', 'COMPLETED', 'ARCHIVED'] ending at ARCHIVED",
+      "details": {
+        "path": [
+          "APPROVED",
+          "ACTIVE",
+          "COMPLETED",
+          "ARCHIVED"
+        ],
+        "final": "ARCHIVED",
+        "rid": "R-CF0"
+      },
+      "ts": 1791481747.005166
+    },
+    {
+      "id": "T08",
+      "name": "Lifecycle RETIRED blocks re-activation; ARCHIVED is terminal",
+      "verdict": "PASS",
+      "evidence": "in-test",
+      "reason": "RETIRED→ACTIVE rejected; only RETIRED→ARCHIVED allowed; ARCHIVED→ACTIVE rejected",
+      "details": {
+        "rid": "R-C7B",
+        "retired_to_active_blocked": true,
+        "final_state": "ARCHIVED",
+        "archived_to_active_blocked": true
+      },
+      "ts": 1791481747.0059829
+    },
+    {
+      "id": "T09",
+      "name": "Lifecycle transition table rejects all invalid jumps",
+      "verdict": "PASS",
+      "evidence": "in-test",
+      "reason": "3 invalid jumps correctly rejected (PROPOSED→ACTIVE, APPROVED→COMPLETED, ACTIVE→ARCHIVED)",
+      "details": {
+        "rid": "R-8BD",
+        "invalid_blocked": [
+          true,
+          true,
+          true
+        ]
+      },
+      "ts": 1791481747.0067406
+    },
+    {
+      "id": "T10",
+      "name": "Quarantine manifest present with correct schema",
+      "verdict": "PASS",
+      "evidence": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\quarantine_manifest.json",
+      "reason": "manifest has 5 entries, policy_id=GLOBAL_PRODUCT_STRATEGY, DO_NOT_INDEX marker present, ok=True",
+      "details": {
+        "entries_count": 5,
+        "policy_id": "GLOBAL_PRODUCT_STRATEGY",
+        "marker_present": true,
+        "manifest_ok": true,
+        "missing": [],
+        "source_paths": [
+          "C:\\Users\\xinzh\\.workbuddy\\memory\\45e357fa-c2ec-4bd0-b734-9b016a2759d7_memory.md",
+          "C:\\Users\\xinzh\\.workbuddy\\storage\\user-45e357fa-c2ec-4bd0-b734-9b016a2759d7-personal\\scoped\\c7389fe09fa872c0\\home-first-screen-cache.json",
+          "C:\\Users\\xinzh\\.workbuddy\\storage\\user-45e357fa-c2ec-4bd0-b734-9b016a2759d7-personal\\scoped\\c7389fe09fa872c0\\skills-installed-store.json",
+          "C:\\Users\\xinzh\\.workbuddy\\plugins\\marketplaces\\workbuddy-connector-plugins-official\\connectors\\zxygj-business-data",
+          "C:\\Users\\xinzh\\.workbuddy\\sessions\\23852.json"
+        ]
+      },
+      "ts": 1791481747.007861
+    },
+    {
+      "id": "T11",
+      "name": "DO_NOT_INDEX marker exists and is well-formed",
+      "verdict": "PASS",
+      "evidence": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\DO_NOT_INDEX.txt",
+      "reason": "marker contains all policy markers",
+      "details": {
+        "size_bytes": 827,
+        "missing_needles": []
+      },
+      "ts": 1791481747.0088303
+    },
+    {
+      "id": "T12",
+      "name": "submit_task honors strategy gate (fail-closed on retired-id)",
+      "verdict": "PASS",
+      "evidence": "D:\\AIOS\\_agent-hub\\v2\\src\\state_machine.py",
+      "reason": "retired-id envelope blocked (StrategyGateRejected); valid task accepted",
+      "details": {
+        "blocked_exception": "StrategyGateRejected",
+        "allowed_task_id": "7f2e3f37-7cbf-43cb-b18b-8945e697af38"
+      },
+      "ts": 1791481747.018626
+    },
+    {
+      "id": "T13",
+      "name": "AIOSV2Consumer service registration inspectable",
+      "verdict": "PASS",
+      "evidence": "sc qc AIOSV2Consumer",
+      "reason": "service registered (START_TYPE=2 AUTO_START DELAYED); runtime START blocked from non-elevated shell per memory log, but registration is the cross-session-relevant artifact",
+      "details": {
+        "start_type": 2,
+        "binary_path_contains": "AIOSV2Consumer.exe",
+        "raw_excerpt": "[SC] QueryServiceConfig SUCCESS\r\n\r\nSERVICE_NAME: AIOSV2Consumer\r\n        TYPE               : 10  WIN32_OWN_PROCESS \r\n        START_TYPE         : 2   AUTO_START  (DELAYED)\r\n        ERROR_CONTROL      : 1   NORMAL\r\n        BINARY_PATH_NAME   : \"D:\\AIOS\\daemons_v2\\winsw\\v2-consumer\\AIOSV2Consumer.exe\"\r\n        LOAD_ORDER_GROUP   : \r\n        TAG                : 0\r\n        DISPLAY_NAME       : AIOS V2 Consumer (24/7)\r\n        DEPENDENCIES       : \r\n        SERVICE_START_NAME : LocalSystem\r\n"
+      },
+      "ts": 1791481747.0290108
+    },
+    {
+      "id": "T14",
+      "name": "Archived surface AIOS_SOURCE_OF_TRUTH_FINAL exists and is classified",
+      "verdict": "PASS",
+      "evidence": "D:\\AIOS\\AIOS_SOURCE_OF_TRUTH_FINAL\\roadmap",
+      "reason": "path exists at root + sub-path classifies as 'read_only' (read_only/archived)",
+      "details": {
+        "root_exists": true,
+        "subpath_used": "D:\\AIOS\\AIOS_SOURCE_OF_TRUTH_FINAL\\roadmap",
+        "classification": "read_only",
+        "children_sample": [
+          "README.md",
+          "architecture",
+          "assets",
+          "code",
+          "config",
+          "context",
+          "evidence",
+          "history",
+          "roadmap",
+          "status"
+        ]
+      },
+      "ts": 1791481747.0307987
+    },
+    {
+      "id": "T15",
+      "name": "Policy + registry + scanner + gate integration (end-to-end)",
+      "verdict": "PASS",
+      "evidence": "D:\\AIOS\\_agent-hub\\v2\\src\\goal_guard_hook.py",
+      "reason": "deprecated id R-001 blocked with structured risk envelope",
+      "details": {
+        "events": [
+          "RETIRED_REQUIREMENT_REACTIVATED"
+        ],
+        "risk_policy_id": "GLOBAL_PRODUCT_STRATEGY",
+        "deprecated_id": "R-001"
+      },
+      "ts": 1791481747.0318167
+    },
+    {
+      "id": "T16",
+      "name": "Build/deploy paths present in repo",
+      "verdict": "DEFERRED",
+      "evidence": "D:\\AIOS\\{Dockerfile,docker-compose.yml,Makefile,deployment,deploy,.github}",
+      "reason": "no top-level build/deploy artifact found; per R1315 W4.1 SaaS deployment is generated on-demand via _r1315_saas_deployment.py but is not part of the cross-session source policy package. Required action: user-decide whether build/deploy should be materialized as part of the cross-session harness, or remain out-of-scope for cross-session regression.",
+      "details": {
+        "candidates_checked": [
+          "D:\\AIOS\\Dockerfile",
+          "D:\\AIOS\\docker-compose.yml",
+          "D:\\AIOS\\Makefile",
+          "D:\\AIOS\\deployment",
+          "D:\\AIOS\\deploy",
+          "D:\\AIOS\\.github"
+        ]
+      },
+      "ts": 1791481747.0329292
+    },
+    {
+      "id": "T17",
+      "name": "Quarantine allowlist matches policy entries",
+      "verdict": "PASS",
+      "evidence": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\quarantine_manifest.json",
+      "reason": "all 5 policy entries accounted for (5 matched / 0 missing / 0 unmatched)",
+      "details": {
+        "matched": [
+          "C:\\Users\\xinzh\\.workbuddy\\memory\\45e357fa-c2ec-4bd0-b734-9b016a2759d7_memory.md",
+          "C:\\Users\\xinzh\\.workbuddy\\storage\\user-45e357fa-c2ec-4bd0-b734-9b016a2759d7-personal\\scoped\\c7389fe09fa872c0\\home-first-screen-cache.json",
+          "C:\\Users\\xinzh\\.workbuddy\\storage\\user-45e357fa-c2ec-4bd0-b734-9b016a2759d7-personal\\scoped\\c7389fe09fa872c0\\skills-installed-store.json",
+          "C:\\Users\\xinzh\\.workbuddy\\plugins\\marketplaces\\workbuddy-connector-plugins-official\\connectors\\zxygj-business-data",
+          "C:\\Users\\xinzh\\.workbuddy\\sessions\\23852.json"
+        ],
+        "missing_recorded": [],
+        "unmatched": [],
+        "policy_entries_count": 5
+      },
+      "ts": 1791481747.034024
+    },
+    {
+      "id": "T18",
+      "name": "Generic horizontal marketing task acceptance + capability",
+      "verdict": "PASS",
+      "evidence": "D:\\AIOS\\_agent-hub\\policy\\product_strategy.v1.json",
+      "reason": "horizontal envelope accepted; policy declares HORIZONTAL_MARKETING_SAAS + GENERAL_MARKETING + verticals/presets DISABLED",
+      "details": {
+        "accept": true,
+        "structural_ok": true,
+        "deferred_note": "no source-level generic marketing API/UI contract exists in the cross-session package; this test covers policy declaration + gate acceptance only. A separate capability contract (e.g. SkillForge 'marketing-' skills or HTTP endpoints) is out of cross-session scope."
+      },
+      "ts": 1791481747.0352087
+    }
+  ],
+  "red_lines_observed": {
+    "AGENTS_md_untouched": true,
+    "v2_consumer_py_untouched": true,
+    "kernel_models_untouched": true,
+    "verifier_untouched": true,
+    "no_services_started_or_stopped": true,
+    "no_history_rewrites": true,
+    "no_user_data_modified": true
+  }
+}

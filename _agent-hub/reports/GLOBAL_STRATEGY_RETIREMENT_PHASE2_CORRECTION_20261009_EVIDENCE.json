@@ -1,0 +1,176 @@
+{
+  "evidence_id": "GLOBAL_STRATEGY_RETIREMENT_PHASE2_CORRECTION_20261009",
+  "created_at_utc": "2026-10-09T00:00:00Z",
+  "created_by": "Claude Code 2.1.285 (MiniMax-M3) — executor",
+  "scope": "Phase-2 correction only: close submit_task policy gate gap. Not a re-implementation of Phase-2 main.",
+  "issue": "Phase-2 main wired strategy gate into goal_guard_hook (dispatch path) but state_machine.submit_task (task creation path) had no equivalent gate. Direct submit_task calls bypassed the gate.",
+  "patch": {
+    "files_modified": [
+      {
+        "path": "D:\\AIOS\\_agent-hub\\v2\\src\\state_machine.py",
+        "lines_added": 140,
+        "lines_removed": 0,
+        "additions": [
+          "exception class StrategyGateRejected",
+          "helper _enforce_strategy_gate()",
+          "single call site at top of submit_task, BEFORE any task JSON is written"
+        ],
+        "modifications_to_existing_logic": "none"
+      }
+    ],
+    "files_added": [
+      {
+        "path": "D:\\AIOS\\_agent-hub\\v2\\tests\\test_strategy_gate_submit_task.py",
+        "test_count": 14
+      }
+    ],
+    "files_unchanged_red_lines": [
+      "_agent-hub/v2/src/v2_consumer.py",
+      "_agent-hub/AGENTS.md",
+      "_agent-hub/policy/model-policy.v1.yaml",
+      "kernel/src/aios_kernel/verifier/deterministic.py",
+      "kernel/src/aios_kernel/domain/goal.py",
+      "kernel/src/aios_kernel/domain/plan.py",
+      "kernel/src/aios_kernel/domain/task.py",
+      "kernel/src/aios_kernel/domain/trace.py",
+      "kernel/src/aios_kernel/domain/evidence.py",
+      "_agent-hub/policy/product_strategy.v1.json",
+      "_agent-hub/policy/product_strategy.v1.sha256",
+      "_agent-hub/policy/product_strategy.v1.schema.json"
+    ]
+  },
+  "gate_behavior": {
+    "horizontal_marketing_clean": {
+      "outcome": "accepted",
+      "writes_task_file": true,
+      "exception": null,
+      "event_logged": "task.submitted only"
+    },
+    "retired_id_in_title": {
+      "outcome": "rejected",
+      "writes_task_file": false,
+      "exception": "StrategyGateRejected",
+      "event_logged": {
+        "event": "task.submit_rejected",
+        "policy_gate_rejected": true,
+        "underlying_event_type": "RETIRED_REQUIREMENT_REACTIVATED",
+        "all_event_types": ["RETIRED_REQUIREMENT_REACTIVATED"],
+        "reason": "strategy_gate_blocked"
+      }
+    },
+    "retired_id_in_description": {
+      "outcome": "rejected",
+      "writes_task_file": false,
+      "exception": "StrategyGateRejected",
+      "event_logged": {
+        "policy_gate_rejected": true,
+        "underlying_event_type": "RETIRED_REQUIREMENT_REACTIVATED"
+      }
+    },
+    "retired_id_in_input_payload": {
+      "outcome": "rejected",
+      "writes_task_file": false,
+      "exception": "StrategyGateRejected",
+      "event_logged": {
+        "policy_gate_rejected": true,
+        "underlying_event_type": "RETIRED_REQUIREMENT_REACTIVATED"
+      }
+    },
+    "industry_preset_blocked": {
+      "outcome": "rejected",
+      "writes_task_file": false,
+      "exception": "StrategyGateRejected",
+      "event_logged": {
+        "policy_gate_rejected": true,
+        "underlying_event_type": "STRATEGY_DRIFT_DETECTED"
+      }
+    },
+    "deprecated_asset_path": {
+      "outcome": "rejected",
+      "writes_task_file": false,
+      "exception": "StrategyGateRejected",
+      "event_logged": {
+        "policy_gate_rejected": true,
+        "underlying_event_type": "DEPRECATED_ASSET_REFERENCED"
+      }
+    },
+    "archive_leak_marker": {
+      "outcome": "rejected",
+      "writes_task_file": false,
+      "exception": "StrategyGateRejected",
+      "event_logged": {
+        "policy_gate_rejected": true,
+        "underlying_event_type": "ARCHIVE_LEAK_DETECTED or DEPRECATED_ASSET_REFERENCED"
+      }
+    },
+    "policy_load_failure": {
+      "outcome": "rejected (fail-closed)",
+      "writes_task_file": false,
+      "exception": "StrategyGateRejected",
+      "event_logged": {
+        "policy_gate_rejected": true,
+        "underlying_event_type": "POLICY_GATE_REJECTED",
+        "all_event_types": ["POLICY_GATE_REJECTED"],
+        "reason": "policy_load_failed"
+      }
+    }
+  },
+  "tests": {
+    "new_test_file": "D:\\AIOS\\_agent-hub\\v2\\tests\\test_strategy_gate_submit_task.py",
+    "new_tests_added": 14,
+    "new_tests_passed": 14,
+    "new_tests_failed": 0,
+    "test_list": [
+      "test_valid_horizontal_marketing_task_accepted",
+      "test_retired_id_in_title_rejected",
+      "test_retired_id_in_description_rejected",
+      "test_retired_id_in_input_payload_rejected",
+      "test_industry_preset_submission_rejected",
+      "test_deprecated_asset_submission_rejected",
+      "test_archive_leak_submission_rejected",
+      "test_fail_closed_when_policy_missing",
+      "test_submit_rejected_event_has_both_umbrella_and_underlying_keys",
+      "test_submit_rejected_event_has_umbrella_when_policy_load_fails",
+      "test_rejected_submission_does_not_break_subsequent_valid_submit",
+      "test_backwards_compat_simple_titles_still_pass",
+      "test_backwards_compat_full_lifecycle_still_works",
+      "test_real_policy_loader_works_via_submit_task_path"
+    ],
+    "existing_strategy_tests_unaffected": {
+      "test_strategy_policy.py": 9,
+      "test_requirements_lifecycle.py": 10,
+      "test_contamination_scanner.py": 13,
+      "test_quarantine_allowlist.py": 7,
+      "test_strategy_gate.py": 10,
+      "test_strategy_hook_integration.py": 8,
+      "test_03_state_machine.py": 8
+    },
+    "total_tests_run": 81,
+    "total_tests_passed": 81,
+    "total_tests_failed": 0,
+    "test_command": "cd D:\\AIOS\\_agent-hub\\v2 && python -m pytest tests/test_strategy_policy.py tests/test_requirements_lifecycle.py tests/test_contamination_scanner.py tests/test_quarantine_allowlist.py tests/test_strategy_gate.py tests/test_strategy_hook_integration.py tests/test_03_state_machine.py tests/test_strategy_gate_submit_task.py"
+  },
+  "policy_loader_sha_verification": {
+    "loader_used": "policy.strategy_policy.load_strategy_policy",
+    "sha256_match_check": "test_real_policy_loader_works_via_submit_task_path asserts hashlib.sha256(json_file.read_bytes()).hexdigest().upper() == res.sha256",
+    "sidecar_format_changed": false,
+    "policy_id": "GLOBAL_PRODUCT_STRATEGY",
+    "policy_version": "2026-10-08",
+    "policy_path": "D:\\AIOS\\_agent-hub\\policy\\product_strategy.v1.json",
+    "sidecar_path": "D:\\AIOS\\_agent-hub\\policy\\product_strategy.v1.sha256"
+  },
+  "diff_summary": {
+    "tracked_files_changed": [
+      {
+        "path": "_agent-hub/v2/src/state_machine.py",
+        "insertions": 140,
+        "deletions": 0
+      }
+    ],
+    "new_files": [
+      "_agent-hub/v2/tests/test_strategy_gate_submit_task.py"
+    ]
+  },
+  "unresolved_issues": [],
+  "deferred_operations_unchanged": "Phase-2 main deferred manifest remains authoritative (live gateway teardown, service stop+delete, scheduled task deletes, E:\\AI_Backup scope change, root installer scripts, archive deletes, git history rewrite)."
+}

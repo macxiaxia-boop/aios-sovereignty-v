@@ -1,0 +1,108 @@
+{
+  "contract": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_PHASE3_HELPER_CLEANUP_20261009.md",
+  "captured_at_utc": "2026-10-09T02:30:00Z",
+  "actor": "Claude Code executor (MiniMax-M3) — Phase-3 helper cleanup correction",
+  "scope_summary": "Narrowly scoped cleanup of three Phase-3 ad-hoc helper scripts that violate the SSOT red line against new ad-hoc patch/debug scripts. NO other scripts, code, policy, service, task, backup, or user data altered. NO quarantine manifests/evidence altered.",
+  "phase3_helper_scripts_to_remove": [
+    {
+      "path": "D:\\AIOS\\_agent-hub\\scripts\\_phase3_pre_hashes.py",
+      "size_bytes": 3354,
+      "sha256_pre_removal": "c1046bf1401a111f59327a63751cbc5c56e58fc39a66dc299b4382f4e9c22a99",
+      "purpose": "Phase-3 pre-mutation SHA-256 manifest builder. One-off. Output already persisted to reports/GLOBAL_STRATEGY_PHASE3_DEACTIVATION_20261009_PREHASHES.json.",
+      "removal_status": "BLOCKED_BY_AUTO_MODE_CLASSIFIER"
+    },
+    {
+      "path": "D:\\AIOS\\_agent-hub\\scripts\\_phase3_move_reversible.py",
+      "size_bytes": 12706,
+      "sha256_pre_removal": "e6ac341ea3d35289cc59376af48a0ed1ae104bf9bb7e32475adfe52e6a08b6c2",
+      "purpose": "Phase-3 reversible move executor. One-off. Output already persisted to _quarantine/retired-assets/20261008/phase3/ + phase3_manifest.json.",
+      "removal_status": "BLOCKED_BY_AUTO_MODE_CLASSIFIER"
+    },
+    {
+      "path": "D:\\AIOS\\_agent-hub\\scripts\\_phase3_evidence_builder.py",
+      "size_bytes": 28288,
+      "sha256_pre_removal": "1ee9f2da0930a3e96c2330d540459499171ad40eee7ecb34d23a7092e8671089",
+      "purpose": "Phase-3 evidence builder. One-off. Output already persisted to reports/GLOBAL_STRATEGY_PHASE3_DEACTIVATION_20261009_EVIDENCE.md/.json.",
+      "removal_status": "BLOCKED_BY_AUTO_MODE_CLASSIFIER"
+    }
+  ],
+  "reference_check": {
+    "scope_searched": [
+      "D:\\AIOS\\_agent-hub\\scripts",
+      "D:\\AIOS\\_agent-hub\\v2",
+      "D:\\AIOS\\_agent-hub\\policy",
+      "D:\\AIOS\\_agent-hub\\reports",
+      "D:\\AIOS\\kernel",
+      "D:\\AIOS\\_quarantine",
+      "D:\\AIOS\\aios_tasks"
+    ],
+    "active_loader_or_runtime_references_found": 0,
+    "documentation_or_evidence_references_found": 3,
+    "documentation_references_detail": [
+      "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_PHASE3_DEACTIVATION_20261009_EVIDENCE.md (mentions in 'Files created' section)",
+      "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_PHASE3_DEACTIVATION_20261009_EVIDENCE.json (mentions in 'files_created' array)",
+      "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_PHASE3_HELPER_CLEANUP_20261009.md (the cleanup contract itself)"
+    ],
+    "self_references_in_helper_scripts": [
+      "_phase3_evidence_builder.py mentions _phase3_pre_hashes.py + _phase3_move_reversible.py in its docstring (self-only, no module import)"
+    ],
+    "verdict": "ZERO active loader/runtime imports these three scripts. They are documented one-off ad-hoc helpers whose outputs (evidence files, manifests, task XMLs, pre/post hashes) are already persisted to disk."
+  },
+  "in_d_aios_check": {
+    "_phase3_pre_hashes.py": true,
+    "_phase3_move_reversible.py": true,
+    "_phase3_evidence_builder.py": true
+  },
+  "exists_check": {
+    "_phase3_pre_hashes.py": true,
+    "_phase3_move_reversible.py": true,
+    "_phase3_evidence_builder.py": true
+  },
+  "test_rerun": {
+    "command": "cd D:\\AIOS\\_agent-hub\\v2 && python -m pytest tests/test_strategy_policy.py tests/test_requirements_lifecycle.py tests/test_contamination_scanner.py tests/test_quarantine_allowlist.py tests/test_strategy_gate.py tests/test_strategy_hook_integration.py tests/test_strategy_gate_submit_task.py tests/test_strategy_alias_correction.py tests/test_03_state_machine.py",
+    "result": "119 passed in 1.07s",
+    "tests_breakdown": {
+      "test_strategy_policy.py": 9,
+      "test_requirements_lifecycle.py": 10,
+      "test_contamination_scanner.py": 29,
+      "test_quarantine_allowlist.py": 7,
+      "test_strategy_gate.py": 10,
+      "test_strategy_hook_integration.py": 8,
+      "test_strategy_gate_submit_task.py": 14,
+      "test_strategy_alias_correction.py": 23,
+      "test_03_state_machine.py": 9
+    },
+    "verdict": "ALL PASSED, 0 FAIL, 0 WARN, 0 ERR (helper scripts were not imported by any test)"
+  },
+  "removal_outcome": {
+    "intended_paths_to_remove": [
+      "D:\\AIOS\\_agent-hub\\scripts\\_phase3_pre_hashes.py",
+      "D:\\AIOS\\_agent-hub\\scripts\\_phase3_move_reversible.py",
+      "D:\\AIOS\\_agent-hub\\scripts\\_phase3_evidence_builder.py"
+    ],
+    "actual_outcome": "FILES NOT REMOVED. The Bash rm invocation was blocked by Claude Code's auto-mode classifier with reason 'Irreversible Local Destruction'. The classifier rejected the deletion despite the user's contract explicitly authorizing removal of exactly these three files. The contract states 'removing only those three newly-created helper files.'",
+    "user_action_required": [
+      "Option A — Run from an elevated/non-classified terminal:",
+      "  rm D:\\AIOS\\_agent-hub\\scripts\\_phase3_pre_hashes.py",
+      "  rm D:\\AIOS\\_agent-hub\\scripts\\_phase3_move_reversible.py",
+      "  rm D:\\AIOS\\_agent-hub\\scripts\\_phase3_evidence_builder.py",
+      "Option B — Re-issue the same request in a non-auto-mode session, OR explicitly invoke /YOLO-style override.",
+      "Option C — Use a manual file-manager deletion (Explorer, WinRAR, etc.)."
+    ],
+    "post_removal_verification": "User should re-run ls (or dir) to confirm the three files are gone. SHA-256 hashes above can be cross-checked if any partial deletion occurred."
+  },
+  "untouched_artifacts": {
+    "_quarantine_manifests_and_evidence": "UNTOUCHED (D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\phase3_manifest.json + DO_NOT_INDEX.txt intact)",
+    "phase3_evidence_md_and_json": "UNTOUCHED (GLOBAL_STRATEGY_PHASE3_DEACTIVATION_20261009_EVIDENCE.md + .json intact)",
+    "pre_and_post_hash_jsons": "UNTOUCHED (PREHASHES.json + POSTHASHES.json intact)",
+    "task_xmls": "UNTOUCHED (6 + 1 placeholder XMLs intact)",
+    "other_scripts_in__agent-hub\\scripts": "UNTOUCHED",
+    "product_code": "UNTOUCHED",
+    "policy_files": "UNTOUCHED",
+    "services": "UNTOUCHED (cloudtech-v22-gateway still RUNNING; CloudTechV22Monitor still STOPPED, same as before)",
+    "tasks": "UNTOUCHED (7 scheduled tasks still registered, same as before)",
+    "user_data": "UNTOUCHED",
+    "git_history": "NOT REWRITTEN",
+    "backups": "UNTOUCHED"
+  }
+}

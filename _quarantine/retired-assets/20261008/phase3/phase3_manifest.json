@@ -1,0 +1,112 @@
+{
+  "policy_id": "GLOBAL_PRODUCT_STRATEGY",
+  "policy_version": "2026-10-08",
+  "quarantine_root_phase3": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3",
+  "marker_file": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\DO_NOT_INDEX.txt",
+  "contract": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_PHASE3_DEACTIVATION_CONTRACT_20261009.md",
+  "captured_at": "2026-10-09T01:35:00Z",
+  "actor": "Claude Code executor (Phase-3 reversible deactivation)",
+  "entries": [
+    {
+      "source_path": "D:\\AIOS\\cloudtech-saas",
+      "quarantine_path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\cloudtech-saas",
+      "is_directory": true,
+      "files_inventory": [
+        {
+          "path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\cloudtech-saas\\cloudtech-saas.exe",
+          "size": 18243033,
+          "sha256": "05b82d46ad331cc16bdc00de5c6332c1ef818df8ceefcd49c726553209b3a0da"
+        },
+        {
+          "path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\cloudtech-saas\\cloudtech-saas.xml",
+          "size": 1750,
+          "sha256": "e3bb15384d588044f13a8b3fdd11551007c08bc6fd007c3eccfbfbd846492761"
+        },
+        {
+          "path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\cloudtech-saas\\cloudtech-saas.xml.bak_C_1790215941",
+          "size": 1513,
+          "sha256": "509efc60c7d84b6c3c98e56e119f6354326caec711771dcfab70477b624d4b3c"
+        },
+        {
+          "path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\cloudtech-saas\\cloudtech-saas.xml.pre_descriptor_R284_20260929T200200.bak",
+          "size": 1513,
+          "sha256": "509efc60c7d84b6c3c98e56e119f6354326caec711771dcfab70477b624d4b3c"
+        },
+        {
+          "path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\cloudtech-saas\\cloudtech-saas.xml.pre_repair_R283_20260929T195700.bak",
+          "size": 1513,
+          "sha256": "509efc60c7d84b6c3c98e56e119f6354326caec711771dcfab70477b624d4b3c"
+        },
+        {
+          "path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\cloudtech-saas\\install.cmd",
+          "size": 1124,
+          "sha256": "d79c778d876da7785a862a83e891f5f62f1cf4088c6f9eeae3fc907eba69c38d"
+        },
+        {
+          "path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\cloudtech-saas\\start_v22_watchdog.bat",
+          "size": 446,
+          "sha256": "20ed7c30394cc6c70ecdb071a3f453b05eeb53de3382db32f146dcf68f6a4096"
+        },
+        {
+          "path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\cloudtech-saas\\start_v22_watchdog.bat.pre_R284_20260929T200200.bak",
+          "size": 410,
+          "sha256": "5a40784c8efe03a08e4866b7c90fcacecc93643fff5aee4bdfc5135a44c55d25"
+        },
+        {
+          "path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\cloudtech-saas\\uninstall.cmd",
+          "size": 394,
+          "sha256": "fb2b4c14129ee2079a01242484cadc56af86827134fd5dc62e6f3a5ea4f27349"
+        },
+        {
+          "path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\cloudtech-saas\\winsw.exe",
+          "size": 18243033,
+          "sha256": "05b82d46ad331cc16bdc00de5c6332c1ef818df8ceefcd49c726553209b3a0da"
+        }
+      ],
+      "files_hash_verified": true,
+      "policy_id": "GLOBAL_PRODUCT_STRATEGY",
+      "policy_version": "2026-10-08",
+      "phase": "phase3",
+      "reason": "Phase-3 reversible deactivation: cloudtech-saas/ holds the CloudTechV22Monitor binary referenced by service CloudTechV22Monitor + the install.cmd/start_v22_watchdog.bat re-arming scripts. Per user's retirement command + Phase-3 contract.",
+      "quarantined_at": 1791480815.212793,
+      "restore_instructions": "To restore: shutil.move from quarantine_path back to source_path (D:\\AIOS\\cloudtech-saas). Then if the service was disabled (sc config CloudTechV22Monitor start= demand) and tasks disabled (schtasks /Change ... /ENABLE), restore those. Requires user authorization per AGENTS.md `requires_authorization`."
+    },
+    {
+      "source_path": "D:\\AIOS\\_workzone\\src\\_aios_cloudtech_bridge.py",
+      "quarantine_path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\_aios_cloudtech_bridge.py",
+      "is_directory": false,
+      "size_bytes": 15037,
+      "sha256": "2c873cb7f3259f5f875d264076ee3f7ced623714ef002845698226e85e73598f",
+      "policy_id": "GLOBAL_PRODUCT_STRATEGY",
+      "policy_version": "2026-10-08",
+      "phase": "phase3",
+      "reason": "Phase-3 reversible deactivation: _aios_cloudtech_bridge.py is the Python module that imports into AIOS capability registry on --watch (A-08 in audit). Re-arming path. Per user's retirement command + Phase-3 contract.",
+      "quarantined_at": 1791480815.212793,
+      "restore_instructions": "To restore: shutil.move from quarantine_path back to source_path (D:\\_workzone\\src\\_aios_cloudtech_bridge.py). Requires user authorization per AGENTS.md `requires_authorization`."
+    }
+  ],
+  "move_results": [
+    {
+      "source": "D:\\AIOS\\cloudtech-saas",
+      "dest": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\cloudtech-saas",
+      "type": "directory",
+      "ok": true,
+      "elapsed_s": 0.001
+    },
+    {
+      "source": "D:\\AIOS\\_workzone\\src\\_aios_cloudtech_bridge.py",
+      "dest": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\_aios_cloudtech_bridge.py",
+      "type": "file",
+      "ok": true,
+      "elapsed_s": 0.0
+    }
+  ],
+  "hash_verification": {
+    "pre_manifest": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_PHASE3_DEACTIVATION_20261009_PREHASHES.json",
+    "post_manifest": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_PHASE3_DEACTIVATION_20261009_POSTHASHES.json",
+    "ok": true,
+    "mismatches": []
+  },
+  "ok": true,
+  "note": "Manifest is the authoritative record of reversible moves. No file was deleted. Restoration: see entries[].restore_instructions."
+}

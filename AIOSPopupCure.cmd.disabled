@@ -1,0 +1,7 @@
+@echo off
+rem AIOSPopupCure.cmd - R272 立 (2026-09-29)
+rem 根治任务栏闪烁: 直接 pythonw.exe 启动 popup_cure_watchdog.py, 不经 cmd.exe
+rem 避免每次拉起 watchdog 时 spawn cmd.exe 控制台窗口闪一下
+rem 注: SCM 服务 AIOSWatchdogAliveCheck 已 DISABLED, 直接 pythonw 启动即可
+
+"C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-windows-x86_64-none\pythonw.exe" -u "D:\Tools\TikTokDownloader\watchdog\_popup_cure_watchdog.py"

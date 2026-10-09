@@ -1,0 +1,75 @@
+{
+  "id": "bcc5847f-bc02-4cf6-a53f-6837c858557f",
+  "idempotency_key": "audit-result-bcc5847f-bc02-4cf6-a53f-6837c858557f",
+  "message_type": "result",
+  "schema_version": "1.0",
+  "sender": "claudecode",
+  "recipient": "codex",
+  "timestamp": "2026-10-08T16:24:58Z",
+  "ttl_ms": 86400000,
+  "payload": {
+    "audit_id": "GLOBAL-STRATEGY-RETIREMENT-AUDIT-RETRY",
+    "contract": "D:\\AIOS\\_agent-hub\reports\\GLOBAL_STRATEGY_RETIREMENT_AUDIT_20261008_CONTRACT.md",
+    "status": "COMPLETED",
+    "artifacts": [
+      {
+        "path": "D:\\AIOS\\_agent-hub\reports\\GLOBAL_STRATEGY_RETIREMENT_AUDIT_20261008.md",
+        "size_bytes": 34106,
+        "lines": 545
+      },
+      {
+        "path": "D:\\AIOS\\_agent-hub\reports\\GLOBAL_STRATEGY_RETIREMENT_AUDIT_20261008.json",
+        "size_bytes": 38676,
+        "lines": 675,
+        "findings_count": 32,
+        "unresolved_count": 4,
+        "retired_ids_count": 17,
+        "json_valid": true
+      }
+    ],
+    "top_3_reactivation_sources": [
+      {
+        "rank": 1,
+        "path": "D:\\AIOS\\_workzone\\src\\_aios_cloudtech_bridge.py:86",
+        "reason": "Registers /decoration-landing.html as AIOS capability"
+      },
+      {
+        "rank": 2,
+        "path": "D:\\AIOS\u0007ios_tools\tikhub\\{tikhub_daily_scan.py, _tikhub_search.py, _tikhub_integration_sample.py}",
+        "reason": "INDUSTRY_KEYWORDS includes 装修建材装企; invoked by _aios_run_all_loop.py on every cycle"
+      },
+      {
+        "rank": 3,
+        "path": "D:\\AIOS\\AIOS_SOURCE_OF_TRUTH_FINAL\u0007ssets\\AIOS_GAP_MATRIX_FINAL.csv:38,41,42",
+        "reason": "GAP-P3-003/006/007 are P3 BLOCKED tasks explicitly contemplating revival of 装修矩阵 + 仿写管线"
+      }
+    ],
+    "actions_taken": [
+      "Wrote D:\\AIOS\\_agent-hub\reports\\GLOBAL_STRATEGY_RETIREMENT_AUDIT_20261008.md (545 lines, 34106 bytes)",
+      "Wrote D:\\AIOS\\_agent-hub\reports\\GLOBAL_STRATEGY_RETIREMENT_AUDIT_20261008.json (675 lines, 38676 bytes, JSON-validated)"
+    ],
+    "actions_avoided": [
+      "No product code modified",
+      "No global policy modified",
+      "No git history rewritten",
+      "No services stopped",
+      "No user data modified",
+      "No files outside D:\\AIOS\\_agent-hub\reports\\ touched"
+    ],
+    "classification_counts": {
+      "active_contamination_paths": 16,
+      "orphan_data_paths": 11,
+      "external_user_data_paths": 5,
+      "scheduled_tasks_inside_scope": 1,
+      "scheduled_tasks_outside_scope_running": 2,
+      "unresolved_candidates": 4
+    },
+    "next_phase_decision_required": true,
+    "safe_implementation_levels": {
+      "L1_autonomous": "8 items (audit annotation only)",
+      "L2_documented_decision": "10 items (product code edits)",
+      "L3_user_authorization": "5 items (irreversible local)",
+      "L4_explicit_user_irreversible": "6 items (multi-system)"
+    }
+  }
+}

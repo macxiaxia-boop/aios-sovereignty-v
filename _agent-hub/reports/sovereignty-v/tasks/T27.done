@@ -1,0 +1,11 @@
+T27-DONE: 2026-10-09T09:53+08:00 by Claude Code 01a11c33 (Phase I.3 执行线程).
+落盘: `D:\AIOS\_agent-hub\policy\RUNBOOK.md` (9778 bytes · 9.6 KB).
+5 段内容:
+  1. 日常维护 (Reconciler / adapter auto-load / drift log 轮转)
+  2. 故障排查 (drift_count > 0 / consumer dead / sha256 mismatch)
+  3. 升级 policy (4 步: 改 yaml → 算 sha256 → 跑 regression → 通知 · done)
+  4. 添加 runtime (5 步: 写 spec → adapter → 自检 → acceptance → 注册）
+  5. 紧急回滚 (3 步: 关 reconciler → 恢复 backup.yaml → 通知)
+
+引用: adapter-spec.v1.md + reconciler-spec.md + regression_tests.py + register_reconciler.cmd + register_hermes.cmd.
+红线: 不改任何 adapter/policy/reconciler 代码 · 文档为主.

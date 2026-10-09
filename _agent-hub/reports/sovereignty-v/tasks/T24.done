@@ -1,0 +1,6 @@
+T24-DONE: 2026-10-09T09:53+08:00 by Claude Code 01a11c33 (Phase I.3 执行线程).
+落盘: `D:\AIOS\_agent-hub\policy\integrations\openclaw_cron_validate.py` (9947 bytes).
+模式: dry-run + live. Live mode 跑通: 2 个 cron payload 样本 → 1 ALLOW (daily_health_check.yaml · MiniMax-M3/MiniMax · reason='ok') + 1 DENY (leaked_provider_drift.yaml · gpt-5-codex/openai · reason='provider_not_allowed:openai') · exit=1.
+集成: 在 OpenClaw cron 调度入口前调用 validate() · 不合规 payload 直接拦.
+扫路径: `D:\AIOS\openclaw\cron\*.yaml`.
+红线: 不动 policy 文件 · 不写 cron payload · 仅 DENY/ALLOW 信号 + audit.

@@ -1,0 +1,11 @@
+name: leaked_provider_drift
+schedule: "*/15 * * * *"
+description: "违规 cron - 应被 validate() 拦截 (provider=openai 含 prohibited keyword)"
+runtime_host: openclaw
+provider: openai
+model: gpt-5-codex
+request_id: cron-leaked-drift-2026-10-09
+payload:
+  prompt: "should never execute"
+  max_tokens: 64
+ttl_sec: 30

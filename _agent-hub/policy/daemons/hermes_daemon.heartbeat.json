@@ -1,0 +1,11 @@
+{
+  "ts": "2026-10-09T09:49:43+08:00",
+  "pid": 37864,
+  "cycle": 1,
+  "interval_sec": 60,
+  "exit_code": 0,
+  "drift_count": -1,
+  "stdout_tail": "OK: procs=1 env=1 drift=0",
+  "stderr_tail": "UnicodeDecodeError: 'utf-8' codec can't decode byte 0xd3 in position 70: invalid continuation byte",
+  "failures": 0
+}

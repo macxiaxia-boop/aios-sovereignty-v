@@ -1,0 +1,483 @@
+{
+  "audit": {
+    "id": "C-AUDIT-2026-10-09",
+    "title": "Partial C — Local data/build/runtime source audit",
+    "mode": "READ-ONLY",
+    "companion_markdown": "C_LOCAL_RUNTIME.md",
+    "contract_path": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_RETIREMENT_PARTIAL_20261008\\C_CONTRACT.md",
+    "scope_inspected": [
+      "D:\\AIOS root guidance/scripts/configs (root-level files + AIOS_SOURCE_OF_TRUTH_FINAL + AIOS_RECONSTRUCTION + _workzone + _capability; _relinked generic caches EXCLUDED per contract)",
+      "D:\\AIOS\\_out",
+      "D:\\AIOS\\_backups (+ _backups\\20261008_rootfix, rootcause_fix_20260929, task-repair-*, chatgpt_bridge_* snapshots)",
+      "D:\\AIOS\\_backups_2026-09-29",
+      "D:\\AIOS\\_backups_relinked_1790674911 (listing only; _relinked excluded)",
+      "D:\\AIOS\\_archived_2026-09-18",
+      "D:\\AIOS\\_archived_20260925_P0",
+      "D:\\AIOS\\_archived_20260925_R259_popup_cure_rebuild",
+      "D:\\AIOS\\_backup_aios_exe_周二022609_093048",
+      "D:\\AIOS\\_backup_aios_exe_周二022609_093503",
+      "D:\\AIOS\\_schtasks_bak_R344_20260930-* and _schtasks_bak_R349_20260930-*",
+      "D:\\AIOS\\_r274_install_backup",
+      "D:\\AIOS\\_r348_model_swap_bak_20260930-092918",
+      "D:\\AIOS\\_dr_v3.0_uncompressed_workspace",
+      "D:\\AIOS\\cloudtech-saas",
+      "D:\\AIOS\\daemons_v2 (WinSW service definitions)",
+      "Windows Scheduled Tasks (266 total enumerated; 70 match AIOS)",
+      "Windows Services (CIM Win32_Service filtered on AIOS/CloudTech)",
+      "HKCU\\...\\Run and HKLM\\...\\Run",
+      "Running processes (Win32_Process, 574 enumerated)",
+      "Listening ports (Get-NetTCPConnection)"
+    ],
+    "not_scanned": [
+      "D:\\AIOS\\_relinked (generic caches — excluded by contract)",
+      "Personal files outside D:\\AIOS (read-only listing of the E:\\AI_Backup mirror used solely to confirm the running robocopy target content)",
+      "Cloud backups were not modified, moved, or deleted"
+    ],
+    "forbidden_actions_observed": [
+      "No file deleted",
+      "No file moved",
+      "No git history rewritten",
+      "No service stopped or restarted",
+      "No product code or policy modified"
+    ]
+  },
+
+  "overall_verdict": {
+    "headline": "OLD PRODUCT IS CURRENTLY LIVE. CloudTech V22 Unified Gateway is answering GET http://127.0.0.1:5099/health right now (status:ok, version:22.0.0, v10_modules_included:135). D:\\AIOS holds a complete, reinstallable, auto-restoring copy of its monitor layer.",
+    "severity": "HIGH",
+    "reactivation_possible": true,
+    "reactivation_effort": "LOW — one command per mechanism; all payloads already on disk",
+    "layers": {
+      "D:\\AIOS\\cloudtech-saas": "DORMANT-BUT-REGISTERED — Windows service CloudTechV22Monitor is installed (Stopped/Manual) with PathName pointing INTO this directory. install.cmd can re-register it; the XML itself carries onfailure/restart policy.",
+      "D:\\AIOS\\_archived_* / _backup*": "ARCHIVE — no service, task, registry key, or running process references them. Reactivation requires deliberate manual copy.",
+      "D:\\AIOS root guidance/config": "ACTIVE-REFERENCE — AIOS_SOURCE_OF_TRUTH_FINAL and AIOS_RECONSTRUCTION still declare CloudTech an in-scope project with live roadmap items and registered asset IDs.",
+      "E:\\AI_Backup mirror": "ACTIVE — a robocopy /MIR job is running right now mirroring D:\\AIOS into E:\\AI_Backup, so every archive under D:\\AIOS is being re-copied off-box."
+    }
+  },
+
+  "live_runtime_observed": [
+    {
+      "finding": "CloudTech V22 Unified Gateway answering on port 5099",
+      "port": 5099,
+      "owning_pid": 16336,
+      "parent_pid": 9944,
+      "process_name": "python.exe",
+      "probe": "curl -s --max-time 6 http://127.0.0.1:5099/health",
+      "response": "{\"status\":\"ok\",\"version\":\"22.0.0\",\"service\":\"CloudTech V22 Unified Gateway\",\"v10_modules_included\":135,\"v10_modules_failed\":0,\"flask_app_loaded\":true}",
+      "root_cause_code_in_scope": "D:\\AIOS\\_workzone\\src\\_aios_cloudtech_bridge.py:51-61 declares D:\\CloudTech-Portable root, gateway_v22.py, port 5099 and the start_v22.ps1 launcher",
+      "classification": "ACTIVE — old product live"
+    },
+    {
+      "finding": "CloudTech_V22Watchdog scheduled task RUNNING, supervising port 5099",
+      "task_path": "\\CloudTech_V22Watchdog",
+      "state": "Running",
+      "action": "\"D:\\CloudTech-Portable\\.venv\\Scripts\\pythonw.exe\" -u D:\\CloudTech-Portable\\_ct_v22_watchdog.py",
+      "classification": "ACTIVE — payload outside D:\\AIOS, command line observed per contract"
+    },
+    {
+      "finding": "CloudTech_V23FileWatcher scheduled task RUNNING",
+      "task_path": "\\CloudTech_V23FileWatcher",
+      "state": "Running",
+      "action": "\"D:\\CloudTech-Portable\\.venv\\Scripts\\pythonw.exe\" -u D:\\CloudTech-Portable\\scripts\\v23_file_watcher.py",
+      "classification": "ACTIVE — payload outside D:\\AIOS"
+    },
+    {
+      "finding": "cloudtech-v22-gateway Windows service Running/Automatic",
+      "service_name": "cloudtech-v22-gateway",
+      "state": "Running",
+      "start_mode": "Auto",
+      "path_name": "D:\\个人文件\\AI\\Operator\\aios_tools\\winsw-x64\\cloudtech_v22_gateway.exe",
+      "in_scope_note": "Reachable in-scope via the D:\\AIOS\\aios_tools junction (cmd /c dir /AL D:\\AIOS confirms aios_tools -> D:\\个人文件\\AI\\Operator\\aios_tools). Binary itself lives outside D:\\AIOS and was not opened.",
+      "classification": "ACTIVE"
+    },
+    {
+      "finding": "Robocopy /MIR of D:\\AIOS to E:\\AI_Backup currently executing",
+      "pid": 31360,
+      "command_line": "robocopy D:\\AIOS E:\\AI_Backup\\DailyBackup_20261008\\AIOS /MIR /FFT /MT:8 /R:1 /W:1 /DCOPY:DA /COPY:DAT /NP /NDL /NFL /XD node_modules venv .venv __pycache__ _pycache__ node_modules_cache .git .next dist build _archived_R_A01_20260922 Desktop_20260926",
+      "launcher_task": "\\AIOS_E_Drive_DailyBackup_R1331 (Running) -> wscript.exe \"D:\\个人文件\\AI\\Operator\\aios_tools\\_r1331_e_drive_daily_backup.vbs\"",
+      "verified_mirror_content": [
+        "E:\\AI_Backup\\DailyBackup_20261008\\AIOS\\cloudtech-saas\\ (cloudtech-saas.exe, cloudtech-saas.xml, install.cmd, uninstall.cmd, start_v22_watchdog.bat, winsw.exe + 3 xml .bak)",
+        "E:\\AI_Backup\\DailyBackup_20261008\\AIOS\\_archived_2026-09-18\\",
+        "E:\\AI_Backup\\DailyBackup_20261008\\AIOS\\_archived_20260925_P0\\",
+        "E:\\AI_Backup\\DailyBackup_20260925_R259_popup_cure_rebuild (as sibling path)"
+      ],
+      "classification": "ACTIVE — automatic re-copy of every archive in scope"
+    },
+    {
+      "finding": "AIOS daemon services Running/Automatic (via D:\\AIOS\\aios_tools junction)",
+      "services": [
+        "AIOSCentralCollector (Running/Auto, PID 9008, owns port 18799)",
+        "AIOSSelfHeal (Running/Auto)",
+        "AIOSSupervisor (Running/Auto)",
+        "AIOS_Autonomy_Daemon (Running/Auto, binary = aios-mcp-gateway-svc.exe)"
+      ],
+      "classification": "ACTIVE — infrastructure, product-neutral"
+    },
+    {
+      "finding": "HKCU Run key HideConsoleWindowsV3 boots a D:\\AIOS script",
+      "registry_key": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+      "value_name": "HideConsoleWindowsV3",
+      "value_data": "\"C:\\Users\\xinzh\\AppData\\Roaming\\uv\\python\\cpython-3.12.13-windows-x86_64-none\\pythonw.exe\" -u \"D:\\AIOS\\_hide_console_windows_v3.py\"",
+      "running_pid": 14704,
+      "code_review": "D:\\AIOS\\_hide_console_windows_v3.py:36-42 AI_ROOTS = claude/codex/cursor/code/windsurf; :45-51 USER_ROOTS explorer/dwm/winlogon/services/taskhostw. Window-hider only — no product code, no launcher.",
+      "classification": "ACTIVE but PRODUCT-NEUTRAL"
+    },
+    {
+      "finding": "HKCU Run keys beyond AIOS",
+      "keys": ["WorkBuddy.WorkBuddy -> D:\\1\\WorkBuddy\\WorkBuddy.exe", "OneDrive", "MicrosoftEdgeAutoLaunch_..."],
+      "classification": "ACTIVE — not AIOS product"
+    }
+  ],
+
+  "confirmed_reactivation_mechanisms": [
+    {
+      "rank": 1,
+      "id": "REACT-01",
+      "name": "CloudTechV22Monitor Windows service (registered, points into D:\\AIOS\\cloudtech-saas)",
+      "type": "service",
+      "state_now": "Stopped / Manual",
+      "path_name": "D:\\AIOS\\cloudtech-saas\\cloudtech-saas.exe",
+      "evidence": [
+        "Get-CimInstance Win32_Service -> CloudTechV22Monitor~Stopped~Manual~\"D:\\AIOS\\cloudtech-saas\\cloudtech-saas.exe\"",
+        "D:\\AIOS\\cloudtech-saas\\cloudtech-saas.xml:10 <id>CloudTechV22Monitor</id>",
+        "D:\\AIOS\\cloudtech-saas\\cloudtech-saas.xml:15 executable D:\\AIOS\\_relinked\\workbuddy\\binaries\\python\\versions\\3.13.12\\python.exe",
+        "D:\\AIOS\\cloudtech-saas\\cloudtech-saas.xml:16 arguments -m src._aios_cloudtech_bridge --check",
+        "D:\\AIOS\\cloudtech-saas\\cloudtech-saas.xml:17 workingdirectory D:\\AIOS\\_workzone",
+        "D:\\AIOS\\cloudtech-saas\\cloudtech-saas.xml:27 <startmode>Manual</startmode>",
+        "D:\\AIOS\\cloudtech-saas\\cloudtech-saas.xml:28-29 <onfailure action=\"restart\" delay=\"30 sec\"/> / delay=\"60 sec\"",
+        "D:\\AIOS\\cloudtech-saas\\cloudtech-saas.xml:31 <resetfailureafter>2 hour</resetfailureafter>"
+      ],
+      "reactivation_command": "sc start CloudTechV22Monitor  (or D:\\AIOS\\cloudtech-saas\\install.cmd line 19: winsw.exe install cloudtech-saas.xml)",
+      "blast_radius": "Re-registers the AIOS->CloudTech V22 bridge monitor against port 5099; writes logs to D:\\AIOS\\cloudtech-saas\\logs",
+      "blocked_by": "Manual start mode only; nothing currently triggers it"
+    },
+    {
+      "rank": 2,
+      "id": "REACT-02",
+      "name": "cloudtech-saas\\install.cmd / uninstall.cmd / start_v22_watchdog.bat one-shot scripts",
+      "type": "script",
+      "state_now": "present, not invoked by any scheduled task or Run key",
+      "evidence": [
+        "D:\\AIOS\\cloudtech-saas\\install.cmd:19 winsw.exe install cloudtech-saas.xml",
+        "D:\\AIOS\\cloudtech-saas\\install.cmd:26 curl -s http://127.0.0.1:5099/health",
+        "D:\\AIOS\\cloudtech-saas\\install.cmd:33 echoes AIOS bridge path D:\\AIOS\\_workzone\\src\\_aios_cloudtech_bridge.py",
+        "D:\\AIOS\\cloudtech-saas\\install.cmd:9-11 downloads WinSW x64 from GitHub if missing",
+        "D:\\AIOS\\cloudtech-saas\\uninstall.cmd:9 winsw.exe stop cloudtech-saas.xml",
+        "D:\\AIOS\\cloudtech-saas\\uninstall.cmd:12 winsw.exe uninstall cloudtech-saas.xml",
+        "D:\\AIOS\\cloudtech-saas\\start_v22_watchdog.bat:7 cd /d D:\\AIOS\\_workzone",
+        "D:\\AIOS\\cloudtech-saas\\start_v22_watchdog.bat:8 pythonw.exe -m src._aios_cloudtech_bridge --watch --watch-interval 300"
+      ],
+      "reactivation_command": "double-click D:\\AIOS\\cloudtech-saas\\install.cmd  OR  D:\\AIOS\\cloudtech-saas\\start_v22_watchdog.bat",
+      "blast_radius": "install.cmd re-registers the service; start_v22_watchdog.bat starts a 300s polling bridge watchdog",
+      "blocked_by": "manual execution only"
+    },
+    {
+      "rank": 3,
+      "id": "REACT-03",
+      "name": "_workzone\\src\\_aios_cloudtech_bridge.py — live bridge implementation (319 lines)",
+      "type": "source_code",
+      "state_now": "on disk, not currently imported by any running process",
+      "evidence": [
+        "D:\\AIOS\\_workzone\\src\\_aios_cloudtech_bridge.py:51 CLOUDTECH_V22_ROOT = Path(r\"D:\\CloudTech-Portable\")",
+        "D:\\AIOS\\_workzone\\src\\_aios_cloudtech_bridge.py:52 CLOUDTECH_V22_GATEWAY = .../gateway_v22.py",
+        "D:\\AIOS\\_workzone\\src\\_aios_cloudtech_bridge.py:55 CLOUDTECH_V22_PORT = 5099",
+        "D:\\AIOS\\_workzone\\src\\_aios_cloudtech_bridge.py:61 CLOUDTECH_V22_START_PS = .../tools/start_v22.ps1",
+        "D:\\AIOS\\_workzone\\src\\_aios_cloudtech_bridge.py:66 AIOS_ROOT = Path(r\"D:\\AIOS\")",
+        "D:\\AIOS\\_workzone\\src\\_aios_cloudtech_bridge.py:79-86 endpoint table incl. /decoration-landing.html (industry-vertical residue)",
+        "D:\\AIOS\\_workzone\\src\\_aios_cloudtech_bridge.py:89-93 pricing plans free/pro/enterprise",
+        "D:\\AIOS\\_workzone\\src\\_aios_cloudtech_bridge.py:109-121 check_v22_alive() queries port 5099 owner PID"
+      ],
+      "reactivation_command": "python -m src._aios_cloudtech_bridge --watch --watch-interval 300  (cwd D:\\AIOS\\_workzone)",
+      "blast_radius": "Registers old-product endpoints into the AIOS capability registry and monitors port 5099",
+      "blocked_by": "module invocation only"
+    },
+    {
+      "rank": 4,
+      "id": "REACT-04",
+      "name": "E:\\AI_Backup daily mirror — full-fidelity autorestore of D:\\AIOS",
+      "type": "backup_mirror",
+      "state_now": "ACTIVE (robocopy PID 31360 in flight)",
+      "evidence": [
+        "Running process: robocopy D:\\AIOS E:\\AI_Backup\\DailyBackup_20261008\\AIOS /MIR ...",
+        "Scheduled task \\AIOS_E_Drive_DailyBackup_R1331 (Running)",
+        "Verified on disk: E:\\AI_Backup\\DailyBackup_20261008\\AIOS\\cloudtech-saas\\ contains cloudtech-saas.exe + cloudtech-saas.xml + install.cmd + uninstall.cmd + start_v22_watchdog.bat + winsw.exe",
+        "Verified on disk: E:\\AI_Backup\\DailyBackup_20261008\\AIOS\\_archived_2026-09-18\\, _archived_20260925_P0\\, _archived_20260925_R259_popup_cure_rebuild\\"
+      ],
+      "reactivation_command": "copy back from E:\\AI_Backup\\DailyBackup_20261008\\AIOS (no tooling required)",
+      "blast_radius": "Restores cloudtech-saas, all _archived_* and all _backups in one operation",
+      "blocked_by": "nothing — the job runs on its own schedule"
+    },
+    {
+      "rank": 5,
+      "id": "REACT-05",
+      "name": "\\CloudTech\\* scheduled-task namespace (5 registered tasks, 2 Running, 3 Ready)",
+      "type": "scheduled_task",
+      "state_now": "ACTIVE namespace",
+      "evidence": [
+        "\\CloudTech\\HealthCheck-Hourly [Ready] => powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File \"C:\\Users\\xinzh\\.workbuddy\\scripts\\health-check.ps1\"",
+        "\\CloudTech\\DailyReport-0300 [Ready] => same health-check.ps1",
+        "\\CloudTech\\AIOSLightMonitor-30min [Ready] => C:\\Users\\xinzh\\.workbuddy\\scripts\\aios-light-monitor.ps1",
+        "\\CloudTech\\StartupCleanup-Once [Ready] => C:\\Users\\xinzh\\.workbuddy\\scripts\\startup-cleanup.wrapper.ps1",
+        "\\CloudTech-V22-Watchdog [Disabled] => wscript.exe \"D:\\UsersTemp\\hidden_run.vbs\" \"D:\\CloudTech-Portable\\_ct_v22_watchdog_runner.cmd\"",
+        "\\CloudTech_SpecV1CI_Daily_0300 [Ready] => wscript.exe \"D:\\UsersTemp\\hidden_run.vbs\" \"D:\\个人文件\\AI\\CloudTech\\V2.0\\feedback-lingce-2026-09-09\\_tools\\RunSpecV1CI.cmd\""
+      ],
+      "reactivation_command": "Enable-ScheduledTask -TaskPath \\CloudTech\\ -TaskName HealthCheck-Hourly",
+      "blast_radius": "Payloads live outside D:\\AIOS (workbuddy scripts, D:\\CloudTech-Portable); observed by command line only, files not opened",
+      "blocked_by": "payload location outside audited scope"
+    },
+    {
+      "rank": 6,
+      "id": "REACT-06",
+      "name": "Root installer scripts that re-create daemon autoruns (not currently registered)",
+      "type": "script",
+      "state_now": "on disk, target tasks absent from Task Scheduler",
+      "evidence": [
+        "D:\\AIOS\\install_aios_loop.cmd:12 TASK_NAME=AIOS-Daemon-Loop-Guard; :33-39 schtasks /Create /SC ONSTART /RL HIGHEST /RU SYSTEM -> D:\\AIOS\\_aios_loop_inner.cmd",
+        "D:\\AIOS\\install_aios_watchdog.cmd:11 TASK_NAME=AIOS-Daemon-Watchdog; :13 SCRIPT=D:\\AIOS\\aios_daemon_watchdog.py; :32-38 schtasks /Create /SC ONSTART",
+        "D:\\AIOS\\R65_右键管理员运行_一键注册.bat:6-19 re-registers AIOS_WAL_Recovery_Startup / AIOS_Quorum_Health_5min / AIOS_Quota_Enforcer_Report_10min / AIOS_WAL_RecoverAll_Daily",
+        "D:\\AIOS\\AIOS_Cron_R65_Residual.ps1:14-33 same four tasks via Register-ScheduledTask",
+        "Verification: the two Daemon-* tasks are NOT present in the 266-task enumeration; the four R65 tasks ARE present and Ready"
+      ],
+      "reactivation_command": "run install_aios_loop.cmd or install_aios_watchdog.cmd elevated",
+      "blast_radius": "SYSTEM-priority ONSTART tasks rooted in D:\\AIOS",
+      "blocked_by": "requires elevation + deliberate execution"
+    },
+    {
+      "rank": 7,
+      "id": "REACT-07",
+      "name": "D:\\AIOS\\daemons_v2 WinSW service definitions (8 wrappers) + AIOSV2Consumer",
+      "type": "service_definitions",
+      "state_now": "all registered but Stopped/Disabled (AIOSV2Consumer Stopped/Automatic)",
+      "evidence": [
+        "D:\\AIOS\\daemons_v2\\winsw\\supervisor\\winsw.xml -> service aios-supervisor Stopped/Disabled",
+        "D:\\AIOS\\daemons_v2\\winsw\\cron-orchestrator\\winsw.xml -> aios-cron-orchestrator Stopped/Disabled",
+        "D:\\AIOS\\daemons_v2\\winsw\\observability-hub\\winsw.xml -> aios-observability-hub Stopped/Disabled",
+        "D:\\AIOS\\daemons_v2\\winsw\\role-channels\\winsw.xml -> aios-role-channels Stopped/Disabled",
+        "D:\\AIOS\\daemons_v2\\winsw\\bridge-cc-codex-cli\\winsw.xml, bridge-cc-doubao, bridge-cc-openclaw, bridge-codex-desktop-cli -> all Stopped/Disabled",
+        "D:\\AIOS\\daemons_v2\\winsw\\v2-consumer\\AIOSV2Consumer.xml -> service AIOSV2Consumer Stopped/Automatic (installed 2026-10-09, P1 commit 4d5b905)"
+      ],
+      "reactivation_command": "sc start <service>",
+      "blast_radius": "agent bridges / envelope consumer — infrastructure, product-neutral",
+      "blocked_by": "all disabled except AIOSV2Consumer (non-elevated shell cannot Start-Service: OS error 5, per memory 2026-10-09)"
+    },
+    {
+      "rank": 8,
+      "id": "REACT-08",
+      "name": "Backup snapshots of the CloudTech health-check task definition",
+      "type": "backup_xml",
+      "state_now": "on disk only",
+      "evidence": [
+        "D:\\AIOS\\_backups\\task-repair-20260930-active\\CloudTech_HealthCheck-Hourly.pre-fix.xml:4-5 Description 'CloudTech WorkBuddy 健康巡检 (每小时)' URI \\CloudTech\\HealthCheck-Hourly",
+        "D:\\AIOS\\_backups\\task-repair-20260930-active\\CloudTech_HealthCheck-Hourly.pre-fix.xml:30-36 hourly trigger PT1H / P365D",
+        "D:\\AIOS\\_backups\\task-repair-20260930-active\\CloudTech_HealthCheck-Hourly.pre-fix.xml:40 <Command>powershell.exe</Command>",
+        "D:\\AIOS\\_backups\\task-repair-20260930-active\\AIOS_Sync_Watchdog.pre-fix.xml, OpenClaw-HealthMonitor.pre-fix.xml"
+      ],
+      "reactivation_command": "schtasks /create /tn \"\\CloudTech\\HealthCheck-Hourly\" /xml <file>",
+      "blast_radius": "restores the old task namespace entry point",
+      "blocked_by": "manual"
+    },
+    {
+      "rank": 9,
+      "id": "REACT-09",
+      "name": "_dr_v3.0_uncompressed_workspace DR tooling",
+      "type": "restore_tooling",
+      "state_now": "on disk; no scheduled task references it (verified against all 266 tasks)",
+      "evidence": [
+        "D:\\AIOS\\_dr_v3.0_uncompressed_workspace\\dr_restore_now.py:20 DEST_BASE = E:\\移动硬盘\\Dr2026-09-18_DR_v3.0\\01b_full_backup_uncompressed",
+        "D:\\AIOS\\_dr_v3.0_uncompressed_workspace\\dr_restore_now.py:21 MANIFEST = E:\\移动硬盘\\Dr2026-09-18_DR_v3.0\\MANIFEST.json",
+        "D:\\AIOS\\_dr_v3.0_uncompressed_workspace\\dr_nightly_drift_check.py, dr_manifest_generator.py, dr_uncomp_copy.py, 99_verify_full_drill.py",
+        "D:\\AIOS\\_dr_v3.0_uncompressed_workspace\\_r155_autobackup_start.cmd, _r155_autobackup_startup.vbs, _r155_backup_runner.py"
+      ],
+      "reactivation_command": "python dr_restore_now.py (with external drive attached)",
+      "blast_radius": "restores 11 core modules from the DR manifest",
+      "blocked_by": "requires external E:\\移动硬盘 media"
+    },
+    {
+      "rank": 10,
+      "id": "REACT-10",
+      "name": "Executable backups (AIOS daemon binaries)",
+      "type": "binary_backup",
+      "state_now": "on disk; NO service PathName points into any _backup* or _archived* directory (verified by filtering all Win32_Service PathName)",
+      "evidence": [
+        "D:\\AIOS\\_backup_aios_exe_周二022609_093048\\AIOSCentralCollector.exe (10,075,602 B)",
+        "D:\\AIOS\\_backup_aios_exe_周二022609_093048\\AIOSSelfHeal.exe (9,073,580 B)",
+        "D:\\AIOS\\_backup_aios_exe_周二022609_093048\\AIOSSupervisor.exe (9,074,690 B)",
+        "D:\\AIOS\\_backup_aios_exe_周二022609_093048\\AIOS_Autonomy_Daemon.exe (8,927,192 B)",
+        "D:\\AIOS\\_backup_aios_exe_周二022609_093503\\ (empty)",
+        "D:\\AIOS\\_archived_2026-09-18\\ (17 entries: AIOSCentralCollector .old/.old2../v2/v3, AIOSSelfHeal.exe.old, AIOSSupervisor.exe.old, AIOS_Autonomy_Daemon .old/v2/v3, aios-incident-controller.exe.old, _health_reports\\R91_v2_final_health.json, _r91_v1_superseded\\*.bat)"
+      ],
+      "reactivation_command": "manual copy over the live binary + re-point the service PathName",
+      "blast_radius": "AIOS infrastructure binaries only — no product code",
+      "blocked_by": "manual, and superseded binaries"
+    }
+  ],
+
+  "active_vs_archive_classification": {
+    "definition": {
+      "ACTIVE": "Referenced by a currently-running process, listening socket, registered-but-armed service/task, registry Run key, or an actively-executing backup job.",
+      "DORMANT_REGISTERED": "A Windows service or scheduled task exists and points at the path, but is Stopped/Disabled/Manual and nothing triggers it.",
+      "ARCHIVE": "No service, task, Run key, or running process references the path. Reachable only by deliberate manual action.",
+      "REFERENCE_ONLY": "Documentation/registry JSON that names the asset but executes nothing."
+    },
+    "rows": [
+      {"path": "D:\\AIOS\\cloudtech-saas", "classification": "DORMANT_REGISTERED", "reason": "CloudTechV22Monitor service installed (Stopped/Manual), PathName D:\\AIOS\\cloudtech-saas\\cloudtech-saas.exe; XML onfailure restart policy armed; install.cmd present"},
+      {"path": "D:\\AIOS\\_workzone\\src\\_aios_cloudtech_bridge.py", "classification": "DORMANT_REGISTERED", "reason": "Referenced by cloudtech-saas.xml:16 and start_v22_watchdog.bat:8; the port it targets (5099) is live"},
+      {"path": "127.0.0.1:5099 (D:\\CloudTech-Portable\\gateway_v22.py)", "classification": "ACTIVE", "reason": "GET /health returns status:ok version:22.0.0"},
+      {"path": "\\\\CloudTech_V22Watchdog, \\\\CloudTech_V23FileWatcher", "classification": "ACTIVE", "reason": "Task state Running"},
+      {"path": "\\\\CloudTech\\HealthCheck-Hourly, DailyReport-0300, AIOSLightMonitor-30min, StartupCleanup-Once, CloudTech_SpecV1CI_Daily_0300", "classification": "ACTIVE", "reason": "Task state Ready with triggers"},
+      {"path": "\\\\CloudTech-V22-Watchdog", "classification": "ARCHIVE", "reason": "Task state Disabled"},
+      {"path": "cloudtech-v22-gateway (service)", "classification": "ACTIVE", "reason": "Running/Automatic; binary under D:\\个人文件\\AI\\Operator\\aios_tools (reachable via D:\\AIOS\\aios_tools junction)"},
+      {"path": "skill-http-server (service, Stopped/Manual)", "classification": "DORMANT_REGISTERED", "reason": "PathName D:\\个人文件\\AI\\CloudTech\\V2.0\\feedback-lingce-2026-09-09\\_tools\\skill_http_server.exe"},
+      {"path": "D:\\AIOS\\_archived_2026-09-18", "classification": "ARCHIVE", "reason": "17 retired .exe/.old/.bat artifacts; no service/task/Run/process reference"},
+      {"path": "D:\\AIOS\\_archived_20260925_P0", "classification": "ARCHIVE", "reason": "_aios_tools_state bridges + _NEW_ARCHITECTURE_SSOT_V1.0_2026-09-25.md + _pid_files; nothing references them"},
+      {"path": "D:\\AIOS\\_archived_20260925_R259_popup_cure_rebuild", "classification": "ARCHIVE", "reason": "4 popup-cure .bak files; no reference"},
+      {"path": "D:\\AIOS\\_backup_aios_exe_周二022609_093048 / _093503", "classification": "ARCHIVE", "reason": "binary backups; no service PathName points here"},
+      {"path": "D:\\AIOS\\_backups (3543 files)", "classification": "ARCHIVE (contents) / ACTIVE (as restore source)", "reason": "No live reference, but REACT-04 mirrors it into E:\\AI_Backup every run"},
+      {"path": "D:\\AIOS\\_backups_2026-09-29", "classification": "ARCHIVE", "reason": "Merge.yaml.bak-R327-pinning, Run-reg-bak.reg, _clash_verge_watchdog.py.bak-R327-disabled"},
+      {"path": "D:\\AIOS\\_backups_relinked_1790674911", "classification": "ARCHIVE", "reason": "openclaw/ + workbuddy/ snapshots; _relinked excluded from this audit"},
+      {"path": "D:\\AIOS\\_schtasks_bak_R344_* / _R349_*", "classification": "ARCHIVE", "reason": "AIOS-DashboardSupervisor.xml, AIOS-HealthMonitor.xml, AIOS-SessionCleanup.xml, AIOS-SyncClaudeMemory.xml, AIOS_V13_Protocol_Audit.xml"},
+      {"path": "D:\\AIOS\\_r274_install_backup", "classification": "ARCHIVE", "reason": "6 .bak files from the 2026-09-29 untracked-file install"},
+      {"path": "D:\\AIOS\\_r348_model_swap_bak_20260930-092918", "classification": "ARCHIVE", "reason": "model_resources.json + _aios_model_resource_state.json"},
+      {"path": "D:\\AIOS\\_out", "classification": "REFERENCE_ONLY", "reason": "3 PNG screenshots: R222_sc001_screenshot.png, R222_sc003_handwritten.png, R222_xh01_decor_pitfalls.png (decoration-industry evidence, not executable)"},
+      {"path": "D:\\AIOS\\AIOS_SOURCE_OF_TRUTH_FINAL", "classification": "REFERENCE_ONLY", "reason": "Declares project-cloudtech with 4 live risk items and a P3-01 roadmap line; executes nothing"},
+      {"path": "D:\\AIOS\\AIOS_RECONSTRUCTION", "classification": "REFERENCE_ONLY", "reason": "Registries name CloudTech as a system asset; executes nothing"},
+      {"path": "D:\\AIOS\\daemons_v2", "classification": "DORMANT_REGISTERED", "reason": "8 WinSW definitions; 7 services Stopped/Disabled, AIOSV2Consumer Stopped/Automatic"},
+      {"path": "D:\\AIOS\\_dr_v3.0_uncompressed_workspace", "classification": "ARCHIVE", "reason": "DR tooling; no scheduled task references it (verified across all 266 tasks)"},
+      {"path": "E:\\AI_Backup\\DailyBackup_20261008\\AIOS", "classification": "ACTIVE", "reason": "robocopy PID 31360 mirroring into it right now"}
+    ]
+  },
+
+  "local_sources_detail": {
+    "D_AIOS_out": {
+      "file_count": 3,
+      "classification": "REFERENCE_ONLY",
+      "items": [
+        {"file": "D:\\AIOS\\_out\\R222_sc001_screenshot.png", "note": "screenshot evidence"},
+        {"file": "D:\\AIOS\\_out\\R222_sc003_handwritten.png", "note": "screenshot evidence"},
+        {"file": "D:\\AIOS\\_out\\R222_xh01_decor_pitfalls.png", "note": "decoration-industry pitfalls — old-product industry residue"}
+      ]
+    },
+    "D_AIOS_backups": {
+      "file_count": 3543,
+      "classification": "ARCHIVE + restore source",
+      "key_subtrees": [
+        {"path": "D:\\AIOS\\_backups\\20261008_rootfix", "items": ["AIOS_Autonomy_Daemon-svc.xml.orig (802 B)", "aios_interop_launcher.py.orig (7377 B)"]},
+        {"path": "D:\\AIOS\\_backups\\rootcause_fix_20260929", "items": ["_aios_cloudtech_bridge.py.bak", "winsw_xml\\{AIOSCentralCollector,AIOSSelfHeal,AIOSSupervisor,AIOS_Autonomy_Daemon}-svc.xml", "dirs_archived\\{_venv312,aios_tools}", "winsw_logs_archive\\"]},
+        {"path": "D:\\AIOS\\_backups\\task-repair-20260930-active", "items": ["CloudTech_HealthCheck-Hourly.pre-fix.xml", "AIOS_Sync_Watchdog.pre-fix.xml", "OpenClaw-HealthMonitor.pre-fix.xml"]},
+        {"path": "D:\\AIOS\\_backups\\task-repair-20260929-p0 / -p1 / -p2 / -p3", "items": ["13 AIOS_* task XML + .err + status-all.txt"]},
+        {"path": "D:\\AIOS\\_backups\\chatgpt_bridge_pre_rollback_to_V4P9-FINAL_20260927_*", "count": 16, "note": "bridge rollback snapshots with _task_store.db and _project_registry.py"},
+        {"path": "D:\\AIOS\\_backups\\HKCU_Run_20261008.reg / HKCU_Run_20261008_afterfix.reg", "note": "Run-key snapshots"},
+        {"path": "D:\\AIOS\\_backups\\task-t0001-claude-settings-20261008-105353.json / task-t0007-registry-20261008-105437.json", "note": "agent-config snapshots"},
+        {"path": "D:\\AIOS\\_backups\\aios_mcp_gateway_autostart.cmd.20261008", "note": "gateway autostart script snapshot"}
+      ]
+    },
+    "D_AIOS_archived": {
+      "classification": "ARCHIVE",
+      "trees": [
+        {"path": "D:\\AIOS\\_archived_2026-09-18", "entry_count": 17, "notable": ["AIOSCentralCollector.exe.old/.old2/.old3/.old4/.old5/.20260919.old/.20260919.v2.old/.20260919.v3.old", "AIOSSelfHeal.exe.old", "AIOSSupervisor.exe.old", "AIOS_Autonomy_Daemon.exe.old/.v2.old/.v3.old/.20260919.old/.v2/.v3", "aios-incident-controller.exe.old", "_health_reports\\R91_v2_final_health.json", "_r91_v1_superseded\\_fix_*.bat + _run_*.bat"]},
+        {"path": "D:\\AIOS\\_archived_20260925_P0", "notable": ["_aios_tools_state\\ (25 bridge/daemon/watcher .py + .bak)", "_pid_files\\ (12 .pid)", "_NEW_ARCHITECTURE_SSOT_V1.0_2026-09-25.md", "_AIOSWatchdogAliveCheck.cmd", "_AIOSWatchdogAliveCheck_v2.cmd", "_cleanup_restart.ps1"]},
+        {"path": "D:\\AIOS\\_archived_20260925_R259_popup_cure_rebuild", "notable": ["AIOSPopupCure.cmd.bak", "_popup_cure_watchdog.py.bak", "_popup_state.json.bak", "_R82_AIOSPopupCure_install.cmd.bak"]}
+      ]
+    },
+    "D_AIOS_cloudtech_saas": {
+      "file_count": 13,
+      "classification": "DORMANT_REGISTERED",
+      "files": ["cloudtech-saas.exe", "cloudtech-saas.xml", "cloudtech-saas.xml.bak_C_1790215941", "cloudtech-saas.xml.pre_descriptor_R284_20260929T200200.bak", "cloudtech-saas.xml.pre_repair_R283_20260929T195700.bak", "install.cmd", "uninstall.cmd", "start_v22_watchdog.bat", "start_v22_watchdog.bat.pre_R284_20260929T200200.bak", "winsw.exe", "logs\\cloudtech-saas.err.log", "logs\\cloudtech-saas.out.log", "logs\\cloudtech-saas.wrapper.log"],
+      "last_install_event": "logs\\cloudtech-saas.wrapper.log: 2026-09-29 20:00:49 INFO - Installing service 'CloudTech V22 Health Monitor (AIOS Bridge R156g)'... installed successfully; 20:00:59 started process 23932"
+    },
+    "root_guidance_references": [
+      {"file": "D:\\AIOS\\AIOS_SOURCE_OF_TRUTH_FINAL\\status\\AIOS_STATUS.json", "lines": "28-40, 334, 352-354, 378, 381", "content": "project-cloudtech id/name/scope spans D:/CloudTech-Portable + Vault + Inbox + Live-Execution + D:/AIOS/cloudtech-saas; 4 open risk items (Vault sync stale, 3 untracked incl. cloudtech.db PII risk, Inbox 5 industries empty, AR-0086 not deployed)"},
+      {"file": "D:\\AIOS\\AIOS_SOURCE_OF_TRUTH_FINAL\\assets\\AIOS_ASSET_REGISTRY.csv", "lines": "62, 63, 73-88, 216", "content": "AR-0061 .env + AR-0062 .jwt_secret of CloudTech-Portable registered as sensitive assets; AR-0072 CloudTech-Inbox BROKEN; AR-0073 rc2 Live Direct Execution VERIFIED/LIVE_UNAUDITED; AR-0074..0081 CloudTech-Portable main repo; AR-0082..0085 CloudTech-Vault; AR-0086/0087 D:/AIOS/cloudtech-saas install skeleton"},
+      {"file": "D:\\AIOS\\AIOS_SOURCE_OF_TRUTH_FINAL\\roadmap\\AIOS_EXECUTION_ROADMAP.md", "lines": "305, 308-309", "content": "P3-01 CloudTech 业务推进 — Owner: CloudTech 团队 + Codex 协调 — 范围 D:/CloudTech-* 5 根"},
+      {"file": "D:\\AIOS\\AIOS_SOURCE_OF_TRUTH_FINAL\\context\\AIOS_REALITY_BASELINE_FINAL.md", "lines": "136, 157-158, 163", "content": "CloudTech rc2 candidate Tested 129/129; Vault syncer STALE; Inbox 5 industries MISSING; CloudTech-Portable 3 untracked DIRTY"},
+      {"file": "D:\\AIOS\\AIOS_RECONSTRUCTION\\01_REGISTRY\\AIOS_SYSTEM_REGISTRY.json", "lines": "48-55", "content": "sys-cloudtech entry, path D:\\个人文件\\AI\\cloudtech, description 用户个人独立项目 cloudtech"},
+      {"file": "D:\\AIOS\\AIOS_RECONSTRUCTION\\00_REALITY\\AIOS_REALITY_MAP.json", "lines": "71, 147-148, 163", "content": "cloudtech-saas node; CloudTech path D:\\个人文件\\AI\\cloudtech; CloudTech.lnk desktop shortcut"},
+      {"file": "D:\\AIOS\\AIOS_RECONSTRUCTION\\11_REPORTS\\AIOS_ORPHAN_REPORT.json", "lines": "197-210", "content": "3 orphaned CloudTech design docs under Operator\\00_CORE (BLUEPRINT, DECISION-MATRIX, PhaseBC_EXEC_PLAN)"},
+      {"file": "D:\\AIOS\\AIOS_RECONSTRUCTION\\09_LAB\\_step8_reports.py", "lines": "110", "content": "scans D:\\个人文件\\AI\\cloudtech as a project root"},
+      {"file": "D:\\AIOS\\_audit_reports\\全量查漏补缺报告_2026-10-08.md", "lines": "95, 121", "content": "references the cloudtech watchdog PID-lock scheme; CloudTech V23 port-conflict note (V23 moved to 18800 colliding with the AIOS dashboard)"}
+    ]
+  },
+
+  "scheduled_task_inventory": {
+    "total_enumerated": 266,
+    "state_counts": {"Running": 9, "Ready": 207, "Disabled": 50},
+    "tasks_matching_aios": 70,
+    "tasks_pointing_into_D_AIOS_root": [
+      {"task": "\\AIOS_Explorer_Watchdog", "state": "Ready", "action": "D:\\AIOS\\aios_tools\\_aios_run_explorer_watchdog.cmd"},
+      {"task": "\\AIOS_V13_Protocol_Audit", "state": "Ready", "action": "\"D:\\AIOS\\aios_venv\\Scripts\\python.exe\" \"D:\\AIOS\\aios_tasks\\_aios_v13_protocol_audit.py\""},
+      {"task": "\\AIOS_Sync_Watchdog", "state": "Ready", "action": "wscript.exe \"D:\\UsersTemp\\hidden_run.vbs\" \"D:\\AIOS\\aios_tools\\R163\\R163_Sync_Watchdog.cmd\""},
+      {"task": "\\OpenClaw Lease Guard", "state": "Ready", "action": "D:\\AIOS\\aios_venv\\Scripts\\pythonw.exe D:\\AIOS\\aios_tools\\_aios_openclaw_lease_guard.py"},
+      {"task": "\\AIOS_R193_Popup_Rootcure_3min", "state": "Ready", "action": "D:\\AIOS\\aios_venv\\Scripts\\pythonw.exe -u C:\\Users\\xinzh\\.claude\\_aios_popup_rootcure_v1.py"},
+      {"task": "\\AIOS_R176_R152_Incremental_60min", "state": "Disabled", "action": "pythonw.exe -u \"D:\\AIOS\\aios_tools\\_aios_r152_incremental.py\" run --source-timeout 600"},
+      {"task": "\\Codex-Portable-Watchdog-R319", "state": "Ready", "action": "wscript.exe \"D:\\UsersTemp\\hidden_run.vbs\" \"D:\\AIOS\\_codex_portable_watchdog_runner.cmd\""},
+      {"task": "\\OpenClaw-18792-Watchdog-R312", "state": "Ready", "action": "wscript.exe \"D:\\UsersTemp\\hidden_run.vbs\" \"D:\\AIOS\\_openclaw_18792_watchdog_runner.cmd\""},
+      {"task": "\\ClashVerge-Watchdog-R314", "state": "Disabled", "action": "pythonw.exe -u D:\\AIOS\\_clash_verge_watchdog.py 60"},
+      {"task": "\\_multi_watchdog", "state": "Disabled", "action": "\"D:\\AIOS\\_multi_watchdog_runner.cmd\""}
+    ],
+    "r65_tasks_still_registered": [
+      "AIOS_WAL_Recovery_Startup (Ready)",
+      "AIOS_Quorum_Health_5min (Ready)",
+      "AIOS_Quota_Enforcer_Report_10min (Ready)",
+      "AIOS_WAL_RecoverAll_Daily (Ready)"
+    ],
+    "not_registered_but_scripts_present": ["AIOS-Daemon-Loop-Guard (install_aios_loop.cmd)", "AIOS-Daemon-Watchdog (install_aios_watchdog.cmd)"]
+  },
+
+  "service_inventory": {
+    "total_matched": 22,
+    "running": [
+      "AIOSCentralCollector (Auto)",
+      "AIOSSelfHeal (Auto)",
+      "AIOSSupervisor (Auto)",
+      "AIOS_Autonomy_Daemon (Auto, binary aios-mcp-gateway-svc.exe)",
+      "cloudtech-v22-gateway (Auto)",
+      "skill-http-server is Manual/Stopped — not running"
+    ],
+    "stopped_pointing_into_D_AIOS": [
+      {"name": "CloudTechV22Monitor", "state": "Stopped", "start_mode": "Manual", "path": "D:\\AIOS\\cloudtech-saas\\cloudtech-saas.exe"},
+      {"name": "AIOSWatchdogAliveCheck", "state": "Stopped", "start_mode": "Disabled", "path": "D:\\AIOS\\_AIOSWatchdogAliveCheck.cmd"},
+      {"name": "AIOSV2Consumer", "state": "Stopped", "start_mode": "Auto", "path": "D:\\AIOS\\daemons_v2\\winsw\\v2-consumer\\AIOSV2Consumer.exe"}
+    ],
+    "stopped_pointing_into_D_AIOS_daemons_v2": [
+      "aios-supervisor", "aios-cron-orchestrator", "aios-observability-hub", "aios-role-channels",
+      "aios-bridge-cc-codex-cli", "aios-bridge-cc-doubao", "aios-bridge-cc-openclaw", "aios-bridge-codex-desktop-cli"
+    ],
+    "external_cloudtech_services": [
+      {"name": "skill-http-server", "state": "Stopped", "start_mode": "Manual", "path": "D:\\个人文件\\AI\\CloudTech\\V2.0\\feedback-lingce-2026-09-09\\_tools\\skill_http_server.exe"}
+    ]
+  },
+
+  "listening_ports": [
+    {"port": 5099, "pid": 16336, "identity": "CloudTech V22 Unified Gateway (python.exe)", "classification": "ACTIVE old product"},
+    {"port": 18799, "pid": 9008, "identity": "AIOSCentralCollector.exe alerts endpoint", "classification": "ACTIVE infrastructure"},
+    {"port": 18801, "pid": 16184, "identity": "OpenClaw MCP bridge (R307)", "classification": "ACTIVE infrastructure"},
+    {"port": 18803, "pid": null, "identity": "SaaS HTTP demo (R1297) — not listening in this snapshot", "classification": "not running"},
+    {"port": 18804, "pid": null, "identity": "A2A protocol (R1298) — not listening in this snapshot", "classification": "not running"}
+  ],
+
+  "out_of_scope_observed": [
+    {"path": "D:\\CloudTech-Portable", "note": "10826 files / 934 dirs / 200 MB per AIOS_ASSET_REGISTRY.csv:75; gateway_v22.py 786 lines; .env and .jwt_secret registered as sensitive assets (AR-0061/AR-0062). NOT read — outside D:\\AIOS. Observed only via scheduled-task command lines and the live 5099 listener."},
+    {"path": "D:\\CloudTech-Vault", "note": "22 files; sync stale since 2026-09-24 per AIOS_REALITY_BASELINE_FINAL.md:157. NOT read."},
+    {"path": "D:\\CloudTech-Inbox", "note": "5 industry subdirs (catering/decoration/medical/retail) all empty per AR-0072. NOT read."},
+    {"path": "D:\\CloudTech-Live-Execution\\CloudTech_rc2_Live_Direct_Execution_20260925", "note": "129/129 pytest PASS candidate, marked LIVE_UNAUDITED per AR-0073. NOT read."},
+    {"path": "D:\\个人文件\\AI\\CloudTech\\V2.0\\feedback-lingce-2026-09-09", "note": "Targets the CloudTech_SpecV1CI_Daily_0300 task and the skill-http-server service. NOT read."},
+    {"path": "E:\\AI_Backup\\", "note": "Directory listing only, to confirm the running robocopy target content. Nothing written or modified."},
+    {"path": "E:\\移动硬盘\\Dr2026-09-18_DR_v3.0\\", "note": "DR restore target referenced by dr_restore_now.py:20-21. Not accessed (external media)."}
+  ],
+
+  "verification": {
+    "files_written": [
+      "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_RETIREMENT_PARTIAL_20261008\\C_LOCAL_RUNTIME.md",
+      "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_RETIREMENT_PARTIAL_20261008\\C_LOCAL_RUNTIME.json"
+    ],
+    "protocol_preconditions_read": [
+      "D:\\AIOS\\_agent-hub\\AGENTS.md",
+      "D:\\AIOS\\_agent-hub\\memory\\2026-10-08.md",
+      "D:\\AIOS\\_agent-hub\\memory\\2026-10-09.md",
+      "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_RETIREMENT_PARTIAL_20261008\\C_CONTRACT.md"
+    ],
+    "method": "Read-only filesystem enumeration, grep with line numbers, Get-ScheduledTask / Get-CimInstance Win32_Service / Win32_Process / Get-ItemProperty Run / Get-NetTCPConnection, and one read-only HTTP GET to 127.0.0.1:5099/health.",
+    "mutations_performed": 0,
+    "terminates_with": "ACK"
+  }
+}

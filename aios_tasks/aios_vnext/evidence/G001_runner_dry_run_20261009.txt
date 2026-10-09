@@ -1,0 +1,9 @@
+2026-10-09 09:52:34,948 [INFO] __main__: failure_feedback_runner: trace source = D:\AIOS\kernel\state\failures\2026-10-09.jsonl
+2026-10-09 09:52:34,949 [INFO] __main__: failure_feedback_runner: collected 6 traces
+2026-10-09 09:52:34,950 [INFO] __main__: failure_feedback_runner: 1 clusters (occurrence >= 3: 1)
+{
+  "cluster_count": 1,
+  "active_goal_count": 0,
+  "total_modes_added": 0,
+  "per_goal": {}
+}

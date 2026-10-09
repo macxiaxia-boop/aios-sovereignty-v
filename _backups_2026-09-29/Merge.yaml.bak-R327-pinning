@@ -1,0 +1,117 @@
+# Merge.yaml - 灵策AI 业务规则强制合并层
+# 作用: 无论你选哪个机场订阅 profile，这些规则都会被 merge 进去
+# 加载时机: Clash Verge 加载任意 profile 时自动合并
+# 时间: 2026-09-09
+# 设计: prepend 形式，规则按从上到下优先级匹配
+
+profile:
+  store-selected: true       # 保留你 GUI 里当前选中的 profile（不自动切换）
+
+# =============================================================================
+# 规则合并：prepend = 插到 profile 规则前面（高优先级）
+# 这样国内业务永远先匹配本地直连，不会被订阅里的"全局代理"规则覆盖
+# =============================================================================
+prepend-rules:
+  # ----- 私有 IP / 局域网直连（绝不代理） -----
+  - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
+  - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+  - IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,100.64.0.0/10,DIRECT,no-resolve
+
+  # ----- 飞书 / Lark 全栈（灵策核心业务） -----
+  - DOMAIN-SUFFIX,feishu.cn,DIRECT
+  - DOMAIN-SUFFIX,larksuite.com,DIRECT
+  - DOMAIN-SUFFIX,feishuapp.com,DIRECT
+  - DOMAIN-SUFFIX,larkoffice.com,DIRECT
+
+  # ----- 字节系（抖音/蚁小二/头条/西瓜） -----
+  - DOMAIN-SUFFIX,douyin.com,DIRECT
+  - DOMAIN-SUFFIX,bytedance.com,DIRECT
+  - DOMAIN-SUFFIX,bytedance.net,DIRECT
+  - DOMAIN-SUFFIX,bytetos.com,DIRECT
+
+  # ----- 小红书 -----
+  - DOMAIN-SUFFIX,xiaohongshu.com,DIRECT
+  - DOMAIN-SUFFIX,xhscdn.com,DIRECT
+  - DOMAIN-SUFFIX,xhslink.com,DIRECT
+
+  # ----- 蚁小二 -----
+  - DOMAIN-SUFFIX,yixiaer.com,DIRECT
+  - DOMAIN-KEYWORD,yixer,DIRECT
+
+  # ----- 微信 / QQ -----
+  - DOMAIN-SUFFIX,weixin.qq.com,DIRECT
+  - DOMAIN-SUFFIX,wechat.com,DIRECT
+  - DOMAIN-SUFFIX,qq.com,DIRECT
+
+  # ----- 阿里系 -----
+  - DOMAIN-SUFFIX,aliyun.com,DIRECT
+  - DOMAIN-SUFFIX,alipay.com,DIRECT
+  - DOMAIN-SUFFIX,alipayobjects.com,DIRECT
+  - DOMAIN-SUFFIX,taobao.com,DIRECT
+  - DOMAIN-SUFFIX,tmall.com,DIRECT
+  - DOMAIN-SUFFIX,alicdn.com,DIRECT
+  - DOMAIN-SUFFIX,aliimg.com,DIRECT
+
+  # ----- 腾讯云 -----
+  - DOMAIN-SUFFIX,tencent.com,DIRECT
+  - DOMAIN-SUFFIX,qcloud.com,DIRECT
+  - DOMAIN-SUFFIX,tencent-cloud.com,DIRECT
+
+  # ----- 百度 -----
+  - DOMAIN-SUFFIX,baidu.com,DIRECT
+  - DOMAIN-SUFFIX,bdstatic.com,DIRECT
+  - DOMAIN-SUFFIX,baidustatic.com,DIRECT
+
+  # ----- B 站 / 快手 / 美团 -----
+  - DOMAIN-SUFFIX,bilibili.com,DIRECT
+  - DOMAIN-SUFFIX,hdslb.com,DIRECT
+  - DOMAIN-SUFFIX,kuaishou.com,DIRECT
+  - DOMAIN-SUFFIX,meituan.com,DIRECT
+
+  # ----- 灵策你自己的 AI API（内网/直连优先） -----
+  - DOMAIN-SUFFIX,agnes-ai.com,DIRECT
+  - DOMAIN-SUFFIX,deepseek.com,DIRECT
+  - DOMAIN-SUFFIX,dashscope.aliyuncs.com,DIRECT
+  - DOMAIN-KEYWORD,anthropic,DIRECT
+
+  # ----- Claude / Anthropic（外网代理） -----
+  - DOMAIN-SUFFIX,claude.ai,PROXY
+  - DOMAIN-SUFFIX,anthropic.com,PROXY
+
+  # ----- Google / YouTube（实时信息核心） -----
+  - DOMAIN-KEYWORD,google,PROXY
+  - DOMAIN-SUFFIX,googleapis.com,PROXY
+  - DOMAIN-SUFFIX,gstatic.com,PROXY
+  - DOMAIN-SUFFIX,ggpht.com,PROXY
+  - DOMAIN-SUFFIX,googlevideo.com,PROXY
+  - DOMAIN-SUFFIX,youtube.com,PROXY
+  - DOMAIN-SUFFIX,ytimg.com,PROXY
+  - DOMAIN-SUFFIX,youtu.be,PROXY
+
+  # ----- Twitter / X -----
+  - DOMAIN-SUFFIX,twitter.com,PROXY
+  - DOMAIN-SUFFIX,x.com,PROXY
+  - DOMAIN-SUFFIX,twimg.com,PROXY
+
+  # ----- GitHub -----
+  - DOMAIN-SUFFIX,github.com,PROXY
+  - DOMAIN-SUFFIX,githubusercontent.com,PROXY
+  - DOMAIN-SUFFIX,githubassets.com,PROXY
+  - DOMAIN-SUFFIX,github.io,PROXY
+
+# =============================================================================
+# 规则集订阅（每日自动更新国内域名/IP 列表）
+# 单独用 rule-providers 后在 append-rules 引用也行
+# 这里先注释：Merge.yaml 是否支持 rule-providers 取决于 Verge 版本
+# 安全做法：保持 prepend-rules 静态规则，订阅端的规则集继续生效
+# =============================================================================
+
+# =============================================================================
+# 兜底：append-rules = 兜底 GEOIP（IP 层兜底）
+# =============================================================================
+append-rules:
+  - GEOIP,CN,DIRECT,no-resolve
+  - MATCH,自动选择
+  - MATCH,故障转移

@@ -1,0 +1,347 @@
+================================================================================
+=== R275 综合查漏补缺审计 - 2026-09-29 12:02:27 ===
+================================================================================
+
+【1】进程健康检查 (应该活的 watchdog 链)
+------------------------------------------------------------
+
+【2】关键日志文件 mtime
+------------------------------------------------------------
+
+【3】HKCU Run 注册表自启
+------------------------------------------------------------
+
+【4】_popup_state.json 锁定 AUMID 状态
+------------------------------------------------------------
+   总锁定 AUMID: 116
+   R267 来源: 91
+   Codex AUMID 在白名单: source=R81 V25 _verify_popup_cure.py 实证 reason=Codex 桌面端 24h 发 6 条 'ChatGPT 已准备就绪！' toast (R81 V25 真根因)
+
+【5】Codex 通知 Enabled 状态 (实际注册表)
+------------------------------------------------------------
+
+【6】关键文件存在
+------------------------------------------------------------
+
+【7】AIOS daemon 残留检查 (应该 0 个)
+------------------------------------------------------------
+================================================================================
+=== R275 综合查漏补缺审计 - 2026-09-29 12:03:01 ===
+================================================================================
+
+【1】进程健康检查 (应该活的 watchdog 链)
+------------------------------------------------------------
+
+【2】关键日志文件 mtime
+------------------------------------------------------------
+
+【3】HKCU Run 注册表自启
+------------------------------------------------------------
+
+【4】_popup_state.json 锁定 AUMID 状态
+------------------------------------------------------------
+   总锁定 AUMID: 116
+   R267 来源: 91
+   Codex AUMID 在白名单: source=R81 V25 _verify_popup_cure.py 实证 reason=Codex 桌面端 24h 发 6 条 'ChatGPT 已准备就绪！' toast (R81 V25 真根因)
+
+【5】Codex 通知 Enabled 状态 (实际注册表)
+------------------------------------------------------------
+
+【6】关键文件存在
+------------------------------------------------------------
+
+【7】AIOS daemon 残留检查 (应该 0 个)
+------------------------------------------------------------
+
+【8】WeType 状态 (R274 在杀 wetype_*)
+------------------------------------------------------------
+
+================================================================================
+【汇总】治理项执行状态
+================================================================================
+  ✗ [✗ FAIL              ] popup_cure_watchdog 进程               未找到
+  ✗ [✗ FAIL              ] stage_watchdog 进程                    未找到
+  ✗ [✗ FAIL              ] hide_console_windows 进程              未找到
+  ✗ [✗ FAIL              ] popup_watchdog_parent 进程             未找到
+  ✗ [✗ FAIL              ] popup_ultimate_shield 进程             未找到
+  ✗ [✗ FAIL              ] popup_watchdog_parent_supervisor 进程  未找到
+  ✓ [✓ ALIVE             ] 日志 popup_cure_watchdog.log           mtime=8s 前
+  ⚠ [⚠ STALE (5min+)     ] 日志 hide_console_windows.log          mtime=271s 前
+  ✓ [✓ ALIVE             ] 日志 popup_watchdog_parent.log         mtime=21s 前
+  ✗ [✗ DEAD (long)       ] 日志 popup_ultimate_shield.log         mtime=1439s 前
+  ✗ [✗ DEAD (long)       ] 日志 popup_watchdog_parent_supervisor.log  mtime=1553s 前
+  ✓ [✓ REGISTERED        ] HKCU Run: PopupCureWatchdogParent    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-windows-x86_64-none\pyt
+  ✓ [✓ PASS              ] popup_state.json 存在                  116 AUMID 锁定
+  ✓ [✓ PASS              ] Codex 锁定状态                           codex 已 Enabled=1, IsToastEnabled=0 (用户能用)
+  ✗ [✗ Enabled=0         ] Codex OpenAI.Codex_2p2nqsd0c76g0!App  用户可能用不了!
+  ✗ [✗ Enabled=0         ] Codex com.openai.codex               用户可能用不了!
+  ✗ [✗ Enabled=0         ] Codex com.lynxce.cn                  用户可能用不了!
+  ✓ [✓ EXISTS            ] 文件: R267 popup cure                  20747B
+  ✓ [✓ EXISTS            ] 文件: R267 hide console                2912B
+  ✓ [✓ EXISTS            ] 文件: R268 watchdog parent             9489B
+  ✓ [✓ EXISTS            ] 文件: R270 supervisor                  5654B
+  ✓ [✓ EXISTS            ] 文件: R274 ultimate shield             8365B
+  ✓ [✓ EXISTS            ] 文件: R267 AIOSPopupCure.cmd           425B
+  ✓ [✓ EXISTS            ] 文件: R267 AIOSStageWatchdog.cmd       457B
+  ✓ [✓ EXISTS            ] 文件: popup state JSON                 27935B
+  ✓ [✓ NONE              ] AIOS daemon 残留                       
+  ⚠ [3 个                 ] WeType 进程                            需要卸载根治
+
+通过: 14 / 失败: 11 / 共 27 项
+报告: D:\AIOS\_audit_all_report.txt
+================================================================================
+=== R275 综合查漏补缺审计 - 2026-09-29 12:04:40 ===
+================================================================================
+
+【1】进程健康检查 (应该活的 watchdog 链)
+------------------------------------------------------------
+
+【2】关键日志文件 mtime
+------------------------------------------------------------
+
+【3】HKCU Run 注册表自启
+------------------------------------------------------------
+
+【4】_popup_state.json 锁定 AUMID 状态
+------------------------------------------------------------
+   总锁定 AUMID: 116
+   R267 来源: 91
+   Codex AUMID 在白名单: source=R81 V25 _verify_popup_cure.py 实证 reason=Codex 桌面端 24h 发 6 条 'ChatGPT 已准备就绪！' toast (R81 V25 真根因)
+
+【5】Codex 通知 Enabled 状态 (实际注册表)
+------------------------------------------------------------
+
+【6】关键文件存在
+------------------------------------------------------------
+
+【7】AIOS daemon 残留检查 (应该 0 个)
+------------------------------------------------------------
+
+【8】WeType 状态 (R274 在杀 wetype_*)
+------------------------------------------------------------
+
+================================================================================
+【汇总】治理项执行状态
+================================================================================
+  ✗ [✗ FAIL              ] popup_cure_watchdog 进程               未找到
+  ✗ [✗ FAIL              ] stage_watchdog 进程                    未找到
+  ✗ [✗ FAIL              ] hide_console_windows 进程              未找到
+  ✗ [✗ FAIL              ] popup_watchdog_parent 进程             未找到
+  ✗ [✗ FAIL              ] popup_ultimate_shield 进程             未找到
+  ✗ [✗ FAIL              ] popup_watchdog_parent_supervisor 进程  未找到
+  ✓ [✓ ALIVE             ] 日志 popup_cure_watchdog.log           mtime=5s 前
+  ✓ [✓ ALIVE             ] 日志 hide_console_windows.log          mtime=19s 前
+  ✓ [✓ ALIVE             ] 日志 popup_watchdog_parent.log         mtime=2s 前
+  ✓ [✓ ALIVE             ] 日志 popup_ultimate_shield.log         mtime=26s 前
+  ⚠ [⚠ STALE (5min+)     ] 日志 popup_watchdog_parent_supervisor.log  mtime=34s 前
+  ✓ [✓ REGISTERED        ] HKCU Run: PopupCureWatchdogParent    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-windows-x86_64-none\pyt
+  ✓ [✓ PASS              ] popup_state.json 存在                  116 AUMID 锁定
+  ✓ [✓ PASS              ] Codex 锁定状态                           codex 已 Enabled=1, IsToastEnabled=0 (用户能用)
+  ✓ [✓ Enabled=1         ] Codex OpenAI.Codex_2p2nqsd0c76g0!App  IsToastEnabled=0
+  ✓ [✓ Enabled=1         ] Codex com.openai.codex               IsToastEnabled=0
+  ✓ [✓ Enabled=1         ] Codex com.lynxce.cn                  IsToastEnabled=0
+  ✓ [✓ EXISTS            ] 文件: R267 popup cure                  20747B
+  ✓ [✓ EXISTS            ] 文件: R267 hide console                2912B
+  ✓ [✓ EXISTS            ] 文件: R268 watchdog parent             9489B
+  ✓ [✓ EXISTS            ] 文件: R270 supervisor                  5654B
+  ✓ [✓ EXISTS            ] 文件: R274 ultimate shield             8365B
+  ✓ [✓ EXISTS            ] 文件: R267 AIOSPopupCure.cmd           425B
+  ✓ [✓ EXISTS            ] 文件: R267 AIOSStageWatchdog.cmd       457B
+  ✓ [✓ EXISTS            ] 文件: popup state JSON                 27935B
+  ✓ [✓ NONE              ] AIOS daemon 残留                       
+  ⚠ [⚠ KILLED            ] WeType 进程                            需要卸载根治
+
+通过: 19 / 失败: 6 / 共 27 项
+报告: D:\AIOS\_audit_all_report.txt
+================================================================================
+=== R275 综合查漏补缺审计 - 2026-09-29 12:05:29 ===
+================================================================================
+
+【1】进程健康检查 (应该活的 watchdog 链)
+------------------------------------------------------------
+
+【2】关键日志文件 mtime
+------------------------------------------------------------
+
+【3】HKCU Run 注册表自启
+------------------------------------------------------------
+
+【4】_popup_state.json 锁定 AUMID 状态
+------------------------------------------------------------
+   总锁定 AUMID: 116
+   R267 来源: 91
+   Codex AUMID 在白名单: source=R81 V25 _verify_popup_cure.py 实证 reason=Codex 桌面端 24h 发 6 条 'ChatGPT 已准备就绪！' toast (R81 V25 真根因)
+
+【5】Codex 通知 Enabled 状态 (实际注册表)
+------------------------------------------------------------
+
+【6】关键文件存在
+------------------------------------------------------------
+
+【7】AIOS daemon 残留检查 (应该 0 个)
+------------------------------------------------------------
+
+【8】WeType 状态 (R274 在杀 wetype_*)
+------------------------------------------------------------
+
+================================================================================
+【汇总】治理项执行状态
+================================================================================
+  ✓ [✓ PASS              ] popup_cure_watchdog 健康               日志 3s 前
+  ✓ [✓ PASS              ] stage_watchdog 健康                    日志 56s 前
+  ✗ [✗ FAIL              ] hide_console_windows 健康              日志 STALE 或缺失
+  ✓ [✓ PASS              ] popup_watchdog_parent 健康             日志 50s 前
+  ✗ [✗ FAIL              ] popup_ultimate_shield 健康             日志 STALE 或缺失
+  ✗ [✗ FAIL              ] popup_watchdog_parent_supervisor 健康  日志 STALE 或缺失
+  ✓ [✓ ALIVE             ] 日志 popup_cure_watchdog.log           mtime=3s 前
+  ⚠ [⚠ STALE (5min+)     ] 日志 hide_console_windows.log          mtime=67s 前
+  ⚠ [⚠ STALE (5min+)     ] 日志 popup_watchdog_parent.log         mtime=50s 前
+  ⚠ [⚠ STALE (5min+)     ] 日志 popup_ultimate_shield.log         mtime=74s 前
+  ⚠ [⚠ STALE (5min+)     ] 日志 popup_watchdog_parent_supervisor.log  mtime=83s 前
+  ✓ [✓ REGISTERED        ] HKCU Run: PopupCureWatchdogParent    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-windows-x86_64-none\pyt
+  ✓ [✓ PASS              ] popup_state.json 存在                  116 AUMID 锁定
+  ✓ [✓ PASS              ] Codex 锁定状态                           codex 已 Enabled=1, IsToastEnabled=0 (用户能用)
+  ✓ [✓ Enabled=1         ] Codex OpenAI.Codex_2p2nqsd0c76g0!App  IsToastEnabled=0
+  ✓ [✓ Enabled=1         ] Codex com.openai.codex               IsToastEnabled=0
+  ✓ [✓ Enabled=1         ] Codex com.lynxce.cn                  IsToastEnabled=0
+  ✓ [✓ EXISTS            ] 文件: R267 popup cure                  20747B
+  ✓ [✓ EXISTS            ] 文件: R267 hide console                2912B
+  ✓ [✓ EXISTS            ] 文件: R268 watchdog parent             9489B
+  ✓ [✓ EXISTS            ] 文件: R270 supervisor                  5654B
+  ✓ [✓ EXISTS            ] 文件: R274 ultimate shield             8365B
+  ✓ [✓ EXISTS            ] 文件: R267 AIOSPopupCure.cmd           425B
+  ✓ [✓ EXISTS            ] 文件: R267 AIOSStageWatchdog.cmd       457B
+  ✓ [✓ EXISTS            ] 文件: popup state JSON                 27935B
+  ✓ [✓ NONE              ] AIOS daemon 残留                       
+  ⚠ [⚠ KILLED            ] WeType 进程                            需要卸载根治
+
+通过: 19 / 失败: 3 / 共 27 项
+报告: D:\AIOS\_audit_all_report.txt
+================================================================================
+=== R275 综合查漏补缺审计 - 2026-09-29 12:06:33 ===
+================================================================================
+
+【1】进程健康检查 (应该活的 watchdog 链)
+------------------------------------------------------------
+
+【2】关键日志文件 mtime
+------------------------------------------------------------
+
+【3】HKCU Run 注册表自启
+------------------------------------------------------------
+
+【4】_popup_state.json 锁定 AUMID 状态
+------------------------------------------------------------
+   总锁定 AUMID: 116
+   R267 来源: 91
+   Codex AUMID 在白名单: source=R81 V25 _verify_popup_cure.py 实证 reason=Codex 桌面端 24h 发 6 条 'ChatGPT 已准备就绪！' toast (R81 V25 真根因)
+
+【5】Codex 通知 Enabled 状态 (实际注册表)
+------------------------------------------------------------
+
+【6】关键文件存在
+------------------------------------------------------------
+
+【7】AIOS daemon 残留检查 (应该 0 个)
+------------------------------------------------------------
+
+【8】WeType 状态 (R274 在杀 wetype_*)
+------------------------------------------------------------
+
+================================================================================
+【汇总】治理项执行状态
+================================================================================
+  ✓ [✓ PASS              ] popup_cure_watchdog 健康               日志 8s 前
+  ✓ [✓ PASS              ] stage_watchdog 健康                    日志 58s 前
+  ✓ [✓ PASS              ] hide_console_windows 健康              日志 28s 前
+  ✓ [✓ PASS              ] popup_watchdog_parent 健康             日志 53s 前
+  ✓ [✓ PASS              ] popup_ultimate_shield 健康             日志 23s 前
+  ✓ [✓ PASS              ] popup_watchdog_parent_supervisor 健康  日志 18s 前
+  ✓ [✓ ALIVE             ] 日志 popup_cure_watchdog.log           mtime=8s 前
+  ✓ [✓ ALIVE             ] 日志 hide_console_windows.log          mtime=28s 前
+  ⚠ [⚠ STALE (5min+)     ] 日志 popup_watchdog_parent.log         mtime=53s 前
+  ✓ [✓ ALIVE             ] 日志 popup_ultimate_shield.log         mtime=23s 前
+  ✓ [✓ ALIVE             ] 日志 popup_watchdog_parent_supervisor.log  mtime=18s 前
+  ✓ [✓ REGISTERED        ] HKCU Run: PopupCureWatchdogParent    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-windows-x86_64-none\pyt
+  ✓ [✓ PASS              ] popup_state.json 存在                  116 AUMID 锁定
+  ✓ [✓ PASS              ] Codex 锁定状态                           codex 已 Enabled=1, IsToastEnabled=0 (用户能用)
+  ✓ [✓ Enabled=1         ] Codex OpenAI.Codex_2p2nqsd0c76g0!App  IsToastEnabled=0
+  ✓ [✓ Enabled=1         ] Codex com.openai.codex               IsToastEnabled=0
+  ✓ [✓ Enabled=1         ] Codex com.lynxce.cn                  IsToastEnabled=0
+  ✓ [✓ EXISTS            ] 文件: R267 popup cure                  20747B
+  ✓ [✓ EXISTS            ] 文件: R267 hide console                2912B
+  ✓ [✓ EXISTS            ] 文件: R268 watchdog parent             9489B
+  ✓ [✓ EXISTS            ] 文件: R270 supervisor                  5654B
+  ✓ [✓ EXISTS            ] 文件: R274 ultimate shield             8365B
+  ✓ [✓ EXISTS            ] 文件: R267 AIOSPopupCure.cmd           425B
+  ✓ [✓ EXISTS            ] 文件: R267 AIOSStageWatchdog.cmd       457B
+  ✓ [✓ EXISTS            ] 文件: popup state JSON                 27935B
+  ✓ [✓ NONE              ] AIOS daemon 残留                       
+  ⚠ [⚠ KILLED            ] WeType 进程                            需要卸载根治
+
+通过: 25 / 失败: 0 / 共 27 项
+报告: D:\AIOS\_audit_all_report.txt
+================================================================================
+=== R275 综合查漏补缺审计 - 2026-09-29 12:10:40 ===
+================================================================================
+
+【1】进程健康检查 (应该活的 watchdog 链)
+------------------------------------------------------------
+
+【2】关键日志文件 mtime
+------------------------------------------------------------
+
+【3】HKCU Run 注册表自启
+------------------------------------------------------------
+
+【4】_popup_state.json 锁定 AUMID 状态
+------------------------------------------------------------
+   总锁定 AUMID: 116
+   R267 来源: 91
+   Codex AUMID 在白名单: source=R81 V25 _verify_popup_cure.py 实证 reason=Codex 桌面端 24h 发 6 条 'ChatGPT 已准备就绪！' toast (R81 V25 真根因)
+
+【5】Codex 通知 Enabled 状态 (实际注册表)
+------------------------------------------------------------
+
+【6】关键文件存在
+------------------------------------------------------------
+
+【7】AIOS daemon 残留检查 (应该 0 个)
+------------------------------------------------------------
+
+【8】WeType 状态 (R274 在杀 wetype_*)
+------------------------------------------------------------
+
+================================================================================
+【汇总】治理项执行状态
+================================================================================
+  ✓ [✓ PASS              ] popup_cure_watchdog 健康               日志 2s 前
+  ✓ [✓ PASS              ] stage_watchdog 健康                    日志 5s 前
+  ✗ [✗ FAIL              ] hide_console_windows 健康              日志 STALE 或缺失
+  ✓ [✓ PASS              ] popup_watchdog_parent 健康             日志 56s 前
+  ✗ [✗ FAIL              ] popup_ultimate_shield 健康             日志 STALE 或缺失
+  ✗ [✗ FAIL              ] popup_watchdog_parent_supervisor 健康  日志 STALE 或缺失
+  ✓ [✓ ALIVE             ] 日志 popup_cure_watchdog.log           mtime=2s 前
+  ⚠ [⚠ STALE (5min+)     ] 日志 hide_console_windows.log          mtime=275s 前
+  ⚠ [⚠ STALE (5min+)     ] 日志 popup_watchdog_parent.log         mtime=56s 前
+  ⚠ [⚠ STALE (5min+)     ] 日志 popup_ultimate_shield.log         mtime=271s 前
+  ⚠ [⚠ STALE (5min+)     ] 日志 popup_watchdog_parent_supervisor.log  mtime=265s 前
+  ✓ [✓ REGISTERED        ] HKCU Run: PopupCureWatchdogParent    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-windows-x86_64-none\pyt
+  ✓ [✓ PASS              ] popup_state.json 存在                  116 AUMID 锁定
+  ✓ [✓ PASS              ] Codex 锁定状态                           codex 已 Enabled=1, IsToastEnabled=0 (用户能用)
+  ✓ [✓ Enabled=1         ] Codex OpenAI.Codex_2p2nqsd0c76g0!App  IsToastEnabled=0
+  ✓ [✓ Enabled=1         ] Codex com.openai.codex               IsToastEnabled=0
+  ✓ [✓ Enabled=1         ] Codex com.lynxce.cn                  IsToastEnabled=0
+  ✓ [✓ EXISTS            ] 文件: R267 popup cure                  20747B
+  ✓ [✓ EXISTS            ] 文件: R267 hide console                2912B
+  ✓ [✓ EXISTS            ] 文件: R268 watchdog parent             9489B
+  ✓ [✓ EXISTS            ] 文件: R270 supervisor                  5654B
+  ✓ [✓ EXISTS            ] 文件: R274 ultimate shield             8365B
+  ✓ [✓ EXISTS            ] 文件: R267 AIOSPopupCure.cmd           425B
+  ✓ [✓ EXISTS            ] 文件: R267 AIOSStageWatchdog.cmd       457B
+  ✓ [✓ EXISTS            ] 文件: popup state JSON                 27935B
+  ✓ [✓ NONE              ] AIOS daemon 残留                       
+  ⚠ [⚠ KILLED            ] WeType 进程                            需要卸载根治
+
+通过: 19 / 失败: 3 / 共 27 项
+报告: D:\AIOS\_audit_all_report.txt

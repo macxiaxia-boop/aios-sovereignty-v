@@ -1,0 +1,67 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.14, pytest-9.1.1, pluggy-1.6.0 -- D:\AIOS\kernel\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: D:\AIOS\kernel
+configfile: pyproject.toml
+plugins: asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 50 items
+
+tests/unit/test_failure_feedback.py::test_service_init_accepts_dual_repos PASSED [  2%]
+tests/unit/test_failure_feedback.py::test_service_init_accepts_distinct_repos PASSED [  4%]
+tests/unit/test_failure_feedback.py::test_default_min_occurrence_is_three PASSED [  6%]
+tests/unit/test_failure_feedback.py::test_apply_clusters_adds_new_modes PASSED [  8%]
+tests/unit/test_failure_feedback.py::test_apply_clusters_idempotent_no_duplicates PASSED [ 10%]
+tests/unit/test_failure_feedback.py::test_apply_clusters_below_min_occurrence_skipped PASSED [ 12%]
+tests/unit/test_failure_feedback.py::test_apply_clusters_goal_not_found_raises PASSED [ 14%]
+tests/unit/test_failure_feedback.py::test_apply_clusters_atomic_rollback_on_error PASSED [ 16%]
+tests/unit/test_failure_feedback.py::test_apply_clusters_with_empty_clusters_no_op PASSED [ 18%]
+tests/unit/test_failure_feedback.py::test_apply_clusters_recognizes_existing_by_description_detection_key PASSED [ 20%]
+tests/unit/test_failure_feedback.py::test_apply_clusters_idempotent_after_repeated_calls PASSED [ 22%]
+tests/unit/test_failure_feedback.py::test_apply_clusters_handles_goal_with_empty_failure_modes PASSED [ 24%]
+tests/unit/test_failure_feedback.py::test_apply_clusters_preserves_existing_modes PASSED [ 26%]
+tests/unit/test_failure_feedback.py::test_apply_clusters_with_100_clusters_only_top_max_added PASSED [ 28%]
+tests/unit/test_failure_feedback.py::test_apply_clusters_includes_normalized_hash_in_detection PASSED [ 30%]
+tests/unit/test_failure_feedback.py::test_apply_clusters_includes_indicator_from_sample_messages PASSED [ 32%]
+tests/unit/test_failure_feedback.py::test_apply_clusters_indicator_none_when_no_samples PASSED [ 34%]
+tests/unit/test_failure_feedback.py::test_no_minimum_occurrence_disables_threshold PASSED [ 36%]
+tests/unit/test_failure_feedback.py::test_apply_clusters_rejects_non_FailureCluster PASSED [ 38%]
+tests/unit/test_failure_feedback.py::test_apply_clusters_rejects_invalid_min_occurrence PASSED [ 40%]
+tests/unit/test_failure_feedback.py::test_apply_clusters_failure_modes_count_increases_monotonically PASSED [ 42%]
+tests/unit/test_failure_feedback.py::test_apply_clusters_uses_merger_consistent_description_format PASSED [ 44%]
+tests/unit/test_failure_feedback.py::test_apply_clusters_skips_when_all_below_threshold PASSED [ 46%]
+tests/unit/test_failure_feedback.py::test_apply_clusters_to_active_goals_returns_per_goal_added PASSED [ 48%]
+tests/unit/test_failure_feedback.py::test_apply_clusters_to_active_goals_single_failure_does_not_block_batch PASSED [ 50%]
+tests/unit/test_failure_feedback.py::test_apply_clusters_to_active_goals_no_active_goals_returns_empty PASSED [ 52%]
+tests/unit/test_failure_feedback.py::test_apply_clusters_to_active_goals_passes_min_occurrence PASSED [ 54%]
+tests/unit/test_failure_feedback.py::test_idempotency_keys_empty_goal_returns_empty_set PASSED [ 56%]
+tests/unit/test_failure_feedback.py::test_idempotency_keys_returns_existing_pairs PASSED [ 58%]
+tests/unit/test_failure_feedback.py::test_argparser_defaults PASSED      [ 60%]
+tests/unit/test_failure_feedback.py::test_argparser_custom_min_occurrence PASSED [ 62%]
+tests/unit/test_failure_feedback.py::test_argparser_dry_run_flag PASSED  [ 64%]
+tests/unit/test_failure_feedback.py::test_argparser_trace_path PASSED    [ 66%]
+tests/unit/test_failure_feedback.py::test_summary_helper_computes_totals PASSED [ 68%]
+tests/unit/test_failure_feedback.py::test_summary_helper_with_empty_results PASSED [ 70%]
+tests/unit/test_failure_feedback.py::test_run_once_with_in_memory_source_no_active_goals PASSED [ 72%]
+tests/unit/test_failure_feedback.py::test_run_once_dry_run_skips_write PASSED [ 74%]
+tests/unit/test_failure_feedback.py::test_run_once_collects_traces_below_threshold PASSED [ 76%]
+tests/unit/test_failure_feedback.py::test_jsonl_file_trace_source_happy_path PASSED [ 78%]
+tests/unit/test_failure_feedback.py::test_jsonl_file_trace_source_missing_file_returns_empty PASSED [ 80%]
+tests/unit/test_failure_feedback.py::test_jsonl_file_trace_source_missing_file_logs_warning PASSED [ 82%]
+tests/unit/test_failure_feedback.py::test_jsonl_file_trace_source_skips_bad_json PASSED [ 84%]
+tests/unit/test_failure_feedback.py::test_jsonl_file_trace_source_skips_blank_lines PASSED [ 86%]
+tests/unit/test_failure_feedback.py::test_jsonl_file_trace_source_skips_record_missing_id PASSED [ 88%]
+tests/unit/test_failure_feedback.py::test_in_memory_trace_source_returns_copy PASSED [ 90%]
+tests/unit/test_failure_feedback.py::test_main_returns_zero_and_prints_summary PASSED [ 92%]
+tests/unit/test_failure_feedback.py::test_main_with_missing_trace_path_exits_zero PASSED [ 94%]
+tests/unit/test_failure_feedback.py::test_failure_modes_round_trip_through_pydantic PASSED [ 96%]
+tests/unit/test_failure_feedback.py::test_failure_mode_rejects_empty_description PASSED [ 98%]
+tests/unit/test_failure_feedback.py::test_failure_mode_rejects_empty_detection PASSED [100%]
+
+============================== warnings summary ===============================
+tests/unit/test_failure_feedback.py::test_service_init_accepts_dual_repos
+  D:\AIOS\kernel\.venv\Lib\site-packages\pytest_asyncio\plugin.py:916: PytestDeprecationWarning: Overriding the "event_loop_policy" fixture is deprecated and will be removed in a future version of pytest-asyncio. Use the "pytest_asyncio_loop_factories" hook to customize event loop creation.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 50 passed, 1 warning in 0.61s ========================

@@ -1,0 +1,24 @@
+{
+  "cycle": 878,
+  "ts": "2026-09-30T01:17:56.561010",
+  "watchdogs": [
+    {
+      "name": "popup_cure",
+      "pid": 25192,
+      "alive": true,
+      "pid_mtime_age": 44
+    },
+    {
+      "name": "stage_watchdog",
+      "pid": 32232,
+      "alive": true,
+      "pid_mtime_age": 38
+    },
+    {
+      "name": "hide_console_windows",
+      "pid": 32044,
+      "alive": true,
+      "pid_mtime_age": 10
+    }
+  ]
+}

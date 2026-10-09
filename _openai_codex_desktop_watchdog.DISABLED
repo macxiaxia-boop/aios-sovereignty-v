@@ -1,0 +1,6 @@
+Auto-disabled by R-Codex-Cure-2026-09-29 V3 watchdog.
+R313 task 'OpenAI-Codex-Desktop-Watchdog-R313' uses obsolete AUMID
+  OpenAI.Codex_26.924.2738.0_x64__2p2nqsd0c76g0!OpenAI.Codex
+which is no longer updated in Microsoft Store.
+User should run (in admin cmd):
+  schtasks /Delete /TN "OpenAI-Codex-Desktop-Watchdog-R313" /F

@@ -1,0 +1,20 @@
+{
+  "id": "0bc534d2-58d4-4d15-b322-57ad9bd98e77",
+  "created_at": "2026-10-09T01:41:21.449146+00:00",
+  "updated_at": "2026-10-09T01:41:21.449146+00:00",
+  "schema_version": 1,
+  "agent": "openclaw",
+  "failure_clusters": [],
+  "capability_index": [
+    {
+      "skill_id": "openclaw_core",
+      "use_cases": [
+        "openclaw agent self-managed task execution",
+        "cross-agent knowledge reference (G003)"
+      ],
+      "confidence": 1.0
+    }
+  ],
+  "failure_count_total": 0,
+  "last_updated": "2026-10-09T01:41:21.449146Z"
+}

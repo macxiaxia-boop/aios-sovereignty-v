@@ -1,0 +1,7 @@
+[ADMIN] ok=1 is_admin=1
+[DELETE_R313] ok=False rc=1, stdout=
+[DELETE_R316] ok=True rc=0, stdout=SUCCESS: The scheduled task "OpenAI-Codex-Beta-Watchdog-R316" was successfully d
+[CREATE_V4] ok=True rc=0, stdout=SUCCESS: The scheduled task "Codex-Codex-Cure-V4-Watchdog" has successfully been
+[START_V4] ok=True 后台启动 V4 watchdog
+[QUERY_V4] ok=True rc=0, has_task_name=True
+[DONE] ok=True watchdog 配置完成

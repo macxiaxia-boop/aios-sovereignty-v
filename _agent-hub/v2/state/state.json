@@ -2,10 +2,29 @@
   "agents": {},
   "counters": {
     "cancelled": 1,
-    "queued": 2,
+    "queued": 5,
     "succeeded": 1
   },
   "tasks": {
+    "13c2166f-368c-4621-b894-749c11306e14": {
+      "assignee": "codex",
+      "correlation_envelope_id": null,
+      "created_at": "2026-10-08T17:44:02Z",
+      "description": "",
+      "error": null,
+      "heartbeat_at": null,
+      "input_payload": {},
+      "lease_expires_at": null,
+      "max_retries": 3,
+      "output_payload": {},
+      "owner": "claudecode",
+      "retry_count": 0,
+      "state": "queued",
+      "task_id": "13c2166f-368c-4621-b894-749c11306e14",
+      "timeout_ms": 60000,
+      "title": "cross-session probe",
+      "updated_at": "2026-10-08T17:44:02Z"
+    },
     "35b6f323-0ff8-4163-93d6-1e27fa79759c": {
       "assignee": "claude_code",
       "correlation_envelope_id": null,
@@ -37,6 +56,25 @@
       "timeout_ms": 3600000,
       "title": "R348 · aios_status stale defaults 根治 + 通道拓展 A/B/C/D 全部上线",
       "updated_at": "2026-09-30T07:36:49Z"
+    },
+    "3eee023f-6651-455e-a82c-2335c8a12b32": {
+      "assignee": "codex",
+      "correlation_envelope_id": null,
+      "created_at": "2026-10-08T17:04:37Z",
+      "description": "",
+      "error": null,
+      "heartbeat_at": null,
+      "input_payload": {},
+      "lease_expires_at": null,
+      "max_retries": 3,
+      "output_payload": {},
+      "owner": "claudecode",
+      "retry_count": 0,
+      "state": "queued",
+      "task_id": "3eee023f-6651-455e-a82c-2335c8a12b32",
+      "timeout_ms": 60000,
+      "title": "test",
+      "updated_at": "2026-10-08T17:04:37Z"
     },
     "782ff34b-f5d0-484e-bae5-d97cff2788ae": {
       "assignee": "r286-debug-agent",
@@ -100,8 +138,27 @@
       "timeout_ms": 60000,
       "title": "test",
       "updated_at": "2026-09-30T01:23:44Z"
+    },
+    "99b0733b-4796-4a47-a56c-762647e58b19": {
+      "assignee": "codex",
+      "correlation_envelope_id": null,
+      "created_at": "2026-10-08T17:05:01Z",
+      "description": "",
+      "error": null,
+      "heartbeat_at": null,
+      "input_payload": {},
+      "lease_expires_at": null,
+      "max_retries": 3,
+      "output_payload": {},
+      "owner": "claudecode",
+      "retry_count": 0,
+      "state": "queued",
+      "task_id": "99b0733b-4796-4a47-a56c-762647e58b19",
+      "timeout_ms": 60000,
+      "title": "Plan Q4 SaaS retention",
+      "updated_at": "2026-10-08T17:05:01Z"
     }
   },
-  "updated_at": "2026-10-08T14:10:36Z",
+  "updated_at": "2026-10-09T01:24:07Z",
   "version": "v2-2026-09-29"
 }

@@ -1,0 +1,11 @@
+name: daily_health_check
+schedule: "0 9 * * *"
+description: "每日 9 点 (CST) 跑一次 health check, 拉 MiniMax-M3 调 summarize"
+runtime_host: openclaw
+provider: MiniMax
+model: MiniMax-M3
+request_id: cron-daily-health-check-2026-10-09
+payload:
+  prompt: "summarize: 最近 24h system health"
+  max_tokens: 256
+ttl_sec: 60

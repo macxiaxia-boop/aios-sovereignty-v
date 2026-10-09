@@ -1,0 +1,62 @@
+{
+  "verified_at_utc": "2026-10-09T01:35:00Z",
+  "files": [
+    {
+      "path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\_aios_cloudtech_bridge.py",
+      "size": 15037,
+      "sha256": "2c873cb7f3259f5f875d264076ee3f7ced623714ef002845698226e85e73598f"
+    },
+    {
+      "path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\cloudtech-saas\\cloudtech-saas.exe",
+      "size": 18243033,
+      "sha256": "05b82d46ad331cc16bdc00de5c6332c1ef818df8ceefcd49c726553209b3a0da"
+    },
+    {
+      "path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\cloudtech-saas\\cloudtech-saas.xml",
+      "size": 1750,
+      "sha256": "e3bb15384d588044f13a8b3fdd11551007c08bc6fd007c3eccfbfbd846492761"
+    },
+    {
+      "path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\cloudtech-saas\\cloudtech-saas.xml.bak_C_1790215941",
+      "size": 1513,
+      "sha256": "509efc60c7d84b6c3c98e56e119f6354326caec711771dcfab70477b624d4b3c"
+    },
+    {
+      "path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\cloudtech-saas\\cloudtech-saas.xml.pre_descriptor_R284_20260929T200200.bak",
+      "size": 1513,
+      "sha256": "509efc60c7d84b6c3c98e56e119f6354326caec711771dcfab70477b624d4b3c"
+    },
+    {
+      "path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\cloudtech-saas\\cloudtech-saas.xml.pre_repair_R283_20260929T195700.bak",
+      "size": 1513,
+      "sha256": "509efc60c7d84b6c3c98e56e119f6354326caec711771dcfab70477b624d4b3c"
+    },
+    {
+      "path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\cloudtech-saas\\install.cmd",
+      "size": 1124,
+      "sha256": "d79c778d876da7785a862a83e891f5f62f1cf4088c6f9eeae3fc907eba69c38d"
+    },
+    {
+      "path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\cloudtech-saas\\start_v22_watchdog.bat",
+      "size": 446,
+      "sha256": "20ed7c30394cc6c70ecdb071a3f453b05eeb53de3382db32f146dcf68f6a4096"
+    },
+    {
+      "path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\cloudtech-saas\\start_v22_watchdog.bat.pre_R284_20260929T200200.bak",
+      "size": 410,
+      "sha256": "5a40784c8efe03a08e4866b7c90fcacecc93643fff5aee4bdfc5135a44c55d25"
+    },
+    {
+      "path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\cloudtech-saas\\uninstall.cmd",
+      "size": 394,
+      "sha256": "fb2b4c14129ee2079a01242484cadc56af86827134fd5dc62e6f3a5ea4f27349"
+    },
+    {
+      "path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\cloudtech-saas\\winsw.exe",
+      "size": 18243033,
+      "sha256": "05b82d46ad331cc16bdc00de5c6332c1ef818df8ceefcd49c726553209b3a0da"
+    }
+  ],
+  "ok": true,
+  "mismatches": []
+}

@@ -169,3 +169,18 @@ _*t18*.py
 _*enqueue*.py
 _*audit_fix*.py
 _*fix_*.py
+
+# Pre-existing long-path backups (cannot enter git; blocked by OS path limit)
+_backups_relinked_*/
+
+# Node modules + python venv (should never be tracked)
+**/node_modules/
+**/__pycache__/
+**/.venv/
+**/venv/
+
+# Lock files (consumer / daemon in progress)$n
+*.lock
+.aios_v2_consumer.lock
+_*.lock
+

@@ -1,0 +1,140 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+_hide_console_windows_v2.py - R279 立 (2026-09-29)
+
+R279 根因: Codex/VSCode/Claude Code 启动 MCP server 时 spawn cmd.exe 控制台窗口
+            启动瞬间到 hide_console tick 之间有 1s 时间差, 用户看到"快闪弹窗"
+
+R279 治本:
+1. 100ms tick (10 次/秒) - 从 1s 缩到 100ms, 窗口出现 100ms 内立即隐藏
+2. SetWinEventHook 事件驱动 - EVENT_OBJECT_CREATE 触发立即隐藏 (无延迟)
+3. 双层防御: 事件驱动 + 轮询兜底 (避免 hook 漏掉的情况)
+"""
+import ctypes
+import sys
+import time
+import json
+from ctypes import wintypes
+from pathlib import Path
+from datetime import datetime
+
+LOG = Path(r"D:\AIOS\_hide_console_windows_v2.log")
+PID_FILE = Path(r"D:\AIOS\_hide_console_windows_v2.pid")
+SW_HIDE = 0
+SW_SHOW = 5
+
+EVENT_OBJECT_CREATE = 0x8000
+EVENT_OBJECT_DESTROY = 0x8001
+WINEVENT_OUTOFCONTEXT = 0x0000
+WINEVENT_SKIPOWNPROCESS = 0x0002
+
+user32 = ctypes.windll.user32
+
+def log(msg):
+    line = f"[{datetime.now().isoformat()}] {msg}"
+    print(line, flush=True)
+    try:
+        with open(LOG, "a", encoding="utf-8") as f:
+            f.write(line + "\n")
+    except: pass
+
+
+# 共享计数
+_hidden_count = 0
+
+
+def hide_window_by_hwnd(hwnd):
+    """隐藏指定 hwnd 如果是 ConsoleWindowClass"""
+    global _hidden_count
+    cls_buf = ctypes.create_unicode_buffer(256)
+    user32.GetClassNameW(hwnd, cls_buf, 256)
+    if cls_buf.value == "ConsoleWindowClass":
+        if user32.IsWindowVisible(hwnd):
+            if user32.ShowWindow(hwnd, SW_HIDE):
+                _hidden_count += 1
+                return True
+    return False
+
+
+def enum_and_hide_all():
+    """枚举所有可见控制台窗口 + 隐藏"""
+    EnumWindows = user32.EnumWindows
+    IsWindowVisible = user32.IsWindowVisible
+    GetClassNameW = user32.GetClassNameW
+    ShowWindow = user32.ShowWindow
+    hidden = 0
+    WNDENUMPROC = ctypes.WINFUNCTYPE(ctypes.c_bool, wintypes.HWND, wintypes.LPARAM)
+    def cb(hwnd, lParam):
+        nonlocal hidden
+        if not IsWindowVisible(hwnd):
+            return True
+        cls_buf = ctypes.create_unicode_buffer(256)
+        GetClassNameW(hwnd, cls_buf, 256)
+        if cls_buf.value == "ConsoleWindowClass":
+            if ShowWindow(hwnd, SW_HIDE):
+                hidden += 1
+        return True
+    EnumWindows(WNDENUMPROC(cb), 0)
+    return hidden
+
+
+# WinEventHook 回调函数
+WinEventProcType = ctypes.WINFUNCTYPE(None, wintypes.HANDLE, ctypes.c_int, wintypes.HWND,
+                                     ctypes.c_int, ctypes.c_int, ctypes.c_uint32, ctypes.c_int)
+
+def event_callback(hWinEventHook, event, hwnd, idObject, idChild, dwEventThread, dwmsEventTime):
+    """R279: 窗口创建事件触发立即隐藏"""
+    if event == EVENT_OBJECT_CREATE and hwnd:
+        hide_window_by_hwnd(hwnd)
+
+
+# 保留引用防止 GC
+_event_callback_ref = WinEventProcType(event_callback)
+
+
+def main_loop():
+    log(f"=== _hide_console_windows_v2 START PID={os.getpid()} (R279) ===")
+    try:
+        PID_FILE.write_text(json.dumps({"pid": os.getpid(), "ts": datetime.now().isoformat()}, ensure_ascii=False), encoding="utf-8")
+    except: pass
+
+    # R279: 安装 SetWinEventHook 监听窗口创建事件 (无延迟)
+    hook = user32.SetWinEventHook(
+        EVENT_OBJECT_CREATE,  # eventMin
+        EVENT_OBJECT_CREATE,  # eventMax
+        0,  # hmodWinEventProc
+        _event_callback_ref,  # lpfnWinEventProc
+        0,  # idProcess (0 = all)
+        0,  # idThread (0 = all)
+        WINEVENT_OUTOFCONTEXT | WINEVENT_SKIPOWNPROCESS,
+    )
+    if hook:
+        log(f"✓ SetWinEventHook 安装成功 (hook={hook})")
+    else:
+        log("⚠ SetWinEventHook 安装失败, 仅用 100ms tick 兜底")
+
+    tick = 0
+    while True:
+        tick += 1
+        try:
+            # 1. 100ms tick: 枚举所有可见控制台窗口 + 隐藏
+            hidden = enum_and_hide_all()
+
+            # 2. 每 30s (300 cycle) 更新 PID 文件
+            if tick % 300 == 0:
+                try:
+                    PID_FILE.write_text(json.dumps({"pid": os.getpid(), "cycle": tick, "ts": datetime.now().isoformat(), "hidden_total": hidden}, ensure_ascii=False), encoding="utf-8")
+                    log(f"[CYCLE {tick}] hidden={hidden}")
+                except: pass
+
+        except Exception as e:
+            log(f"[CYCLE {tick}] ERR: {repr(e)}")
+
+        # 100ms tick (不是 1s)
+        time.sleep(0.1)
+
+
+import os  # 移到 main_loop 之前
+if __name__ == "__main__":
+    main_loop()

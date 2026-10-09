@@ -1,0 +1,21 @@
+﻿AIOSWatchdogAliveCheck : ImagePath=D:\AIOS\_AIOSWatchdogAliveCheck.cmd Start=4
+AIOSPopupCure : (NOT INSTALLED)
+AIOSStageWatchdog : (NOT INSTALLED)
+PopupCureWatchdog : (NOT INSTALLED)
+PopupCureWatchdogParent : (NOT INSTALLED)
+_popup_cure_watchdog : (NOT INSTALLED)
+
+
+PopupCureWatchdogParent : C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12
+                          .13-windows-x86_64-none\pythonw.exe -u "D:\AIOS\_popu
+                          p_watchdog_parent.py" --interval 5
+PSPath                  : Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER
+                          \Software\Microsoft\Windows\CurrentVersion\Run
+PSParentPath            : Microsoft.PowerShell.Core\Registry::HKEY_CURRENT_USER
+                          \Software\Microsoft\Windows\CurrentVersion
+PSChildName             : Run
+PSDrive                 : HKCU
+PSProvider              : Microsoft.PowerShell.Core\Registry
+
+
+

@@ -1,0 +1,19 @@
+{
+  "assignee": "codex",
+  "correlation_envelope_id": null,
+  "created_at": "2026-10-08T17:05:01Z",
+  "description": "",
+  "error": null,
+  "heartbeat_at": null,
+  "input_payload": {},
+  "lease_expires_at": null,
+  "max_retries": 3,
+  "output_payload": {},
+  "owner": "claudecode",
+  "retry_count": 0,
+  "state": "queued",
+  "task_id": "99b0733b-4796-4a47-a56c-762647e58b19",
+  "timeout_ms": 60000,
+  "title": "Plan Q4 SaaS retention",
+  "updated_at": "2026-10-08T17:05:01Z"
+}

@@ -1,0 +1,217 @@
+Asset ID,资产名称,类型,路径,来源,更新时间,Hash,状态,证据
+AR-0001,D:/AIOS 根,根目录,D:/AIOS,V16-01/本轮,2026-09-29T06:40:43Z,N/A,VERIFIED,本轮 git rev-parse --show-toplevel=D:/AIOS；HEAD=0b964e6；status --porcelain=210 entries(71 ?? +130 A +6 AM +2 AD +1 M)；R281.1 inventory 71,051 files / 2,575,642,734 bytes
+AR-0002,D:/ai-os-workspace 根,根目录,D:/ai-os-workspace,V16-01,2026-09-28T17:09:53+08:00,N/A,VERIFIED,Python os.walk FULL in 60s: 23,296 files / 2,915 dirs / 2,106,599,954 bytes
+AR-0003,D:/AIOS-LAB 根(含 worktree),根目录,D:/AIOS-LAB,V16-01,2026-09-27T17:49:02+08:00,N/A,VERIFIED,os.walk TRUNC@45s: 112,566 files / 21,134 dirs / 1,191,836,731 bytes (实际更大)；HEAD=77211e0 master；40 ?? untracked, ls-files --others=14,910
+AR-0004,D:/AIOS-LAB-worktree-1,Git Worktree,D:/AIOS-LAB-worktree-1,V16-01,2026-09-27T16:31:39+08:00,N/A,VERIFIED,.git 文件=gitdir: D:/AIOS-LAB/.git/worktrees/AIOS-LAB-worktree-1;branch=phase3-b01;HEAD=77211e0
+AR-0005,D:/AIOS_BridgeWatcher 根,根目录(无 Git),D:/AIOS_BridgeWatcher,V16-01,2026-09-28T10:57:13+08:00,N/A,VERIFIED,os.walk FULL: 9 files / 1 dir / 25,771 bytes;含 watcher.py / pid_truth.py / restart_bridge.{cmd,py}
+AR-0006,D:/AIOS_DIAGNOSTICS 根,根目录(无 Git),D:/AIOS_DIAGNOSTICS,V16-01,2026-09-26T12:58:14+08:00,N/A,VERIFIED,os.walk FULL: 19 files / 13 dirs / 241,537 bytes;含 POPUP_STORM/00-09 十阶段
+AR-0007,C:/Users/xinzh/.aios,根目录(symlink),C:/Users/xinzh/.aios,V16-01,2026-09-28T19:09:08+08:00,N/A,VERIFIED,ls -la 显示 symlink → /d/个人文件/AI/Operator/;不作为独立根计入
+AR-0008,C:/Users/xinzh/AIOS,根目录(symlink),C:/Users/xinzh/AIOS,V16-01,2026-09-28T18:17:04+08:00,N/A,VERIFIED,symlink → /d/ai-os-workspace/ai-os-core/AIOS/;不作为独立根
+AR-0009,C:/Users/xinzh/AI-OS-CONSTITUTION,根目录(symlink),C:/Users/xinzh/AI-OS-CONSTITUTION,V16-01,2026-09-28T18:17:04+08:00,N/A,VERIFIED,symlink → /d/ai-os-workspace/ai-os-core/AI-OS-CONSTITUTION/;不作为独立根
+AR-0010,D:/AIOS/.git 内部,Git 仓库元数据,D:/AIOS/.git,V16-01 git,2026-09-29T06:40:39Z,N/A,VERIFIED,本轮 git rev-parse HEAD=0b964e646b46406895eefd816b05363687ee3a0d;branch=main;remote=空
+AR-0011,D:/AIOS-LAB/.git 内部,Git 仓库元数据,D:/AIOS-LAB/.git,V16-01 git,2026-09-27T17:49:02+08:00,N/A,VERIFIED,HEAD=77211e08dbfe0594d015b433b92104397818b2fc;branch=master;worktree list 2 行
+AR-0012,CANONICAL_INDEX.json,治理·SSOT 索引,D:/AIOS/_agent-hub/v2/governance/CANONICAL_INDEX.json,V16-01 SHA256,2026-09-29T14:16:21+08:00,ce1486089a5f5fd001ae869bfc767ba35642b7ffc6a7969dd69f0031ebc62e71,VERIFIED,stat 7242 bytes;含 shared_identity/v2_protocol_stack/reconstruction_registry/projects/current_audit 五段
+AR-0013,PROTOCOL_REGISTRY.json,治理·协议注册表,D:/AIOS/_agent-hub/v2/governance/PROTOCOL_REGISTRY.json,V16-01 SHA256,2026-09-29T14:06:42+08:00,db0f9cb8b277dadb322ca076f8f856017ad8050b4adf2bfa0a358223ac5f8553,VERIFIED,stat 21281 bytes;32 entries / 29 families / 22 current / 7 unresolved;R281.1 validated
+AR-0014,PLACEMENT_RULES.md,治理·放置规则,D:/AIOS/_agent-hub/v2/governance/PLACEMENT_RULES.md,V16-01 SHA256,2026-09-29T14:16:28+08:00,cbd9d9956cf0668a0cdf22edad8f83485d4fe9da433de9ee9272796fff980349,VERIFIED,stat 6262 bytes
+AR-0015,RETENTION_POLICY.md,治理·保留策略,D:/AIOS/_agent-hub/v2/governance/RETENTION_POLICY.md,V16-01 SHA256,2026-09-29T13:49:50+08:00,baee75e3e47e21295ab050a7e2c2ebf1625987fe9785f56c5b700bff67d2229c,VERIFIED,stat 4927 bytes
+AR-0016,AUDIT_MANIFEST.json (R281.2),报告·既有清单,D:/AIOS/_agent-hub/v2/reports/system-audit-20260929/AUDIT_MANIFEST.json,V16-01 SHA256,2026-09-29T14:21:16+08:00,f5912cd6656149f0bdfcfc272b5f72459eb4d5f4e76cc9ac10e717ade9454739,VERIFIED,stat 264675 bytes;schema=3;audit_id=system-audit-20260929-R281.2;323 top_dirs_scanned(322 complete + 1 partial);match=True
+AR-0017,INVENTORY_SUMMARY.md,报告·既有摘要,D:/AIOS/_agent-hub/v2/reports/system-audit-20260929/INVENTORY_SUMMARY.md,V16-01 SHA256,2026-09-29T14:21:16+08:00,2e0092e04523ffc9e506f34ec3d7b4af487e6e2e365e6b8005b549ee90b4608f,VERIFIED,stat 3249 bytes;71,051 files / 723 dirs / 2,575,642,734 bytes / 630 重复 sha256 组 / 148 bak-disabled
+AR-0018,IMPLEMENTATION_REPORT.md (R320.6),报告·v2 实现,D:/AIOS/_agent-hub/v2/reports/IMPLEMENTATION_REPORT.md,V16-01 Read,2026-09-29T05:13:46+08:00,N/A,VERIFIED,R320.6 VERIFIED;test pass=55/fail=0;7/11 verified by live evidence
+AR-0019,FILE_INVENTORY.csv,数据·既有清单,D:/AIOS/_agent-hub/v2/reports/system-audit-20260929/FILE_INVENTORY.csv,V16-01,2026-09-29T06:21:10+08:00,N/A,LEGACY,stat 37,518,323 bytes(~35.8 MB);71,797+ 行;root 列仅 D:/AIOS 单值(覆盖核不全)
+AR-0020,AGENT_FOOTPRINTS.md,报告·代理足迹,D:/AIOS/_agent-hub/v2/reports/system-audit-20260929/AGENT_FOOTPRINTS.md,V16-01,2026-09-29T13:52:00+08:00,N/A,VERIFIED,stat 6933 bytes
+AR-0021,CLOUDTECH_PROJECT_MAP.md,报告·项目地图,D:/AIOS/_agent-hub/v2/reports/system-audit-20260929/CLOUDTECH_PROJECT_MAP.md,V16-01,2026-09-29T13:51:00+08:00,N/A,VERIFIED,stat 6431 bytes
+AR-0022,DESKTOP_AUDIT.md,报告·桌面审计,D:/AIOS/_agent-hub/v2/reports/system-audit-20260929/DESKTOP_AUDIT.md,V16-01,2026-09-29T13:52:00+08:00,N/A,VERIFIED,stat 4730 bytes
+AR-0023,DUPLICATE_ANALYSIS.md,报告·重复分析,D:/AIOS/_agent-hub/v2/reports/system-audit-20260929/DUPLICATE_ANALYSIS.md,V16-01,2026-09-29T14:13:00+08:00,N/A,VERIFIED,stat 17814 bytes
+AR-0024,MIGRATION_PLAN.md,报告·迁移计划,D:/AIOS/_agent-hub/v2/reports/system-audit-20260929/MIGRATION_PLAN.md,V16-01,2026-09-29T14:11:00+08:00,N/A,VERIFIED,stat 9826 bytes;R281.3 已修正 32 entries / 71,799 rows
+AR-0025,PROTOCOL_AUDIT.md,报告·协议审计,D:/AIOS/_agent-hub/v2/reports/system-audit-20260929/PROTOCOL_AUDIT.md,V16-01,2026-09-29T14:11:00+08:00,N/A,VERIFIED,stat 8934 bytes
+AR-0026,SCAN_CHECKPOINT.json,数据·扫描检查点,D:/AIOS/_agent-hub/v2/reports/system-audit-20260929/SCAN_CHECKPOINT.json,V16-01,2026-09-29T14:12:00+08:00,N/A,VERIFIED,stat 1824 bytes
+AR-0027,STORAGE_HOTSPOTS.md,报告·存储热点,D:/AIOS/_agent-hub/v2/reports/system-audit-20260929/STORAGE_HOTSPOTS.md,V16-01,2026-09-29T14:13:00+08:00,N/A,VERIFIED,stat 34033 bytes
+AR-0028,AIOS_RECONSTRUCTION_PROGRESS.json,SSOT·重建进度,D:/AIOS/AIOS_RECONSTRUCTION/AIOS_RECONSTRUCTION_PROGRESS.json,V16-01 SHA256,2026-09-27T00:56:12+08:00,ee438e0c94419f7b4fae6f1aaa8e2804e4016feb41c8fdacdf79e35b11869e8a,VERIFIED,stat 5095 bytes;P0=completed P1=completed P2=in_progress 80%
+AR-0029,AIOS_REALITY_MAP.json,SSOT·现实地图,D:/AIOS/AIOS_RECONSTRUCTION/00_REALITY/AIOS_REALITY_MAP.json,V16-01 SHA256,2026-09-26T22:14:10+08:00,88ed48988fef0727c73032d7f36789bb196c285d723527cb4cf39cad03ba6a4e,UNKNOWN,stat 9830 bytes;声称 142,572 files/8.15 GB 与 R281.1 71,051/2.58GB 不一致 — 待复核;NUMBER DRIFT
+AR-0030,AIOS_SYSTEM_REGISTRY.json,SSOT·系统注册表,D:/AIOS/AIOS_RECONSTRUCTION/01_REGISTRY/AIOS_SYSTEM_REGISTRY.json,V16-01 SHA256,2026-09-26T22:14:26+08:00,44893d36d2f8695f3c2fa87367cbd4e99204588d91e8251b7199c5a7bcb88d6f,VERIFIED,stat 2960 bytes
+AR-0031,AIOS_AGENT_REGISTRY.json,SSOT·代理注册表,D:/AIOS/AIOS_RECONSTRUCTION/01_REGISTRY/AIOS_AGENT_REGISTRY.json,V16-01 SHA256,2026-09-26T22:15:55+08:00,8731392df34e3c313a851f7fe967274f1b58f3f4de7e183f88f295b51050169c,VERIFIED,stat 4711 bytes;CONFLICT: codex.role="executor" 与 CLAUDE.md Codex=Supervisor 冲突
+AR-0032,AIOS_SKILL_REGISTRY.json,SSOT·技能注册表,D:/AIOS/AIOS_RECONSTRUCTION/01_REGISTRY/AIOS_SKILL_REGISTRY.json,V16-01 SHA256,2026-09-26T22:15:55+08:00,ee79eb0a14053e963fd5f8b3ce720d34febe170e6d7073843a80001432e2ca30,VERIFIED,stat 2221 bytes
+AR-0033,AIOS_MCP_REGISTRY.json,SSOT·MCP 注册表,D:/AIOS/AIOS_RECONSTRUCTION/01_REGISTRY/AIOS_MCP_REGISTRY.json,V16-01 SHA256,2026-09-26T22:15:55+08:00,2f9fd27842de2c8baa87117b4f97c40e1bb85857c4815850b38c5bcfd376fb89,VERIFIED,stat 2335 bytes
+AR-0034,AIOS_TOOL_REGISTRY.json,SSOT·工具注册表,D:/AIOS/AIOS_RECONSTRUCTION/01_REGISTRY/AIOS_TOOL_REGISTRY.json,V16-01 SHA256,2026-09-27T01:20:11+08:00,e139d5309eb5eb3cab2cd0804d58c76fc632c7ba75769049518d6f56031d2821,VERIFIED,stat 5858 bytes;CANONICAL_INDEX 标注 NAMESPACE ANOMALY (APP_CONNECTOR_FABRIC_PHASE_2_V1)
+AR-0035,AIOS_CANONICAL_CANDIDATES.json,SSOT·候选规范,D:/AIOS/AIOS_RECONSTRUCTION/02_CANONICAL/AIOS_CANONICAL_CANDIDATES.json,V16-01 SHA256,2026-09-26T22:15:07+08:00,fe0bd972eb0a5eaa29e8ae08e50e4a21e768001755d854df9338c37ab314ceca,VERIFIED,stat 23358 bytes;80 candidates
+AR-0036,AIOS_BRIDGE_REGISTRY.json,SSOT·桥接注册表,D:/AIOS/AIOS_RECONSTRUCTION/03_BRIDGES/AIOS_BRIDGE_REGISTRY.json,V16-01 SHA256,2026-09-29T13:20:05+08:00,407c139aae530cde70dd2904e46062bf8bdf2fcc72f773fbf466d7c09cf61957,VERIFIED,stat 4946 bytes;9 bridges;2 REGISTRY DRIFT(br-aios-codex-relay/br-swarmclaw-openclaw 与 14:40 现实不符);本轮无写入
+AR-0037,AIOS_BROKEN_BRIDGES.md,SSOT·断桥报告,D:/AIOS/AIOS_RECONSTRUCTION/03_BRIDGES/AIOS_BROKEN_BRIDGES.md,V16-01 SHA256,2026-09-27T17:50:46+08:00,33a9e43fe9fe946de8e57d671c1cdc441aa032db6cfd4879a3e37c416e2ba1f8,VERIFIED,stat 4307 bytes;br-aios-hermes RESOLVED R260;br-swarmclaw-openclaw RESOLVED R265(再次掉线 R322);br-claudecode-openclaw CANDIDATE/unbuilt
+AR-0038,AIOS_CAPABILITY_GRAPH.json,SSOT·能力图,D:/AIOS/AIOS_RECONSTRUCTION/04_CAPABILITY_GRAPH/AIOS_CAPABILITY_GRAPH.json,V16-01 SHA256,2026-09-26T22:16:21+08:00,8e2f14336dd8e773be5f5c432091b751c4611fef0cc79614ac1075e039a7eb25,VERIFIED,stat 4388 bytes
+AR-0039,AIOS_CAPABILITY_RADAR.md,SSOT·能力雷达,D:/AIOS/AIOS_RECONSTRUCTION/AIOS_CAPABILITY_RADAR.md,V16-01 SHA256,2026-09-26T22:18:26+08:00,bae3e5edfe7807268825509c8cd3c05373887e3d080e35ab4e5ec1714f1a095d,VERIFIED,stat 3111 bytes
+AR-0040,phase7_done.md,里程碑·P7,D:/AIOS/AIOS_RECONSTRUCTION/phase7_done.md,V16-01 SHA256,2026-09-27T21:17:36+08:00,32415d15934892330b63b163eb18eb71444096590bcb9257f8e6aa1bd219bd88,VERIFIED,stat 1270 bytes
+AR-0041,phase8_done.md,里程碑·P8,D:/AIOS/AIOS_RECONSTRUCTION/phase8_done.md,V16-01 SHA256,2026-09-27T21:17:39+08:00,c5a1a8b2c7f9c088ac349aabaf298799622e7b6c13fcaf18dc289338f3fd1cd3,VERIFIED,stat 1364 bytes
+AR-0042,phase9_done.md,里程碑·P9,D:/AIOS/AIOS_RECONSTRUCTION/phase9_done.md,V16-01 SHA256,2026-09-27T21:17:44+08:00,da103747ba112633e40f6a5bc7b0f8c18150a99dc5e36ebfc5f1bcdfdc3cbbca,VERIFIED,stat 1797 bytes
+AR-0043,watcher.py,脚本·BridgeWatcher,D:/AIOS_BridgeWatcher/watcher.py,V16-01 SHA256,2026-09-28T09:47:45+08:00,1b44b63b036065c785e57f844577375822a43e63dacc1cdee905f3f60e04c681,VERIFIED,stat 6186 bytes;可执行属性
+AR-0044,_aios_restart_bridge.py,脚本·BridgeWatcher 重启,D:/AIOS_BridgeWatcher/_aios_restart_bridge.py,V16-01 SHA256,2026-09-28T10:08:08+08:00,a9f94c7e1fe5ce6a12cd50b1588342c9eac83a1c812e94890c84810a157441c6,VERIFIED,stat 8097 bytes
+AR-0045,pid_truth.py,脚本·进程真值,D:/AIOS_BridgeWatcher/pid_truth.py,V16-01,2026-09-27T20:22:00+08:00,N/A,VERIFIED,stat 7768 bytes
+AR-0046,restart_bridge.cmd,脚本·重启,D:/AIOS_BridgeWatcher/restart_bridge.cmd,V16-01,2026-09-28T10:54:00+08:00,N/A,VERIFIED,stat 421 bytes
+AR-0047,00_POPUP_STORM_MASTER_REPORT.md,报告·弹窗风暴主报告,D:/AIOS_DIAGNOSTICS/POPUP_STORM/00_POPUP_STORM_MASTER_REPORT.md,V16-01 SHA256,2026-09-26T13:05:38+08:00,efc3df709e2929042aa05cc434adecdebeff77e0b0d78ab908e885799bbfabb7,VERIFIED,stat 9534 bytes;POPUP_STORM 00-09
+AR-0048,process_full_snapshot.csv,数据·进程快照,D:/AIOS_DIAGNOSTICS/POPUP_STORM/01_PROCESSES/process_full_snapshot.csv,V16-01 SHA256,2026-09-26T12:59:23+08:00,bdfe66a4dea37c524a09572f97594ed968599f172497072ce9c4df7442b234b4,VERIFIED,stat 87692 bytes
+AR-0049,acceptance.md (AIOS-LAB),文档·LAB 验收,D:/AIOS-LAB/acceptance.md,V16-01 SHA256,2026-09-27T16:04:29+08:00,4b7bbd26329b4fb1c6d3bb02cd81af415e5f4ffd49732d5900407d021371c3b4,VERIFIED,stat 9624 bytes
+AR-0050,acceptance.md (worktree-1),文档·LAB 验收(WT),D:/AIOS-LAB-worktree-1/acceptance.md,V16-01 SHA256,2026-09-27T16:31:39+08:00,819229e609c3b5ba9a3e5b68c5ffbeb4523c70d6bb1b314d89688d8e39af5752,VERIFIED,stat 9737 bytes
+AR-0051,LAB inventory.json,数据·LAB 清单,D:/AIOS-LAB/inventory/inventory.json,V16-01 SHA256,2026-09-27T01:00:05+08:00,1568f1fbdbe420bfceb42b09060250a37895e15da76d019f32f757118a21941d,VERIFIED,stat 3255 bytes
+AR-0052,LAB capability_matrix.md,文档·能力矩阵,D:/AIOS-LAB/inventory/capability_matrix.md,V16-01 SHA256,2026-09-27T01:00:13+08:00,46888f8c8bc4d5b56ebaec733c9fd0214343d603ed5236a1a7d39362c302e292,VERIFIED,stat 3328 bytes
+AR-0053,LAB candidate_registry.json,数据·候选注册,D:/AIOS-LAB/sources/candidate_registry.json,V16-01 SHA256,2026-09-27T14:19:08+08:00,4fa98f0c0eef2a5e97e3ec6fcab8ea09293aabbe9d0b8bd02fd7818984190150,VERIFIED,stat 7068 bytes
+AR-0054,.env (hermes),敏感·env,D:/AIOS/_relinked/hermes/.env,V16-01,2026-09-29T00:00:00+08:00,SHA256_REDACTED,VERIFIED,仅记 path/size;不读内容
+AR-0055,.env (openclaw),敏感·env,D:/AIOS/_relinked/openclaw/.env,V16-01,2026-09-22T15:23:54+08:00,SHA256_REDACTED,VERIFIED,仅记 path/size;.env.bak-gateway-token-20260922-152354 同目录
+AR-0056,config-journal-fingerprint.key,敏感·key,D:/AIOS/_relinked/openclaw/config-journal-fingerprint.key,V16-01,2026-09-29T00:00:00+08:00,SHA256_REDACTED,VERIFIED,仅记 path/size
+AR-0057,system-ca-bundle.pem,敏感·pem,D:/AIOS/_relinked/workbuddy/system-ca-bundle.pem,V16-01,2026-09-29T00:00:00+08:00,SHA256_REDACTED,VERIFIED,仅记 path/size
+AR-0058,.env (lynxceai ATHENA),敏感·env,D:/ai-os-workspace/workzone/round28-lynxceai-mvp-prod-deploy/01_ATHENA/.env,V16-01,2026-09-17T00:00:00+08:00,SHA256_REDACTED,VERIFIED,仅记 path/size
+AR-0059,.env (lynxceai production),敏感·env,D:/ai-os-workspace/workzone/round28-lynxceai-production-deploy/A-部署/.env,V16-01,2026-09-29T00:00:00+08:00,SHA256_REDACTED,VERIFIED,仅记 path/size
+AR-0060,AccessKey.txt (Documents),敏感·secret,D:/Documents/AccessKey.txt,V16-03,2026-04-12T18:01:08+08:00,SHA256_REDACTED,VERIFIED,stat 138 bytes;仅记存在;不读内容
+AR-0061,CloudTech-Portable .env,敏感·env,D:/CloudTech-Portable/.env,V16-03 SHA256,2026-09-27T17:15:30+08:00,9875c0238474cf08,FOUND,stat 2554 bytes;REDACTED
+AR-0062,CloudTech-Portable .jwt_secret,敏感·key,D:/CloudTech-Portable/.jwt_secret,V16-03 SHA256,2026-07-31T18:56:30+08:00,cc9ffbd5691d8786,FOUND,stat 64 bytes;REDACTED
+AR-0063,_agent-hub/v2/agents/agents.json,SSOT·v2 代理注册表,D:/AIOS/_agent-hub/v2/agents/agents.json,V16-02,2026-09-29T05:13:31+08:00,N/A,VERIFIED,5 agents(codex/claudecode/workbuddy/hermes/openclaw);CONFLICT: codex.role="executor" vs CLAUDE.md Codex=Supervisor
+AR-0064,test_run.json (R320.6),数据·测试历史,D:/AIOS/_agent-hub/v2/reports/test_run.json,V16-02/历史,2026-09-29T05:13:46+08:00,N/A,VERIFIED,55/55 PASS;8 modules;NOT a proof of production Integrated
+AR-0065,aioS_REALITY_SCAN_V16 zip,源·V16 骨架包,C:/Users/xinzh/Desktop/AIOS_MASTER_REALITY_COMPLETE_FINAL_V16_20260929.zip,任务输入,2026-09-29T14:00:00+08:00,N/A,VERIFIED,zipfile 读取(未解压);仅结构骨架;SSOT 数据来自 3 独立扫描文件
+AR-0066,_scan_helper.py (已删),临时·扫描助手,D:/AIOS/_workzone/AIOS_REALITY_SCAN_V16_20260929/_scan_helper.py,V16-01,2026-09-29T14:15:55+08:00,SHA256_REDACTED,VERIFIED,stat 5761 bytes;本轮 14:42 已删除(allowed);非交付物
+AR-0067,_scan_data.json (已删),临时·扫描中间数据,D:/AIOS/_workzone/AIOS_REALITY_SCAN_V16_20260929/_scan_data.json,V16-01,2026-09-29T14:13:25+08:00,SHA256_REDACTED,VERIFIED,stat 163304 bytes;本轮 14:42 已删除;非交付物
+AR-0068,_scan_err.txt (已删),临时·扫描 stderr,D:/AIOS/_workzone/AIOS_REALITY_SCAN_V16_20260929/_scan_err.txt,V16-01,2026-09-29T14:13:19+08:00,SHA256_REDACTED,VERIFIED,stat 0 bytes;本轮 14:42 已删除;非交付物
+AR-0069,Unknown 工作空间子项,数据·UNKNOWN,D:/ai-os-workspace,V16-01,2026-09-29T14:30:00+08:00,N/A,UNKNOWN,os.walk FULL 23,296/2,915/2.1GB;本次未拆分 workzone round 目录
+AR-0070,AIOS-LAB 子目录分布,数据·UNKNOWN,D:/AIOS-LAB,V16-01,2026-09-29T14:30:00+08:00,N/A,UNKNOWN,TRUNC@45s;14,910 untracked 大部分在 fixtures/test_codex_home;未拆分子目录级
+AR-0071,D:/AIOS/.git 内部 UNKNOWN,数据·UNKNOWN,D:/AIOS/.git,V16-01,2026-09-29T14:30:00+08:00,N/A,UNKNOWN,5612 files / 268 dirs / 369.8 MB;未深入 git fsck
+AR-0072,CloudTech-Inbox 收件箱,业务数据/入站,D:/CloudTech-Inbox,V16-03,2026-09-02T12:07:13+08:00,N/A,BROKEN,[原 EXISTS|EMPTY_DOM] 5 行业子目录全空;_processed 仅医美/教培
+AR-0073,CloudTech rc2 Live Direct Execution,业务代码/Candidate,D:/CloudTech-Live-Execution/CloudTech_rc2_Live_Direct_Execution_20260925,V16-03,2026-09-27T18:02:05+08:00,N/A,VERIFIED,LIVE_UNAUDITED;129/129 pytest PASS;secret_scan 0 命中;85 架构闭合;candidate 非 Live
+AR-0074,CloudTech-Portable v2.1 SaaS 主仓,业务代码/CloudTech 主仓,D:/CloudTech-Portable,V16-03,2026-09-29T14:10:35+08:00,N/A,FOUND,10826 文件 / 934 目录 / 200 MB;89 Python 模块;depth 4.1/5;含 gateway_v22.py 786 行;无端口侦听证据
+AR-0075,CloudTech-Portable README,业务代码/README,D:/CloudTech-Portable/README.md,V16-03 SHA256,2026-09-25T20:38:30+08:00,ef0de825c4aaa9ad,FOUND,2822 bytes;v2.1 AI 数字营销中台 · 23 工具 6 引擎
+AR-0076,CloudTech-Portable FINAL_EXECUTION_REPORT,业务代码/收口报告,D:/CloudTech-Portable/FINAL_EXECUTION_REPORT_v22_saas_r293.md,V16-03 SHA256,2026-09-26T00:32:30+08:00,4693d95b6d74c89b,FOUND,7362 bytes;R293 收口:PWA + SaaS 用户门 (Plan A);3/3 SaaS 实测 PASS
+AR-0077,CloudTech-Portable AUDIT_REPORT,业务代码/审计报告,D:/CloudTech-Portable/AUDIT_REPORT.md,V16-03 SHA256,2026-09-25T20:38:30+08:00,c96ff808898731b1,FOUND,20350 bytes;v2.0.0 full audit 2026-08-07;Import 85/89 (96%);Overall 78/100
+AR-0078,CloudTech-Portable gateway_v22,业务代码/gateway,D:/CloudTech-Portable/gateway_v22.py,V16-03 SHA256,2026-09-26T00:32:30+08:00,0c629620b7798b41,FOUND,786 行 / 41074 bytes;ws.map 治本 line 561
+AR-0079,CloudTech-Portable data-layer SaaS v8,业务代码/SaaS 模块,D:/CloudTech-Portable/data-layer/v_saas_v8.py,V16-03 SHA256,2026-09-26T00:32:30+08:00,59a4f8f1e1bfc243,FOUND,9831 bytes;info/register/login/landing
+AR-0080,CloudTech-Portable live_migration,业务代码/迁移,D:/CloudTech-Portable/src/cloudtech/live_migration,V16-03,2026-09-25T22:11:00+08:00,N/A,FOUND,15 文件;含 cutover_runner/effect_ledger/evidence_gate/chaos_test
+AR-0081,CloudTech-Portable git,Git/版本控制,D:/CloudTech-Portable/.git,V16-03,2026-09-29T14:10:35+08:00,N/A,FOUND,master;HEAD=R293-saas-user-gate:47eb628;3 untracked;no remote
+AR-0082,CloudTech-Vault Obsidian 业务库,业务文档/vault,D:/CloudTech-Vault,V16-03,2026-09-24T12:20:00+08:00,N/A,FOUND,22 文件;Home.md 声称"每 5 分钟增量"mtime 5+ 天未变 → 同步中断
+AR-0083,CloudTech-Vault Home,业务文档/导航,D:/CloudTech-Vault/00 索引 (Index)/首页 Home.md,V16-03 SHA256,2026-09-24T12:20:00+08:00,71236c6fb1aeb252,FOUND,1519 bytes
+AR-0084,CloudTech-Vault demo 装企 客户档案,业务文档/客户档案,D:/CloudTech-Vault/03 客户 (Customers)/demo-deco-001 云装 (Demo 装企).md,V16-03 SHA256,2026-09-24T12:20:00+08:00,b2fb186d4c5b2ac6,FOUND,2421 bytes;renewal_date=2026-09-20 已过期 -5 天
+AR-0085,CloudTech-Vault MRR 月报,业务文档/财务,D:/CloudTech-Vault/07 报告 (Reports)/MRR 月报.md,V16-03,2026-09-24T12:20:00+08:00,N/A,FOUND,1073 bytes
+AR-0086,AIOS/cloudtech-saas 安装包骨架,运维/安装脚本,D:/AIOS/cloudtech-saas,V16-03,2026-09-24T10:15:07+08:00,N/A,FOUND,4 文件/3.4KB;install.cmd+uninstall.cmd+start_v22_watchdog.bat;logs/ 空;未实际部署
+AR-0087,AIOS/cloudtech-saas install.cmd,运维/脚本,D:/AIOS/cloudtech-saas/install.cmd,V16-03 SHA256,2026-09-22T21:58:30+08:00,d79c778d876da778,FOUND,1124 bytes
+AR-0088,D:/灵策AI 空壳,灵策/骨架,D:/灵策AI,V16-03,2026-09-02T16:14:47+08:00,N/A,BROKEN,148 文件/115 目录/246KB;全部在 .git/objects;git init 未 commit
+AR-0089,D:/lingce_AI 空,Língcè/骨架,D:/lingce_AI,V16-03,2026-09-10T09:12:00+08:00,N/A,BROKEN,0 文件/3 目录/0 字节
+AR-0090,C:/Users/xinzh/灵策AI/research,灵策/研究笔记,C:/Users/xinzh/灵策AI/research,V16-03,2026-09-13T20:21:36+08:00,N/A,FOUND,51 文件/5 目录/701KB;2026-09-13 学习路径图 7 文件
+AR-0091,灵策智算学习路径图 总览,灵策/OPC 内部学习,C:/Users/xinzh/灵策AI/research/2026-09-13/学习路径图/00-学习路径图总览.md,V16-03 SHA256,2026-09-13T19:30:00+08:00,526f59dcdf4b4f52,VERIFIED,13049 bytes;含"灵策智算品牌定位";OPC 双证
+AR-0092,灵策智算品牌定位 W1,灵策/OPC 学习,C:/Users/xinzh/灵策AI/research/2026-09-13/学习路径图/02-W1-灵策智算品牌定位.md,V16-03,2026-09-13T19:32:00+08:00,N/A,VERIFIED,10232 bytes;OPC 双证
+AR-0093,灵策智算客户故事 Pixar,灵策/OPC 学习,C:/Users/xinzh/灵策AI/research/2026-09-13/学习路径图/04-W2-灵策智算客户故事-Pixar公式.md,V16-03,2026-09-13T19:37:00+08:00,N/A,VERIFIED,7182 bytes;OPC 双证
+AR-0094,3风格小红书模板 W2,灵策/OPC 学习,C:/Users/xinzh/灵策AI/research/2026-09-13/学习路径图/05-W2-3风格小红书模板.md,V16-03,2026-09-13T19:37:00+08:00,N/A,VERIFIED,8465 bytes;OPC 双证
+AR-0095,说服心理学学习路径 W3,灵策/OPC 学习,C:/Users/xinzh/灵策AI/research/2026-09-13/学习路径图/06-W3-说服心理学学习路径.md,V16-03,2026-09-13T19:38:00+08:00,N/A,VERIFIED,10563 bytes
+AR-0096,LocalExecutionBridge (LEB),内部工具,D:/AI/LocalExecutionBridge,V16-03,2026-09-29T09:28:54+08:00,N/A,FOUND,53 文件 + 5 修改;6184 代码行;91/91 需求;178/178 tests 7.55s;Phase 9 COMPLETE;非 Production
+AR-0097,LEB PROGRESS.json,内部工具/进度,D:/AI/LocalExecutionBridge/PROGRESS.json,V16-03 SHA256,2026-09-26T21:38:30+08:00,264abb89340e0c90,FOUND,2307 bytes;v0.9.0-2026-09-26
+AR-0098,LEB FINAL_ACCEPTANCE,内部工具/验收,D:/AI/LocalExecutionBridge/FINAL_ACCEPTANCE.md,V16-03 SHA256,2026-09-26T21:33:30+08:00,ff2059506be13289,FOUND,4342 bytes
+AR-0099,LEB DEPLOYMENT,内部工具/部署,D:/AI/LocalExecutionBridge/DEPLOYMENT.md,V16-03,2026-09-26T21:38:30+08:00,N/A,FOUND,2346 bytes;端口 8765;3 模式
+AR-0100,D:/AI/Operator 空骨架,AI 内部/骨架,D:/AI/Operator,V16-03,2026-09-15T18:45:00+08:00,N/A,BROKEN,0 文件 + 2 子目录
+AR-0101,D:/AI/_scripts doubao_api,AI 内部/脚本,D:/AI/_scripts/_aios_doubao_api.py,V16-03,2026-09-28T11:11:00+08:00,N/A,FOUND,4235 bytes
+AR-0102,D:/personal-files/AI/Operator/00_CORE,AI 内部/控制平面,D:/personal-files/AI/Operator/00_CORE,V16-03,2026-09-28T11:58:00+08:00,N/A,FOUND,7 文件/9 目录/31KB;PHASE_G9_G12_DISCOVERY 20692 bytes
+AR-0103,Documents/ChatGPT/codex 空,Documents/骨架,D:/Documents/ChatGPT/codex,V16-03,2026-09-29T13:57:00+08:00,N/A,BROKEN,0 文件;含 .git(全空)
+AR-0104,Documents/Codex 输出,Documents/Codex 输出,D:/Documents/Codex,V16-03,2026-09-28T18:52:00+08:00,N/A,FOUND,2026-09-28 含 6 证据文件;HANDOFF_TO_CC_AIOS_2026-09-28.md 13457 bytes
+AR-0105,PowerShell profile,Documents/PowerShell,C:/Users/xinzh/Documents/PowerShell,V16-03,2026-09-15T17:38:00+08:00,N/A,FOUND,profile.ps1 x2
+AR-0106,D:/个人 空,Documents/骨架,D:/个人,V16-03,2026-09-27T15:47:00+08:00,N/A,BROKEN,0 文件
+AR-0107,C:/Users/x/_项目/landing-page 空,项目/骨架,C:/Users/xinzh/_项目/landing-page,V16-03,2026-09-24T17:35:00+08:00,N/A,BROKEN,0 文件
+AR-0108,C:/Users/x/_项目/云数科技输出,项目/OPC 待复核,C:/Users/xinzh/_项目/云数科技输出/系统控制中心.md,V16-03,2026-06-15T22:43:00+08:00,N/A,UNKNOWN,655 bytes;仅文件名无具体业务文本双证
+AR-0109,A01 漳州50年红砖老宅翻新,内容 IP/小红书文案,C:/Users/xinzh/_项目/可发布内容/A01/2026-06-28_漳州50年红砖老宅翻新.txt,V16-03,2026-06-28T02:51:00+08:00,N/A,VERIFIED,549 bytes;OPC 双证
+AR-0110,A07 漳州105㎡翻新报价拆解,内容 IP/小红书文案,C:/Users/xinzh/_项目/可发布内容/A07/2026-06-28_漳州105㎡翻新报价拆解.txt,V16-03,2026-06-28T02:51:00+08:00,N/A,VERIFIED,539 bytes;OPC 双证
+AR-0111,A09 水电翻车8600块教训,内容 IP/小红书文案,C:/Users/xinzh/_项目/可发布内容/A09/2026-06-28_水电翻车8600块教训.txt,V16-03,2026-06-28T02:51:00+08:00,N/A,VERIFIED,523 bytes;OPC 双证
+AR-0112,_项目/装修矩阵主仓,OPC 装修矩阵/老版本,C:/Users/xinzh/_项目/装修矩阵,V16-03,2026-07-26T18:57:09+08:00,N/A,FOUND,47 文件/9 目录/11.5MB;2+ 月未更新
+AR-0113,装修矩阵产出清单.md,OPC 装修矩阵/索引,C:/Users/xinzh/_项目/装修矩阵/装修矩阵_产出清单.md,V16-03 SHA256,2026-06-28T02:40:30+08:00,2285ba688d775f3d,FOUND,2552 bytes
+AR-0114,装修矩阵内容调度系统V2 cli.py,OPC 装修矩阵/工具,C:/Users/xinzh/_项目/装修矩阵/装修矩阵内容调度系统V2/cli.py,V16-03 SHA256,2026-06-28T03:31:30+08:00,872221fff0133495,FOUND,17813 bytes
+AR-0115,content_input 仿写管线入口,OPC 小红书仿写,C:/Users/xinzh/content_input,V16-03,2026-08-19T15:55:31+08:00,N/A,BROKEN,2 文件/3.2KB;6 周未运行 v2.0
+AR-0116,content_input README.md,OPC 小红书仿写,C:/Users/xinzh/content_input/README.md,V16-03 SHA256,2026-08-19T15:55:30+08:00,b9fa034e0eabed7f,FOUND,3219 bytes;v2.0 三模式
+AR-0117,content_output test_001 产物,OPC 小红书仿写,C:/Users/xinzh/content_output,V16-03,2026-08-19T16:27:36+08:00,N/A,BROKEN,2 文件/4.4KB;1 个测试样本
+AR-0118,content_output test_001 analysis.json,OPC 小红书仿写,C:/Users/xinzh/content_output/test_001/analysis.json,V16-03 SHA256,2026-08-19T16:27:30+08:00,b424a38703bba57e,FOUND,2313 bytes
+AR-0119,Obsidian AIOS-Operator Vault,Obsidian Vault,C:/Users/xinzh/.aios/Obsidian,V16-03,2026-09-28T11:01:27+08:00,N/A,FOUND,8 文件/4 目录/3.8KB;.obsidian 已配
+AR-0120,Obsidian README (路径不一致),Obsidian/说明,C:/Users/xinzh/.aios/Obsidian/README.md,V16-03 SHA256,2026-09-28T10:14:30+08:00,baa2c195fe963e24,BROKEN,695 bytes;README 声明 D:\个人文件\AI\Operator\Obsidian\ 但实际为 C:\Users\xinzh\.aios\Obsidian\
+AR-0121,Obsidian .obsidian 配置,Obsidian 配置,C:/Users/xinzh/.aios/Obsidian/.obsidian,V16-03,2026-09-28T10:13:00+08:00,N/A,FOUND,app.json 512 + config.json 158
+AR-0122,Obsidian Daily/2026-09-28,Obsidian/日记,C:/Users/xinzh/.aios/Obsidian/Daily/2026-09-28.md,V16-03,2026-09-28T10:14:00+08:00,N/A,FOUND,1050 bytes;P2E_UNBLOCK 进展
+AR-0123,Obsidian AIOS-Hermes-Sync VERIFIED_COMPLETE,Obsidian/Hermes,C:/Users/xinzh/.aios/Obsidian/AIOS-Hermes-Sync/AIOS_VERIFIED_COMPLETE_2026-09-28.md,V16-03 SHA256,2026-09-28T11:01:30+08:00,29f9b487ae4e3f7a,FOUND,828 bytes
+AR-0124,Obsidian hermes_sync_marker.json,Obsidian/Hermes 元数据,C:/Users/xinzh/.aios/Obsidian/AIOS-Hermes-Sync/hermes_sync_marker.json,V16-03 SHA256,2026-09-28T10:23:30+08:00,719c123722e5f113,FOUND,61 bytes
+AR-0125,codex CLI,代理·CLI binary,agent://codex-cli,V16-02/本轮,2026-09-29T06:40:43Z,N/A,VERIFIED,codex --version=0.155.1 exit 0;path=C:/Users/xinzh/AppData/Roaming/npm/codex
+AR-0126,claude CLI,代理·CLI binary,agent://claude-code,V16-02/本轮,2026-09-29T06:40:43Z,N/A,ACTIVE,claude --version=2.1.282 exit 0;本会话就是 consumer
+AR-0127,hermes CLI,代理·CLI binary,agent://hermes-agent,V16-02/本轮,2026-09-29T06:40:43Z,N/A,VERIFIED,hermes --version=v0.15.1 (2026.5.29) exit 0
+AR-0128,openclaw CLI,代理·CLI binary,agent://openclaw-cli,V16-02/本轮,2026-09-29T06:40:43Z,N/A,VERIFIED,openclaw --version=2026.9.5 (ec9c1a1) exit 0
+AR-0129,node CLI,运行时·Node,service://node-runtime,V16-02,2026-09-29T06:40:43Z,N/A,VERIFIED,node --version=v26.8.2 exit 0
+AR-0130,npm CLI,运行时·npm,service://npm-runtime,V16-02,2026-09-29T06:40:43Z,N/A,VERIFIED,npm --version=11.17.0 exit 0
+AR-0131,agent-claude-code-main,代理·Claude Code 主会话,agent://claude-code-main,V16-02,2026-09-29T11:43:50Z,N/A,ACTIVE,本轮修正:cli exit 0 + which 命中 + mcp-tool-call(mcp__aios-interop__aios_status ok:true)+ envelope-roundtrip;agent_id=claudecode;registry role=executor vs CLAUDE.md role=Executor 一致(无 CONFLICT)
+AR-0132,agent-codex-cli,代理·Codex CLI + relay,agent://codex-cli-relay,V16-02/本轮,2026-09-29T11:43:50Z,N/A,BROKEN,本轮 19:43 复测维持 BROKEN;14:18 ACTIVE → 14:40 BROKEN → 19:43 BROKEN;codex.exe(4774704 B) + ChatGPT.exe ALIVE;**19194 NOT LISTENING**;aiosv2 health relay_port_open=false timed out
+AR-0133,agent-openclaw-gateway,代理·OpenClaw Gateway,agent://openclaw-gateway,V16-02/本轮,2026-09-29T11:50:00Z,N/A,ACTIVE,19:50 Supervisor 官方只读 CLI 修正:`openclaw status --json` exit0(runtimeVersion 2026.9.5; gateway.reachable=true; connectLatencyMs=117; error=null; tasks total=9 succeeded=9 failures=0);`openclaw health --json` exit0(ok=true; plugins.errors=[]; feishu enabled/running/connected=true lastError=null);18792 LISTENING + /healthz 200;maturity=**Integrated**(**非 Validated / 非 Production Ready**);eventLoop.degraded=true(reason=cpu) 已知风险须观察
+AR-0134,agent-hermes-nos-res,代理·Hermes v0.15.1,agent://hermes-nos-res,V16-02,2026-09-29T11:43:50Z,N/A,VERIFIED,本轮修正:hermes --version exit 0;hermes status 显示 messaging platforms(Telegram/Discord/Slack/Signal)全部 ✗ 未配置;无真实消息 round-trip → status=VERIFIED,maturity=**Tested**(不得 ACTIVE/Integrated);REGISTRY DRIFT: AIOS_AGENT_REGISTRY 仍标 v0.21.3
+AR-0135,agent-workbuddy,代理·WorkBuddy,agent://workbuddy,V16-02,2026-09-29T06:40:43Z,N/A,FOUND,v2/health.json present=true reachable=false healthy=false(sandbox-blocked);无 live CLI
+AR-0136,agent-swarmclaw,代理·SwarmClaw,agent://swarmclaw,V16-02,2026-09-29T06:40:43Z,N/A,BROKEN,R265 标 active;netstat :3456/:3457 NOT LISTENING;curl HTTP_CODE 000;REGISTRY DRIFT
+AR-0137,agent-hermes (role),代理角色·治理,agent://role-hermes,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,AIOS_AGENT_REGISTRY signal T10;registry declaration only
+AR-0138,agent-lyra (role),代理角色·内容,agent://role-lyra,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,signal T11
+AR-0139,agent-athena (role),代理角色·架构,agent://role-athena,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,signal T12
+AR-0140,agent-apollo (role),代理角色·数据,agent://role-apollo,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,signal T13
+AR-0141,agent-artemis (role),代理角色·运营,agent://role-artemis,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,signal T14
+AR-0142,agent-explore,CC subagent·Explore,agent://cc-subagent-explore,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,registry entry only
+AR-0143,agent-planner,CC subagent·Plan,agent://cc-subagent-planner,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,registry entry only
+AR-0144,agent-reviewer,CC subagent·Reviewer,agent://cc-subagent-reviewer,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,registry entry only
+AR-0145,agent-test-engineer,CC subagent·Test Engineer,agent://cc-subagent-test-engineer,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,registry entry only
+AR-0146,agent-developer,CC subagent·Developer,agent://cc-subagent-developer,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,registry entry only
+AR-0147,agent-architect,CC subagent·Architect,agent://cc-subagent-architect,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,registry entry only
+AR-0148,agent-security,CC subagent·Security,agent://cc-subagent-security,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,registry entry only
+AR-0149,agent-general-purpose,CC subagent·General Purpose,agent://cc-subagent-general-purpose,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,registry entry only
+AR-0150,agent-claude-code-guide,CC subagent·Claude Code Guide,agent://cc-subagent-claude-code-guide,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,registry entry only
+AR-0151,agent-openclaw-main,OC agent·main,agent://oc-agent-main,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,dir C:/Users/xinzh/.openclaw/agents/main/
+AR-0152,agent-openclaw-claude,OC agent·claude,agent://oc-agent-claude,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,dir+sqlite db
+AR-0153,agent-openclaw-codex,OC agent·codex,agent://oc-agent-codex,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,dir+sqlite db
+AR-0154,agent-openclaw-isolated,OC agent·isolated,agent://oc-agent-isolated,V16-02,2026-09-29T05:13:31+08:00,N/A,UNKNOWN,dir exists but no probe data
+AR-0155,agent-openclaw-openclaw,OC agent·openclaw,agent://oc-agent-openclaw,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,dir+sqlite db
+AR-0156,agent-geo-competitor,OC agent·geo-competitor,agent://oc-geo-competitor,V16-02,2026-09-29T05:13:31+08:00,N/A,UNKNOWN,dir exists
+AR-0157,agent-geo-creator,OC agent·geo-creator,agent://oc-geo-creator,V16-02,2026-09-29T05:13:31+08:00,N/A,UNKNOWN,dir exists
+AR-0158,agent-geo-intent,OC agent·geo-intent,agent://oc-geo-intent,V16-02,2026-09-29T05:13:31+08:00,N/A,UNKNOWN,dir exists
+AR-0159,agent-geo-strategy,OC agent·geo-strategy,agent://oc-geo-strategy,V16-02,2026-09-29T05:13:31+08:00,N/A,UNKNOWN,dir exists
+AR-0160,agent-geo-validator,OC agent·geo-validator,agent://oc-geo-validator,V16-02,2026-09-29T05:13:31+08:00,N/A,UNKNOWN,dir exists
+AR-0161,CC MCP filesystem,MCP·filesystem,mcp://cc-filesystem,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,command D:/npm-global/mcp-server-filesystem;declared in mcp.json
+AR-0162,CC MCP github,MCP·github,mcp://cc-github,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,command D:/npm-global/mcp-server-github;env.GITHUB_TOKEN=<redacted>
+AR-0163,CC MCP memory,MCP·memory,mcp://cc-memory,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,command D:/npm-global/mcp-server-memory
+AR-0164,CC MCP fetch,MCP·fetch,mcp://cc-fetch,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,npx -y fetch-mcp
+AR-0165,CC MCP context7,MCP·context7,mcp://cc-context7,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,npx -y @upstash/context7-mcp
+AR-0166,CC MCP firecrawl,MCP·firecrawl,mcp://cc-firecrawl,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,npx -y firecrawl-mcp
+AR-0167,CC MCP tavily-mcp,MCP·tavily,mcp://cc-tavily,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,npx -y tavily-mcp;env.TAVILY_API_KEY=<redacted>;historical Connection closed
+AR-0168,CC MCP dailyhot,MCP·dailyhot,mcp://cc-dailyhot,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,node C:/Users/xinzh/.openclaw/tools/dailyhot-mcp/dailyhot-mcp.js
+AR-0169,CC MCP hot-trends,MCP·hot-trends,mcp://cc-hot-trends,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,node hot-trends
+AR-0170,CC MCP douyin,MCP·douyin,mcp://cc-douyin,V16-02,2026-09-29T05:13:31+08:00,N/A,BROKEN,npx mcp-remote tikhub/douyin;historical MCP-32000 Connection closed(2026-09-22 batch)
+AR-0171,CC MCP xiaohongshu,MCP·xiaohongshu,mcp://cc-xiaohongshu,V16-02,2026-09-29T05:13:31+08:00,N/A,BROKEN,historical MCP-32000
+AR-0172,CC MCP wechat,MCP·wechat,mcp://cc-wechat,V16-02,2026-09-29T05:13:31+08:00,N/A,BROKEN,historical MCP-32000
+AR-0173,CC MCP weibo,MCP·weibo,mcp://cc-weibo,V16-02,2026-09-29T05:13:31+08:00,N/A,BROKEN,historical MCP-32000
+AR-0174,CC MCP kuaishou,MCP·kuaishou,mcp://cc-kuaishou,V16-02,2026-09-29T05:13:31+08:00,N/A,BROKEN,historical MCP-32000
+AR-0175,CC MCP sequential-thinking,MCP·sequential-thinking,mcp://cc-sequential-thinking,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,D:/npm-global/mcp-server-sequential-thinking
+AR-0176,OC MCP windows-automation,MCP·windows-automation,mcp://oc-windows-automation,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,declared in openclaw.json
+AR-0177,OC MCP hermes-bridge,MCP·hermes-bridge,mcp://oc-hermes-bridge,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,declared
+AR-0178,OC MCP task-board,MCP·task-board,mcp://oc-task-board,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,declared
+AR-0179,OC MCP geo-monitor,MCP·geo-monitor,mcp://oc-geo-monitor,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,declared
+AR-0180,OC MCP hermes-agent,MCP·hermes-agent,mcp://oc-hermes-agent,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,declared
+AR-0181,OC MCP playwright,MCP·playwright,mcp://oc-playwright,V16-02/本轮,2026-09-29T11:43:50Z,N/A,VERIFIED,本轮修正:declared + Claude Code 当前会话中 npx @playwright/mcp@latest 可见 + MCP tool-call 工具列表中可调用;但 CC 沙箱限制下非实时 ACTIVE → status=VERIFIED
+AR-0182,OC MCP windows-mcp,MCP·windows-mcp,mcp://oc-windows-mcp,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,declared
+AR-0183,OC MCP automate,MCP·automate,mcp://oc-automate,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,declared
+AR-0184,OC MCP openchrome,MCP·openchrome,mcp://oc-openchrome,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,declared
+AR-0185,OC MCP codex,MCP·codex,mcp://oc-codex,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,declared
+AR-0186,aios-interop MCP,MCP·aios-interop,mcp://aios-interop,V16-02/本轮,2026-09-29T11:43:50Z,N/A,ACTIVE,本轮修正任务实时调用 mcp__aios-interop__aios_status ok=true(VERIFY_AND_AIOS_STATUS);openclaw_gateway 200;collector WinError 10061 不影响 gateway;本轮判定 ACTIVE(实时 MCP 调用 + 功能探针成功)
+AR-0187,br-aicc,桥接·AIOS→Claude Code,bridge://br-aicc,V16-02,2026-09-29T05:13:31+08:00,N/A,ACTIVE,registry+this CC session live+aios-interop 200
+AR-0188,br-aios-codex,桥接·AIOS→Codex CLI,bridge://br-aios-codex,V16-02/本轮,2026-09-29T11:43:50Z,N/A,VERIFIED,本轮 19:43 维持 VERIFIED;registry active+codex.exe present+ChatGPT.exe alive;**19194 NOT LISTENING**;maturity=Tested
+AR-0189,br-aios-codex-relay,桥接·AIOS→Codex relay,bridge://br-aios-codex-relay,V16-02/本轮,2026-09-29T11:43:50Z,N/A,BROKEN,本轮 19:43 维持 BROKEN;registry active+healthy;**netstat 19194 NOT LISTENING**;aiosv2 health relay_port_open=false timed out;REGISTRY DRIFT
+AR-0190,br-aios-hermes,桥接·AIOS→Hermes,bridge://br-aios-hermes,V16-02,2026-09-29T11:43:50Z,N/A,VERIFIED,本轮修正:registry active+hermes exit 0 v0.15.1;messaging platforms 全部未配置;无真实消息 round-trip → status=VERIFIED,maturity=Tested;REGISTRY DRIFT: AIOS_AGENT_REGISTRY 仍标 v0.21.3
+AR-0191,br-aios-openclaw,桥接·AIOS→OpenClaw,bridge://br-aios-openclaw,V16-02/本轮,2026-09-29T11:50:00Z,N/A,VERIFIED,19:50 Supervisor 官方只读 CLI 修正:`openclaw status --json` + `openclaw health --json` exit0 显示 gateway.reachable=true + feishu connected=true → gateway+Feishu 当前连接可用;但**无 AIOS 真实消息 round-trip**;桥功能 PARTIAL/未验证;**不计入已证实 REGISTRY DRIFT(BROKEN)**;不可升 ACTIVE/Validated;成熟度=Tested
+AR-0192,br-claudecode-openclaw,桥接·CC↔OpenClaw,bridge://br-claudecode-openclaw,V16-02,2026-09-29T06:40:43Z,N/A,FOUND,registry loopback_only/unverified;Codex↔CC two-process round-trip VERIFIED;OpenClaw↔v2 NOT verified
+AR-0193,br-hermes-aios-skills,桥接·Hermes→agentskills.io,bridge://br-hermes-aios-skills,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,registry active/healthy;仅 L1 文件层 R260 声明
+AR-0194,br-swarmclaw-openclaw,桥接·SwarmClaw→OpenClaw,bridge://br-swarmclaw-openclaw,V16-02/本轮,2026-09-29T06:40:43Z,N/A,BROKEN,registry active(R265)+healthy;**netstat :3456/:3457 NOT LISTENING**;curl HTTP_CODE 000;REGISTRY DRIFT
+AR-0195,br-cc-marketplace,桥接·CC→Marketplace,bridge://br-cc-marketplace,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,registry active/healthy;5 plugins installed(config-layer L1 only)
+AR-0196,obsidian-bridge,桥接·Obsidian,bridge://obsidian-bridge,V16-02,2026-09-29T05:13:31+08:00,N/A,FOUND,OBSIDIAN-GATE.md + vault dir + binary present;仅 L1
+AR-0197,junction claudecode.SOUL/CLAUDE,共享·hub junction,junction://claudecode-soul,V16-02,2026-09-29T05:13:31+08:00,N/A,ACTIVE,C:/Users/xinzh/.claude/CLAUDE.md → D:/AIOS/_agent-hub/CLAUDE.md;本会话读到了 hub CLAUDE.md
+AR-0198,junction workbuddy.MEMORY,共享·hub junction,junction://workbuddy-memory,V16-02,2026-09-29T05:13:31+08:00,N/A,ACTIVE,ls -la: MEMORY.md.bak → /d/AIOS/_agent-hub/MEMORY.md
+AR-0199,junction _relinked,共享·junction tree,junction://relinked-tree,V16-02,2026-09-29T05:13:31+08:00,N/A,ACTIVE,D:/AIOS/_relinked/{hermes,openclaw,workbuddy,lingma,pdfvenv,rustup,cache} → D:/AIOS/_agent-hub/
+AR-0200,v2 message queue,v2·消息队列,service://v2-message-queue,V16-02/本轮,2026-09-29T11:43:50Z,N/A,VERIFIED,本轮修正:仅文件计数有 ack 实证;无消费者侧端到端实测 → status=VERIFIED(不得 ACTIVE);aiosv2 status 19:43 确认 inbox=1 outbox=2 deadletter=0
+AR-0201,v2 protocol loopback (test_05),v2 测试·协议 loopback,service://v2-test05,V16-02/test_run.json,2026-09-29T05:13:31+08:00,N/A,VERIFIED,10/10 PASS in 605ms(Tested 但非 Integrated)
+AR-0202,v2 queue concurrency (test_02),v2 测试·队列并发,service://v2-test02,V16-02/test_run.json,2026-09-29T05:13:31+08:00,N/A,VERIFIED,6/6 PASS in 623ms
+AR-0203,v2 state machine (test_03),v2 测试·状态机,service://v2-test03,V16-02/test_run.json,2026-09-29T05:13:31+08:00,N/A,VERIFIED,8/8 PASS in 166ms
+AR-0204,v2 heartbeat timeout (test_04),v2 测试·心跳超时,service://v2-test04,V16-02/test_run.json,2026-09-29T05:13:31+08:00,N/A,VERIFIED,4/4 PASS in 160ms
+AR-0205,v2 envelope schema (test_01),v2 测试·envelope 模式,service://v2-test01,V16-02/test_run.json,2026-09-29T05:13:31+08:00,N/A,VERIFIED,8/8 PASS in 16ms
+AR-0206,v2 CLI health (test_06/07),v2 测试·CLI healthcheck,service://v2-test06-07,V16-02/test_run.json,2026-09-29T05:13:31+08:00,N/A,VERIFIED,6/6 + 11/11 PASS
+AR-0207,v2 supervisor watch (test_08),v2 测试·supervisor,service://v2-test08,V16-02/test_run.json,2026-09-29T05:13:31+08:00,N/A,VERIFIED,2/2 PASS
+AR-0208,aiosv2.py status 端点,CLI·aiosv2 status,service://aiosv2-status,V16-02/本轮,2026-09-29T11:43:50Z,N/A,ACTIVE,本轮 19:43 实时执行 aiosv2 status exit 0;inbox=1 outbox=2 deadletter=0;5 agents;0 warnings
+AR-0209,aiosv2.py health 端点,CLI·aiosv2 health,service://aiosv2-health,V16-02/本轮,2026-09-29T11:50:00Z,N/A,ACTIVE,本轮 19:43 实时执行 aiosv2 health exit 0;含 5 agents 状态;claudecode/codex/workbuddy reachable=false(沙箱);hermes reachable=true healthy=true(--version);openclaw reachable=true healthy=true(18792 healthz 200);**19:50 Supervisor 官方只读 CLI 修正**:openclaw gateway+feishu 当前连接;agent API 404 路径非 OpenClaw 官方状态接口
+AR-0210,OpenClaw collector 端点,服务·collector,service://openclaw-collector,V16-02,2026-09-29T05:13:31+08:00,N/A,BROKEN,aios_status: WinError 10061 connection refused;与 gateway 分开;不影响主功能
+AR-0211,Ollama :11434,服务·Ollama,service://ollama-11434,V16-02/本轮,2026-09-29T06:40:43Z,N/A,BROKEN,curl HTTP_CODE 000 connect timeout 2s;gateway-stdout.log 显示 500;proxy 7897 + qwen3:14b 500s
+AR-0212,clash-verge :7897,服务·proxy,service://clash-verge-7897,V16-02/本轮,2026-09-29T06:40:43Z,N/A,ACTIVE,netstat LISTENING 0.0.0.0:7897 PID 13800;大量 ESTABLISHED 链;但 DNS 劫持 github.com → 20.205.243.166
+AR-0213,D:/AIOS/.git working tree 状态,Git·working tree dirty,service://git-working-tree,V16-01/本轮,2026-09-29T06:40:43Z,N/A,VERIFIED,git status --short --branch: 210 entries(71 ?? +130 A +6 AM +2 AD +1 M);本轮无 git 写
+AR-0214,_relinked/hermes PATH 优先级,运行时·hermes PATH,service://hermes-path,V16-02,2026-09-29T05:13:31+08:00,N/A,VERIFIED,R260 audit: PATH 优先 D 盘;pyproject.toml sha 65cad64739fd98a0 双边一致
+AR-0215,CloudTech-Portable gateway_v22 ws.map,代码·业务修复,code://cloudtech-wsmap,V16-03,2026-09-26T00:32:30+08:00,0c629620b7798b41,VERIFIED,786 行 line 561 ws.map 治本;R293 收口 PWA 3/3 实测
+AR-0216,SwarmClaw node_modules patches,代码·业务补丁,code://swarmclaw-patches,V16-02,2026-09-29T05:13:31+08:00,N/A,VERIFIED,2 patches in C:/npm-prefix/node_modules/@swarmclawai/swarmclaw: next.config.ts webpack.alias + connector-platform-icon.tsx SiSlack→SiSlackware;WILL BE LOST on reinstall

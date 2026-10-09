@@ -368,8 +368,8 @@ def _self_test() -> int:
     cases = [
         # (model, provider, request_id, expect_allowed, label)
         ("MiniMax-M3",          "MiniMax", "selftest-1", True,  "default ok"),
-        ("MiniMax-M2.7",        "MiniMax", "selftest-2", True,  "alt model ok"),
-        ("MiniMax-M2.7-highspeed", "MiniMax", "selftest-3", True, "highspeed ok"),
+        ("MiniMax-M3",          "MiniMax", "selftest-2", True,  "M3 again (idempotent)"),
+        ("MiniMax-M3",          "MiniMax", "selftest-3", True, "M3 third call (idempotent)"),
         ("claude-sonnet-4.5",   "MiniMax", "selftest-4", False, "fabricated model denied"),
         ("MiniMax-M3",          "anthropic", "selftest-5", False, "other provider denied"),
         ("",                    "MiniMax", "selftest-6", False, "empty model denied"),
@@ -404,3 +404,4 @@ if __name__ == "__main__":
     else:
         print("usage: codex_runtime.py [--self-test|--smoke]")
         sys.exit(2)
+

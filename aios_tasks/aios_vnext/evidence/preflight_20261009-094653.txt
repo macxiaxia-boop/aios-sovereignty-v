@@ -1,0 +1,15 @@
+# Preflight Check Report v4
+
+**Timestamp**: 20261009-094653
+**Today**: 2026-10-09
+**Status**: DIRTY
+**Total Issues**: 3
+**Scope**: 仅查 '今日新创建 (mtime >= 2026-10-09 00:00) 且命中 forbidden 模式'
+**Whitelist**: cards/, evidence/, kernel/, aios_tasks/, aios_tools/, aios_venv/, _archived/, _backups/, 以及静态 SSOT
+
+## aios_root_new_today: 3 files
+- `D:/AIOS/_r1130a.py` (matched: `_r*.py`)
+- `D:/AIOS/_r1130c.py` (matched: `_r*.py`)
+- `D:/AIOS/_r1130_gen.py` (matched: `_r*.py`)
+
+## aios_tasks_root_new_today: 0 files

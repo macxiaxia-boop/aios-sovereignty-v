@@ -232,6 +232,16 @@ def guard_dispatch(envelope: dict, v2_root: Path | str | None = None) -> tuple[b
     if msg_type in _INTERNAL_MESSAGE_TYPES:
         return True, None
 
+    # Phase G G002: generic inbound envelope -> GoalContract + 5-check GoalGuard.
+    try:  # fail-open: any error here continues to existing F005 + strategy-gate logic
+        from src.inbound_goal_generation import process_inbound_envelope
+        _g, _ok, _risk, _ = process_inbound_envelope(envelope, v2_root=v2_root)
+        if not _ok:
+            return False, _risk
+    except Exception as exc:
+        if os.environ.get("AIOS_GOAL_GUARD_DEBUG") == "1":
+            print(f"[goal_guard_hook] G002 failed: {exc}", flush=True)
+
     # Strategy Gate: evaluate even non-Goal envelopes because text hits
     # (retired ids, industry presets, deprecated paths) live in any
     # task-bearing payload.

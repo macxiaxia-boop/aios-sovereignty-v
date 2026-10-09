@@ -1,0 +1,31 @@
+=== Manual Generic Envelope Test (G002 acceptance evidence) ===
+envelope_id: manual-test-env-001
+goal_id:     9e330f08-7544-41a1-8a97-2228ce4a64c7
+allowed:     True
+risk:        None
+cache_path:  D:\UsersTemp\aiosv2_g002_manual_vgrwa39h\state\generated_goals\9e330f08-7544-41a1-8a97-2228ce4a64c7.json
+
+=== Cache File Dump (key fields) ===
+title: Investigate goal guard hook
+description: Investigate why the goal guard hook is not blocking malformed envelopes
+success_criteria: Goal achieved without violating defaults; user to confirm scope.
+owner: claudecode
+status: Pending
+metadata: {'source': 'inbound_envelope', 'envelope_id': 'manual-test-env-001', 'intent_type': 'IntentType.UNKNOWN', 'parsed_at': '2026-10-09T01:46:10.793964+00:00'}
+inferred_intent: None
+preserve_capabilities: 3 entries
+known_constraints: 0 entries
+environment_context:
+  cwd=D:\AIOS
+  os=win32 (python 3.13)...
+  history_refs=['manual-test-env-001']
+failure_modes: 1 entries
+permission_scope:
+  allowed_paths=['D:/AIOS/_agent-hub/v2/state/', 'D:/AIOS/_agent-hub/v2/messages/', 'D:/AIOS/_agent-hub/v2/src/']
+  max_budget=0.0
+  max_duration_sec=300
+autonomous_scope: 1 entries
+requires_authorization: 3 entries
+
+_cached_at:     2026-10-09T01:46:10Z
+_source_module: aios_vnext.inbound_goal_generation

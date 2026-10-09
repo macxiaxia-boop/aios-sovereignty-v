@@ -1,0 +1,1226 @@
+{
+  "audit": {
+    "id": "B-AUDIT-2026-10-09",
+    "title": "Partial B — Agent / Task / Memory / Config Source Audit",
+    "mode": "READ-ONLY",
+    "companion_markdown": "B_AGENT_TASK_MEMORY.md",
+    "contract_path": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_RETIREMENT_PARTIAL_20261008\\B_CONTRACT.md",
+    "scope": {
+      "inspected": [
+        "D:\\AIOS\\_agent-hub\\AGENTS.md",
+        "D:\\AIOS\\_agent-hub\\memory\\2026-10-08.md",
+        "D:\\AIOS\\_agent-hub\\memory\\2026-10-09.md",
+        "D:\\AIOS\\_agent-hub\\v2 (source, schemas, active tasks, governance registries, inbox/outbox/deadletter metadata, events/state)",
+        "D:\\AIOS\\aios_tasks",
+        "D:\\AIOS\\_relinked\\openclaw\\workspace plus agents configs/cron/workspaces",
+        "D:\\AIOS\\_relinked\\hermes\\hermes-agent (configs, task/memory hooks only)",
+        "C:\\Users\\xinzh\\.workbuddy\\AGENTS.md/CLAUDE.md/MEMORY.md/memory/sessions",
+        "C:\\Users\\xinzh\\.codex\\AGENTS.md/CLAUDE.md/memory/sessions/archived_sessions"
+      ],
+      "not_scanned": [
+        "Generic plugin caches (per contract)"
+      ],
+      "forbidden_actions": [
+        "Delete files",
+        "Move files",
+        "Rewrite history",
+        "Stop services",
+        "Modify product/policy code"
+      ]
+    },
+    "overall_verdict": "v2 + Codex active paths are clean. WorkBuddy persistent user profile contains the only HIGH-risk reactivation paths. Code/runtime: 0 industry-keyword matches in v2, openclaw, hermes, codex. PRODUCTION ACTIVE LAYER (v2 + Codex) = CLEAN. WORKBUDDY PERSISTENT LAYER (offline, not in active hub) = HIGH risk if reactivated."
+  },
+  "loaders": {
+    "v2_hub": {
+      "root": "D:\\AIOS\\_agent-hub\\v2\\",
+      "verdict": "zero industry/装修/教育/制造/服务/cross-industry/global_strategy/cloudtech references in any runtime loader, schema, or registry",
+      "entries": [
+        {
+          "file": "v2/src/paths.py",
+          "line": 7,
+          "symbol": "V2_ROOT",
+          "materializes": "Defines the only v2 root; SSOT path root",
+          "risk": "Low",
+          "risk_reason": "fixed path"
+        },
+        {
+          "file": "v2/src/paths.py",
+          "line": 10,
+          "symbol": "AGENTS_JSON",
+          "materializes": "SSOT for cross-agent identity",
+          "risk": "Low",
+          "risk_reason": "clean JSON"
+        },
+        {
+          "file": "v2/src/paths.py",
+          "line": 11,
+          "symbol": "PROTOCOL_V1",
+          "materializes": "Bidirectional protocol SSOT",
+          "risk": "Low",
+          "risk_reason": "clean"
+        },
+        {
+          "file": "v2/src/paths.py",
+          "line": "14-16",
+          "symbol": "INBOX / OUTBOX / DEADLETTER",
+          "materializes": "Envelope bus roots",
+          "risk": "Low",
+          "risk_reason": "inbox contains 2 self-referential retirement-audit tasks only"
+        },
+        {
+          "file": "v2/src/v2_consumer.py",
+          "line": 772,
+          "symbol": "_load_recipients()",
+          "materializes": "Reads agents.json; extracts agent_id list",
+          "risk": "Low",
+          "risk_reason": "reads 5 clean agents"
+        },
+        {
+          "file": "v2/src/v2_consumer.py",
+          "line": "686-687",
+          "symbol": "tick() → _load_recipients()",
+          "materializes": "Per-tick recipient list",
+          "risk": "Low"
+        },
+        {
+          "file": "v2/src/v2_consumer.py",
+          "line": 248,
+          "symbol": "CAPABILITIES (hardcoded routing)",
+          "materializes": "recipient × message_type → adapter",
+          "risk": "Low",
+          "risk_reason": "only codex/claudecode/hermes/openclaw/workbuddy/broadcast"
+        },
+        {
+          "file": "v2/src/v2_consumer.py",
+          "line": "460-465",
+          "symbol": "goal_guard integration",
+          "materializes": "Calls goal_guard_hook.write_risk_envelope() on risk",
+          "risk": "Low",
+          "risk_reason": "goal guard active; 1 risk envelope in risk/"
+        },
+        {
+          "file": "v2/src/state_machine.py",
+          "line": 56,
+          "symbol": "submit_task()",
+          "materializes": "Writes tasks/<task_id>.json; logs NDJSON event",
+          "risk": "Low"
+        },
+        {
+          "file": "v2/src/state_machine.py",
+          "line": 94,
+          "symbol": "list_tasks()",
+          "materializes": "Globs tasks/*.json (excluding .tmp)",
+          "risk": "Low",
+          "risk_reason": "4 stale R320–R348 tasks only"
+        },
+        {
+          "file": "v2/src/state_machine.py",
+          "line": 201,
+          "symbol": "build_state_snapshot()",
+          "materializes": "Aggregates into state/state.json",
+          "risk": "Low"
+        },
+        {
+          "file": "v2/src/supervisor.py",
+          "line": 15,
+          "symbol": "tick()",
+          "materializes": "Calls reap_expired + build_state_snapshot + save_state_snapshot",
+          "risk": "Low"
+        },
+        {
+          "file": "v2/src/goal_guard_hook.py",
+          "line": "15, 153",
+          "symbol": "write_risk_envelope()",
+          "materializes": "Persists to v2/messages/risk/<id>.json",
+          "risk": "Low",
+          "risk_reason": "1 fatal catch in risk/"
+        },
+        {
+          "file": "v2/cli/aiosv2.py",
+          "line": 60,
+          "symbol": "cmd_status()",
+          "materializes": "Reads agents.json for agents_in_registry",
+          "risk": "Low"
+        },
+        {
+          "file": "v2/cli/aiosv2.py",
+          "line": 239,
+          "symbol": "cmd_submit_task()",
+          "materializes": "Calls state_machine.submit_task()",
+          "risk": "Low"
+        },
+        {
+          "file": "v2/src/validation.py",
+          "line": 20,
+          "symbol": "_load_schema()",
+          "materializes": "Lazy-loads schemas/*.schema.json",
+          "risk": "Low",
+          "risk_reason": "schemas have no industry fields"
+        },
+        {
+          "file": "v2/schemas/envelope.schema.json",
+          "line": "v1.0",
+          "symbol": "fields: id, schema_version, message_type, sender, recipient, timestamp, idempotency_key, payload (+ optional correlation_id, artifact_refs[], text_chunks[], retry_count, ttl_ms, in_reply_to, trace)",
+          "materializes": "None — no industry field",
+          "risk": "0"
+        },
+        {
+          "file": "v2/schemas/task.schema.json",
+          "line": "v1.0",
+          "symbol": "fields: task_id, title, state, assignee, owner, created_at, updated_at, lease_expires_at, heartbeat_at, input_payload, output_payload, error{code,message,details}, retry_count, max_retries, timeout_ms, correlation_envelope_id",
+          "materializes": "None",
+          "risk": "0"
+        },
+        {
+          "file": "v2/schemas/state.schema.json",
+          "line": "v1.0",
+          "symbol": "fields: version, updated_at, tasks{task_id→task}, agents{agent_id→…}, counters",
+          "materializes": "None",
+          "risk": "0"
+        },
+        {
+          "file": "v2/agents/agents.json",
+          "line": "8-100 (5 agents)",
+          "symbol": "registry: codex, claudecode, workbuddy, hermes, openclaw",
+          "materializes": "None",
+          "risk": "0"
+        }
+      ],
+      "industry_keyword_matches": 0,
+      "active_tasks_count": {
+        "succeeded": 1,
+        "queued": 2,
+        "cancelled": 1,
+        "running": 0
+      },
+      "industry_tasks_present": false
+    },
+    "aios_vnext": {
+      "root": "D:\\AIOS\\aios_tasks\\",
+      "verdict": "single live cron (AIOS_V13_Protocol_Audit monthly). Only generic 服务 in admin comments; no industry verticals. Cloudtech references are for archival only.",
+      "entries": [
+        {
+          "file": "aios_tasks/_aios_v13_protocol_audit.py",
+          "line": "full",
+          "symbol": "schtasks monthly target (day 1, 09:00) — audits 6-AI protocol files",
+          "status": "ACTIVE — single live cron"
+        },
+        {
+          "file": "aios_tasks/_aios_v13_cron_register.py",
+          "line": "14-46",
+          "symbol": "schtasks /create /tn AIOS_V13_Protocol_Audit /sc monthly /d 1 /st 09:00",
+          "status": "ACTIVE — registers cron"
+        },
+        {
+          "file": "aios_tasks/_aios_admin_runner.py",
+          "line": "full",
+          "symbol": "UAC elevation via schtasks one-shot",
+          "status": "ACTIVE"
+        },
+        {
+          "file": "aios_tasks/_aios_l1_exhaust_check.py",
+          "line": "10, 26",
+          "symbol": "L1 automation checker",
+          "status": "ACTIVE — references 工作量 generically (not industry vertical)"
+        },
+        {
+          "file": "aios_tasks/_r192_l5_execute_part2.py",
+          "line": "7, 85, 88",
+          "symbol": "References _archived-cloudtech/CloudTech-V2.0-2026-09-09 for deletion",
+          "status": "ACTIVE — references cloudtech only for archival"
+        },
+        {
+          "file": "aios_tasks/_aios_admin_temp_9ee1a950.ps1",
+          "line": "4, 5, 9, 31, 34, 43, 44, 56",
+          "symbol": "Stale temp PS1 — references cloudtech-saas service + cloudtech.live_migration module",
+          "status": "STALE — temp file from prior cutover; not on any live cron path"
+        },
+        {
+          "file": "aios_tasks/aios_vnext/preflight_check.py",
+          "line": 51,
+          "symbol": "Whitelist path D:/AIOS/cloudtech-saas",
+          "status": "ACTIVE — whitelist entry (read-only check, not a loader)"
+        },
+        {
+          "file": "aios_tasks/aios_vnext/cards/D002_industry_scout.md",
+          "line": "full",
+          "symbol": "IndustryScout module — generic signal-monitoring framework (RSS/API → 5 categories: product/competitor/regulatory/market/tech)",
+          "status": "ACTIVE but neutral — no 装修/教育/制造/服务 verticals hardcoded"
+        },
+        {
+          "file": "aios_tasks/aios_vnext/handoff.md",
+          "line": "0-§11",
+          "symbol": "CC start instructions + forbidden files checklist",
+          "status": "ACTIVE — strict no-protocol-spam guard"
+        },
+        {
+          "file": "aios_tasks/aios_vnext/preflight_check.py",
+          "line": "full",
+          "symbol": "CC self-check tool",
+          "status": "ACTIVE"
+        },
+        {
+          "file": "aios_tasks/aios_vnext/_cc_workflow.md",
+          "line": "§11",
+          "symbol": "forbidden-files list",
+          "status": "ACTIVE — protocol-spam guard"
+        }
+      ]
+    },
+    "relinked_openclaw": {
+      "root": "D:\\AIOS\\_relinked\\openclaw\\",
+      "verdict": "zero industry/装修/教育/制造/服务/cross-industry/global_strategy/cloudtech references in loader. Generic English industry only in volcengine-troubleshooting docs.",
+      "entries": [
+        {
+          "file": "openclaw/openclaw.json",
+          "line": "81-90",
+          "symbol": "agents.subagents.allowAgents → codex, geo-intent, geo-competitor, geo-strategy, geo-creator, geo-validator",
+          "status": "ACTIVE — runtime loader"
+        },
+        {
+          "file": "openclaw/openclaw.json",
+          "line": "678-683",
+          "symbol": "skills.load.extraDirs → D:\\个人文件\\AI\\Operator\\skills + D:\\个人文件\\AI\\Operator\\skills\\skills",
+          "status": "ACTIVE — runtime"
+        },
+        {
+          "file": "openclaw/openclaw.json",
+          "line": "685-1439",
+          "symbol": "+skills.entries ~200 skill names with enabled:true/false",
+          "status": "ACTIVE — runtime"
+        },
+        {
+          "file": "openclaw/openclaw.json",
+          "line": "1454+",
+          "symbol": "plugins.entries → memory-core, active-memory, ollama, openai, acpx, minimax, device-pair, anthropic, browser",
+          "status": "ACTIVE — runtime"
+        },
+        {
+          "file": "openclaw/CLAUDE.md",
+          "line": "full",
+          "symbol": "Delegates to central SSOT",
+          "status": "ACTIVE — clean"
+        },
+        {
+          "file": "openclaw/MEMORY.md",
+          "line": "full",
+          "symbol": "R402 entrypoint init",
+          "status": "ACTIVE — clean"
+        },
+        {
+          "file": "openclaw/agents/{claude,codex,geo-*,main,isolated}/agent/workshop-skills/",
+          "line": "dirs",
+          "symbol": "All empty (0 bytes)",
+          "status": "ARCHIVE — no files"
+        },
+        {
+          "file": "openclaw/skills/",
+          "line": "5 dirs",
+          "symbol": "volcengine-cli/feedback/find-skills/knowledge-search/troubleshooting",
+          "status": "ACTIVE — in extraDirs scan path; no industry references"
+        },
+        {
+          "file": "openclaw/plugin-skills/",
+          "line": "1 dir",
+          "symbol": "browser-automation@",
+          "status": "ACTIVE — no industry references"
+        }
+      ]
+    },
+    "relinked_hermes": {
+      "root": "D:\\AIOS\\_relinked\\hermes\\",
+      "verdict": "zero industry/装修/教育/制造/服务/cross-industry/global_strategy/cloudtech in config/SOUL/cron. Generic industry appears only in optional-skills/finance DCF model docs.",
+      "entries": [
+        {
+          "file": "hermes/config.yaml",
+          "line": "1-275",
+          "symbol": "mcp_servers (40+), v15_boundaries (B1_allow/forbid, D3_prefix), toolsets: hermes-cli, agent.reasoning_effort: medium",
+          "status": "ACTIVE — runtime loader; no industry refs"
+        },
+        {
+          "file": "hermes/AGENTS.md",
+          "line": "—",
+          "symbol": "MISSING (no file at _relinked/hermes/AGENTS.md); Hermes uses SOUL.md as identity bootstrap",
+          "status": "MISSING"
+        },
+        {
+          "file": "hermes/SOUL.md",
+          "line": "full",
+          "symbol": "Hermes identity bridge V1.0 — Chief Intelligence Officer role",
+          "status": "ACTIVE — no industry keywords"
+        },
+        {
+          "file": "hermes/SOUL.md.bak-2026-09-13-pre-ssot-injection",
+          "line": "full",
+          "symbol": "Pre-2026-09-13 backup",
+          "status": "ARCHIVE — superseded"
+        },
+        {
+          "file": "hermes/SOUL.md.bak-pre-shared-ssot-20260930",
+          "line": "full",
+          "symbol": "Pre-shared-ssot backup",
+          "status": "ARCHIVE — superseded"
+        },
+        {
+          "file": "hermes/CLAUDE.md",
+          "line": "—",
+          "symbol": "MISSING (no file at _relinked/hermes/CLAUDE.md)",
+          "status": "MISSING"
+        },
+        {
+          "file": "hermes/cron/jobs.json",
+          "line": "—",
+          "symbol": "aios-healthcheck (*/5) + aios-rag-watch (daily 02:00)",
+          "status": "ACTIVE — no industry refs"
+        },
+        {
+          "file": "hermes/hooks/",
+          "line": "dir",
+          "symbol": "Empty (no files)",
+          "status": "INERT"
+        },
+        {
+          "file": "hermes/hermes-agent/AGENTS.md",
+          "line": "full",
+          "symbol": "NousResearch hermes-agent development guide",
+          "status": "ACTIVE — bundled with hermes-agent source"
+        },
+        {
+          "file": "hermes/hermes-agent/skills/",
+          "line": "dirs",
+          "symbol": "apple, autonomous-ai-agents, creative, data-science, devops, diagramming, domain, email, gaming, gifs, github, mcp, media, mlops, note-taking, productivity, red-teaming, research, smart-home, social-media, software-development, yuanbao",
+          "status": "BUNDLED — default-disabled"
+        },
+        {
+          "file": "hermes/hermes-agent/optional-skills/",
+          "line": "dirs",
+          "symbol": "finance (dcf-model, comps-analysis), mlops (instructor, inference/outlines), research (osint-investigation)",
+          "status": "BUNDLED — disabled by default"
+        },
+        {
+          "file": "hermes/skills/",
+          "line": "2 dirs + .archive/",
+          "symbol": "yixiaoer + volcengine-* (ACTIVE); .archive/ 30+ archived skills (ARCHIVE)",
+          "status": "MIXED"
+        },
+        {
+          "file": "hermes/hermes-agent/.venv/Scripts/hermes.exe",
+          "line": "exe",
+          "symbol": "v0.15.1 CLI",
+          "status": "ACTIVE — binary"
+        }
+      ]
+    },
+    "user_global_loaders": {
+      "roots": [
+        "C:\\Users\\xinzh\\.workbuddy\\",
+        "C:\\Users\\xinzh\\.codex\\"
+      ],
+      "verdict": "WorkBuddy user profile + home cache + skills store + zxygj connector = HIGH-RISK reactivation paths (offline hub). Codex session resume = MEDIUM. Codex config.toml project entry + _mk_link_script.py = LOW. Codex archived_sessions = INERT.",
+      "entries": [
+        {
+          "file": "~/.workbuddy/AGENTS.md",
+          "line": "full",
+          "symbol": "Delegates to D:\\AIOS\\_agent-hub\\AGENTS.md (SHA256 6FD99AAAAADE4F5D5FAC97AF154AA84E77D3120C9BDB6CD438CD98648FF6CF14)",
+          "status": "ACTIVE — clean"
+        },
+        {
+          "file": "~/.workbuddy/CLAUDE.md",
+          "line": "full",
+          "symbol": "Moon Capsule L0 kernel R401 seed",
+          "status": "ACTIVE — clean"
+        },
+        {
+          "file": "~/.workbuddy/MEMORY.md",
+          "line": "full",
+          "symbol": "R402 entrypoint init",
+          "status": "ACTIVE — clean"
+        },
+        {
+          "file": "~/.workbuddy/memory/45e357fa-c2ec-4bd0-b734-9b016a2759d7_memory.md",
+          "line": "6-9, 13-19",
+          "symbol": "User Memory Profile v3 — embeds memoryBlock JSON: CloudTech 科技创始人 + Phase 1 聚焦行业 SaaS（医美 + 装企）MVP + Phase 2 再升维至工具型平台 + 对标基准 灵策/WorkBuddy + CloudTech 独有资产 1,989 篇竞品情报、2,421 篇 SaaS 语料、600+ 行业垂直文档（家居/医美）",
+          "status": "HIGH RISK — ACTIVE LOADER — WorkBuddy reads this at session start"
+        },
+        {
+          "file": "~/.workbuddy/memory/MEMORY.md",
+          "line": "full",
+          "symbol": "R402 entrypoint init",
+          "status": "ACTIVE — clean"
+        },
+        {
+          "file": "~/.workbuddy/memory/workbuddy_seed.md",
+          "line": "full",
+          "symbol": "WorkBuddy seed",
+          "status": "ACTIVE — clean"
+        },
+        {
+          "file": "~/.workbuddy/memory/feedback-R403-workbuddy-archive-seed.md",
+          "line": "full",
+          "symbol": "R403 archive seed",
+          "status": "ARCHIVE — tombstoned"
+        },
+        {
+          "file": "~/.workbuddy/storage/user-45e357fa-c2ec-4bd0-b734-9b016a2759d7-personal/scoped/c7389fe09fa872c0/home-first-screen-cache.json",
+          "line": "6-34 raw JSON + skills list (~150 entries)",
+          "symbol": "Home first screen cache — contains same CloudTech user profile block + 装修工作台 (line 1188+), 儿童教育/K12教育 (lines 132, 224, 229, 3902, 3928), 制造企业 (line 10108-10112), 金融服务 (multiple lines), 装修云管家业务查询",
+          "status": "HIGH RISK — LOADED ON FIRST LAUNCH — WorkBuddy reads on session start",
+          "industry_keyword_match_count": 81
+        },
+        {
+          "file": "~/.workbuddy/storage/.../scoped/.../skills-installed-store.json",
+          "line": "full",
+          "symbol": "Skill registry cache with industry context (e.g., 装修云管家)",
+          "status": "MEDIUM RISK — skill cache, loaded by skill manager"
+        },
+        {
+          "file": "~/.workbuddy/plugins/cache/workbuddy-builtin/welcomemode-work/{5.6.2,5.7.6}/prompt.tpl",
+          "line": "19-24",
+          "symbol": "industryModeSystemPromptAppend variable (empty placeholder)",
+          "status": "LOW RISK — template hook, currently empty"
+        },
+        {
+          "file": "~/.workbuddy/plugins/marketplaces/workbuddy-connector-plugins-official/connectors/zxygj-business-data/",
+          "line": "full",
+          "symbol": "plugin.json + SKILL.md for 装修云管家 connector",
+          "status": "MEDIUM RISK — installed connector"
+        },
+        {
+          "file": "~/.workbuddy/sessions/23852.json",
+          "line": "full",
+          "symbol": "Active session (single file)",
+          "status": "MEDIUM RISK — session resume could reload old context"
+        },
+        {
+          "file": "~/.codex/AGENTS.md",
+          "line": "full",
+          "symbol": "Codex native bootstrap copy of central SSOT",
+          "status": "ACTIVE — clean"
+        },
+        {
+          "file": "~/.codex/CLAUDE.md",
+          "line": "—",
+          "symbol": "MISSING",
+          "status": "MISSING"
+        },
+        {
+          "file": "~/.codex/MEMORY.md",
+          "line": "—",
+          "symbol": "MISSING",
+          "status": "MISSING"
+        },
+        {
+          "file": "~/.codex/memory/",
+          "line": "—",
+          "symbol": "MISSING (directory does not exist)",
+          "status": "MISSING"
+        },
+        {
+          "file": "~/.codex/agents/architect.toml",
+          "line": "full",
+          "symbol": "System architect role spec",
+          "status": "ACTIVE — clean"
+        },
+        {
+          "file": "~/.codex/agents/developer.toml",
+          "line": "full",
+          "symbol": "Executor developer role spec",
+          "status": "ACTIVE — clean"
+        },
+        {
+          "file": "~/.codex/agents/reviewer.toml",
+          "line": "full",
+          "symbol": "Reviewer role spec",
+          "status": "ACTIVE — clean"
+        },
+        {
+          "file": "~/.codex/agents/security.toml",
+          "line": "full",
+          "symbol": "Security auditor role spec",
+          "status": "ACTIVE — clean"
+        },
+        {
+          "file": "~/.codex/agents/test-engineer.toml",
+          "line": "full",
+          "symbol": "Test engineer role spec",
+          "status": "ACTIVE — clean"
+        },
+        {
+          "file": "~/.codex/agents/*.bak-R129-pre-v5-20260921",
+          "line": "full",
+          "symbol": "4 backup files (architect/developer/reviewer/security/test-engineer)",
+          "status": "ARCHIVE — explicitly marked .bak-R129-pre-v5"
+        },
+        {
+          "file": "~/.codex/config.toml",
+          "line": 36,
+          "symbol": "Project path [projects.'d:\\个人文件\\ai\\cloudtech\\v2.0\\lingce_scheduler_demo'] with trust_level = \"trusted\"",
+          "status": "LOW RISK — only loaded when operating in that directory"
+        },
+        {
+          "file": "~/.codex/_scripts/_mk_link_script.py",
+          "line": 97,
+          "symbol": "PowerShell shortcut generator with New-Link \"[索引] 装修行业小红书对标账号\"",
+          "status": "LOW RISK — static script, not loaded at runtime"
+        },
+        {
+          "file": "~/.codex/sessions/2026/{06,07,08,09,10}/",
+          "line": "10 subdirs",
+          "symbol": "Active session dirs",
+          "status": "MEDIUM RISK — resume reloads context"
+        },
+        {
+          "file": "~/.codex/archived_sessions/",
+          "line": "31 JSONL files (audit observed 33 on 2026-10-09)",
+          "symbol": "Historical sessions (2026-09-16 to 2026-09-30)",
+          "status": "LOW RISK — append-only, never auto-loaded"
+        },
+        {
+          "file": "~/.codex/sessions/2026/06/02/ and similar",
+          "line": "JSONL",
+          "symbol": "Old session logs",
+          "status": "ARCHIVE — temporal evidence"
+        },
+        {
+          "file": "~/.codex/plans/",
+          "line": "—",
+          "symbol": "MISSING",
+          "status": "MISSING"
+        }
+      ]
+    }
+  },
+  "active_tasks": {
+    "v2_state_json": {
+      "file": "D:\\AIOS\\_agent-hub\\v2\\state\\state.json",
+      "updated_at": "2026-10-08T14:10:36Z",
+      "version": "v2-2026-09-29",
+      "counters": {
+        "succeeded": 1,
+        "queued": 2,
+        "cancelled": 1
+      },
+      "tasks": [
+        {
+          "task_id": "35b6f323-0ff8-4163-93d6-1e27fa79759c",
+          "title": "R348 · aios_status stale defaults 根治 + 通道拓展 A/B/C/D 全部上线",
+          "state": "succeeded",
+          "assignee": "claude_code"
+        },
+        {
+          "task_id": "782ff34b-f5d0-484e-bae5-d97cff2788ae",
+          "title": "r286-lease-debug",
+          "state": "queued",
+          "assignee": "r286-debug-agent"
+        },
+        {
+          "task_id": "832dccb4-3020-4771-ab54-ab17340a9c4e",
+          "title": "r286-lease",
+          "state": "queued",
+          "assignee": "r286-lease-agent"
+        },
+        {
+          "task_id": "901ad4b3-128f-4f26-8ab0-b15d4ef4eff3",
+          "title": "test",
+          "state": "cancelled",
+          "assignee": "codex"
+        }
+      ]
+    },
+    "inbox": {
+      "path": "D:\\AIOS\\_agent-hub\\v2\\messages\\inbox\\",
+      "total_envelopes": 39,
+      "type_breakdown": {
+        "ack": 17,
+        "task": 13,
+        "result": 7,
+        "message": 1,
+        "error": 1
+      },
+      "retirement_audit_envelopes": [
+        {
+          "envelope_id_prefix": "6ea4f46d-",
+          "type": "task.claimed",
+          "timestamp": "2026-10-08 23:47",
+          "title": "GLOBAL-STRATEGY-RETIREMENT-AUDIT-RETRY",
+          "contract": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_RETIREMENT_AUDIT_20261008_CONTRACT.md"
+        },
+        {
+          "envelope_id_prefix": "83e2d652-",
+          "type": "task.claimed",
+          "timestamp": "2026-10-08 23:41",
+          "title": "GLOBAL-STRATEGY-RETIREMENT-AUDIT"
+        }
+      ],
+      "note": "2 self-referential retirement-audit envelopes — NOT industry tasks (audit the retirement itself)"
+    },
+    "outbox": {
+      "path": "D:\\AIOS\\_agent-hub\\v2\\messages\\outbox\\",
+      "file_count": 2,
+      "files": [
+        "0fbf6f33-4eb9-47b6-9400-1c2914b2d72f__codex__claudecode__ack.json",
+        "19334d04-08f8-4d3d-9f94-4eab28d336ce__claudecode__codex__ack.json"
+      ],
+      "note": "Stale R320.6 artifacts; no active dispatcher"
+    },
+    "deadletter": {
+      "path": "D:\\AIOS\\_agent-hub\\v2\\messages\\deadletter\\",
+      "file_count": 6,
+      "files": [
+        {
+          "id_prefix": "4c0597dc-",
+          "filename": "4c0597dc-fbf1-4e3d-b0fc-81277237ff49__codex__claudecode__task.dead.DESKTOP-0JKD1FQ.28564.55e18164.json",
+          "timestamp": "2026-10-08 23:41",
+          "reason": "read failure"
+        },
+        {
+          "id_prefix": "5e15bccf-",
+          "filename": "5e15bccf-43b7-404b-ad68-416b68751a7d__codex__claudecode__task.dead.DESKTOP-0JKD1FQ.25020.eb18bcd0.json",
+          "timestamp": "2026-10-08 22:35",
+          "reason": "result_enqueue_failed:TypeError (P5 final adapter)"
+        },
+        {
+          "id_prefix": "e82ad3a4-",
+          "filename": "e82ad3a4-2d36-4e0a-9891-1862f19930e9__codex__hermes__task.dead.DESKTOP-0JKD1FQ.32744.d3f26a75.json",
+          "timestamp": "2026-10-08 22:35",
+          "reason": "max_retries_exceeded:RuntimeError (Hermes p8-t23-debug)"
+        }
+      ]
+    },
+    "risk": {
+      "path": "D:\\AIOS\\_agent-hub\\v2\\messages\\risk\\",
+      "file_count": 1,
+      "files": [
+        {
+          "filename": "e397a956-d9d1-4186-ad01-39f468b168bb__20261008T151911Z__goal_guard_risk.json",
+          "timestamp": "2026-10-08 23:19",
+          "verdict": "fatal",
+          "failed_checks": "required_fields_missing (9), failure_modes_empty, permission_overrun",
+          "note": "goal guard correctly blocked dispatch"
+        }
+      ]
+    },
+    "tasks_dir": {
+      "path": "D:\\AIOS\\_agent-hub\\v2\\tasks\\",
+      "file_count": 4,
+      "note": "task envelope state records, all stale 2026-09-30; R320.6 era; no live industry direction"
+    },
+    "runs": {
+      "path": "D:\\AIOS\\_agent-hub\\v2\\runs\\",
+      "file_count": 13,
+      "note": "task run state snapshots, stale 2026-09-30; R320–R348 era; no live industry direction"
+    },
+    "events_log": {
+      "path": "D:\\AIOS\\_agent-hub\\v2\\logs\\events.ndjson",
+      "size_bytes": 1100000,
+      "size_pretty": "1.1 MB",
+      "date_range": "2026-09-29 → ongoing",
+      "industry_keyword_matches": 0,
+      "note": "Full operational history; 0 industry keyword matches"
+    }
+  },
+  "active_vs_archive_classification": [
+    {
+      "path": "v2/src/*.py",
+      "classification": "ACTIVE",
+      "criteria": "imported at runtime via python -m src.v2_consumer watch or aiosv2.py CLI"
+    },
+    {
+      "path": "v2/agents/agents.json",
+      "classification": "ACTIVE",
+      "criteria": "loaded by _load_recipients() at v2_consumer.py:772"
+    },
+    {
+      "path": "v2/schemas/*.schema.json",
+      "classification": "ACTIVE",
+      "criteria": "lazy-loaded by _load_schema() at validation.py:20"
+    },
+    {
+      "path": "v2/state/state.json",
+      "classification": "ACTIVE",
+      "criteria": "rewritten by supervisor.py:15 tick()"
+    },
+    {
+      "path": "v2/messages/{inbox,outbox,deadletter,risk}/",
+      "classification": "ACTIVE",
+      "criteria": "written/read by v2_consumer.py, envelope.py, goal_guard_hook.py"
+    },
+    {
+      "path": "v2/governance/PROTOCOL_REGISTRY.json",
+      "classification": "ACTIVE",
+      "criteria": "read by external governance tools (not by runtime consumer)"
+    },
+    {
+      "path": "v2/agents/agents.json.bak-pre-R322",
+      "classification": "ARCHIVE",
+      "criteria": "pre-R322 backup; not loaded"
+    },
+    {
+      "path": "v2/governance/PROTOCOL_REGISTRY.json.bak* (3 files)",
+      "classification": "ARCHIVE",
+      "criteria": "pre-publish backups; not loaded"
+    },
+    {
+      "path": "v2/governance/PROTOCOL_REGISTRY.json.bak_R284_pre_publish_20260929T200600",
+      "classification": "ARCHIVE",
+      "criteria": "R284 pre-publish backup"
+    },
+    {
+      "path": "v2/governance/Housekeeper/cleanup/*",
+      "classification": "ARCHIVE",
+      "criteria": "housekeeper-managed cleanup candidates"
+    },
+    {
+      "path": "v2/reports/CLOUDTECH_REPAIR_PLAN.md",
+      "classification": "ARCHIVE",
+      "criteria": "historical execution report (WinSW service descriptor)"
+    },
+    {
+      "path": "v2/reports/CLOUDTECH_REPAIR_PLAN.md.pre_R284_20260929T200700.bak",
+      "classification": "ARCHIVE",
+      "criteria": "pre-R284 backup"
+    },
+    {
+      "path": "v2/reports/R283_CLOUDTECH_EXECUTION_REPORT.md",
+      "classification": "ARCHIVE",
+      "criteria": "historical execution report"
+    },
+    {
+      "path": "v2/reports/R284_CLOUDTECH_COMPLETION_REPORT.md",
+      "classification": "ARCHIVE",
+      "criteria": "historical completion report"
+    },
+    {
+      "path": "v2/reports/FILE_INVENTORY.csv",
+      "classification": "ARCHIVE",
+      "criteria": "V16 scan inventory (contains 装修 reference as historical path)"
+    },
+    {
+      "path": "v2/src/*.bak.20261008-* (5 files: claude_adapter 2x, probes.py 3x, v2_consumer 3x)",
+      "classification": "ARCHIVE",
+      "criteria": "pre-fix backups"
+    },
+    {
+      "path": "~/.workbuddy/memory/45e357fa-…_memory.md",
+      "classification": "ACTIVE",
+      "criteria": "read by WorkBuddy session-start loader"
+    },
+    {
+      "path": "~/.workbuddy/storage/.../home-first-screen-cache.json",
+      "classification": "ACTIVE",
+      "criteria": "loaded by WorkBuddy first-screen UI on launch"
+    },
+    {
+      "path": "~/.workbuddy/AGENTS.md, CLAUDE.md, MEMORY.md",
+      "classification": "ACTIVE",
+      "criteria": "session-start loaders"
+    },
+    {
+      "path": "~/.workbuddy/memory/feedback-R403-workbuddy-archive-seed.md",
+      "classification": "ARCHIVE",
+      "criteria": "tombstoned at R403"
+    },
+    {
+      "path": "~/.workbuddy/plugins/cache/workbuddy-builtin/*",
+      "classification": "ARCHIVE-CACHE",
+      "criteria": "package-manager cache; regenerated; not editable for runtime reactivation"
+    },
+    {
+      "path": "~/.workbuddy/sessions/23852.json",
+      "classification": "ACTIVE",
+      "criteria": "live session"
+    },
+    {
+      "path": "~/.codex/AGENTS.md, agents/*.toml (5 files)",
+      "classification": "ACTIVE",
+      "criteria": "session-start loaders"
+    },
+    {
+      "path": "~/.codex/agents/*.bak-R129-pre-v5-20260921 (4 backups)",
+      "classification": "ARCHIVE",
+      "criteria": "explicitly marked pre-v5"
+    },
+    {
+      "path": "~/.codex/archived_sessions/ (31 JSONL files)",
+      "classification": "ARCHIVE",
+      "criteria": "append-only history, never auto-loaded"
+    },
+    {
+      "path": "~/.codex/sessions/2026/{06,07,08}/",
+      "classification": "ARCHIVE",
+      "criteria": "old session dirs"
+    },
+    {
+      "path": "~/.codex/sessions/2026/{09,10}/",
+      "classification": "ACTIVE",
+      "criteria": "recent/current sessions"
+    },
+    {
+      "path": "~/.codex/_scripts/_mk_link_script.py",
+      "classification": "ARCHIVE-STATIC",
+      "criteria": "static Python script; not loaded at runtime"
+    },
+    {
+      "path": "~/.codex/config.toml line 36 project entry",
+      "classification": "CONDITIONAL",
+      "criteria": "only loaded when operating in that directory"
+    },
+    {
+      "path": "_relinked/openclaw/openclaw.json",
+      "classification": "ACTIVE",
+      "criteria": "session-start loader"
+    },
+    {
+      "path": "_relinked/openclaw/{CLAUDE.md,MEMORY.md}",
+      "classification": "ACTIVE",
+      "criteria": "session-start loaders"
+    },
+    {
+      "path": "_relinked/openclaw/agents/*/agent/workshop-skills/",
+      "classification": "ARCHIVE-EMPTY",
+      "criteria": "all empty dirs (0 bytes)"
+    },
+    {
+      "path": "_relinked/openclaw/skills/volcengine-* (5 dirs)",
+      "classification": "ACTIVE",
+      "criteria": "in openclaw.json:678-683 extraDirs scan path"
+    },
+    {
+      "path": "_relinked/openclaw/plugin-skills/browser-automation@",
+      "classification": "ACTIVE",
+      "criteria": "plugin loader"
+    },
+    {
+      "path": "_relinked/hermes/config.yaml",
+      "classification": "ACTIVE",
+      "criteria": "session-start loader"
+    },
+    {
+      "path": "_relinked/hermes/SOUL.md",
+      "classification": "ACTIVE",
+      "criteria": "Hermes identity bootstrap"
+    },
+    {
+      "path": "_relinked/hermes/SOUL.md.bak-2026-09-13*",
+      "classification": "ARCHIVE",
+      "criteria": "pre-injection backup"
+    },
+    {
+      "path": "_relinked/hermes/SOUL.md.bak-pre-shared-ssot-20260930",
+      "classification": "ARCHIVE",
+      "criteria": "pre-ssot backup"
+    },
+    {
+      "path": "_relinked/hermes/cron/jobs.json",
+      "classification": "ACTIVE",
+      "criteria": "cron scheduler"
+    },
+    {
+      "path": "_relinked/hermes/skills/.archive/ (30+ dirs)",
+      "classification": "ARCHIVE",
+      "criteria": "curator-managed, not loaded"
+    },
+    {
+      "path": "_relinked/hermes/hermes-agent/skills/",
+      "classification": "BUNDLED",
+      "criteria": "bundled with hermes-agent source; default-disabled"
+    },
+    {
+      "path": "_relinked/hermes/hermes-agent/optional-skills/",
+      "classification": "BUNDLED-DISABLED",
+      "criteria": "optional, default off"
+    },
+    {
+      "path": "aios_tasks/_aios_v13_protocol_audit.py",
+      "classification": "ACTIVE",
+      "criteria": "schtasks monthly target"
+    },
+    {
+      "path": "aios_tasks/_aios_v13_cron_register.py",
+      "classification": "ACTIVE",
+      "criteria": "schtasks register"
+    },
+    {
+      "path": "aios_tasks/_aios_admin_runner.py",
+      "classification": "ACTIVE",
+      "criteria": "UAC elevation"
+    },
+    {
+      "path": "aios_tasks/_aios_l1_exhaust_check.py",
+      "classification": "ACTIVE",
+      "criteria": "L1 checker"
+    },
+    {
+      "path": "aios_tasks/_r192_*.py",
+      "classification": "ARCHIVE",
+      "criteria": "R192-era one-shots"
+    },
+    {
+      "path": "aios_tasks/_r186_* through _r191_* (15+ files)",
+      "classification": "ARCHIVE",
+      "criteria": "R186-R191 era scripts"
+    },
+    {
+      "path": "aios_tasks/_aios_admin_temp_*.ps1 (12 files)",
+      "classification": "ARCHIVE-TEMP",
+      "criteria": "ad-hoc temp PS1 files"
+    },
+    {
+      "path": "aios_tasks/aios_vnext/{INDEX.md, _cc_workflow.md, handoff.md, preflight_check.py}",
+      "classification": "ACTIVE",
+      "criteria": "session-start + preflight + workflow guard"
+    },
+    {
+      "path": "aios_tasks/aios_vnext/cards/*.md (43 cards)",
+      "classification": "ACTIVE",
+      "criteria": "task card system"
+    },
+    {
+      "path": "aios_tasks/aios_vnext/evidence/*.md (90+ files)",
+      "classification": "ARCHIVE-EVIDENCE",
+      "criteria": "execution evidence; history"
+    }
+  ],
+  "reactivation_mechanisms": {
+    "high_risk": [
+      {
+        "path_id": "P1",
+        "name": "WorkBuddy User Memory Profile rewrite",
+        "target": "C:\\Users\\xinzh\\.workbuddy\\memory\\45e357fa-c2ec-4bd0-b734-9b016a2759d7_memory.md",
+        "target_lines": "6-9, 13-19",
+        "loader": "WorkBuddy session-start → reads memory/45e357fa-…_memory.md into prompt context",
+        "reactivation_edit": "replace memoryBlock JSON's Phase 1 聚焦行业 SaaS（医美 + 装企）MVP + CloudTech 独有资产 600+ 行业垂直文档（家居/医美） + 对标基准 灵策/WorkBuddy",
+        "outcome": "re-injects CloudTech Phase 1 (医美+装企) vertical strategy into every WorkBuddy session",
+        "confidence": "HIGH — file content verified at audit time; memoryBlock JSON literally contains the strings"
+      },
+      {
+        "path_id": "P2",
+        "name": "WorkBuddy home-first-screen-cache.json rewrite",
+        "target": "C:\\Users\\xinzh\\.workbuddy\\storage\\user-45e357fa-c2ec-4bd0-b734-9b016a2759d7-personal\\scoped\\c7389fe09fa872c0\\home-first-screen-cache.json",
+        "target_lines": "6-34 raw JSON + skills list",
+        "loader": "WorkBuddy first-screen UI loads on launch; skills list is consumed by skill marketplace",
+        "reactivation_edit": "restore industry-tagged skills (装修云管家, K12教育, 制造B2B SaaS, 金融服务) into the skills array",
+        "outcome": "re-surfaces industry-tagged skills in WorkBuddy's home UI",
+        "confidence": "HIGH — 81 industry-keyword matches verified at audit time"
+      },
+      {
+        "path_id": "P3",
+        "name": "WorkBuddy skills-installed-store.json rewrite",
+        "target": "C:\\Users\\xinzh\\.workbuddy\\storage\\user-45e357fa-…\\scoped\\c7389fe09fa872c0\\skills-installed-store.json",
+        "loader": "WorkBuddy skill manager reads on skill activation",
+        "reactivation_edit": "restore 装修云管家 entry or other industry skill registrations",
+        "outcome": "re-enables an installed industry skill",
+        "confidence": "HIGH — file exists at the path; 80694 bytes; skills registry format verified"
+      },
+      {
+        "path_id": "P4",
+        "name": "WorkBuddy zxygj-business-data plugin reinstall",
+        "target": "C:\\Users\\xinzh\\.workbuddy\\plugins\\marketplaces\\workbuddy-connector-plugins-official\\connectors\\zxygj-business-data\\",
+        "loader": "WorkBuddy plugin marketplace scan + connector activation",
+        "reactivation_edit": "re-add plugin.json + SKILL.md for 装修云管家 connector",
+        "outcome": "re-enables the decoration-cloud-管家 connector for use",
+        "confidence": "HIGH — directory exists with ai.workbuddy/, mcp.json, skills/ subdirs"
+      }
+    ],
+    "medium_risk": [
+      {
+        "path_id": "P5",
+        "name": "Codex session resume with old context",
+        "target": "C:\\Users\\xinzh\\.codex\\sessions\\2026\\09\\ and 10\\",
+        "loader": "Codex claude -p --resume or session reload",
+        "reactivation_edit": "resume a pre-retirement session containing old industry prompts",
+        "outcome": "re-injects old context into a fresh Codex session",
+        "confidence": "MEDIUM — depends on session content"
+      },
+      {
+        "path_id": "P6",
+        "name": "WorkBuddy session resume",
+        "target": "C:\\Users\\xinzh\\.workbuddy\\sessions\\23852.json",
+        "loader": "WorkBuddy session resume",
+        "reactivation_edit": "resume session 23852",
+        "outcome": "re-injects WorkBuddy session context",
+        "confidence": "MEDIUM — session file exists at path; 355 bytes"
+      }
+    ],
+    "low_risk": [
+      {
+        "path_id": "P7",
+        "name": "Codex config.toml project path activation",
+        "target": "C:\\Users\\xinzh\\.codex\\config.toml line 36",
+        "target_text": "[projects.'d:\\个人文件\\ai\\cloudtech\\v2.0\\lingce_scheduler_demo'] trust_level = \"trusted\"",
+        "loader": "Codex reads project entry only when operating inside that directory",
+        "reactivation_edit": "cd d:\\个人文件\\ai\\cloudtech\\v2.0\\lingce_scheduler_demo then run codex",
+        "outcome": "enables the cloudtech v2.0 demo project (already exists on disk; no code injection)",
+        "confidence": "HIGH — config.toml line 36 verified"
+      },
+      {
+        "path_id": "P8",
+        "name": "Codex _mk_link_script.py execution",
+        "target": "C:\\Users\\xinzh\\.codex\\_scripts\\_mk_link_script.py",
+        "target_line": 97,
+        "target_text": "New-Link \"[索引] 装修行业小红书对标账号\"",
+        "loader": "only if explicitly executed (not auto-loaded)",
+        "reactivation_edit": "run python _mk_link_script.py",
+        "outcome": "creates the [索引] 装修行业小红书对标账号 PowerShell shortcut (file artifact only)",
+        "confidence": "HIGH — line 97 verified"
+      },
+      {
+        "path_id": "P9",
+        "name": "aios_vnext D002 industry_scout runtime",
+        "target": "D:\\AIOS\\aios_tasks\\aios_vnext\\cards\\D002_industry_scout.md",
+        "loader": "only if the next VNext dispatch cycle activates D002",
+        "reactivation_edit": "edit the D002 card body to add 装修/教育/制造/服务 verticals",
+        "outcome": "would reintroduce the old vertical direction into IndustryScout (currently neutral)",
+        "confidence": "HIGH — D002 file exists; card body verified neutral (no verticals hardcoded)"
+      },
+      {
+        "path_id": "P10",
+        "name": "aios_tasks/_aios_admin_temp_9ee1a950.ps1 execution",
+        "target": "D:\\AIOS\\aios_tasks\\_aios_admin_temp_9ee1a950.ps1",
+        "target_lines": "4-56 (cloudtech-saas service control)",
+        "loader": "only if explicitly executed; not on any live cron",
+        "reactivation_edit": "run the temp PS1",
+        "outcome": "stops/starts the cloudtech-saas WinSW service (not an industry-agent loader)",
+        "confidence": "HIGH — temp file exists; not on any live cron"
+      },
+      {
+        "path_id": "P11",
+        "name": "openclaw.json skills entries edit",
+        "target": "D:\\AIOS\\_relinked\\openclaw\\openclaw.json",
+        "target_lines": "678-1439 (skills.entries)",
+        "loader": "openclaw.json session-start",
+        "reactivation_edit": "add a new skill entry with enabled:true pointing to an industry-skill directory",
+        "outcome": "would re-enable any industry skill if it existed on disk under extraDirs",
+        "confidence": "HIGH — openclaw.json line ranges verified"
+      },
+      {
+        "path_id": "P12",
+        "name": "hermes-agent optional-skills activation",
+        "target": "D:\\AIOS\\_relinked\\hermes\\hermes-agent\\optional-skills\\",
+        "loader": "hermes-agent startup if optional-skills enabled flag is flipped",
+        "reactivation_edit": "flip the flag → skills become loadable",
+        "outcome": "would activate finance DCF / comps-analysis / osint-investigation; none reference 装修/教育/制造/服务",
+        "confidence": "HIGH — optional-skills directories exist"
+      }
+    ],
+    "inert": [
+      {
+        "path": "~/.codex/archived_sessions/*.jsonl",
+        "reason": "append-only, never auto-loaded"
+      },
+      {
+        "path": "~/.workbuddy/memory/feedback-R403-workbuddy-archive-seed.md",
+        "reason": "tombstoned at R403"
+      },
+      {
+        "path": "v2/src/*.bak.20261008-*",
+        "reason": "pre-fix backups"
+      },
+      {
+        "path": "_relinked/openclaw/agents/*/agent/workshop-skills/",
+        "reason": "empty dirs"
+      },
+      {
+        "path": "_relinked/hermes/skills/.archive/",
+        "reason": "curator-managed archive"
+      },
+      {
+        "path": "_relinked/hermes/SOUL.md.bak-*",
+        "reason": "superseded backups"
+      }
+    ]
+  },
+  "summary": {
+    "risk_counts": {
+      "high": 4,
+      "medium": 2,
+      "low": 6,
+      "inert": 6
+    },
+    "high_risk_paths": "WorkBuddy session-start + first-screen UI + skill manager + plugin marketplace",
+    "high_risk_mitigation": "User approval to scrub CloudTech Phase 1 strategy from memory/45e357fa-…_memory.md + home-first-screen-cache.json + skills-installed-store.json + zxygj-business-data plugin",
+    "medium_risk_mitigation": "Archive old sessions that contain pre-retirement context",
+    "low_risk_mitigation": "None unless user wants full purge",
+    "inert_mitigation": "None — already inert",
+    "critical_finding": "The HIGH-risk paths are all in WorkBuddy's persistent user profile (single file 45e357fa-…_memory.md + UI cache home-first-screen-cache.json). WorkBuddy is NOT currently the active hub — Claude Code is (this session). Codex supervisor watches via inbox polling. Neither CC nor Codex loads from WorkBuddy's persistent storage at runtime. However, if WorkBuddy is ever reactivated, those 4 paths would re-inject the old industry direction.",
+    "active_hub_verdict": "v2 + Codex active paths are clean. No runtime loader in v2 or Codex reintroduces 装修/教育/制造/服务/cross-industry/global_strategy. PROTOCOL_REGISTRY's 29 current families reference industry only as historical governance metadata for the WinSW service descriptor (cloudtech-xml-winsw family, status=superseded → r284-fixed-cloudtech-xml status=current)."
+  },
+  "validation_notes": {
+    "audit_date": "2026-10-09",
+    "validator": "Claude Code (B-AUDIT-2026-10-09)",
+    "spot_checks_performed": [
+      {
+        "target": "D:\\AIOS\\_agent-hub\\v2\\src\\paths.py",
+        "check": "V2_ROOT line 7, AGENTS_JSON line 10, PROTOCOL_V1 line 11, INBOX/OUTBOX/DEADLETTER lines 14-16 — VERIFIED"
+      },
+      {
+        "target": "D:\\AIOS\\_agent-hub\\v2\\src\\v2_consumer.py",
+        "check": "CAPABILITIES line 248, goal_guard lines 460-465, _load_recipients call lines 686-687, _load_recipients def line 772 — VERIFIED"
+      },
+      {
+        "target": "D:\\AIOS\\_agent-hub\\v2\\src\\state_machine.py",
+        "check": "submit_task line 56, list_tasks line 94, build_state_snapshot line 201 — VERIFIED via grep -n"
+      },
+      {
+        "target": "D:\\AIOS\\_agent-hub\\v2\\src\\supervisor.py",
+        "check": "tick() line 15 — VERIFIED"
+      },
+      {
+        "target": "D:\\AIOS\\_agent-hub\\v2\\src\\goal_guard_hook.py",
+        "check": "write_risk_envelope docstring line 15, def line 153 — VERIFIED"
+      },
+      {
+        "target": "D:\\AIOS\\_agent-hub\\v2\\src\\validation.py",
+        "check": "_load_schema line 20 — VERIFIED"
+      },
+      {
+        "target": "D:\\AIOS\\_agent-hub\\v2\\state\\state.json",
+        "check": "4 tasks verified: 35b6f323 succeeded (R348), 782ff34b queued (r286-lease-debug), 832dccb4 queued (r286-lease), 901ad4b3 cancelled (test) — VERIFIED"
+      },
+      {
+        "target": "D:\\AIOS\\_agent-hub\\v2\\messages\\",
+        "check": "inbox=39, outbox=2, deadletter=6 (3 .dead + 3 .reason), risk=1 — VERIFIED via ls"
+      },
+      {
+        "target": "D:\\AIOS\\_relinked\\openclaw\\openclaw.json",
+        "check": "allowAgents lines 81-90 (codex, geo-intent, geo-competitor, geo-strategy, geo-creator, geo-validator), extraDirs lines 680-683 — VERIFIED"
+      },
+      {
+        "target": "D:\\AIOS\\_relinked\\hermes\\config.yaml",
+        "check": "274 lines — VERIFIED via wc -l"
+      },
+      {
+        "target": "C:\\Users\\xinzh\\.workbuddy\\memory\\45e357fa-c2ec-4bd0-b734-9b016a2759d7_memory.md",
+        "check": "User Memory Profile v3 with CloudTech/Phase 1 医美+装企 vertical — VERIFIED via head -25"
+      },
+      {
+        "target": "C:\\Users\\xinzh\\.workbuddy\\storage\\user-45e357fa-c2ec-4bd0-b734-9b016a2759d7-personal\\scoped\\c7389fe09fa872c0\\home-first-screen-cache.json",
+        "check": "81 industry-keyword matches via grep -c — VERIFIED"
+      },
+      {
+        "target": "C:\\Users\\xinzh\\.workbuddy\\plugins\\marketplaces\\workbuddy-connector-plugins-official\\connectors\\zxygj-business-data\\",
+        "check": "directory exists with ai.workbuddy/, mcp.json, skills/ — VERIFIED"
+      },
+      {
+        "target": "C:\\Users\\xinzh\\.codex\\config.toml line 36",
+        "check": "[projects.'d:\\个人文件\\ai\\cloudtech\\v2.0\\lingce_scheduler_demo'] — VERIFIED"
+      },
+      {
+        "target": "C:\\Users\\xinzh\\.codex\\_scripts\\_mk_link_script.py line 97",
+        "check": "New-Link \"[索引] 装修行业小红书对标账号\" — VERIFIED"
+      },
+      {
+        "target": "D:\\AIOS\\aios_tasks\\_aios_v13_cron_register.py",
+        "check": "TASK_NAME='AIOS_V13_Protocol_Audit' line 14, schtasks /create /sc monthly /d 1 /st 09:00 lines 37-46 — VERIFIED"
+      }
+    ],
+    "no_modifications_made_to": [
+      "D:\\AIOS\\_agent-hub\\AGENTS.md",
+      "D:\\AIOS\\_agent-hub\\memory\\2026-10-08.md",
+      "D:\\AIOS\\_agent-hub\\memory\\2026-10-09.md",
+      "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_RETIREMENT_PARTIAL_20261008\\B_AGENT_TASK_MEMORY.md",
+      "All product code, policy, scripts, configs inspected"
+    ],
+    "only_file_written": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_RETIREMENT_PARTIAL_20261008\\B_AGENT_TASK_MEMORY.json"
+  }
+}

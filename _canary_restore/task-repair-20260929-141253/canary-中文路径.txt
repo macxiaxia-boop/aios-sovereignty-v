@@ -1,0 +1,4 @@
+﻿AIOS backup canary
+timestamp=2026-09-29T14:12:53.7191283+08:00
+guid=f2535059-6020-43af-a4b8-6708cc6760ea
+

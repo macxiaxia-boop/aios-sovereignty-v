@@ -1,0 +1,49 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.11.15, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\xinzh\.hermes\hermes-agent\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: D:\AIOS\kernel
+configfile: pyproject.toml
+plugins: anyio-4.14.2, asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 32 items
+
+tests/unit/test_goal_guard.py::test_goal_guard_init_no_args PASSED       [  3%]
+tests/unit/test_goal_guard.py::test_goal_guard_required_fields_list_10 PASSED [  6%]
+tests/unit/test_goal_guard.py::test_goal_contract_minimal_defaults_to_invalid PASSED [  9%]
+tests/unit/test_goal_guard.py::test_validate_complete_goal_returns_pass PASSED [ 12%]
+tests/unit/test_goal_guard.py::test_validate_dict_complete_goal_returns_pass PASSED [ 15%]
+tests/unit/test_goal_guard.py::test_validate_object_duck_type_passes PASSED [ 18%]
+tests/unit/test_goal_guard.py::test_validate_none_returns_fatal PASSED   [ 21%]
+tests/unit/test_goal_guard.py::test_validate_missing_title_returns_risk_block PASSED [ 25%]
+tests/unit/test_goal_guard.py::test_validate_missing_permission_scope_returns_risk_block PASSED [ 28%]
+tests/unit/test_goal_guard.py::test_validate_missing_failure_modes_returns_risk_block PASSED [ 31%]
+tests/unit/test_goal_guard.py::test_validate_missing_autonomous_scope_returns_risk_block PASSED [ 34%]
+tests/unit/test_goal_guard.py::test_validate_missing_requires_authorization_returns_risk_block PASSED [ 37%]
+tests/unit/test_goal_guard.py::test_validate_missing_owner_returns_risk_block PASSED [ 40%]
+tests/unit/test_goal_guard.py::test_failure_modes_empty_returns_risk_block PASSED [ 43%]
+tests/unit/test_goal_guard.py::test_failure_modes_present_passes PASSED  [ 46%]
+tests/unit/test_goal_guard.py::test_permission_scope_overrun_verifier_returns_fatal PASSED [ 50%]
+tests/unit/test_goal_guard.py::test_permission_scope_overrun_agents_md_returns_fatal PASSED [ 53%]
+tests/unit/test_goal_guard.py::test_permission_scope_safe_passes PASSED  [ 56%]
+tests/unit/test_goal_guard.py::test_autonomous_and_authorization_overlap_returns_risk_block PASSED [ 59%]
+tests/unit/test_goal_guard.py::test_autonomous_and_authorization_disjoint_passes PASSED [ 62%]
+tests/unit/test_goal_guard.py::test_missing_evidence_no_required_true_returns_risk_block PASSED [ 65%]
+tests/unit/test_goal_guard.py::test_missing_evidence_empty_passes PASSED [ 68%]
+tests/unit/test_goal_guard.py::test_missing_evidence_at_least_one_required_passes PASSED [ 71%]
+tests/unit/test_goal_guard.py::test_make_risk_envelope_format PASSED     [ 75%]
+tests/unit/test_goal_guard.py::test_make_risk_envelope_with_dict_contract PASSED [ 78%]
+tests/unit/test_goal_guard.py::test_guard_report_to_dict_roundtrip PASSED [ 81%]
+tests/unit/test_goal_guard.py::test_hook_layer_pass_terminal_envelope PASSED [ 84%]
+tests/unit/test_goal_guard.py::test_hook_layer_pass_message_without_goal PASSED [ 87%]
+tests/unit/test_goal_guard.py::test_hook_layer_block_incomplete_goal PASSED [ 90%]
+tests/unit/test_goal_guard.py::test_hook_layer_block_goal_with_verifier_path PASSED [ 93%]
+tests/unit/test_goal_guard.py::test_hook_layer_pass_complete_goal PASSED [ 96%]
+tests/unit/test_goal_guard.py::test_write_risk_envelope_creates_file PASSED [100%]
+
+============================== warnings summary ===============================
+tests/unit/test_goal_guard.py::test_goal_guard_init_no_args
+  D:\AIOS\_relinked\hermes\hermes-agent\.venv\Lib\site-packages\pytest_asyncio\plugin.py:916: PytestDeprecationWarning: Overriding the "event_loop_policy" fixture is deprecated and will be removed in a future version of pytest-asyncio. Use the "pytest_asyncio_loop_factories" hook to customize event loop creation.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 32 passed, 1 warning in 0.11s ========================

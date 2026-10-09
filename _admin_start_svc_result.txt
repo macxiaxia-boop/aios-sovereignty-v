@@ -1,0 +1,2 @@
+StartService OK, err=0
+state=STOPPED, win32_exit=1066, specific_exit=1

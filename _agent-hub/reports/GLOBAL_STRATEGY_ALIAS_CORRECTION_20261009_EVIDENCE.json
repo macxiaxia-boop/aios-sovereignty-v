@@ -1,0 +1,393 @@
+{
+  "contract_id": "GLOBAL_STRATEGY_ALIAS_CORRECTION_20261009",
+  "policy_id": "GLOBAL_PRODUCT_STRATEGY",
+  "policy_version": "2026-10-08",
+  "executed_at_utc": "2026-10-08T17:21:22Z",
+  "executed_by": "Claude Code 2.1.285 (MiniMax-M3) — executor",
+  "scope": "retired_aliases list + structured gate + scanner content tokens",
+  "files_added": [
+    "D:\\AIOS\\_agent-hub\\v2\\tests\\test_strategy_alias_correction.py",
+    "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_ALIAS_CORRECTION_20261009_EVIDENCE.json",
+    "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_ALIAS_CORRECTION_20261009_EVIDENCE.md"
+  ],
+  "files_modified": [
+    "D:\\AIOS\\_agent-hub\\policy\\product_strategy.v1.json",
+    "D:\\AIOS\\_agent-hub\\policy\\product_strategy.v1.schema.json",
+    "D:\\AIOS\\_agent-hub\\policy\\product_strategy.v1.sha256",
+    "D:\\AIOS\\_agent-hub\\policy\\strategy_index.json",
+    "D:\\AIOS\\_agent-hub\\policy\\strategy_policy.py",
+    "D:\\AIOS\\_agent-hub\\policy\\strategy_gate.py",
+    "D:\\AIOS\\_agent-hub\\policy\\contamination_scanner.py"
+  ],
+  "policy_invariants": {
+    "policy_json_sha256": "270B9A02C76D0F9F904E3E1F9693CDE167C63D96B02B45DA3B8D29D7971FED74",
+    "policy_schema_sha256": "CF1FC2A64E2E3627F108FB1DB6B571EFBA05FDAF4EDBFE98937FA8A882705961",
+    "policy_sha256_sidecar": "270B9A02C76D0F9F904E3E1F9693CDE167C63D96B02B45DA3B8D29D7971FED74",
+    "sidecar_matches": true,
+    "policy_loads_ok": true,
+    "policy_version": "2026-10-08"
+  },
+  "retired_aliases_summary": {
+    "total_count": 19,
+    "kind_count": 5,
+    "kinds": [
+      "industry_vertical",
+      "old_brand",
+      "vertical_workflow",
+      "cloudtech_v22_v23",
+      "skill_id"
+    ],
+    "kinds_bucket_counts": {
+      "industry_vertical": 6,
+      "old_brand": 3,
+      "vertical_workflow": 3,
+      "cloudtech_v22_v23": 5,
+      "skill_id": 2
+    },
+    "all_aliases": [
+      "医美",
+      "装企",
+      "家居/医美",
+      "行业垂直",
+      "行业垂直文档",
+      "行业MVP",
+      "灵策智算",
+      "灵策AI",
+      "装修矩阵",
+      "装修矩阵V2",
+      "小红书仿写管线",
+      "CloudTech V22",
+      "CloudTech V23",
+      "CloudTechV22Monitor",
+      "CloudTech_V22Watchdog",
+      "CloudTech_V23FileWatcher",
+      "sk-industry",
+      "sk-cross-matrix",
+      "Phase 1 行业 SaaS"
+    ],
+    "generic_words_excluded": []
+  },
+  "real_quarantine_memory_file": {
+    "path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\memory\\45e357fa-c2ec-4bd0-b734-9b016a2759d7_memory.md",
+    "sha256": "B8415F112F7695CDD3803716CDA38A0FF68FD4804C4B8C9BFCD5C79EBF6BB594",
+    "size_bytes": 5514,
+    "scanned_findings_count": 8,
+    "scanned_unique_aliases": [
+      "Phase 1 行业 SaaS",
+      "医美",
+      "家居/医美",
+      "灵策AI",
+      "灵策智算",
+      "行业垂直",
+      "行业垂直文档",
+      "装企"
+    ],
+    "active_violation_in_quarantine": false,
+    "all_classified_as_archived_reference": true,
+    "sample_findings": [
+      {
+        "matched_token": "医美",
+        "classification": "ARCHIVED_REFERENCE",
+        "source_classification": "quarantine",
+        "reason": "file content references prohibited token '医美' in quarantine surface (no runtime loader)",
+        "confidence": "HIGH"
+      },
+      {
+        "matched_token": "装企",
+        "classification": "ARCHIVED_REFERENCE",
+        "source_classification": "quarantine",
+        "reason": "file content references prohibited token '装企' in quarantine surface (no runtime loader)",
+        "confidence": "HIGH"
+      },
+      {
+        "matched_token": "家居/医美",
+        "classification": "ARCHIVED_REFERENCE",
+        "source_classification": "quarantine",
+        "reason": "file content references prohibited token '家居/医美' in quarantine surface (no runtime loader)",
+        "confidence": "HIGH"
+      },
+      {
+        "matched_token": "行业垂直",
+        "classification": "ARCHIVED_REFERENCE",
+        "source_classification": "quarantine",
+        "reason": "file content references prohibited token '行业垂直' in quarantine surface (no runtime loader)",
+        "confidence": "HIGH"
+      },
+      {
+        "matched_token": "行业垂直文档",
+        "classification": "ARCHIVED_REFERENCE",
+        "source_classification": "quarantine",
+        "reason": "file content references prohibited token '行业垂直文档' in quarantine surface (no runtime loader)",
+        "confidence": "HIGH"
+      },
+      {
+        "matched_token": "灵策智算",
+        "classification": "ARCHIVED_REFERENCE",
+        "source_classification": "quarantine",
+        "reason": "file content references prohibited token '灵策智算' in quarantine surface (no runtime loader)",
+        "confidence": "HIGH"
+      },
+      {
+        "matched_token": "灵策AI",
+        "classification": "ARCHIVED_REFERENCE",
+        "source_classification": "quarantine",
+        "reason": "file content references prohibited token '灵策AI' in quarantine surface (no runtime loader)",
+        "confidence": "HIGH"
+      },
+      {
+        "matched_token": "Phase 1 行业 SaaS",
+        "classification": "ARCHIVED_REFERENCE",
+        "source_classification": "quarantine",
+        "reason": "file content references prohibited token 'Phase 1 行业 SaaS' in quarantine surface (no runtime loader)",
+        "confidence": "HIGH"
+      }
+    ]
+  },
+  "synthetic_active_file_findings": {
+    "scenario": "医美+装企+灵策智算 in active loadable file",
+    "active_violation_count": 3,
+    "sample_findings": [
+      {
+        "matched_token": "医美",
+        "classification": "ACTIVE_VIOLATION",
+        "source_classification": "active",
+        "reason": "active loadable file content references prohibited token '医美'"
+      },
+      {
+        "matched_token": "装企",
+        "classification": "ACTIVE_VIOLATION",
+        "source_classification": "active",
+        "reason": "active loadable file content references prohibited token '装企'"
+      },
+      {
+        "matched_token": "灵策智算",
+        "classification": "ACTIVE_VIOLATION",
+        "source_classification": "active",
+        "reason": "active loadable file content references prohibited token '灵策智算'"
+      }
+    ]
+  },
+  "gate_scenarios": [
+    {
+      "scenario": "yimei_zhuangqi_in_title",
+      "allowed": false,
+      "reason": "strategy_gate_blocked",
+      "expected_allowed": false,
+      "event_types": [
+        "STRATEGY_DRIFT_DETECTED",
+        "STRATEGY_DRIFT_DETECTED",
+        "STRATEGY_DRIFT_DETECTED"
+      ],
+      "blocking_event_types": [
+        "STRATEGY_DRIFT_DETECTED",
+        "STRATEGY_DRIFT_DETECTED",
+        "STRATEGY_DRIFT_DETECTED"
+      ],
+      "alias_events": [
+        {
+          "event_type": "STRATEGY_DRIFT_DETECTED",
+          "severity": "BLOCK",
+          "message": "references retired alias 'Phase 1 行业 SaaS' (kind=old_brand) in active task context",
+          "matched_token": "Phase 1 行业 SaaS",
+          "matched_id": "Phase 1 行业 SaaS",
+          "source_classification": "active_envelope",
+          "ts": 1791480081.006181
+        },
+        {
+          "event_type": "STRATEGY_DRIFT_DETECTED",
+          "severity": "BLOCK",
+          "message": "references retired alias '医美' (kind=industry_vertical) in active task context",
+          "matched_token": "医美",
+          "matched_id": "医美",
+          "source_classification": "active_envelope",
+          "ts": 1791480081.0061884
+        },
+        {
+          "event_type": "STRATEGY_DRIFT_DETECTED",
+          "severity": "BLOCK",
+          "message": "references retired alias '装企' (kind=industry_vertical) in active task context",
+          "matched_token": "装企",
+          "matched_id": "装企",
+          "source_classification": "active_envelope",
+          "ts": 1791480081.0061944
+        }
+      ]
+    },
+    {
+      "scenario": "zhuangqi_in_description",
+      "allowed": false,
+      "reason": "strategy_gate_blocked",
+      "expected_allowed": false,
+      "event_types": [
+        "STRATEGY_DRIFT_DETECTED",
+        "STRATEGY_DRIFT_DETECTED"
+      ],
+      "blocking_event_types": [
+        "STRATEGY_DRIFT_DETECTED",
+        "STRATEGY_DRIFT_DETECTED"
+      ],
+      "alias_events": [
+        {
+          "event_type": "STRATEGY_DRIFT_DETECTED",
+          "severity": "BLOCK",
+          "message": "references retired alias '装企' (kind=industry_vertical) in active task context",
+          "matched_token": "装企",
+          "matched_id": "装企",
+          "source_classification": "active_envelope",
+          "ts": 1791480081.0062602
+        },
+        {
+          "event_type": "STRATEGY_DRIFT_DETECTED",
+          "severity": "BLOCK",
+          "message": "references retired alias '装修矩阵' (kind=vertical_workflow) in active task context",
+          "matched_token": "装修矩阵",
+          "matched_id": "装修矩阵",
+          "source_classification": "active_envelope",
+          "ts": 1791480081.0062637
+        }
+      ]
+    },
+    {
+      "scenario": "cloudtech_v22_in_title",
+      "allowed": false,
+      "reason": "strategy_gate_blocked",
+      "expected_allowed": false,
+      "event_types": [
+        "DEPRECATED_ASSET_REFERENCED"
+      ],
+      "blocking_event_types": [
+        "DEPRECATED_ASSET_REFERENCED"
+      ],
+      "alias_events": [
+        {
+          "event_type": "DEPRECATED_ASSET_REFERENCED",
+          "severity": "BLOCK",
+          "message": "references retired alias 'CloudTech V22' (kind=cloudtech_v22_v23) in active task context",
+          "matched_token": "CloudTech V22",
+          "matched_id": "CloudTech V22",
+          "source_classification": "active_envelope",
+          "ts": 1791480081.006299
+        }
+      ]
+    },
+    {
+      "scenario": "skill_id_in_text",
+      "allowed": false,
+      "reason": "strategy_gate_blocked",
+      "expected_allowed": false,
+      "event_types": [
+        "DEPRECATED_ASSET_REFERENCED",
+        "DEPRECATED_ASSET_REFERENCED"
+      ],
+      "blocking_event_types": [
+        "DEPRECATED_ASSET_REFERENCED",
+        "DEPRECATED_ASSET_REFERENCED"
+      ],
+      "alias_events": [
+        {
+          "event_type": "DEPRECATED_ASSET_REFERENCED",
+          "severity": "BLOCK",
+          "message": "references retired alias 'sk-cross-matrix' (kind=skill_id) in active task context",
+          "matched_token": "sk-cross-matrix",
+          "matched_id": "sk-cross-matrix",
+          "source_classification": "active_envelope",
+          "ts": 1791480081.0063229
+        },
+        {
+          "event_type": "DEPRECATED_ASSET_REFERENCED",
+          "severity": "BLOCK",
+          "message": "references retired alias 'sk-industry' (kind=skill_id) in active task context",
+          "matched_token": "sk-industry",
+          "matched_id": "sk-industry",
+          "source_classification": "active_envelope",
+          "ts": 1791480081.0063252
+        }
+      ]
+    },
+    {
+      "scenario": "generic_english_industry",
+      "allowed": true,
+      "reason": "allowed",
+      "expected_allowed": true,
+      "event_types": [],
+      "blocking_event_types": [],
+      "alias_events": []
+    },
+    {
+      "scenario": "bare_chinese_industry",
+      "allowed": true,
+      "reason": "allowed",
+      "expected_allowed": true,
+      "event_types": [],
+      "blocking_event_types": [],
+      "alias_events": []
+    },
+    {
+      "scenario": "generic_english_ai",
+      "allowed": true,
+      "reason": "allowed",
+      "expected_allowed": true,
+      "event_types": [],
+      "blocking_event_types": [],
+      "alias_events": []
+    },
+    {
+      "scenario": "generic_english_saas",
+      "allowed": true,
+      "reason": "allowed",
+      "expected_allowed": true,
+      "event_types": [],
+      "blocking_event_types": [],
+      "alias_events": []
+    },
+    {
+      "scenario": "bare_text_only_alias",
+      "allowed": true,
+      "reason": "allowed",
+      "expected_allowed": true,
+      "event_types": [],
+      "blocking_event_types": [],
+      "alias_events": []
+    },
+    {
+      "scenario": "valid_horizontal",
+      "allowed": true,
+      "reason": "allowed",
+      "expected_allowed": true,
+      "event_types": [],
+      "blocking_event_types": [],
+      "alias_events": []
+    }
+  ],
+  "gate_scenarios_summary": {
+    "total": 10,
+    "blocked": 4,
+    "allowed": 6,
+    "expected_matches_actual": true
+  },
+  "test_results": {
+    "command": "python -m pytest tests/test_strategy_policy.py tests/test_requirements_lifecycle.py tests/test_contamination_scanner.py tests/test_quarantine_allowlist.py tests/test_strategy_gate.py tests/test_strategy_hook_integration.py tests/test_strategy_gate_submit_task.py tests/test_strategy_alias_correction.py",
+    "summary_tail": [
+      "........................................................................ [ 64%]",
+      ".......................................                                  [100%]",
+      "111 passed in 0.71s"
+    ],
+    "tests_passed_expected": 111
+  },
+  "red_lines": {
+    "AGENTS_md_untouched": true,
+    "kernel_goal_untouched": true,
+    "kernel_decision_untouched": true,
+    "verifier_untouched": true,
+    "model_policy_yaml_untouched": true,
+    "v2_consumer_diff_lines": 0
+  },
+  "fail_closed_invariants": {
+    "missing_retired_aliases_rejected": true,
+    "alias_kind_drift_rejected": true,
+    "empty_alias_rejected": true,
+    "single_char_alias_rejected": true,
+    "sidecar_hash_mismatch_rejected": true,
+    "policy_identity_mismatch_rejected": true
+  }
+}

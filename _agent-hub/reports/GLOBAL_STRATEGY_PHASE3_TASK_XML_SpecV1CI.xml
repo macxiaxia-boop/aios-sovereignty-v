@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Phase-3 pre-mutation task XML capture for \CloudTech\SpecV1CI_Daily_0300.
+  Status at 2026-10-09 +08:00: NOT FOUND on this host.
+  Result of:
+    schtasks /Query /TN "\CloudTech\SpecV1CI_Daily_0300" /XML
+  ERROR: The system cannot find the file specified.
+  The audit deferred manifest listed this task as Ready at audit time (2026-10-08).
+  This Phase-3 contract records the actual current state honestly.
+-->
+<TaskNotFound>
+  <TaskName>\CloudTech\SpecV1CI_Daily_0300</TaskName>
+  <Status>NOT_FOUND_ON_HOST</Status>
+  <CapturedAtUTC>2026-10-09T01:30:00Z</CapturedBy>Claude Code executor (Phase-3 reversible deactivation)</CapturedBy>
+  <Disablement>Required action: NONE (task already absent)</Disablement>
+  <AuditReference>DEFERRED_L-09 in GLOBAL_STRATEGY_RETIREMENT_PHASE2_20261009_DEFERRED.md</AuditReference>
+</TaskNotFound>

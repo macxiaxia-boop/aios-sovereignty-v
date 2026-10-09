@@ -1,0 +1,47 @@
+﻿
+DisplayName DisplayVersion Publisher    InstallLocation                   Unins
+                                                                          tallS
+                                                                          tring
+----------- -------------- ---------    ---------------                   -----
+微信          4.1.13.65      腾讯科技(深圳)有限公司 "C:\Program Files\Tencent\Weixin" "C:\P
+                                                                          rogra
+                                                                          m Fil
+                                                                          es\Te
+                                                                          ncent
+                                                                          \Weix
+                                                                          in\Un
+                                                                          insta
+                                                                          ll.ex
+                                                                          e"   
+微信输入法       2.1.4.6        腾讯科技(深圳)有限公司 C:\Program Files\Tencent\WeType   C:\Pr
+                                                                          ogram
+                                                                           File
+                                                                          s\Ten
+                                                                          cent\
+                                                                          WeTyp
+                                                                          e\2.1
+                                                                          .4.6\
+                                                                          Unins
+                                                                          tall.
+                                                                          exe  
+
+
+=== 2. WeType 文件位置 (找 WeType 安装目录) ===
+
+Name                ProcessId ImagePath                                        
+----                --------- ---------                                        
+wetype_update.exe        1720 C:\Program Files\Tencent\WeType\2.1.4.6\wetype_up
+                              date.exe                                         
+wetype_server.exe       27216 C:\Program Files\Tencent\WeType\2.1.4.6\wetype_se
+                              rver.exe                                         
+wetype_renderer.exe     22920                                                  
+
+
+=== 3. 系统所有输入法 (LANG_PROFILE 列表) ===
+
+LanguageTag InputMethodTips                                                    
+----------- ---------------                                                    
+zh-Hans-CN  {0804:{86598FB9-66A2-463E-B9C2-AEB906D477AD}{607FDF85-FCC8-4DBD-...
+
+
+=== 4. 所有安装的输入法 (找 WeType / 微软拼音 / 搜狗 等) ===

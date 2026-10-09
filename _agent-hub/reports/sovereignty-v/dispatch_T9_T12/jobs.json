@@ -1,0 +1,26 @@
+[
+  {
+    "task_id": "sovereignty-v:T9",
+    "runtime": "codex",
+    "out_path": "D:\\AIOS\\_agent-hub\\policy\\adapters\\codex_runtime.py",
+    "done_path": "D:\\AIOS\\_agent-hub\\reports\\sovereignty-v\\tasks\\T9.done"
+  },
+  {
+    "task_id": "sovereignty-v:T10",
+    "runtime": "claude_code",
+    "out_path": "D:\\AIOS\\_agent-hub\\policy\\adapters\\claude_code_runtime.py",
+    "done_path": "D:\\AIOS\\_agent-hub\\reports\\sovereignty-v\\tasks\\T10.done"
+  },
+  {
+    "task_id": "sovereignty-v:T11",
+    "runtime": "openclaw",
+    "out_path": "D:\\AIOS\\_agent-hub\\policy\\adapters\\openclaw_runtime.py",
+    "done_path": "D:\\AIOS\\_agent-hub\\reports\\sovereignty-v\\tasks\\T11.done"
+  },
+  {
+    "task_id": "sovereignty-v:T12",
+    "runtime": "hermes",
+    "out_path": "D:\\AIOS\\_agent-hub\\policy\\adapters\\hermes_runtime.py",
+    "done_path": "D:\\AIOS\\_agent-hub\\reports\\sovereignty-v\\tasks\\T12.done"
+  }
+]

@@ -1,0 +1,78 @@
+{
+  "captured_at_utc": "2026-10-09T01:30:00Z",
+  "captured_by": "Claude Code executor (Phase-3 reversible deactivation)",
+  "scope": "D:\\AIOS\\cloudtech-saas + D:\\AIOS\\_workzone\\src\\_aios_cloudtech_bridge.py",
+  "untouched_paths_explicitly_excluded": [
+    "D:\\CloudTech-Portable",
+    "D:\\CloudTech-Vault",
+    "D:\\CloudTech-Inbox",
+    "E:\\AI_Backup",
+    "any personal file"
+  ],
+  "directory_inventory": [
+    {
+      "path": "D:\\AIOS\\cloudtech-saas",
+      "is_symlink": false,
+      "is_junction": false,
+      "resolved_path": "D:\\AIOS\\cloudtech-saas",
+      "in_d_aios": true
+    }
+  ],
+  "file_inventory": [
+    {
+      "path": "D:\\AIOS\\cloudtech-saas\\cloudtech-saas.exe",
+      "size_bytes": 18243033,
+      "sha256": "05b82d46ad331cc16bdc00de5c6332c1ef818df8ceefcd49c726553209b3a0da"
+    },
+    {
+      "path": "D:\\AIOS\\cloudtech-saas\\cloudtech-saas.xml",
+      "size_bytes": 1750,
+      "sha256": "e3bb15384d588044f13a8b3fdd11551007c08bc6fd007c3eccfbfbd846492761"
+    },
+    {
+      "path": "D:\\AIOS\\cloudtech-saas\\cloudtech-saas.xml.bak_C_1790215941",
+      "size_bytes": 1513,
+      "sha256": "509efc60c7d84b6c3c98e56e119f6354326caec711771dcfab70477b624d4b3c"
+    },
+    {
+      "path": "D:\\AIOS\\cloudtech-saas\\cloudtech-saas.xml.pre_descriptor_R284_20260929T200200.bak",
+      "size_bytes": 1513,
+      "sha256": "509efc60c7d84b6c3c98e56e119f6354326caec711771dcfab70477b624d4b3c"
+    },
+    {
+      "path": "D:\\AIOS\\cloudtech-saas\\cloudtech-saas.xml.pre_repair_R283_20260929T195700.bak",
+      "size_bytes": 1513,
+      "sha256": "509efc60c7d84b6c3c98e56e119f6354326caec711771dcfab70477b624d4b3c"
+    },
+    {
+      "path": "D:\\AIOS\\cloudtech-saas\\install.cmd",
+      "size_bytes": 1124,
+      "sha256": "d79c778d876da7785a862a83e891f5f62f1cf4088c6f9eeae3fc907eba69c38d"
+    },
+    {
+      "path": "D:\\AIOS\\cloudtech-saas\\start_v22_watchdog.bat",
+      "size_bytes": 446,
+      "sha256": "20ed7c30394cc6c70ecdb071a3f453b05eeb53de3382db32f146dcf68f6a4096"
+    },
+    {
+      "path": "D:\\AIOS\\cloudtech-saas\\start_v22_watchdog.bat.pre_R284_20260929T200200.bak",
+      "size_bytes": 410,
+      "sha256": "5a40784c8efe03a08e4866b7c90fcacecc93643fff5aee4bdfc5135a44c55d25"
+    },
+    {
+      "path": "D:\\AIOS\\cloudtech-saas\\uninstall.cmd",
+      "size_bytes": 394,
+      "sha256": "fb2b4c14129ee2079a01242484cadc56af86827134fd5dc62e6f3a5ea4f27349"
+    },
+    {
+      "path": "D:\\AIOS\\cloudtech-saas\\winsw.exe",
+      "size_bytes": 18243033,
+      "sha256": "05b82d46ad331cc16bdc00de5c6332c1ef818df8ceefcd49c726553209b3a0da"
+    },
+    {
+      "path": "D:\\AIOS\\_workzone\\src\\_aios_cloudtech_bridge.py",
+      "size_bytes": 15037,
+      "sha256": "2c873cb7f3259f5f875d264076ee3f7ced623714ef002845698226e85e73598f"
+    }
+  ]
+}

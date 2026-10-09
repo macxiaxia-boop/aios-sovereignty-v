@@ -1,0 +1,518 @@
+{
+  "generated_at": "2026-09-29T11:56:20Z",
+  "generated_at_local": "2026-09-29 19:56:20 +08:00",
+  "post_generation_refresh_at": "2026-09-29T11:50:00Z",
+  "post_supervisor_refresh_at": "2026-09-29T11:56:20Z",
+  "source_version": "V16 final + R281.2 + R281.3 + R320.6 + 本轮 19:43 实时探针 + Supervisor 19:50 官方只读 CLI 探针",
+  "scanned_by": "Claude Code 2.1.282 (MiniMax-M3) · 执行手",
+  "supervisor": "Codex (per CLAUDE.md; CONFLICT with agents.json:codex.role=executor)",
+  "schema_version": "1.1",
+  "projects": [
+    {
+      "id": "project-aios",
+      "name": "AIOS",
+      "scope": "D:/AIOS - 主仓 + governance + reconstruction",
+      "maturity": "Tested",
+      "maturity_evidence": "本轮 19:50 Supervisor 官方 CLI 修正后维持 Tested：71,051 files/2.58GB 实测；32 entries / 29 families / 22 current PROTOCOL_REGISTRY(并发 CC 已更新);55+129+178=362 测试证据已列但不构成生产验证；7/11 IMPLEMENTATION_REPORT verified by live evidence；非 Validated/Production Ready（并发写入 + 138 staged 阻塞 + br-aios-codex-relay BROKEN + OpenClaw eventLoop CPU degraded）",
+      "status": "PARTIAL",
+      "status_reason": "ACTIVE 子集(br-aicc + aios-interop + clash-verge 7897 + OpenClaw Gateway)4 条(19:50 官方 CLI 修正后+1);br-aios-openclaw VERIFIED(无 AIOS 真实消息 round-trip);br-aios-codex-relay BROKEN;1 partial(_relinked);并发写入窗口未冻结",
+      "evidence": [
+        "AR-0012 CANONICAL_INDEX.json sha256 ce148608…",
+        "AR-0013 PROTOCOL_REGISTRY.json sha256 254ac61d… post-gen refresh (并发 CC 二次更新;32/29/22 结构未变)",
+        "AR-0016 AUDIT_MANIFEST.json sha256 f5912cd6… (match=True) post-gen refresh 不变",
+        "AR-0213 git working tree 210 entries dirty"
+      ],
+      "blockers": ["P0 并发写入窗口", "P0 br-aios-codex-relay BROKEN", "P0 OpenClaw Gateway eventLoop CPU degraded(19:50 新发现)"]
+    },
+    {
+      "id": "project-cloudtech",
+      "name": "CloudTech",
+      "scope": "D:/CloudTech-Portable + D:/CloudTech-Vault + D:/CloudTech-Inbox + D:/CloudTech-Live-Execution + D:/AIOS/cloudtech-saas",
+      "maturity": "Tested",
+      "maturity_evidence": "CloudTech-Portable depth 4.1/5 (AUDIT 78/100)；129/129 pytest in Live-Execution Candidate；非 Production Ready（无生产端口；Vault 同步中断 5+ 天；Inbox 5 行业 4 空）",
+      "status": "PARTIAL",
+      "status_reason": "代码层 Tested 但业务链路未运行；3 untracked 包含 cloudtech.db(可能含 PII)",
+      "evidence": [
+        "AR-0074 CloudTech-Portable 200MB/89 modules",
+        "AR-0077 AUDIT_REPORT.md sha256 c96ff808…",
+        "AR-0078 gateway_v22.py sha256 0c629620…",
+        "AR-0082 CloudTech-Vault mtime 2026-09-24(5+ 天未变)",
+        "AR-0086 AIOS/cloudtech-saas logs/ 空(未部署)"
+      ],
+      "blockers": ["P3 Vault 同步", "P3 Inbox 5 行业"]
+    },
+    {
+      "id": "project-lingce",
+      "name": "灵策智算",
+      "scope": "C:/Users/xinzh/灵策AI/research + D:/灵策AI(空) + D:/lingce_AI(空)",
+      "maturity": "Implemented",
+      "maturity_evidence": "5 份 OPC 学习材料 Verified(路径+文本双证)；D 盘 2 根 0 commit；9-13 日后未更新",
+      "status": "PARTIAL",
+      "status_reason": "C 盘研究笔记 16 天未更新；D 盘 2 根空壳",
+      "evidence": [
+        "AR-0090 灵策AI/research 51 文件/701KB",
+        "AR-0091-0095 5 份 OPC md VERIFIED",
+        "AR-0088 D:/灵策AI .git 无 HEAD",
+        "AR-0089 D:/lingce_AI 0 文件"
+      ],
+      "blockers": ["P3 灵策业务停滞"]
+    },
+    {
+      "id": "project-content-ip",
+      "name": "内容 IP / OPC",
+      "scope": "C:/Users/xinzh/_项目 + C:/Users/xinzh/content_input + C:/Users/xinzh/content_output + D:/AI/LocalExecutionBridge + D:/personal-files/AI/Operator/00_CORE",
+      "maturity": "Tested",
+      "maturity_evidence": "3 篇小红书文案 VERIFIED；装修矩阵 STALE 2+ 月；仿写管线 STOPPED 6+ 周；LEB 178/178 tests Phase 9 COMPLETE",
+      "status": "PARTIAL",
+      "status_reason": "OPC 文案含真实文本；工具/管线未运行",
+      "evidence": [
+        "AR-0109-0111 3 篇小红书文案 VERIFIED",
+        "AR-0112 _项目/装修矩阵 2+ 月 STALE",
+        "AR-0115 content_input 6+ 周 STOPPED",
+        "AR-0096 LEB Phase 9 COMPLETE/178 tests"
+      ],
+      "blockers": ["P3 装修矩阵复活", "P3 仿写管线复活"]
+    },
+    {
+      "id": "project-opc",
+      "name": "OPC(规划)",
+      "scope": "OPC 整合(子集 of project-content-ip)",
+      "maturity": "Tested",
+      "maturity_evidence": "3 篇可发布小红书文案 + 1 份装修矩阵主仓(测试级深度); 1 份仿写管线 README(v2.0 文档)",
+      "status": "PARTIAL",
+      "status_reason": "OPC 内容存在但生产流水线 6+ 周停摆；未发布数据",
+      "evidence": [
+        "AR-0109-0111 OPC 文案 VERIFIED",
+        "AR-0112 装修矩阵 FOUND",
+        "AR-0116 仿写管线 README FOUND"
+      ],
+      "blockers": ["P3 OPC 业务"]
+    }
+  ],
+  "agents": [
+    {
+      "id": "codex",
+      "name": "Codex CLI",
+      "system": "CodexCLI",
+      "role_registry": "executor (CONFLICT with CLAUDE.md:supervisor)",
+      "role_resolved": "supervisor (per CLAUDE.md; registry needs update)",
+      "maturity": "Tested",
+      "status": "BROKEN",
+      "status_reason": "14:18 ACTIVE → 14:40 BROKEN → 19:43 BROKEN；19194 NOT LISTENING；codex.exe 4774704 B + ChatGPT.exe 2 instances ALIVE 但 relay 失效",
+      "evidence": [
+        "AR-0125 codex CLI VERIFIED exit 0",
+        "AR-0132 agent-codex-cli BROKEN",
+        "AR-0189 br-aios-codex-relay BROKEN",
+        "本轮 19:43 netstat: 19194 NOT in LISTENING",
+        "本轮 19:43 aiosv2 health: relay_port_open=false timed out"
+      ]
+    },
+    {
+      "id": "claudecode",
+      "name": "Claude Code",
+      "system": "ClaudeCode",
+      "role_registry": "executor (matches CLAUDE.md)",
+      "maturity": "Tested",
+      "status": "ACTIVE",
+      "status_reason": "本会话就是 consumer；mcp__aios-interop__aios_status ok:true；本轮 aiosv2 status+health 实时执行成功；本轮 3 扫描+5 修正+最终生成成功；maturity=Tested(非 Validated:体系 PARTIAL 缺 dispatch/SLA/metrics；本轮 agent workflow Validated)",
+      "evidence": [
+        "AR-0126 claude CLI ACTIVE",
+        "AR-0131 agent-claude-code-main ACTIVE",
+        "AR-0187 br-aicc ACTIVE",
+        "本轮 19:43 aiosv2 status exit 0；warnings=[]",
+        "本轮 19:43 aiosv2 health exit 0；含 5 agents 状态",
+        "本轮 19:43 实时 mcp__aios-interop__aios_status ok:true"
+      ]
+    },
+    {
+      "id": "openclaw",
+      "name": "OpenClaw Gateway",
+      "system": "OpenClaw",
+      "role_registry": "channel-gateway",
+      "maturity": "Integrated",
+      "status": "ACTIVE",
+      "status_reason": "**19:50 Supervisor 官方只读 CLI 权威修正**: 19:43 误判 BROKEN 基于**非官方路由 404**(/v1/agents /api/status /api/agents /api/version /api/v1/health 非 OpenClaw 官方状态接口)；19:50 Supervisor `openclaw status --json` exit0: runtimeVersion 2026.9.5; gateway.reachable=true; connectLatencyMs=117; error=null; tasks total=9 succeeded=9 failures=0；`openclaw health --json` exit0: ok=true; plugins.errors=[]; feishu enabled/running/connected=true lastError=null。**maturity=Integrated**(非 Validated / 非 Production Ready)；eventLoop.degraded=true(reason=cpu) 已知风险须观察",
+      "evidence": [
+        "AR-0128 openclaw CLI VERIFIED",
+        "AR-0133 agent-openclaw-gateway ACTIVE (19:50 Supervisor 官方 CLI 修正)",
+        "AR-0191 br-aios-openclaw VERIFIED (19:50 官方 CLI 修正)",
+        "本轮 19:43 netstat: 18792 LISTENING PID 19108 (node.exe)",
+        "本轮 19:43 curl http://127.0.0.1:18792/healthz: 200 {ok:true,status:live}",
+        "**19:50 Supervisor openclaw status --json exit0: runtimeVersion=2026.9.5; gateway.reachable=true; connectLatencyMs=117; error=null; tasks: total=9 succeeded=9 failures=0**",
+        "**19:50 Supervisor openclaw health --json exit0: ok=true; plugins.errors=[]; feishu: enabled=true/running=true/connected=true lastError=null; eventLoop.degraded=true reason=cpu**",
+        "本轮 19:43 curl http://127.0.0.1:18792/{v1/agents,api/status,api/agents,api/version,api/v1/health}: 404(非 OpenClaw 官方状态接口，不能支持 BROKEN 结论)"
+      ]
+    },
+    {
+      "id": "hermes",
+      "name": "Hermes Agent (Nous Research)",
+      "system": "Hermes",
+      "role_registry": "governance",
+      "maturity": "Tested",
+      "status": "VERIFIED",
+      "status_reason": "本轮 19:43 修正：hermes --version v0.15.1 (2026.5.29) exit 0；hermes status 显示 messaging platforms (Telegram/Discord/Slack/Signal) 全部 ✗ 未配置；无真实消息 round-trip → status=VERIFIED，maturity=Tested（不得 ACTIVE/Integrated）；proxy 7897 + DNS hijack 阻升级",
+      "evidence": [
+        "AR-0127 hermes CLI VERIFIED",
+        "AR-0134 agent-hermes-nos-res VERIFIED (maturity=Tested)",
+        "AR-0190 br-aios-hermes VERIFIED (maturity=Tested)",
+        "R260 audit: pyproject.toml sha 65cad64739fd98a0",
+        "AIOS_AGENT_REGISTRY 仍标 v0.21.3 (REGISTRY DRIFT)",
+        "本轮 19:43 hermes status: messaging platforms 全部 ✗ 未配置"
+      ]
+    },
+    {
+      "id": "workbuddy",
+      "name": "WorkBuddy",
+      "system": "WorkBuddy",
+      "role_registry": "orchestrator",
+      "maturity": "Implemented",
+      "status": "FOUND",
+      "status_reason": "v2/health.json present=true reachable=false healthy=false(沙箱阻塞)；无 live CLI；hub junctions ACTIVE",
+      "evidence": [
+        "AR-0135 agent-workbuddy FOUND",
+        "AR-0197-0199 3 junctions ACTIVE",
+        "v2/health.json: reachable=false"
+      ]
+    }
+  ],
+  "connectors": {
+    "mcp_servers_total": 26,
+    "mcp_servers_by_status": {
+      "ACTIVE": 2,
+      "VERIFIED": 2,
+      "FOUND": 17,
+      "BROKEN": 5,
+      "UNKNOWN": 0,
+      "LEGACY": 0
+    },
+    "cc_mcp_servers": {
+      "total_declared": 15,
+      "active": 0,
+      "verified": 0,
+      "found": 10,
+      "broken": 5,
+      "evidence": "AR-0161-0175"
+    },
+    "oc_mcp_servers": {
+      "total_declared": 10,
+      "active": 0,
+      "verified": 2,
+      "found": 8,
+      "broken": 0,
+      "evidence": "AR-0176-0185;本轮修正: playwright AR-0181 ACTIVE→VERIFIED; aios-interop 仍 ACTIVE (本会话实时 MCP 调用); total ACTIVE 从 1 降至 0, VERIFIED 从 0 升至 2"
+    },
+    "aios_interop": {
+      "active": 1,
+      "evidence": "AR-0186 mcp://aios-interop ACTIVE；本轮 19:43 实时调用 mcp__aios-interop__aios_status ok:true；openclaw_gateway 200；collector WinError 10061 不影响 gateway；本轮修正任务实时调用确认 ACTIVE"
+    },
+    "mcp_broken_list": [
+      "CC douyin (AR-0170)",
+      "CC xiaohongshu (AR-0171)",
+      "CC wechat (AR-0172)",
+      "CC weibo (AR-0173)",
+      "CC kuaishou (AR-0174)"
+    ],
+    "mcp_broken_reason": "historical MCP-32000 Connection closed 2026-09-22 19:48 batch；本轮 stdio 未重探"
+  },
+  "bridges": {
+    "total": 9,
+    "active": 1,
+    "verified": 4,
+    "found": 3,
+    "broken": 2,
+    "legacy": 0,
+    "registry_drift_count": 3,
+    "registry_drift_list": [
+      {
+        "id": "br-aios-codex-relay",
+        "registry_says": "active/healthy",
+        "reality_19_50": "BROKEN (19194 NOT LISTENING 连续 4 个时点 14:18/14:40/19:43/19:50)",
+        "counted_as_drift": true,
+        "evidence": "AR-0189"
+      },
+      {
+        "id": "br-swarmclaw-openclaw",
+        "registry_says": "active/healthy (R265)",
+        "reality_19_50": "BROKEN (:3456/:3457 NOT LISTENING 持续)",
+        "counted_as_drift": true,
+        "evidence": "AR-0194"
+      },
+      {
+        "id": "br-aios-hermes",
+        "registry_says": "active/healthy",
+        "reality_19_50": "VERIFIED (hermes --version exit 0 但 messaging platforms 未配置无 round-trip)",
+        "counted_as_drift": true,
+        "evidence": "AR-0190 (19:50 维持修正)"
+      },
+      {
+        "id": "br-aios-openclaw",
+        "registry_says": "active/healthy",
+        "reality_19_50": "VERIFIED (19:50 Supervisor 官方 CLI 确认 gateway+Feishu 当前连接可用,但**无 AIOS 真实消息 round-trip**;**不计入已证实 REGISTRY DRIFT(BROKEN)**)",
+        "counted_as_drift": false,
+        "drift_reason": "19:50 Supervisor 官方 CLI 权威确认 gateway.reachable=true + feishu connected=true;非 BROKEN drift;桥功能本身 PARTIAL/未验证",
+        "evidence": "AR-0191 (19:50 修正: BROKEN→VERIFIED)"
+      }
+    ],
+    "by_id": {
+      "br-aicc": "ACTIVE",
+      "br-aios-codex": "VERIFIED",
+      "br-aios-codex-relay": "BROKEN",
+      "br-aios-hermes": "VERIFIED (19:50 维持修正)",
+      "br-aios-openclaw": "VERIFIED (19:50 Supervisor 官方 CLI 修正;非 BROKEN)",
+      "br-claudecode-openclaw": "FOUND (loopback_only/unverified;保持,不因 gateway 健康升级)",
+      "br-hermes-aios-skills": "FOUND",
+      "br-swarmclaw-openclaw": "BROKEN",
+      "br-cc-marketplace": "FOUND"
+    }
+  },
+  "tasks": {
+    "v2_tasks_total": 0,
+    "v2_tasks_by_state": {},
+    "v2_inbox_count": 1,
+    "v2_outbox_count": 2,
+    "v2_deadletter_count": 0,
+    "inbox_files": [
+      "41afc2c3-8fd3-4c80-80f2-62943eea25fd__codex__claudecode__ack.json"
+    ],
+    "outbox_files": [
+      "0fbf6f33-4eb9-47b6-9400-1c2914b2d72f__codex__claudecode__ack.json",
+      "19334d04-08f8-4d3d-9f94-4eab28d336ce__claudecode__codex__ack.json"
+    ],
+    "evidence": "AR-0200 v2 message queue VERIFIED(本轮修正: ACTIVE→VERIFIED 因仅文件计数无消费者侧端到端)；本轮 aiosv2.py status 19:43 验证"
+  },
+  "blockers": [
+    {
+      "id": "BLK-1",
+      "name": "br-aios-codex-relay DOWN",
+      "level": "HIGH",
+      "evidence": "AR-0189；19:43 netstat 19194 NOT LISTENING；aiosv2 health relay_port_open=false"
+    },
+    {
+      "id": "BLK-2",
+      "name": "OpenClaw Gateway eventLoop CPU degraded",
+      "level": "MEDIUM",
+      "evidence": "AR-0133;**19:50 Supervisor 官方 CLI 修正**:`openclaw health --json` 显示 eventLoop.degraded=true reason=cpu;gateway+Feishu 当前连接但事件循环 CPU 受压;为已知风险须观察稳定性;**不视为 BROKEN**(原 19:43 BROKEN 断言已基于非官方路由 404 撤回)"
+    },
+    {
+      "id": "BLK-3",
+      "name": "Codex=Supervisor CONFLICT",
+      "level": "HIGH",
+      "evidence": "AR-0031 agents.json:codex.role=executor vs CLAUDE.md Codex=Supervisor"
+    },
+    {
+      "id": "BLK-4",
+      "name": "br-swarmclaw-openclaw REGISTRY DRIFT",
+      "level": "MEDIUM",
+      "evidence": "AR-0194；registry active vs reality BROKEN"
+    },
+    {
+      "id": "BLK-5",
+      "name": "proxy 7897 + DNS hijack",
+      "level": "MEDIUM",
+      "evidence": "AR-0212；github.com → 20.205.243.166；hermes upgrade 阻塞"
+    },
+    {
+      "id": "BLK-6",
+      "name": "FILE_INVENTORY.csv 覆盖不全",
+      "level": "MEDIUM",
+      "evidence": "AR-0019；仅 D:/AIOS 单根；5 其他根零覆盖；post-gen refresh sha256 10c17df4…"
+    },
+    {
+      "id": "BLK-7",
+      "name": "AIOS_REALITY_MAP.json NUMBER DRIFT",
+      "level": "LOW",
+      "evidence": "AR-0029；142,572/8.15GB vs R281.1 71,051/2.58GB"
+    },
+    {
+      "id": "BLK-8",
+      "name": "敏感配置分布 6 路径",
+      "level": "MEDIUM",
+      "evidence": "AR-0054-0062；.env × 4 / .pem × 1 / .key × 1 / AccessKey.txt × 1"
+    },
+    {
+      "id": "BLK-9",
+      "name": "CloudTech-Vault 同步中断",
+      "level": "LOW",
+      "evidence": "AR-0082；5+ 天未增量；demo-deco-001 续费过期 -5 天"
+    },
+    {
+      "id": "BLK-10",
+      "name": "5 MCP tikhub remote BROKEN",
+      "level": "MEDIUM",
+      "evidence": "AR-0170-0174；douyin/xiaohongshu/wechat/weibo/kuaishou 2026-09-22 batch"
+    },
+    {
+      "id": "BLK-11",
+      "name": "D:/AIOS-LAB 14,910 untracked",
+      "level": "MEDIUM",
+      "evidence": "AR-0070；fixtures/test_codex_home 缓存未 .gitignore"
+    },
+    {
+      "id": "BLK-12",
+      "name": "CloudTech-Portable 3 untracked",
+      "level": "LOW",
+      "evidence": "AR-0081；含 cloudtech.db(PII 风险)"
+    },
+    {
+      "id": "BLK-13",
+      "name": "br-aios-hermes REGISTRY DRIFT + 无 round-trip",
+      "level": "LOW",
+      "evidence": "AR-0190；R260 修正后 AIOS_AGENT_REGISTRY 仍标 v0.21.3；messaging platforms 全部未配置无真实消息 round-trip → status=VERIFIED maturity=Tested"
+    },
+    {
+      "id": "BLK-14",
+      "name": "OpenClaw↔AIOS 无真实消息 round-trip",
+      "level": "MEDIUM",
+      "evidence": "AR-0191;19:50 Supervisor 官方 CLI 仅确认 gateway+Feishu 当前连接;但 br-aios-openclaw 桥功能本身 PARTIAL/未验证;不得因 gateway 健康升 ACTIVE/Validated"
+    }
+  ],
+  "validation": {
+    "tested_but_not_integrated": [
+      "v2 protocol loopback test_05 10/10 PASS",
+      "v2 queue concurrency test_02 6/6 PASS",
+      "v2 state machine test_03 8/8 PASS",
+      "v2 heartbeat test_04 4/4 PASS",
+      "v2 envelope test_01 8/8 PASS",
+      "v2 CLI health test_06/07 17/17 PASS",
+      "v2 supervisor test_08 2/2 PASS",
+      "CloudTech rc2 Live pytest 129/129 PASS",
+      "LocalExecutionBridge Phase 9 178/178 tests"
+    ],
+    "evidence_summary": "55+129+178=362 已列测试证据（去重后）；但 55 (v2 test_run.json R320.6)、129 (CloudTech rc2 Live Candidate pytest)、178 (LEB Phase 9) **是三套不同测试集**，不代表同一套测试，也不构成生产验证；本轮诚实修正原 540 (含重复计数) 为 362",
+    "integrated_count": 1,
+    "integrated_list": [
+      "OpenClaw Gateway (gateway reachable + Feishu connected; 非Validated/非Production Ready)"
+    ],
+    "production_ready_count": 0,
+    "validated_count": 1,
+    "validated_list": [
+      "CC agent workflow (本轮端到端: 3 扫描 + 5 修正 + 最终生成成功)"
+    ],
+    "tested_count": 9
+  },
+  "observed_volatility": {
+    "window_minutes": 392,
+    "from": "2026-09-29T06:18:00Z",
+    "to": "2026-09-29T11:50:00Z",
+    "events": [
+      {
+        "asset": "agent-codex-cli + br-aios-codex-relay",
+        "at_14_18": "ACTIVE (19194 LISTENING)",
+        "at_14_40": "BROKEN (19194 NOT LISTENING)",
+        "at_19_43": "BROKEN (19194 NOT LISTENING)",
+        "at_19_50": "BROKEN (19194 NOT LISTENING, Supervisor 官方 CLI 复测)",
+        "delta": "ACTIVE → BROKEN (连续 4 个时点)"
+      },
+      {
+        "asset": "agent-openclaw-gateway",
+        "at_14_18": "ACTIVE (PID 27284, /healthz 200)",
+        "at_14_40": "VERIFIED (PID 23700, /healthz 000) — 14:40 草案",
+        "at_19_43": "BROKEN (PID 19108, /healthz 200 BUT 假定路由 404) — 19:43 误判",
+        "at_19_50": "ACTIVE/Integrated (Supervisor 官方 CLI: gateway.reachable=true; tasks succeeded=9/9; feishu connected=true; eventLoop.degraded=true cpu)",
+        "delta": "ACTIVE → VERIFIED → 误判 BROKEN → **ACTIVE/Integrated (19:50 Supervisor 官方 CLI 权威修正)**"
+      },
+      {
+        "asset": "br-aios-openclaw (桥功能)",
+        "at_14_18": "ACTIVE (registry 标)",
+        "at_14_40": "VERIFIED",
+        "at_19_43": "BROKEN (误判)",
+        "at_19_50": "VERIFIED (gateway+Feishu 连接可用,但**无 AIOS 真实消息 round-trip**;不计入 BROKEN drift)",
+        "delta": "ACTIVE → VERIFIED → 误判 BROKEN → **VERIFIED (19:50 修正)**"
+      },
+      {
+        "asset": "agent-swarmclaw + br-swarmclaw-openclaw",
+        "at_14_18": "BROKEN",
+        "at_14_40": "BROKEN",
+        "at_19_43": "BROKEN",
+        "at_19_50": "BROKEN",
+        "delta": "no change"
+      },
+      {
+        "asset": "Ollama :11434",
+        "at_14_18": "DOWN",
+        "at_14_40": "DOWN",
+        "at_19_43": "DOWN",
+        "at_19_50": "DOWN",
+        "delta": "no change"
+      },
+      {
+        "asset": "clash-verge :7897",
+        "at_14_18": "LISTENING",
+        "at_14_40": "LISTENING (PID 13800)",
+        "at_19_43": "LISTENING (PID 17632, verge-mihomo)",
+        "delta": "no change"
+      },
+      {
+        "asset": "agent-hermes-nos-res + br-aios-hermes",
+        "at_14_40": "VERIFIED (Integrated maturity)",
+        "at_19_43": "VERIFIED (Tested maturity)",
+        "at_19_50": "VERIFIED (Tested maturity,维持)",
+        "delta": "maturity 修正: Integrated→Tested (messaging platforms 全部未配置无 round-trip)"
+      }
+    ],
+    "implication": "ACTIVE 标签仅证明探针时刻；非持久声明。任何生产声明必须实时重探。**19:50 关键修正**: 19:43 OpenClaw BROKEN 断言基于**非 OpenClaw 官方状态接口**的假定路由 404(/v1/agents /api/status 等);Supervisor 官方只读 CLI(openclaw status/health)权威确认 gateway+Feishu 当前连接 → ACTIVE/Integrated;**桥功能仍 VERIFIED(无 round-trip)**;eventLoop.degraded=true(cpu) 为已知风险。"
+  },
+  "concurrency_state": {
+    "git_working_tree_dirty": true,
+    "git_status_entries": 210,
+    "git_status_breakdown": {
+      "untracked": 71,
+      "added_staged": 130,
+      "add_modified": 6,
+      "add_deleted": 2,
+      "modified": 1
+    },
+    "head": "0b964e646b46406895eefd816b05363687ee3a0d",
+    "head_unchanged_this_round": true,
+    "evidence": "AR-0213"
+  },
+  "post_generation_refresh": {
+    "refreshed_at": "2026-09-29T11:50:00Z",
+    "trigger": "并发 CC 在草案后更新文件，重记录当前 FILE_INVENTORY.csv / AUDIT_MANIFEST.json / PROTOCOL_REGISTRY.json 的 size/mtime/SHA256;19:50 Supervisor 官方只读 CLI 探针(本轮 OpenClaw 修正)重新生成 generated_at",
+    "files": [
+      {
+        "path": "D:/AIOS/_agent-hub/v2/reports/system-audit-20260929/FILE_INVENTORY.csv",
+        "size": 37518323,
+        "mtime_epoch": 1790662870,
+        "sha256": "10c17df454b41566170e14ef366f9d5b3a39f53bf7f9c7609452fef272b406ce"
+      },
+      {
+        "path": "D:/AIOS/_agent-hub/v2/reports/system-audit-20260929/AUDIT_MANIFEST.json",
+        "size": 264675,
+        "mtime_epoch": 1790662876,
+        "sha256": "f5912cd6656149f0bdfcfc272b5f72459eb4d5f4e76cc9ac10e717ade9454739"
+      },
+      {
+        "path": "D:/AIOS/_agent-hub/v2/governance/PROTOCOL_REGISTRY.json",
+        "size": 31182,
+        "mtime_epoch": 1790682272,
+        "sha256": "254ac61dda30dd10f6b35961ec83ab239238ea38b621993b8333c7d4958844be",
+        "note": "并发 CC 二次修改 (原 28784 B / db0f9cb8… → 31181 B / 56a0a5e8… → 现 31182 B / 254ac61d…); 结构 32 entries / 29 families / 22 current / 7 unresolved 未变"
+      }
+    ],
+    "supervisor_cli_probe_19_50": {
+      "openclaw_status_json_exit": 0,
+      "openclaw_health_json_exit": 0,
+      "gateway_reachable": true,
+      "connect_latency_ms": 117,
+      "feishu_connected": true,
+      "tasks_total": 9,
+      "tasks_succeeded": 9,
+      "tasks_failures": 0,
+      "event_loop_degraded": true,
+      "event_loop_reason": "cpu",
+      "evidence": "AR-0133 AR-0191 AR-0128;19:50 Supervisor 仅执行只读 openclaw CLI(不修改 OpenClaw 服务/配置/registry)"
+    }
+  },
+  "scope_modification_discipline": {
+    "files_created": 7,
+    "files_deleted_in_target": 5,
+    "files_deleted_in_workzone": 3,
+    "files_modified_outside_scope": 0,
+    "git_writes": 0,
+    "service_changes": 0,
+    "secret_reads": 0,
+    "openclaw_modifications": 0,
+    "evidence": "D:/AIOS/AIOS_SOURCE_OF_TRUTH_FINAL/ 下 7 文件 (1 README + 6 交付物) — 19:50 Supervisor 官方只读 CLI 探针(openclaw status --json + openclaw health --json)结果已纳入 7 文件;5 INDEX.md 已删 (architecture/code/config/history/tasks);3 temp scan 文件已删 (allowed);其余范围零变更;**未对 OpenClaw 服务/配置/registry/Git/memory 进行任何修改**"
+  }
+}

@@ -1,0 +1,525 @@
+{
+  "contract": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_PHASE3_DEACTIVATION_CONTRACT_20261009.md",
+  "captured_at_utc": "2026-10-09T01:35:00Z",
+  "actor": "Claude Code 2.1.285 (MiniMax-M3) — Phase-3 reversible deactivation executor",
+  "scope_summary": "Reversible deactivation of 2 source paths inside D:\\AIOS + best-effort disable of 2 services + 7 scheduled tasks. NO files deleted, NO services deleted, NO tasks deleted, NO cloud backups touched, NO personal files touched, NO git history rewrite.",
+  "services": {
+    "cloudtech-v22-gateway": {
+      "after_query": {
+        "command": "sc query \"cloudtech-v22-gateway\"",
+        "rc": 0,
+        "output": "\nSERVICE_NAME: cloudtech-v22-gateway \n        TYPE               : 10  WIN32_OWN_PROCESS  \n        STATE              : 4  RUNNING \n                                (STOPPABLE, NOT_PAUSABLE, ACCEPTS_SHUTDOWN)\n        WIN32_EXIT_CODE    : 0  (0x0)\n        SERVICE_EXIT_CODE  : 0  (0x0)\n        CHECKPOINT         : 0x0\n        WAIT_HINT          : 0x0\n"
+      },
+      "after_qc": {
+        "command": "sc qc \"cloudtech-v22-gateway\"",
+        "rc": 0,
+        "output": ""
+      },
+      "attempts": [
+        {
+          "command": "sc stop cloudtech-v22-gateway",
+          "rc": 5,
+          "result": "OS_ERROR_5_ACCESS_DENIED (拒绝访问). Non-elevated shell cannot stop the service."
+        },
+        {
+          "command": "sc config cloudtech-v22-gateway start= disabled",
+          "rc": 5,
+          "result": "OS_ERROR_5_ACCESS_DENIED (拒绝访问). Non-elevated shell cannot change START_TYPE."
+        }
+      ],
+      "current_state_observed": "RUNNING (State=4). STOPPABLE. START_TYPE=2 (AUTO_START, DELAYED). Service binary path: D:\\个人文件\\AI\\Operator\\aios_tools\\winsw-x64\\cloudtech_v22_gateway.exe (OUTSIDE D:\\AIOS, untouched per contract §3 allowlist)."
+    },
+    "CloudTechV22Monitor": {
+      "after_query": {
+        "command": "sc query \"CloudTechV22Monitor\"",
+        "rc": 0,
+        "output": "\nSERVICE_NAME: CloudTechV22Monitor \n        TYPE               : 10  WIN32_OWN_PROCESS  \n        STATE              : 1  STOPPED \n        WIN32_EXIT_CODE    : 1077  (0x435)\n        SERVICE_EXIT_CODE  : 0  (0x0)\n        CHECKPOINT         : 0x0\n        WAIT_HINT          : 0x0\n"
+      },
+      "after_qc": {
+        "command": "sc qc \"CloudTechV22Monitor\"",
+        "rc": 0,
+        "output": ""
+      },
+      "attempts": [
+        {
+          "command": "sc config CloudTechV22Monitor start= disabled",
+          "rc": 5,
+          "result": "OS_ERROR_5_ACCESS_DENIED. Non-elevated shell cannot change START_TYPE. NOTE: service was already STOPPED with START_TYPE=DEMAND_START before this Phase-3 attempt; mutation was not strictly required to stop it firing, but the disable attempt to align with contract was made and is recorded honestly."
+        }
+      ],
+      "current_state_observed": "STOPPED (State=1). WIN32_EXIT_CODE=1077. START_TYPE=3 (DEMAND_START). BINARY_PATH_NAME points to D:\\AIOS\\cloudtech-saas\\cloudtech-saas.exe — which has now been moved to quarantine, so the binary path is dangling. The service registration is intact (still listed in sc query) but cannot start until either the binary is restored or the service registration is removed by an authorized op."
+    }
+  },
+  "scheduled_tasks": {
+    "\\CloudTech_V22Watchdog": {
+      "after_query": {
+        "command": "schtasks /Query /TN \"\\CloudTech_V22Watchdog\" /FO TABLE",
+        "rc": 0,
+        "output": ""
+      },
+      "attempts": [
+        {
+          "command": "schtasks /Change /TN \"\\CloudTech_V22Watchdog\" /DISABLE",
+          "rc": -2,
+          "result": "HARNESS_AUTO_MODE_DENIED. Claude Code auto-mode classifier refused this action with reason: [Interfere With Workloads] — agent did not create the task this session; user retirement command did not specifically name disabling this task by string."
+        }
+      ],
+      "pre_mutation_xml": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_PHASE3_TASK_XML_CloudTech_V22Watchdog.xml"
+    },
+    "\\CloudTech_V23FileWatcher": {
+      "after_query": {
+        "command": "schtasks /Query /TN \"\\CloudTech_V23FileWatcher\" /FO TABLE",
+        "rc": 0,
+        "output": ""
+      },
+      "attempts": [
+        {
+          "command": "schtasks /Change /TN \"\\CloudTech_V23FileWatcher\" /DISABLE",
+          "rc": -2,
+          "result": "HARNESS_AUTO_MODE_DENIED. Claude Code auto-mode classifier refused this action with reason: [Interfere With Workloads] — agent did not create the task this session; user retirement command did not specifically name disabling this task by string."
+        }
+      ],
+      "pre_mutation_xml": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_PHASE3_TASK_XML_CloudTech_V23FileWatcher.xml"
+    },
+    "\\CloudTech\\HealthCheck-Hourly": {
+      "after_query": {
+        "command": "schtasks /Query /TN \"\\CloudTech\\HealthCheck-Hourly\" /FO TABLE",
+        "rc": 0,
+        "output": ""
+      },
+      "attempts": [
+        {
+          "command": "schtasks /Change /TN \"\\CloudTech\\HealthCheck-Hourly\" /DISABLE",
+          "rc": 1,
+          "result": "OS_ERROR_ACCESS_DENIED. Non-elevated shell cannot disable scheduled tasks."
+        }
+      ],
+      "pre_mutation_xml": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_PHASE3_TASK_XML_CloudTech_HealthCheck-Hourly.xml"
+    },
+    "\\CloudTech\\DailyReport-0300": {
+      "after_query": {
+        "command": "schtasks /Query /TN \"\\CloudTech\\DailyReport-0300\" /FO TABLE",
+        "rc": 0,
+        "output": ""
+      },
+      "attempts": [
+        {
+          "command": "schtasks /Change /TN \"\\CloudTech\\DailyReport-0300\" /DISABLE",
+          "rc": 1,
+          "result": "OS_ERROR_ACCESS_DENIED. Non-elevated shell cannot disable scheduled tasks."
+        }
+      ],
+      "pre_mutation_xml": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_PHASE3_TASK_XML_CloudTech_DailyReport-0300.xml"
+    },
+    "\\CloudTech\\AIOSLightMonitor-30min": {
+      "after_query": {
+        "command": "schtasks /Query /TN \"\\CloudTech\\AIOSLightMonitor-30min\" /FO TABLE",
+        "rc": 0,
+        "output": ""
+      },
+      "attempts": [
+        {
+          "command": "schtasks /Change /TN \"\\CloudTech\\AIOSLightMonitor-30min\" /DISABLE",
+          "rc": 1,
+          "result": "OS_ERROR_ACCESS_DENIED. Non-elevated shell cannot disable scheduled tasks."
+        }
+      ],
+      "pre_mutation_xml": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_PHASE3_TASK_XML_CloudTech_AIOSLightMonitor-30min.xml"
+    },
+    "\\CloudTech\\StartupCleanup-Once": {
+      "after_query": {
+        "command": "schtasks /Query /TN \"\\CloudTech\\StartupCleanup-Once\" /FO TABLE",
+        "rc": 0,
+        "output": ""
+      },
+      "attempts": [
+        {
+          "command": "schtasks /Change /TN \"\\CloudTech\\StartupCleanup-Once\" /DISABLE",
+          "rc": 1,
+          "result": "OS_ERROR_ACCESS_DENIED. Non-elevated shell cannot disable scheduled tasks."
+        }
+      ],
+      "pre_mutation_xml": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_PHASE3_TASK_XML_CloudTech_StartupCleanup-Once.xml"
+    },
+    "\\CloudTech\\SpecV1CI_Daily_0300": {
+      "after_query": {
+        "command": "schtasks /Query /TN \"\\CloudTech\\SpecV1CI_Daily_0300\" /FO TABLE",
+        "rc": 1,
+        "output": ""
+      },
+      "attempts": [
+        {
+          "command": "schtasks /Change /TN \"\\CloudTech\\SpecV1CI_Daily_0300\" /DISABLE",
+          "rc": 1,
+          "result": "ERROR: The system cannot find the file specified. Task NOT_FOUND_ON_HOST at pre-mutation capture time — see GLOBAL_STRATEGY_PHASE3_TASK_XML_SpecV1CI.xml. No disable action required."
+        }
+      ],
+      "pre_mutation_xml": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_PHASE3_TASK_XML_CloudTech_SpecV1CI_Daily_0300.xml"
+    }
+  },
+  "port_5099_listener": {
+    "command": "netstat -ano | findstr \":5099.*LISTENING\"",
+    "rc": 0,
+    "listening_processes": "  TCP    127.0.0.1:5099         0.0.0.0:0              LISTENING       16336\n",
+    "process_pid": 16336,
+    "binary_path": "D:\\个人文件\\AI\\Operator\\aios_tools\\winsw-x64\\cloudtech_v22_gateway.exe",
+    "in_scope": false,
+    "note": "Port 5099 listener is the live cloudtech-v22-gateway service whose binary is OUTSIDE D:\\AIOS. Contract §3 explicitly excludes D:\\个人文件\\AI\\... paths from Phase-3 scope. Stop attempt was blocked by OS error 5; service still running."
+  },
+  "quarantine_hash_verification": {
+    "pre_manifest": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_PHASE3_DEACTIVATION_20261009_PREHASHES.json",
+    "post_manifest": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_PHASE3_DEACTIVATION_20261009_POSTHASHES.json",
+    "phase3_manifest": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\phase3_manifest.json",
+    "files_hashed_pre": 11,
+    "files_hashed_post": 11,
+    "ok": true,
+    "mismatches": []
+  },
+  "untouched_paths": {
+    "contract_hard_excludes": [
+      "D:\\CloudTech-Portable",
+      "D:\\CloudTech-Vault",
+      "D:\\CloudTech-Inbox",
+      "E:\\AI_Backup",
+      "any personal file",
+      "D:\\个人文件\\AI\\Operator\\aios_tools\\winsw-x64\\cloudtech_v22_gateway.exe (cloudtech-v22-gateway service binary)"
+    ],
+    "phase2_deferred_high_impact_L_items_NOT_touched": [
+      {
+        "id": "L-01",
+        "path": "Live CloudTech gateway teardown (127.0.0.1:5099)",
+        "status": "service still RUNNING — OS blocked stop; binary outside D:\\AIOS so out of contract scope"
+      },
+      {
+        "id": "L-06",
+        "path": "CloudTechV22Monitor service delete",
+        "status": "service registration still present; OS blocked START_TYPE change; binary moved to quarantine so binary path now dangling"
+      },
+      {
+        "id": "L-08/L-09",
+        "path": "7 CloudTech scheduled task deletes",
+        "status": "tasks still registered; OS blocked /DISABLE on 4 (HealthCheck/DailyReport/AIOSLightMonitor/StartupCleanup) and harness blocked /DISABLE on 2 (V22Watchdog/V23FileWatcher); 1 (SpecV1CI) already absent on this host"
+      },
+      {
+        "id": "L-17",
+        "path": "E:\\AI_Backup daily mirror scope change",
+        "status": "untouched (outside D:\\AIOS, contract §3 hard exclude)"
+      },
+      {
+        "id": "L-02..L-05",
+        "path": "D:\\CloudTech-Portable / Vault / Inbox / Live-Execution directory delete",
+        "status": "untouched (outside D:\\AIOS, contract §3 hard exclude)"
+      },
+      {
+        "id": "L-04 etc.",
+        "path": "Root installer scripts (install_aios_loop.cmd / install_aios_watchdog.cmd / R65_右键管理员运行_一键注册.bat / AIOS_Cron_R65_Residual.ps1 / cloudtech-saas/install.cmd / cloudtech-saas/start_v22_watchdog.bat / _aios_cloudtech_bridge.py)",
+        "status": "scripts themselves were part of D:\\AIOS\\cloudtech-saas which was moved (reversible) — they were NOT executed. Other root installer scripts (install_aios_loop.cmd etc.) UNTOUCHED."
+      },
+      {
+        "id": "L-28",
+        "path": "D:\\AIOS\\cloudtech-saas (the directory itself)",
+        "status": "MOVED to D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\cloudtech-saas (reversible). Not deleted."
+      },
+      {
+        "id": "L-34",
+        "path": "8 daemons_v2 WinSW services uninstall",
+        "status": "untouched (separate authorization)"
+      },
+      {
+        "id": "L-35",
+        "path": "4 R65 AIOS_* residual tasks delete",
+        "status": "untouched (separate authorization)"
+      },
+      {
+        "id": "L-36",
+        "path": "Stop+delete AIOS_E_Drive_DailyBackup_R1331 task",
+        "status": "untouched (separate authorization; affects daily mirror)"
+      },
+      {
+        "id": "L-37",
+        "path": "git history rewrite",
+        "status": "untouched (not recommended)"
+      },
+      {
+        "id": "L-32/L-33",
+        "path": "HKCU Run keys remove",
+        "status": "untouched (separate authorization)"
+      },
+      {
+        "id": "L-16",
+        "path": "Codex session archive",
+        "status": "untouched (separate authorization)"
+      },
+      {
+        "id": "CloudTech-specific",
+        "path": "memory.md / cache files / skills-installed-store.json / zxygj-business-data plugin / sessions/23852.json",
+        "status": "Phase-2 already quarantined; Phase-3 did not re-touch"
+      }
+    ]
+  },
+  "commands_executed": [
+    {
+      "step": 1,
+      "cmd": "sc query cloudtech-v22-gateway",
+      "rc": 0,
+      "purpose": "Capture before-state service"
+    },
+    {
+      "step": 2,
+      "cmd": "sc query CloudTechV22Monitor",
+      "rc": 0,
+      "purpose": "Capture before-state service"
+    },
+    {
+      "step": 3,
+      "cmd": "sc qc cloudtech-v22-gateway",
+      "rc": 0,
+      "purpose": "Capture before-state start config"
+    },
+    {
+      "step": 4,
+      "cmd": "sc qc CloudTechV22Monitor",
+      "rc": 0,
+      "purpose": "Capture before-state start config"
+    },
+    {
+      "step": 5,
+      "cmd": "netstat -ano | findstr :5099",
+      "rc": 0,
+      "purpose": "Capture port 5099 listener"
+    },
+    {
+      "step": 6,
+      "cmd": "curl -s http://127.0.0.1:5099/health",
+      "rc": 0,
+      "purpose": "Verify gateway health response"
+    },
+    {
+      "step": 7,
+      "cmd": "schtasks /Query /TN <each of 7 tasks> /FO TABLE",
+      "rc": 0,
+      "purpose": "Capture before-state tasks (6 found + 1 NOT_FOUND)"
+    },
+    {
+      "step": 8,
+      "cmd": "schtasks /Query /TN <each of 7 tasks> /XML",
+      "rc": "0/1",
+      "purpose": "Export XML for 6 found; 1 marked UNVERIFIED"
+    },
+    {
+      "step": 9,
+      "cmd": "python D:/AIOS/_agent-hub/scripts/_phase3_pre_hashes.py",
+      "rc": 0,
+      "purpose": "Build pre-mutation SHA-256 manifest"
+    },
+    {
+      "step": 10,
+      "cmd": "sc stop cloudtech-v22-gateway",
+      "rc": 5,
+      "purpose": "ATTEMPTED — OS_ACCESS_DENIED (recorded honestly, not retried)"
+    },
+    {
+      "step": 11,
+      "cmd": "sc config cloudtech-v22-gateway start= disabled",
+      "rc": 5,
+      "purpose": "ATTEMPTED — OS_ACCESS_DENIED (recorded honestly)"
+    },
+    {
+      "step": 12,
+      "cmd": "sc config CloudTechV22Monitor start= disabled",
+      "rc": 5,
+      "purpose": "ATTEMPTED — OS_ACCESS_DENIED (recorded honestly)"
+    },
+    {
+      "step": 13,
+      "cmd": "schtasks /Change /TN \\CloudTech_V22Watchdog /DISABLE",
+      "rc": -2,
+      "purpose": "ATTEMPTED — HARNESS_AUTO_MODE_DENIED [Interfere With Workloads] (recorded honestly)"
+    },
+    {
+      "step": 14,
+      "cmd": "schtasks /Change /TN \\CloudTech_V23FileWatcher /DISABLE",
+      "rc": -2,
+      "purpose": "ATTEMPTED — HARNESS_AUTO_MODE_DENIED (recorded honestly)"
+    },
+    {
+      "step": 15,
+      "cmd": "schtasks /Change /TN '\\CloudTech\\HealthCheck-Hourly' /DISABLE",
+      "rc": 1,
+      "purpose": "ATTEMPTED — OS_ACCESS_DENIED (recorded honestly)"
+    },
+    {
+      "step": 16,
+      "cmd": "schtasks /Change /TN '\\CloudTech\\DailyReport-0300' /DISABLE",
+      "rc": 1,
+      "purpose": "ATTEMPTED — OS_ACCESS_DENIED"
+    },
+    {
+      "step": 17,
+      "cmd": "schtasks /Change /TN '\\CloudTech\\AIOSLightMonitor-30min' /DISABLE",
+      "rc": 1,
+      "purpose": "ATTEMPTED — OS_ACCESS_DENIED"
+    },
+    {
+      "step": 18,
+      "cmd": "schtasks /Change /TN '\\CloudTech\\StartupCleanup-Once' /DISABLE",
+      "rc": 1,
+      "purpose": "ATTEMPTED — OS_ACCESS_DENIED"
+    },
+    {
+      "step": 19,
+      "cmd": "schtasks /Change /TN '\\CloudTech\\SpecV1CI_Daily_0300' /DISABLE",
+      "rc": 1,
+      "purpose": "ATTEMPTED — task already NOT_FOUND on host"
+    },
+    {
+      "step": 20,
+      "cmd": "python D:/AIOS/_agent-hub/scripts/_phase3_move_reversible.py",
+      "rc": 0,
+      "purpose": "Execute reversible file moves + post-hash verify"
+    },
+    {
+      "step": 21,
+      "cmd": "python -m pytest tests/test_strategy_*.py tests/test_requirements_lifecycle.py tests/test_contamination_scanner.py tests/test_quarantine_allowlist.py tests/test_strategy_hook_integration.py",
+      "rc": 0,
+      "purpose": "Re-run strategy tests (111/111 PASS)"
+    }
+  ],
+  "reversibility": {
+    "files_moved": [
+      {
+        "from": "D:\\AIOS\\cloudtech-saas",
+        "to": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\cloudtech-saas",
+        "type": "directory",
+        "restore": "shutil.move from quarantine_path back to D:\\AIOS\\cloudtech-saas. Then: if CloudTechV22Monitor START_TYPE was disabled, run `sc config CloudTechV22Monitor start= demand`. If any of the 7 tasks were disabled, run `schtasks /Change /TN <TN> /ENABLE`. Then either restart the service or restart any of the 7 tasks."
+      },
+      {
+        "from": "D:\\AIOS\\_workzone\\src\\_aios_cloudtech_bridge.py",
+        "to": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\_aios_cloudtech_bridge.py",
+        "type": "file",
+        "restore": "shutil.move from quarantine_path back to D:\\_workzone\\src\\_aios_cloudtech_bridge.py. Verify hash matches phase3_manifest.json entry sha256."
+      }
+    ],
+    "manifest_authoritative": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\phase3_manifest.json",
+    "do_not_index_marker": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\DO_NOT_INDEX.txt",
+    "no_destructive_op": true,
+    "no_cloud_backup_touch": true,
+    "no_personal_file_touch": true,
+    "no_git_history_rewrite": true,
+    "no_service_deletion": true,
+    "no_task_deletion": true
+  },
+  "unresolved_operations": [
+    {
+      "id": "U-01",
+      "op": "sc stop cloudtech-v22-gateway",
+      "status": "OS_ACCESS_DENIED",
+      "user_action_required": "Run in elevated shell: `sc stop cloudtech-v22-gateway`"
+    },
+    {
+      "id": "U-02",
+      "op": "sc config cloudtech-v22-gateway start= disabled",
+      "status": "OS_ACCESS_DENIED",
+      "user_action_required": "Run in elevated shell: `sc config cloudtech-v22-gateway start= disabled`"
+    },
+    {
+      "id": "U-03",
+      "op": "sc config CloudTechV22Monitor start= disabled",
+      "status": "OS_ACCESS_DENIED",
+      "user_action_required": "Run in elevated shell: `sc config CloudTechV22Monitor start= disabled`. NOTE: service binary path is now dangling because the exe was moved to quarantine; the service cannot start until the binary is restored OR the service registration is removed via `sc delete CloudTechV22Monitor` (requires separate auth)."
+    },
+    {
+      "id": "U-04",
+      "op": "schtasks /Change /TN \\CloudTech_V22Watchdog /DISABLE",
+      "status": "HARNESS_AUTO_MODE_DENIED + OS_ACCESS_DENIED",
+      "user_action_required": "Run in elevated shell: `schtasks /Change /TN \\CloudTech_V22Watchdog /DISABLE`"
+    },
+    {
+      "id": "U-05",
+      "op": "schtasks /Change /TN \\CloudTech_V23FileWatcher /DISABLE",
+      "status": "HARNESS_AUTO_MODE_DENIED + OS_ACCESS_DENIED",
+      "user_action_required": "Run in elevated shell: `schtasks /Change /TN \\CloudTech_V23FileWatcher /DISABLE`"
+    },
+    {
+      "id": "U-06",
+      "op": "schtasks /Change /TN \\CloudTech\\HealthCheck-Hourly /DISABLE",
+      "status": "OS_ACCESS_DENIED",
+      "user_action_required": "Run in elevated shell: `schtasks /Change /TN \\CloudTech\\HealthCheck-Hourly /DISABLE`"
+    },
+    {
+      "id": "U-07",
+      "op": "schtasks /Change /TN \\CloudTech\\DailyReport-0300 /DISABLE",
+      "status": "OS_ACCESS_DENIED",
+      "user_action_required": "Run in elevated shell: `schtasks /Change /TN \\CloudTech\\DailyReport-0300 /DISABLE`"
+    },
+    {
+      "id": "U-08",
+      "op": "schtasks /Change /TN \\CloudTech\\AIOSLightMonitor-30min /DISABLE",
+      "status": "OS_ACCESS_DENIED",
+      "user_action_required": "Run in elevated shell: `schtasks /Change /TN \\CloudTech\\AIOSLightMonitor-30min /DISABLE`"
+    },
+    {
+      "id": "U-09",
+      "op": "schtasks /Change /TN \\CloudTech\\StartupCleanup-Once /DISABLE",
+      "status": "OS_ACCESS_DENIED",
+      "user_action_required": "Run in elevated shell: `schtasks /Change /TN \\CloudTech\\StartupCleanup-Once /DISABLE`"
+    },
+    {
+      "id": "U-10",
+      "op": "schtasks /Change /TN \\CloudTech\\SpecV1CI_Daily_0300 /DISABLE",
+      "status": "TASK_ALREADY_NOT_FOUND_ON_HOST",
+      "user_action_required": "No action required — task was absent at pre-mutation capture time."
+    }
+  ],
+  "tests_run": {
+    "command": "python -m pytest tests/test_strategy_policy.py tests/test_requirements_lifecycle.py tests/test_contamination_scanner.py tests/test_quarantine_allowlist.py tests/test_strategy_gate.py tests/test_strategy_hook_integration.py tests/test_strategy_gate_submit_task.py tests/test_strategy_alias_correction.py",
+    "cwd": "D:\\AIOS\\_agent-hub\\v2",
+    "result": "111 passed, 0 failed in 0.88s"
+  },
+  "red_lines_observed": {
+    "ag_AGENTS_md_modified": false,
+    "v2_consumer_modified": false,
+    "kernel_models_modified": false,
+    "kernel_verifier_modified": false,
+    "product_strategy_policy_modified": false,
+    "model_policy_modified": false,
+    "cloudtech_portable_touched": false,
+    "cloudtech_vault_touched": false,
+    "cloudtech_inbox_touched": false,
+    "e_ai_backup_touched": false,
+    "personal_files_touched": false,
+    "git_history_rewritten": false,
+    "service_deletion": false,
+    "task_deletion": false,
+    "destructive_op": false,
+    "full_disk_zero_residue": false,
+    "claim_of_deletion": false,
+    "claim_of_backup_purge": false
+  },
+  "ack_with": {
+    "exact_changed_paths": [
+      "D:\\AIOS\\cloudtech-saas -> D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\cloudtech-saas (directory, reversible)",
+      "D:\\AIOS\\_workzone\\src\\_aios_cloudtech_bridge.py -> D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\_aios_cloudtech_bridge.py (file, reversible)"
+    ],
+    "files_created": [
+      "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_PHASE3_DEACTIVATION_20261009_PREHASHES.json",
+      "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_PHASE3_DEACTIVATION_20261009_POSTHASHES.json",
+      "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_PHASE3_DEACTIVATION_20261009_EVIDENCE.md",
+      "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_PHASE3_DEACTIVATION_20261009_EVIDENCE.json",
+      "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\DO_NOT_INDEX.txt",
+      "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\phase3\\phase3_manifest.json",
+      "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_PHASE3_TASK_XML_V22Watchdog.xml",
+      "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_PHASE3_TASK_XML_V23FileWatcher.xml",
+      "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_PHASE3_TASK_XML_HealthCheck-Hourly.xml",
+      "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_PHASE3_TASK_XML_DailyReport-0300.xml",
+      "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_PHASE3_TASK_XML_AIOSLightMonitor-30min.xml",
+      "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_PHASE3_TASK_XML_StartupCleanup-Once.xml",
+      "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_PHASE3_TASK_XML_SpecV1CI.xml",
+      "D:\\AIOS\\_agent-hub\\scripts\\_phase3_pre_hashes.py",
+      "D:\\AIOS\\_agent-hub\\scripts\\_phase3_move_reversible.py",
+      "D:\\AIOS\\_agent-hub\\scripts\\_phase3_evidence_builder.py"
+    ],
+    "reversibility_restore": "shutil.move from quarantine_path back to source_path for each entry in phase3_manifest.json. See reversibility section.",
+    "unresolved_operations_count": 10
+  }
+}

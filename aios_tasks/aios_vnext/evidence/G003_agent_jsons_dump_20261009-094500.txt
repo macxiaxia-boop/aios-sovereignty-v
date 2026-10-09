@@ -1,0 +1,100 @@
+﻿{
+  "id": "86aa82ee-52e0-448c-86bb-6c181dcd615e",
+  "created_at": "2026-10-09T01:41:21.448145+00:00",
+  "updated_at": "2026-10-09T01:41:21.448145+00:00",
+  "schema_version": 1,
+  "agent": "claudecode",
+  "failure_clusters": [],
+  "capability_index": [
+    {
+      "skill_id": "claudecode_core",
+      "use_cases": [
+        "claudecode agent self-managed task execution",
+        "cross-agent knowledge reference (G003)"
+      ],
+      "confidence": 1.0
+    }
+  ],
+  "failure_count_total": 0,
+  "last_updated": "2026-10-09T01:41:21.448145Z"
+}
+{
+  "id": "0bc534d2-58d4-4d15-b322-57ad9bd98e77",
+  "created_at": "2026-10-09T01:41:21.449146+00:00",
+  "updated_at": "2026-10-09T01:41:21.449146+00:00",
+  "schema_version": 1,
+  "agent": "openclaw",
+  "failure_clusters": [],
+  "capability_index": [
+    {
+      "skill_id": "openclaw_core",
+      "use_cases": [
+        "openclaw agent self-managed task execution",
+        "cross-agent knowledge reference (G003)"
+      ],
+      "confidence": 1.0
+    }
+  ],
+  "failure_count_total": 0,
+  "last_updated": "2026-10-09T01:41:21.449146Z"
+}
+{
+  "id": "c30e47bf-096b-422a-9193-9d912ac9a2a5",
+  "created_at": "2026-10-09T01:41:21.450304+00:00",
+  "updated_at": "2026-10-09T01:41:21.450304+00:00",
+  "schema_version": 1,
+  "agent": "human",
+  "failure_clusters": [],
+  "capability_index": [
+    {
+      "skill_id": "human_core",
+      "use_cases": [
+        "human agent self-managed task execution",
+        "cross-agent knowledge reference (G003)"
+      ],
+      "confidence": 1.0
+    }
+  ],
+  "failure_count_total": 0,
+  "last_updated": "2026-10-09T01:41:21.450304Z"
+}
+{
+  "id": "0b4edcea-956d-498d-97c6-87ff22fba6fc",
+  "created_at": "2026-10-09T01:41:21.448145+00:00",
+  "updated_at": "2026-10-09T01:41:21.448145+00:00",
+  "schema_version": 1,
+  "agent": "codex",
+  "failure_clusters": [],
+  "capability_index": [
+    {
+      "skill_id": "codex_core",
+      "use_cases": [
+        "codex agent self-managed task execution",
+        "cross-agent knowledge reference (G003)"
+      ],
+      "confidence": 1.0
+    }
+  ],
+  "failure_count_total": 0,
+  "last_updated": "2026-10-09T01:41:21.448145Z"
+}
+{
+  "id": "0c015803-1d91-4526-82ad-7f5db7671d86",
+  "created_at": "2026-10-09T01:41:21.449146+00:00",
+  "updated_at": "2026-10-09T01:41:21.449146+00:00",
+  "schema_version": 1,
+  "agent": "hermes",
+  "failure_clusters": [],
+  "capability_index": [
+    {
+      "skill_id": "hermes_core",
+      "use_cases": [
+        "hermes agent self-managed task execution",
+        "cross-agent knowledge reference (G003)"
+      ],
+      "confidence": 1.0
+    }
+  ],
+  "failure_count_total": 0,
+  "last_updated": "2026-10-09T01:41:21.449146Z"
+}

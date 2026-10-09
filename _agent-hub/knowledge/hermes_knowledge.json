@@ -1,0 +1,20 @@
+{
+  "id": "0c015803-1d91-4526-82ad-7f5db7671d86",
+  "created_at": "2026-10-09T01:41:21.449146+00:00",
+  "updated_at": "2026-10-09T01:41:21.449146+00:00",
+  "schema_version": 1,
+  "agent": "hermes",
+  "failure_clusters": [],
+  "capability_index": [
+    {
+      "skill_id": "hermes_core",
+      "use_cases": [
+        "hermes agent self-managed task execution",
+        "cross-agent knowledge reference (G003)"
+      ],
+      "confidence": 1.0
+    }
+  ],
+  "failure_count_total": 0,
+  "last_updated": "2026-10-09T01:41:21.449146Z"
+}

@@ -1,0 +1,21 @@
+{
+  "cycle": 1,
+  "ts": "2026-09-29T10:33:23.538632",
+  "watchdogs": [
+    {
+      "name": "popup_cure",
+      "pid": 27940,
+      "alive": true
+    },
+    {
+      "name": "stage_watchdog",
+      "pid": 26356,
+      "alive": false
+    },
+    {
+      "name": "aios_daemon",
+      "pid": 29268,
+      "alive": false
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "policy_id": "GLOBAL_PRODUCT_STRATEGY",
+  "policy_version": "2026-10-08",
+  "quarantine_root": "D:\\AIOS\\_quarantine\\retired-assets\\20261008",
+  "quarantined_at": 1791478166.0266845,
+  "actor": "Claude Code 2.1.285 (MiniMax-M3)",
+  "marker_file": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\DO_NOT_INDEX.txt",
+  "entries": [
+    {
+      "source_path": "C:\\Users\\xinzh\\.workbuddy\\memory\\45e357fa-c2ec-4bd0-b734-9b016a2759d7_memory.md",
+      "quarantine_path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\memory\\45e357fa-c2ec-4bd0-b734-9b016a2759d7_memory.md",
+      "sha256": "B8415F112F7695CDD3803716CDA38A0FF68FD4804C4B8C9BFCD5C79EBF6BB594",
+      "size_bytes": 5514,
+      "is_directory": false,
+      "reason": "WorkBuddy persistent user profile asset containing retired vertical / industry / CloudTech Phase 1 (医美+装企) material; see audit B-01..B-04 / B-06 in GLOBAL_STRATEGY_RETIREMENT_AUDIT_20261008.json.",
+      "policy_id": "GLOBAL_PRODUCT_STRATEGY",
+      "policy_version": "2026-10-08",
+      "retired_id": null,
+      "quarantined_at": 1791478166.0129044,
+      "restore_instructions": "To restore: use shutil.move from the quarantine_path back to the source_path. Requires user authorization per AGENTS.md `requires_authorization`. Verify hash matches the sha256 recorded above before reusing the asset."
+    },
+    {
+      "source_path": "C:\\Users\\xinzh\\.workbuddy\\storage\\user-45e357fa-c2ec-4bd0-b734-9b016a2759d7-personal\\scoped\\c7389fe09fa872c0\\home-first-screen-cache.json",
+      "quarantine_path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\c7389fe09fa872c0\\home-first-screen-cache.json",
+      "sha256": "2324809B3E6DFBA83FEAA221CD0F35E993F876E3DF6E689B0AB7B1D28B4696DF",
+      "size_bytes": 6145903,
+      "is_directory": false,
+      "reason": "WorkBuddy persistent user profile asset containing retired vertical / industry / CloudTech Phase 1 (医美+装企) material; see audit B-01..B-04 / B-06 in GLOBAL_STRATEGY_RETIREMENT_AUDIT_20261008.json.",
+      "policy_id": "GLOBAL_PRODUCT_STRATEGY",
+      "policy_version": "2026-10-08",
+      "retired_id": null,
+      "quarantined_at": 1791478166.0191784,
+      "restore_instructions": "To restore: use shutil.move from the quarantine_path back to the source_path. Requires user authorization per AGENTS.md `requires_authorization`. Verify hash matches the sha256 recorded above before reusing the asset."
+    },
+    {
+      "source_path": "C:\\Users\\xinzh\\.workbuddy\\storage\\user-45e357fa-c2ec-4bd0-b734-9b016a2759d7-personal\\scoped\\c7389fe09fa872c0\\skills-installed-store.json",
+      "quarantine_path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\c7389fe09fa872c0\\skills-installed-store.json",
+      "sha256": "466E17EAD4511A00778D09C5278F3868F01673A171CDD1486BD9478E46B91B01",
+      "size_bytes": 80694,
+      "is_directory": false,
+      "reason": "WorkBuddy persistent user profile asset containing retired vertical / industry / CloudTech Phase 1 (医美+装企) material; see audit B-01..B-04 / B-06 in GLOBAL_STRATEGY_RETIREMENT_AUDIT_20261008.json.",
+      "policy_id": "GLOBAL_PRODUCT_STRATEGY",
+      "policy_version": "2026-10-08",
+      "retired_id": null,
+      "quarantined_at": 1791478166.0201645,
+      "restore_instructions": "To restore: use shutil.move from the quarantine_path back to the source_path. Requires user authorization per AGENTS.md `requires_authorization`. Verify hash matches the sha256 recorded above before reusing the asset."
+    },
+    {
+      "source_path": "C:\\Users\\xinzh\\.workbuddy\\plugins\\marketplaces\\workbuddy-connector-plugins-official\\connectors\\zxygj-business-data",
+      "quarantine_path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\connectors\\zxygj-business-data",
+      "sha256": "F29063811384EF3AF3C8659ACD830941BF2CEB1867E687E493D9813E51E114F1",
+      "size_bytes": 9332,
+      "is_directory": true,
+      "reason": "WorkBuddy persistent user profile asset containing retired vertical / industry / CloudTech Phase 1 (医美+装企) material; see audit B-01..B-04 / B-06 in GLOBAL_STRATEGY_RETIREMENT_AUDIT_20261008.json.",
+      "policy_id": "GLOBAL_PRODUCT_STRATEGY",
+      "policy_version": "2026-10-08",
+      "retired_id": null,
+      "quarantined_at": 1791478166.0256555,
+      "restore_instructions": "To restore: use shutil.move from the quarantine_path back to the source_path. Requires user authorization per AGENTS.md `requires_authorization`. Verify hash matches the sha256 recorded above before reusing the asset."
+    },
+    {
+      "source_path": "C:\\Users\\xinzh\\.workbuddy\\sessions\\23852.json",
+      "quarantine_path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\sessions\\23852.json",
+      "sha256": "78F02429BB916D2E1158AD8FC70108CF0FF8BE01783629450D26068DC21E21A0",
+      "size_bytes": 355,
+      "is_directory": false,
+      "reason": "WorkBuddy persistent user profile asset containing retired vertical / industry / CloudTech Phase 1 (医美+装企) material; see audit B-01..B-04 / B-06 in GLOBAL_STRATEGY_RETIREMENT_AUDIT_20261008.json.",
+      "policy_id": "GLOBAL_PRODUCT_STRATEGY",
+      "policy_version": "2026-10-08",
+      "retired_id": null,
+      "quarantined_at": 1791478166.026675,
+      "restore_instructions": "To restore: use shutil.move from the quarantine_path back to the source_path. Requires user authorization per AGENTS.md `requires_authorization`. Verify hash matches the sha256 recorded above before reusing the asset."
+    }
+  ],
+  "missing": [],
+  "ok": true,
+  "note": "Manifest is the authoritative record of reversible moves. No file was deleted. Restoration: see entries[].restore_instructions. Phase-3 reversible deactivation added 2026-10-09 lives in the phase3/ subdir with its own phase3_manifest.json — see that manifest for the cloudtech-saas directory + _aios_cloudtech_bridge.py file entries."
+}

@@ -1,0 +1,54 @@
+你是 AIOS sovereignty-v 工程线程 01a11c33 的 Claude Code 执行者（Phase I.3 · Hook 集成 + Daemon + Runbook）
+
+上下文:
+- 监督: 01a11c30 (Codex)
+- 工程线程: 01a11c33
+- 父线程: 01a11c23 (已激活)
+- 用户授权: 搭建执行任务，全部做掉 (2026-10-09)
+- 当前: 4 adapters 已落地 (T9-T12) · Reconciler 注册并跑通 · 18+ regression PASS
+
+## 5 个子任务（T23-T27），按顺序做
+
+### T23 · Codex PreToolUse hook 实际注册
+- 落盘: `D:\AIOS\_agent-hub\policy\hooks\codex_pre_tool_use_hook.json` (Codex hooks.json 风格)
+- 实现: 在 `~/.codex/config.toml` 的 `[hooks]` 段加 `pre_tool_use` 调用 `policy\codex_adapter.py`
+- **约束**: 不动现有 trust / mcp_servers / profile 配置 · 只追加 `[hooks]` 段
+- 验证: `Get-Content ~/.codex/config.toml` 可见新 `[hooks]` 段 + pre_tool_use 指向 `policy/codex_adapter.py`
+
+### T24 · OpenClaw cron payload validate() 集成
+- 落盘: `D:\AIOS\_agent-hub\policy\integrations\openclaw_cron_validate.py`
+- 实现: 扫 `D:\AIOS\openclaw\cron\*.yaml`，对每个 payload 调用 `validate()` 拦截不合规
+- 安装: 在 OpenClaw 启动钩子或 cron 入口前调用一次
+- 验证: 跑一次 `python openclaw_cron_validate.py --dry-run`，输出每个 cron 的 validate 结果
+
+### T25 · Hermes daemon 化（CLI → 持久）
+- 落盘: `D:\AIOS\_agent-hub\policy\daemons\hermes_daemon.py` + `register_hermes.cmd`
+- 实现: 每 60s 心跳 + drift scan + audit log append
+- 安装: 写 `register_hermes.cmd` 用 schtasks /Create 注册（mode B: on-demand 启动钩）
+- 验证: `schtasks /Query /TN AIOS_Hermes_Daemon` 可见 + daemon started 一次 (用 `--once --verbose` 跑)
+
+### T26 · Adapter auto-load script
+- 落盘: `D:\AIOS\_agent-hub\policy\adapters\__init__.py` 改为含 `load_all_adapters()` 函数
+- 实现: enumerate 4 个 runtime.py · 验证签名一致 · 输出运行时状态
+- 验证: `python -c "from adapters import load_all_adapters; print(load_all_adapters())"`
+
+### T27 · Sovereignty-V runbook
+- 落盘: `D:\AIOS\_agent-hub\policy\RUNBOOK.md`
+- 内容: 5 段 (1) 日常维护 (2) 故障排查 (3) 升级 policy (4) 添加 runtime (5) 紧急回滚
+- 引用: adapter-spec.v1.md + reconciler-spec.md + regression_tests.py + register_*.cmd
+
+## 红线（每个子任务都遵守）
+
+- ❌ 不动 `policy/model-policy.v1.yaml` 或 `model-policy.v1.sha256`
+- ❌ 不写 `allowed_models` 字段（用户没给 model id 清单）
+- ❌ 不绕过 validate() 直接调用 provider
+- ❌ 不删任何文件
+- ❌ 不 git push
+
+## 每个 T 完成后必写 `D:\AIOS\_agent-hub\reports\sovereignty-v\tasks\T{N}.done` 含:
+- 文件路径
+- sha256
+- 自检命令 + 结果
+- 时间戳
+
+报告所有 5 个 done 文件路径 + 总字节数 + sha256。

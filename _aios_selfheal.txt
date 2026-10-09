@@ -1,0 +1,10 @@
+﻿=== AIOSSelfHeal / AIOSSupervisor 详情 ===
+=== 它们 spawn 的子进程 (递归找所有 pythonw.exe 子进程) ===
+
+Name                                                                           
+----                                                                           
+C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-windows-x86_64-none...
+C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-windows-x86_64-none...
+"C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-windows-x86_64-non...
+
+

@@ -1,0 +1,44 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.11.15, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\xinzh\.hermes\hermes-agent\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: D:\AIOS\kernel
+configfile: pyproject.toml
+plugins: anyio-4.14.2, asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 27 items
+
+tests/unit/test_cross_agent_knowledge.py::test_agent_name_enum_5_values PASSED [  3%]
+tests/unit/test_cross_agent_knowledge.py::test_agent_name_is_str_enum PASSED [  7%]
+tests/unit/test_cross_agent_knowledge.py::test_capability_index_validation PASSED [ 11%]
+tests/unit/test_cross_agent_knowledge.py::test_capability_index_default_confidence_is_1 PASSED [ 14%]
+tests/unit/test_cross_agent_knowledge.py::test_capability_confidence_must_be_0_to_1 PASSED [ 18%]
+tests/unit/test_cross_agent_knowledge.py::test_capability_index_empty_skill_id_rejected PASSED [ 22%]
+tests/unit/test_cross_agent_knowledge.py::test_cross_agent_knowledge_default_empty PASSED [ 25%]
+tests/unit/test_cross_agent_knowledge.py::test_cross_agent_knowledge_agent_required PASSED [ 29%]
+tests/unit/test_cross_agent_knowledge.py::test_cross_agent_knowledge_extra_forbid PASSED [ 33%]
+tests/unit/test_cross_agent_knowledge.py::test_add_failure_cluster_idempotent PASSED [ 37%]
+tests/unit/test_cross_agent_knowledge.py::test_add_failure_cluster_distinct_ids PASSED [ 40%]
+tests/unit/test_cross_agent_knowledge.py::test_add_capability_idempotent PASSED [ 44%]
+tests/unit/test_cross_agent_knowledge.py::test_has_failure_with_root_cause PASSED [ 48%]
+tests/unit/test_cross_agent_knowledge.py::test_has_failure_with_root_cause_empty_string PASSED [ 51%]
+tests/unit/test_cross_agent_knowledge.py::test_relevant_capabilities_match_keyword PASSED [ 55%]
+tests/unit/test_cross_agent_knowledge.py::test_relevant_capabilities_empty_keyword PASSED [ 59%]
+tests/unit/test_cross_agent_knowledge.py::test_knowledge_service_load_default_when_no_file PASSED [ 62%]
+tests/unit/test_cross_agent_knowledge.py::test_knowledge_service_save_load_roundtrip PASSED [ 66%]
+tests/unit/test_cross_agent_knowledge.py::test_knowledge_service_load_all_returns_5_agents PASSED [ 70%]
+tests/unit/test_cross_agent_knowledge.py::test_knowledge_service_merge_failure_clusters PASSED [ 74%]
+tests/unit/test_cross_agent_knowledge.py::test_knowledge_service_has_any_agent_seen_failure PASSED [ 77%]
+tests/unit/test_cross_agent_knowledge.py::test_cross_agent_knowledge_persistence_to_disk PASSED [ 81%]
+tests/unit/test_cross_agent_knowledge.py::test_cross_agent_knowledge_default_dir_constant PASSED [ 85%]
+tests/unit/test_cross_agent_knowledge.py::test_service_corrupt_file_recovers_to_default PASSED [ 88%]
+tests/unit/test_cross_agent_knowledge.py::test_merger_output_feeds_cross_agent_knowledge PASSED [ 92%]
+tests/unit/test_cross_agent_knowledge.py::test_goalkeeper_guard_constructs_with_knowledge_service PASSED [ 96%]
+tests/unit/test_cross_agent_knowledge.py::test_goalkeeper_guard_references_knowledge_without_crashing PASSED [100%]
+
+============================== warnings summary ===============================
+tests/unit/test_cross_agent_knowledge.py::test_agent_name_enum_5_values
+  D:\AIOS\_relinked\hermes\hermes-agent\.venv\Lib\site-packages\pytest_asyncio\plugin.py:916: PytestDeprecationWarning: Overriding the "event_loop_policy" fixture is deprecated and will be removed in a future version of pytest-asyncio. Use the "pytest_asyncio_loop_factories" hook to customize event loop creation.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 27 passed, 1 warning in 0.60s ========================

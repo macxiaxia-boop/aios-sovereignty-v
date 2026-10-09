@@ -1,0 +1,102 @@
+﻿=== 即将杀的进程 (PID + 命令行) ===
+
+  PID Name           Cmd                                                       
+  --- ----           ---                                                       
+15408 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-w
+                     indows-x86_64-none\pythonw.exe -u D:\个人文件\AI\Operator\aios
+                     _tools/_aios_daemon_watchdog.py --                        
+ 8700 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-w
+                     indows-x86_64-none\pythonw.exe -u D:/个人文件/AI/Operator/aios
+                     _tools/_codex_to_cc_bridge_v2.py -                        
+21216 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-w
+                     indows-x86_64-none\pythonw.exe -u D:/个人文件/AI/Operator/aios
+                     _tools/_cc_to_codex_cli_bridge.py                         
+11888 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-w
+                     indows-x86_64-none\pythonw.exe -u D:/个人文件/AI/Operator/aios
+                     _tools/_codex_to_cc_inbox_watcher.                        
+25184 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-w
+                     indows-x86_64-none\pythonw.exe -u D:/个人文件/AI/Operator/aios
+                     _tools/_cc_to_codex_cli_polling_da                        
+11988 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-w
+                     indows-x86_64-none\pythonw.exe -u D:/个人文件/AI/Operator/aios
+                     _tools/_codex_polling_daemon.py --                        
+20576 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-w
+                     indows-x86_64-none\pythonw.exe -u D:/个人文件/AI/Operator/aios
+                     _tools/_cc_to_doubao_polling_daemo                        
+29692 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-w
+                     indows-x86_64-none\pythonw.exe -u D:/个人文件/AI/Operator/aios
+                     _tools/_cc_to_openclaw_bridge.py -                        
+26308 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-w
+                     indows-x86_64-none\pythonw.exe -u D:/个人文件/AI/Operator/aios
+                     _tools/_openclaw_to_cc_inbox_watch                        
+15196 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-w
+                     indows-x86_64-none\pythonw.exe -u D:/个人文件/AI/Operator/aios
+                     _tools/_cc_to_openclaw_polling_dae                        
+17064 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-w
+                     indows-x86_64-none\pythonw.exe -u D:/个人文件/AI/Operator/aios
+                     _tools/_cc_to_doubao_bridge.py --i                        
+35048 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-w
+                     indows-x86_64-none\pythonw.exe -u D:/个人文件/AI/Operator/aios
+                     _tools/_codex_cli_to_cc_inbox_watc                        
+27228 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-w
+                     indows-x86_64-none\pythonw.exe -u D:/个人文件/AI/Operator/aios
+                     _tools/_codex_desktop_to_cli_bridg                        
+31640 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-w
+                     indows-x86_64-none\pythonw.exe -u D:/个人文件/AI/Operator/aios
+                     _tools/_doubao_to_cc_inbox_watcher                        
+17320 pythonw.exe    D:\AIOS\_relinked\workbuddy\binaries\python\versions\3.13.
+                     12\pythonw.exe D:\个人文件\AI\Operator\aios_tools\r304_entrypo
+                     int_dashboard.py --port 18800                             
+20932 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-w
+                     indows-x86_64-none\pythonw.exe -u D:/个人文件/AI/Operator/aios
+                     _tools/_codex_cli_to_desktop_bridg                        
+19164 pythonw.exe    D:\AIOS\_relinked\workbuddy\binaries\python\versions\3.13.
+                     12\pythonw.exe D:\个人文件\AI\Operator\aios_tools\r304_entrypo
+                     int_dashboard.py --port 18800                             
+17664 pythonw.exe    D:\AIOS\_relinked\workbuddy\binaries\python\versions\3.13.
+                     12\pythonw.exe D:\个人文件\AI\Operator\aios_tools\r304_entrypo
+                     int_dashboard.py --port 18800                             
+26828 pythonw.exe    D:\AIOS\_relinked\workbuddy\binaries\python\versions\3.13.
+                     12\pythonw.exe D:\个人文件\AI\Operator\aios_tools\r304_entrypo
+                     int_dashboard.py --port 18800                             
+ 3244 pythonw.exe    D:\AIOS\_relinked\workbuddy\binaries\python\versions\3.13.
+                     12\pythonw.exe D:\个人文件\AI\Operator\aios_tools\r304_entrypo
+                     int_dashboard.py --port 18800                             
+ 8500 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-w
+                     indows-x86_64-none\pythonw.exe -u D:\个人文件\AI\Operator\aios
+                     _tools/_aios_daemon_watchdog.py --                        
+11704 pythonw.exe    D:\AIOS\_relinked\workbuddy\binaries\python\versions\3.13.
+                     12\pythonw.exe D:\个人文件\AI\Operator\aios_tools\r304_entrypo
+                     int_dashboard.py --port 18800                             
+ 9152 pythonw.exe    D:\AIOS\_relinked\workbuddy\binaries\python\versions\3.13.
+                     12\pythonw.exe D:\个人文件\AI\Operator\aios_tools\r304_entrypo
+                     int_dashboard.py --port 18800                             
+ 8624 pythonw.exe    D:\AIOS\_relinked\workbuddy\binaries\python\versions\3.13.
+                     12\pythonw.exe D:\个人文件\AI\Operator\aios_tools\r304_entrypo
+                     int_dashboard.py --port 18800                             
+19108 pythonw.exe    D:\AIOS\_relinked\workbuddy\binaries\python\versions\3.13.
+                     12\pythonw.exe D:\个人文件\AI\Operator\aios_tools\r304_entrypo
+                     int_dashboard.py --port 18800                             
+  944 python.exe     "C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.12.13-
+                     windows-x86_64-none\python.exe" -u D:\个人文件\AI\Operator\aio
+                     s_tools\_watchdog_alive_check.py -                        
+10812 pythonw.exe    D:\AIOS\_relinked\workbuddy\binaries\python\versions\3.13.
+                     12\pythonw.exe D:\个人文件\AI\Operator\aios_tools\r304_entrypo
+                     int_dashboard.py --port 18800                             
+34228 pythonw.exe    D:\AIOS\_relinked\workbuddy\binaries\python\versions\3.13.
+                     12\pythonw.exe D:\个人文件\AI\Operator\aios_tools\r304_entrypo
+                     int_dashboard.py --port 18800                             
+10600 pythonw.exe    D:\AIOS\_relinked\workbuddy\binaries\python\versions\3.13.
+                     12\pythonw.exe D:\个人文件\AI\Operator\aios_tools\r304_entrypo
+                     int_dashboard.py --port 18800                             
+ 8968 python.exe     "D:\AIOS\_relinked\workbuddy\binaries\python\versions\3.13
+                     .12\python.exe" "D:\个人文件\AI\Operator\aios_tools\r303_cron_
+                     health_check.py"                                          
+28116 powershell.exe C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE 
+                     -NoProfile -NonInteractive -Command "if (-not (Get-Variabl
+                     e -Name CODEBUDDY_SAFE_DELETE_PS_R                        
+ 6264 python.exe     "D:\AIOS\_relinked\workbuddy\binaries\python\versions\3.13
+                     .12\python.exe" "D:\个人文件\AI\Operator\aios_tools\r306_dashb
+                     oard_supervisor.py"                                       
+
+

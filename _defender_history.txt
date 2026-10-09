@@ -1,0 +1,14 @@
+﻿
+ActionSuccess AdditionalActionsBitMask AMProductVersion CleaningActionID Curren
+                                                                         tThrea
+                                                                         tExecu
+                                                                         tionSt
+                                                                         atusID
+------------- ------------------------ ---------------- ---------------- ------
+         True                        0 4.18.26080.4                    2      1
+         True                        0 4.18.26080.4                    2      1
+         True                        0 4.18.26080.4                    9      1
+         True                        0 4.18.26080.4                    2      1
+         True                        0 4.18.26080.4                    9      1
+
+

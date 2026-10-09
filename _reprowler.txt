@@ -1,0 +1,35 @@
+﻿
+Name               Count
+----               -----
+conhost.exe           63
+pythonw.exe           28
+node.exe              27
+cmd.exe               26
+python.exe            17
+quark.exe             17
+Code.exe              15
+Doubao.exe            13
+ChatGPT.exe           11
+WorkBuddy.exe         10
+WeChatAppEx.exe       10
+msedge.exe             8
+powershell.exe         6
+Weixin.exe             6
+msedgewebview2.exe     6
+WD Discovery.exe       5
+wsl.exe                4
+wslhost.exe            4
+bash.exe               4
+WUDFHost.exe           3
+claude.exe             2
+git.exe                2
+OpenConsole.exe        2
+head.exe               2
+node_repl.exe          2
+windows-mcp.exe        2
+tailscaled.exe         2
+dasHost.exe            2
+RuntimeBroker.exe      2
+ToDesk.exe             2
+
+

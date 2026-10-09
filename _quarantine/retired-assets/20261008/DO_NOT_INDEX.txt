@@ -1,0 +1,18 @@
+DO_NOT_INDEX — Quarantined retired-strategy assets
+=================================================
+These assets were moved here on 2026-10-09 by the Phase-2
+Global Strategy Retirement construction contract.
+
+Rules:
+  - DO NOT load, scan, or index any file under this directory
+    into an active planning loop, runtime loader, scheduled
+    task, registry, RAG source, or model prompt context.
+  - This directory is classified ARCHIVED_REFERENCE by the
+    strategy contamination scanner.
+  - Restoration requires user authorization per AGENTS.md
+    `requires_authorization` and must reference a manifest
+    entry in quarantine_manifest.json.
+
+Manifest path: D:\AIOS\_quarantine\retired-assets\20261008\quarantine_manifest.json
+Policy: GLOBAL_PRODUCT_STRATEGY 2026-10-08
+Audit: GLOBAL_STRATEGY_RETIREMENT_AUDIT_20261008.md

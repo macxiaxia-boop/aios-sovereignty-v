@@ -1,0 +1,22 @@
+DO_NOT_INDEX — Phase-3 quarantined retired-strategy assets
+==========================================================
+These assets were moved here on 2026-10-09 by the Phase-3
+Global Strategy Retirement deactivation contract.
+
+Scope of this phase-3 quarantine:
+  - D:\AIOS\cloudtech-saas (entire directory moved)
+  - D:\AIOS\_workzone\src\_aios_cloudtech_bridge.py (file moved)
+
+Rules:
+  - DO NOT load, scan, or index any file under this directory
+    into an active planning loop, runtime loader, scheduled
+    task, registry, RAG source, or model prompt context.
+  - This directory is classified ARCHIVED_REFERENCE by the
+    strategy contamination scanner.
+  - Restoration requires user authorization per AGENTS.md
+    `requires_authorization` and must reference a manifest
+    entry in phase3_manifest.json.
+
+Manifest path: D:\AIOS\_quarantine\retired-assets\20261008\phase3\phase3_manifest.json
+Policy: GLOBAL_PRODUCT_STRATEGY 2026-10-08
+Phase contract: GLOBAL_STRATEGY_PHASE3_DEACTIVATION_CONTRACT_20261009.md

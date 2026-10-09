@@ -1,0 +1,5 @@
+[ADMIN] ok=1 is_admin=1
+[SCM] ok=True opened
+[CREATE] ok=True already exists
+[START] ok=True started
+[STATUS] ok=True state=START_PENDING, exit_code=0

@@ -1,0 +1,162 @@
+﻿
+  PID  PPID Name           Cmd                                                 
+  ---  ---- ----           ---                                                 
+14444 14424 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4             
+24332 20744 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4             
+ 6680  4248 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4             
+24152 19784 cmd.exe        C:\WINDOWS\system32\cmd.exe /d /s /c "C:\Users\xinzh
+                           \.workbuddy\plugins\cache\workbuddy-builtin\weixinpa
+                           y\1.6.110\bin\ru                                    
+ 1064 24152 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4             
+25200  1860 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4             
+23032 21776 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4             
+ 2396 19848 cmd.exe        C:\WINDOWS\system32\cmd.exe /d /s /c ""C:\Users\xinz
+                           h\.codex\plugins\cache\openai-bundled\chrome\latest\
+                           extension-host\w                                    
+31804  2396 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4             
+26276  2088 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4             
+15408 28544 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.1
+                           2.13-windows-x86_64-none\pythonw.exe -u D:\个人文件\AI\O
+                           perator\aios_too                                    
+ 8700 15408 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.1
+                           2.13-windows-x86_64-none\pythonw.exe -u D:/个人文件/AI/O
+                           perator/aios_too                                    
+21216 15408 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.1
+                           2.13-windows-x86_64-none\pythonw.exe -u D:/个人文件/AI/O
+                           perator/aios_too                                    
+11888 15408 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.1
+                           2.13-windows-x86_64-none\pythonw.exe -u D:/个人文件/AI/O
+                           perator/aios_too                                    
+25184 15408 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.1
+                           2.13-windows-x86_64-none\pythonw.exe -u D:/个人文件/AI/O
+                           perator/aios_too                                    
+11988 15408 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.1
+                           2.13-windows-x86_64-none\pythonw.exe -u D:/个人文件/AI/O
+                           perator/aios_too                                    
+20576 15408 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.1
+                           2.13-windows-x86_64-none\pythonw.exe -u D:/个人文件/AI/O
+                           perator/aios_too                                    
+29692 15408 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.1
+                           2.13-windows-x86_64-none\pythonw.exe -u D:/个人文件/AI/O
+                           perator/aios_too                                    
+26308 15408 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.1
+                           2.13-windows-x86_64-none\pythonw.exe -u D:/个人文件/AI/O
+                           perator/aios_too                                    
+15196 15408 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.1
+                           2.13-windows-x86_64-none\pythonw.exe -u D:/个人文件/AI/O
+                           perator/aios_too                                    
+17064 15408 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.1
+                           2.13-windows-x86_64-none\pythonw.exe -u D:/个人文件/AI/O
+                           perator/aios_too                                    
+35048 15408 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.1
+                           2.13-windows-x86_64-none\pythonw.exe -u D:/个人文件/AI/O
+                           perator/aios_too                                    
+27228 15408 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.1
+                           2.13-windows-x86_64-none\pythonw.exe -u D:/个人文件/AI/O
+                           perator/aios_too                                    
+31640 15408 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.1
+                           2.13-windows-x86_64-none\pythonw.exe -u D:/个人文件/AI/O
+                           perator/aios_too                                    
+17320 32964 pythonw.exe    D:\AIOS\_relinked\workbuddy\binaries\python\versions
+                           \3.13.12\pythonw.exe D:\个人文件\AI\Operator\aios_tools\
+                           r304_entrypoint_                                    
+20932 15408 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.1
+                           2.13-windows-x86_64-none\pythonw.exe -u D:/个人文件/AI/O
+                           perator/aios_too                                    
+20768 34004 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4             
+13868 34004 cmd.exe        "C:\WINDOWS\system32\cmd.exe" /d /s /c call ./script
+                           s/launch_codex_app_tools_mcp.cmd ./server.mjs       
+25764 30260 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4             
+15628 13868 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4             
+17052 24408 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4             
+ 2148 34004 cmd.exe        cmd.exe /e:ON /v:OFF /d /c ""C:\Users\xinzh\AppData\
+                           Roaming\npm\npx.cmd" @playwright/mcp --browser msedg
+                           e --headless"                                       
+ 3284  2148 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4             
+ 1252 12560 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4             
+22236 30260 python.exe     "C:\Users\xinzh\AppData\Roaming\uv\tools\windows-mcp
+                           \Scripts\python.exe" "C:\Users\xinzh\.local\bin\wind
+                           ows-mcp.exe" ser                                    
+16324 22236 python.exe     "C:\Users\xinzh\AppData\Roaming\uv\tools\windows-mcp
+                           \Scripts\python.exe" "C:\Users\xinzh\.local\bin\wind
+                           ows-mcp.exe" ser                                    
+20404 33220 cmd.exe        C:\WINDOWS\system32\cmd.exe /d /s /c playwright-mcp 
+                           --browser msedge --headless                         
+19164 22612 pythonw.exe    D:\AIOS\_relinked\workbuddy\binaries\python\versions
+                           \3.13.12\pythonw.exe D:\个人文件\AI\Operator\aios_tools\
+                           r304_entrypoint_                                    
+18728  2592 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4             
+ 5164  2592 python.exe     "C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.
+                           12.13-windows-x86_64-none\python.exe"  -u "D:\AIOS\_
+                           openai_codex_bet                                    
+17664  9444 pythonw.exe    D:\AIOS\_relinked\workbuddy\binaries\python\versions
+                           \3.13.12\pythonw.exe D:\个人文件\AI\Operator\aios_tools\
+                           r304_entrypoint_                                    
+20844 12848 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4             
+27064 12848 python.exe     "C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.
+                           12.13-windows-x86_64-none\python.exe"  -u "D:\AIOS\_
+                           openai_codex_bet                                    
+14012 33004 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4             
+34492  2216 pythonw.exe    "D:\Tools\TikTokDownloader\.venv-decompose\Scripts\p
+                           ythonw.exe" -u D:\Tools\TikTokDownloader\watchdog\su
+                           pervisor_decompo                                    
+14788 34492 pythonw.exe    "C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.
+                           12.13-windows-x86_64-none\pythonw.exe" -u D:\Tools\T
+                           ikTokDownloader\                                    
+26828 32800 pythonw.exe    D:\AIOS\_relinked\workbuddy\binaries\python\versions
+                           \3.13.12\pythonw.exe D:\个人文件\AI\Operator\aios_tools\
+                           r304_entrypoint_                                    
+28668 24520 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4             
+23796 24520 python.exe     "C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.
+                           12.13-windows-x86_64-none\python.exe"  -u "D:\AIOS\_
+                           openai_codex_bet                                    
+34080  2216 powershell.exe "powershell.exe" -NoProfile -ExecutionPolicy Bypass 
+                           -File D:\AIOS\_AIOSWatchdogAliveCheck_v3.ps1        
+19484 34080 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4             
+22496 34080 python.exe     "C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.
+                           12.13-windows-x86_64-none\python.exe" -u D:\个人文件\AI\
+                           Operator\aios_to                                    
+ 3244 20952 pythonw.exe    D:\AIOS\_relinked\workbuddy\binaries\python\versions
+                           \3.13.12\pythonw.exe D:\个人文件\AI\Operator\aios_tools\
+                           r304_entrypoint_                                    
+25216 16684 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4             
+30180 16684 python.exe     "C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.
+                           12.13-windows-x86_64-none\python.exe"  -u "D:\AIOS\_
+                           openai_codex_bet                                    
+30096 20500 cmd.exe        C:\WINDOWS\system32\cmd.exe /d /s /c "C:\Users\xinzh
+                           \.workbuddy\plugins\cache\workbuddy-builtin\weixinpa
+                           y\1.6.110\bin\ru                                    
+24028 30096 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4             
+23248 27860 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4             
+19972  2160 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4             
+ 8500 22496 pythonw.exe    C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.1
+                           2.13-windows-x86_64-none\pythonw.exe -u D:\个人文件\AI\O
+                           perator\aios_too                                    
+11704 34336 pythonw.exe    D:\AIOS\_relinked\workbuddy\binaries\python\versions
+                           \3.13.12\pythonw.exe D:\个人文件\AI\Operator\aios_tools\
+                           r304_entrypoint_                                    
+ 9152 13980 pythonw.exe    D:\AIOS\_relinked\workbuddy\binaries\python\versions
+                           \3.13.12\pythonw.exe D:\个人文件\AI\Operator\aios_tools\
+                           r304_entrypoint_                                    
+23612 25644 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4             
+16860 29440 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4             
+30252 29440 python.exe     "C:\Users\xinzh\AppData\Roaming\uv\python\cpython-3.
+                           12.13-windows-x86_64-none\python.exe"  -u "D:\AIOS\_
+                           openai_codex_bet                                    
+ 8624 31628 pythonw.exe    D:\AIOS\_relinked\workbuddy\binaries\python\versions
+                           \3.13.12\pythonw.exe D:\个人文件\AI\Operator\aios_tools\
+                           r304_entrypoint_                                    
+ 5604 23900 cmd.exe        C:\WINDOWS\system32\cmd.exe /d /s /c "C:\Users\xinzh
+                           \.workbuddy\plugins\cache\workbuddy-builtin\weixinpa
+                           y\1.6.110\bin\ru                                    
+ 6780  5604 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4             
+22724   296 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4             
+30716 21776 conhost.exe    \\?\C:\WINDOWS\system32\conhost.exe --headless --wid
+                           th 80 --height 30 --signal 0x208 --server 0x308     
+ 1624 21776 powershell.exe C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershel
+                           l.EXE -NoProfile -NonInteractive -Command "if (-not 
+                           (Get-Variable -N                                    
+14932 12920 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4             
+11980 25228 conhost.exe    \??\C:\WINDOWS\system32\conhost.exe 0x4             
+
+

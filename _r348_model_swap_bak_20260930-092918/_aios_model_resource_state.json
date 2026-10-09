@@ -1,0 +1,91 @@
+{
+  "schema_version": "1.0",
+  "resources": {
+    "chatgpt": {
+      "status": "manual",
+      "reason": "interactive strategic brain; no unattended API call",
+      "quota_remaining": null,
+      "updated_at": "2026-09-29T14:16:30+00:00"
+    },
+    "codex": {
+      "status": "available",
+      "reason": "codex CLI 0.155.1 (R322 wrapper 修复 · proxy D:/npm-global/codex.cmd)",
+      "quota_remaining": null,
+      "updated_at": "2026-09-29T14:16:30+00:00"
+    },
+    "claude_code": {
+      "status": "available",
+      "reason": "claude CLI probe",
+      "quota_remaining": null,
+      "updated_at": "2026-09-27T13:14:55.914947+00:00"
+    },
+    "minimax": {
+      "status": "available",
+      "reason": "R322 实测: https://api.minimaxi.com/v1/chat/completions MiniMax-M3 返回 200 (replaced R95 TEST D 旧伤痕 blocked)",
+      "quota_remaining": null,
+      "updated_at": "2026-09-29T14:16:30+00:00"
+    },
+    "qwen": {
+      "status": "quota_exhausted",
+      "reason": "R322 实测: Free quota exhausted (AllocationQuota.FreeTierOnly). 需付费或换 key.",
+      "quota_remaining": null,
+      "updated_at": "2026-09-29T14:16:30+00:00"
+    },
+    "deepseek": {
+      "status": "quota_exhausted",
+      "reason": "R322 实测: DeepSeek 402 Insufficient Balance. 需充值或换 key. relay 19194 LIVE.",
+      "quota_remaining": null,
+      "updated_at": "2026-09-29T14:16:30+00:00"
+    },
+    "doubao": {
+      "status": "available",
+      "reason": "R322 实测: ark.cn-beijing.volces.com /api/v3/models 返回 doubao-seed-2-1-pro (replaced R95 TEST C 旧伤痕 blocked)",
+      "quota_remaining": null,
+      "updated_at": "2026-09-29T14:16:30+00:00"
+    },
+    "local_model": {
+      "status": "available",
+      "reason": "Ollama model ready: qwen2.5:3b-64k",
+      "quota_remaining": null,
+      "updated_at": "2026-09-28T21:25:00.000000+00:00"
+    },
+    "gpt-5-codex": {
+      "status": "available",
+      "reason": "config_default",
+      "quota_remaining": null,
+      "updated_at": null
+    },
+    "codex_desktop_thread": {
+      "status": "manual",
+      "reason": "manual execution boundary",
+      "quota_remaining": null,
+      "updated_at": "2026-09-27T13:14:55.914947+00:00"
+    },
+    "codex_appserver": {
+      "status": "manual",
+      "reason": "manual execution boundary",
+      "quota_remaining": null,
+      "updated_at": "2026-09-27T13:14:55.914947+00:00"
+    },
+    "codex_stdio": {
+      "status": "manual",
+      "reason": "manual execution boundary",
+      "quota_remaining": null,
+      "updated_at": "2026-09-27T13:14:55.914947+00:00"
+    },
+    "gpt-image-2": {
+      "status": "manual",
+      "reason": "manual execution boundary",
+      "quota_remaining": null,
+      "updated_at": "2026-09-27T13:14:55.914947+00:00"
+    },
+    "agnes_pro": {
+      "status": "available",
+      "reason": "config_default",
+      "quota_remaining": null,
+      "updated_at": null
+    }
+  },
+  "updated_at": "2026-09-29T14:16:30+00:00",
+  "_r322_note": "修 R95 TEST 旧伤痕 blocked: minimax/doubao 实测 available, qwen/deepseek quota_exhausted (需付费或换 key). 备份见 _backups/_aios_model_resource_state.bak-r322-fix-blocked-20260929"
+}

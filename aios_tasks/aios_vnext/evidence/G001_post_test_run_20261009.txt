@@ -1,0 +1,24 @@
+........................................................................ [ 22%]
+........................................................................ [ 45%]
+........................................................................ [ 67%]
+...................................F..F........................F...FEFE. [ 89%]
+................................                                         [100%]
+============================== warnings summary ===============================
+tests/unit/test_cross_agent_knowledge.py::test_agent_name_enum_5_values
+  D:\AIOS\kernel\.venv\Lib\site-packages\pytest_asyncio\plugin.py:916: PytestDeprecationWarning: Overriding the "event_loop_policy" fixture is deprecated and will be removed in a future version of pytest-asyncio. Use the "pytest_asyncio_loop_factories" hook to customize event loop creation.
+    warnings.warn(
+
+tests/unit/test_workers.py::test_codex_adapter
+  D:\AIOS\kernel\src\aios_kernel\workers\base.py:57: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    last_check_at=datetime.utcnow(),
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+ERROR tests/unit/test_services_persistence.py::test_full_artifact_evidence_trace_chain
+ERROR tests/unit/test_services_persistence.py::test_naive_datetime_rejected_in_orm
+FAILED tests/unit/test_migration.py::test_downgrade_minus_one_removes_tables
+FAILED tests/unit/test_migration.py::test_current_revision_is_001 - Assertion...
+FAILED tests/unit/test_services_persistence.py::test_goal_service_activate_and_complete
+FAILED tests/unit/test_services_persistence.py::test_full_artifact_evidence_trace_chain
+FAILED tests/unit/test_services_persistence.py::test_naive_datetime_rejected_in_orm
+5 failed, 313 passed, 2 warnings, 2 errors in 37.10s

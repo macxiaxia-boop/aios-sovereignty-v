@@ -1,0 +1,267 @@
+﻿"TimeCreated","Snippet"
+"2026/9/28 15:27:01","正在创建 Scriptblock 文本(已完成 1，共 1):
+# WMIC Forensics - 6-channel static scan
+# Sections 10-17: scheduled tasks, services, autoruns, WMI subscriptions, PS logs, code refs
+
+$outDir = ""D:\AIOS\wmic_forensics""
+$evidenceDir = ""$outDir/evidence""
+
+Write-Host ""=== STATIC SCAN (no modifications) ==="" -ForegroundColor Cyan
+
+# 1. Scheduled Tasks (Section 10)
+Write-Host ""`n--- Scheduled Tasks ---"" -ForegroundColor Yellow
+$tasks = Get-ScheduledTask | ForEach-Object {
+    $task = $_
+    foreach ($action in $task.Actions) {
+        [PSCustomObject]@{
+            TaskPath = $task.TaskPath
+            TaskName = $task.TaskName
+            State = $task.State
+            Execute = $action.Execute
+            Arguments = $action.Arguments
+            WorkingDirectory = $action.WorkingDirectory
+        }
+    }
+}"
+"2026/9/28 15:03:59","正在创建 Scriptblock 文本(已完成 2，共 2):
+eItems = New-Object System.Collections.Generic.List[object]
+
+        foreach ($targetSpec in $targetSpecs) {
+            if ($targetSpec.IsLiteral) {
+                $resolvedItems = @(Microsoft.PowerShell.Management\Resolve-Path -LiteralPath $targetSpec.Value -ErrorAction SilentlyContinue)
+            } else {
+                $resolvedItems = @(Microsoft.PowerShell.Management\Resolve-Path -Path $targetSpec.Value -ErrorAction SilentlyContinue)
+            }
+
+            if ($resolvedItems.Count -eq 0) {
+                if ($force) { continue }
+                throw (New-SafeDeleteFailClosedMessage $targetSpec.Value 'path-not-found')
+            }
+
+            foreach ($resolved in $resolvedItems) {
+                $resolvedPath = [string]$resolved.Path
+    "
+"2026/9/28 15:03:39","正在创建 Scriptblock 文本(已完成 1，共 1):
+if (-not (Get-Variable -Name CODEBUDDY_SAFE_DELETE_PS_READY -Scope Global -ErrorAction SilentlyContinue)) {
+    $Global:CODEBUDDY_SAFE_DELETE_PS_READY = $true
+
+    Add-Type -AssemblyName Microsoft.VisualBasic | Out-Null
+
+    function New-SafeDeleteFailClosedMessage {
+        param(
+            [AllowEmptyString()] [string]$Target,
+            [string]$Reason,
+            [AllowEmptyString()] [string]$Detail = ''
+        )
+
+        $payload = [ordered]@{
+            target = $Target
+            reason = $Reason
+        }
+        if ($Detail) {
+            $payload['detail'] = $Detail
+        }
+        return '[safe-delete][SAFE_DELETE_FAIL_CLOSED] ' + ($payload | ConvertTo-Json -Compress)
+    }
+
+    function Write-SafeDeleteReport {
+        param([string]$Ta"
+"2026/9/28 14:58:58","正在创建 Scriptblock 文本(已完成 1，共 1):
+if (-not (Get-Variable -Name CODEBUDDY_SAFE_DELETE_PS_READY -Scope Global -ErrorAction SilentlyContinue)) {
+    $Global:CODEBUDDY_SAFE_DELETE_PS_READY = $true
+
+    Add-Type -AssemblyName Microsoft.VisualBasic | Out-Null
+
+    function New-SafeDeleteFailClosedMessage {
+        param(
+            [AllowEmptyString()] [string]$Target,
+            [string]$Reason,
+            [AllowEmptyString()] [string]$Detail = ''
+        )
+
+        $payload = [ordered]@{
+            target = $Target
+            reason = $Reason
+        }
+        if ($Detail) {
+            $payload['detail'] = $Detail
+        }
+        return '[safe-delete][SAFE_DELETE_FAIL_CLOSED] ' + ($payload | ConvertTo-Json -Compress)
+    }
+
+    function Write-SafeDeleteReport {
+        param([string]$Ta"
+"2026/9/28 14:58:41","正在创建 Scriptblock 文本(已完成 1，共 1):
+if (-not (Get-Variable -Name CODEBUDDY_SAFE_DELETE_PS_READY -Scope Global -ErrorAction SilentlyContinue)) {
+    $Global:CODEBUDDY_SAFE_DELETE_PS_READY = $true
+
+    Add-Type -AssemblyName Microsoft.VisualBasic | Out-Null
+
+    function New-SafeDeleteFailClosedMessage {
+        param(
+            [AllowEmptyString()] [string]$Target,
+            [string]$Reason,
+            [AllowEmptyString()] [string]$Detail = ''
+        )
+
+        $payload = [ordered]@{
+            target = $Target
+            reason = $Reason
+        }
+        if ($Detail) {
+            $payload['detail'] = $Detail
+        }
+        return '[safe-delete][SAFE_DELETE_FAIL_CLOSED] ' + ($payload | ConvertTo-Json -Compress)
+    }
+
+    function Write-SafeDeleteReport {
+        param([string]$Ta"
+"2026/9/28 14:58:27","正在创建 Scriptblock 文本(已完成 1，共 1):
+if (-not (Get-Variable -Name CODEBUDDY_SAFE_DELETE_PS_READY -Scope Global -ErrorAction SilentlyContinue)) {
+    $Global:CODEBUDDY_SAFE_DELETE_PS_READY = $true
+
+    Add-Type -AssemblyName Microsoft.VisualBasic | Out-Null
+
+    function New-SafeDeleteFailClosedMessage {
+        param(
+            [AllowEmptyString()] [string]$Target,
+            [string]$Reason,
+            [AllowEmptyString()] [string]$Detail = ''
+        )
+
+        $payload = [ordered]@{
+            target = $Target
+            reason = $Reason
+        }
+        if ($Detail) {
+            $payload['detail'] = $Detail
+        }
+        return '[safe-delete][SAFE_DELETE_FAIL_CLOSED] ' + ($payload | ConvertTo-Json -Compress)
+    }
+
+    function Write-SafeDeleteReport {
+        param([string]$Ta"
+"2026/9/28 14:56:01","正在创建 Scriptblock 文本(已完成 2，共 2):
+         $candidatePath = [string]$pipedItem
+                }
+
+                if (-not [string]::IsNullOrWhiteSpace($candidatePath) -and $pipelinePathSeen.Add($candidatePath)) {
+                    $targetSpecs.Add([pscustomobject]@{
+                        Value = $candidatePath
+                        IsLiteral = $true
+                    })
+                }
+            }
+        }
+
+        if ($interactive) {
+            throw (New-SafeDeleteFailClosedMessage '' 'interactive-not-supported')
+        }
+
+        if ($targetSpecs.Count -eq 0) {
+            throw 'Remove-Item: missing path operand'
+        }
+
+        $trashBin = $env:CODEBUDDY_SAFE_DELETE_TRASH_BIN
+        if (-not $trashBin -and $env:GENIE_TRASH_DIR) {
+            $arch = if (($env:PROCES"
+"2026/9/28 14:53:07","正在创建 Scriptblock 文本(已完成 1，共 1):
+if (-not (Get-Variable -Name CODEBUDDY_SAFE_DELETE_PS_READY -Scope Global -ErrorAction SilentlyContinue)) {
+    $Global:CODEBUDDY_SAFE_DELETE_PS_READY = $true
+
+    Add-Type -AssemblyName Microsoft.VisualBasic | Out-Null
+
+    function New-SafeDeleteFailClosedMessage {
+        param(
+            [AllowEmptyString()] [string]$Target,
+            [string]$Reason,
+            [AllowEmptyString()] [string]$Detail = ''
+        )
+
+        $payload = [ordered]@{
+            target = $Target
+            reason = $Reason
+        }
+        if ($Detail) {
+            $payload['detail'] = $Detail
+        }
+        return '[safe-delete][SAFE_DELETE_FAIL_CLOSED] ' + ($payload | ConvertTo-Json -Compress)
+    }
+
+    function Write-SafeDeleteReport {
+        param([string]$Ta"
+"2026/9/28 14:45:08","正在创建 Scriptblock 文本(已完成 1，共 1):
+if (-not (Get-Variable -Name CODEBUDDY_SAFE_DELETE_PS_READY -Scope Global -ErrorAction SilentlyContinue)) {
+    $Global:CODEBUDDY_SAFE_DELETE_PS_READY = $true
+
+    Add-Type -AssemblyName Microsoft.VisualBasic | Out-Null
+
+    function New-SafeDeleteFailClosedMessage {
+        param(
+            [AllowEmptyString()] [string]$Target,
+            [string]$Reason,
+            [AllowEmptyString()] [string]$Detail = ''
+        )
+
+        $payload = [ordered]@{
+            target = $Target
+            reason = $Reason
+        }
+        if ($Detail) {
+            $payload['detail'] = $Detail
+        }
+        return '[safe-delete][SAFE_DELETE_FAIL_CLOSED] ' + ($payload | ConvertTo-Json -Compress)
+    }
+
+    function Write-SafeDeleteReport {
+        param([string]$Ta"
+"2026/9/28 14:38:55","正在创建 Scriptblock 文本(已完成 1，共 1):
+if (-not (Get-Variable -Name CODEBUDDY_SAFE_DELETE_PS_READY -Scope Global -ErrorAction SilentlyContinue)) {
+    $Global:CODEBUDDY_SAFE_DELETE_PS_READY = $true
+
+    Add-Type -AssemblyName Microsoft.VisualBasic | Out-Null
+
+    function New-SafeDeleteFailClosedMessage {
+        param(
+            [AllowEmptyString()] [string]$Target,
+            [string]$Reason,
+            [AllowEmptyString()] [string]$Detail = ''
+        )
+
+        $payload = [ordered]@{
+            target = $Target
+            reason = $Reason
+        }
+        if ($Detail) {
+            $payload['detail'] = $Detail
+        }
+        return '[safe-delete][SAFE_DELETE_FAIL_CLOSED] ' + ($payload | ConvertTo-Json -Compress)
+    }
+
+    function Write-SafeDeleteReport {
+        param([string]$Ta"
+"2026/9/28 14:36:21","正在创建 Scriptblock 文本(已完成 2，共 2):
+pedItem.PSObject.Properties['Path']) {
+                    $candidatePath = [string]$pipedItem.Path
+                } else {
+                    $candidatePath = [string]$pipedItem
+                }
+
+                if (-not [string]::IsNullOrWhiteSpace($candidatePath) -and $pipelinePathSeen.Add($candidatePath)) {
+                    $targetSpecs.Add([pscustomobject]@{
+                        Value = $candidatePath
+                        IsLiteral = $true
+                    })
+                }
+            }
+        }
+
+        if ($interactive) {
+            throw (New-SafeDeleteFailClosedMessage '' 'interactive-not-supported')
+        }
+
+        if ($targetSpecs.Count -eq 0) {
+            throw 'Remove-Item: missing path operand'
+        }
+
+        $tras"

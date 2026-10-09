@@ -1,0 +1,19 @@
+{
+  "assignee": "codex",
+  "correlation_envelope_id": null,
+  "created_at": "2026-10-08T17:44:02Z",
+  "description": "",
+  "error": null,
+  "heartbeat_at": null,
+  "input_payload": {},
+  "lease_expires_at": null,
+  "max_retries": 3,
+  "output_payload": {},
+  "owner": "claudecode",
+  "retry_count": 0,
+  "state": "queued",
+  "task_id": "13c2166f-368c-4621-b894-749c11306e14",
+  "timeout_ms": 60000,
+  "title": "cross-session probe",
+  "updated_at": "2026-10-08T17:44:02Z"
+}

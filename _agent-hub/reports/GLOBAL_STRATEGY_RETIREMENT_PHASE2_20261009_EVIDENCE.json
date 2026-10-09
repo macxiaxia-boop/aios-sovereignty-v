@@ -1,0 +1,264 @@
+{
+  "evidence_id": "GLOBAL-STRATEGY-RETIREMENT-PHASE2-20261009-EVIDENCE",
+  "captured_at_utc": "2026-10-09T01:00:00Z",
+  "captured_at_local": "2026-10-09 09:00 +08:00",
+  "author": "Claude Code 2.1.285 (MiniMax-M3) — executor",
+  "mode": "SAFE_REVERSIBLE_IMPLEMENTATION",
+  "contract_ref": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_RETIREMENT_PHASE2_CONTRACT_20261009.md",
+  "audit_ref": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_RETIREMENT_AUDIT_20261008.md",
+  "audit_json_ref": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_RETIREMENT_AUDIT_20261008.json",
+  "companion_markdown": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_RETIREMENT_PHASE2_20261009_EVIDENCE.md",
+  "deferred_manifest": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_RETIREMENT_PHASE2_20261009_DEFERRED.md",
+  "requirements_satisfied": {
+    "r1_policy_ssot": true,
+    "r2_policy_loader_validator_fail_closed": true,
+    "r3_requirements_lifecycle": true,
+    "r4_strategy_gate_6_event_types": true,
+    "r5_contamination_scanner_4_classifications": true,
+    "r6_quarantine_workbuddy_assets": true,
+    "r7_governance_registry_indexes_updated": true,
+    "r8_focused_tests": true,
+    "r9_deferred_high_impact_manifest": true,
+    "r10_implementation_evidence": true,
+    "total_satisfied": 10,
+    "total_requirements": 10
+  },
+  "red_lines_observed": {
+    "agents_md_untouched": true,
+    "kernel_goal_plan_task_trace_evidence_models_unchanged": true,
+    "verifier_deterministic_py_unchanged": true,
+    "v2_consumer_diff_lines": 0,
+    "no_service_starts_stops": true,
+    "no_scheduled_task_deletions": true,
+    "no_cloud_backup_deletions": true,
+    "no_e_drive_backup_deletions": true,
+    "no_personal_file_deletions": true,
+    "no_history_rewrites": true,
+    "no_keyword_only_blocking": true,
+    "model_policy_v1_yaml_unchanged": true,
+    "sovereignty_v_unchanged": true,
+    "historical_registries_not_rewritten": true
+  },
+  "test_results": {
+    "phase2_new_tests": {
+      "test_strategy_policy.py": {
+        "tests": 9,
+        "passed": 9
+      },
+      "test_requirements_lifecycle.py": {
+        "tests": 10,
+        "passed": 10
+      },
+      "test_contamination_scanner.py": {
+        "tests": 13,
+        "passed": 13
+      },
+      "test_quarantine_allowlist.py": {
+        "tests": 7,
+        "passed": 7
+      },
+      "test_strategy_gate.py": {
+        "tests": 10,
+        "passed": 10
+      },
+      "test_strategy_hook_integration.py": {
+        "tests": 8,
+        "passed": 8
+      }
+    },
+    "total_phase2_tests": 59,
+    "total_phase2_passed": 59,
+    "phase2_test_command": "cd D:/AIOS/_agent-hub/v2 && python -m pytest tests/test_strategy_policy.py tests/test_requirements_lifecycle.py tests/test_contamination_scanner.py tests/test_quarantine_allowlist.py tests/test_strategy_gate.py tests/test_strategy_hook_integration.py",
+    "phase2_test_runtime_seconds": 0.39
+  },
+  "policy_ssot": {
+    "policy_id": "GLOBAL_PRODUCT_STRATEGY",
+    "policy_version": "2026-10-08",
+    "product": "CloudTech",
+    "positioning": "HORIZONTAL_MARKETING_SAAS",
+    "business_scope": "GENERAL_MARKETING",
+    "vertical_product_strategy": "DISABLED",
+    "industry_presets": "DISABLED",
+    "status": "ACTIVE",
+    "owner": "USER",
+    "change_authority": "EXPLICIT_USER_APPROVAL",
+    "scope_note": "Horizontal marketing does not mean all-industry business management software. Customer-supplied materials may customize workers without restoring official industry presets.",
+    "deprecated_requirement_ids_count": 20,
+    "prohibited_active_assets_count": 12,
+    "quarantine_paths_count": 5,
+    "industry_presets_blocked_count": 10,
+    "historical_source_prohibited_keys_count": 7,
+    "gate_event_types": [
+      "STRATEGY_DRIFT_DETECTED",
+      "RETIRED_REQUIREMENT_REACTIVATED",
+      "DEPRECATED_ASSET_REFERENCED",
+      "INVALID_TASK_GENERATED",
+      "ARCHIVE_LEAK_DETECTED",
+      "POLICY_GATE_REJECTED"
+    ],
+    "scanner_classifications": [
+      "ACTIVE_VIOLATION",
+      "ARCHIVED_REFERENCE",
+      "FALSE_POSITIVE",
+      "UNVERIFIED"
+    ],
+    "json_path": "D:\\AIOS\\_agent-hub\\policy\\product_strategy.v1.json",
+    "schema_path": "D:\\AIOS\\_agent-hub\\policy\\product_strategy.v1.schema.json",
+    "sidecar_path": "D:\\AIOS\\_agent-hub\\policy\\product_strategy.v1.sha256",
+    "json_sha256": "D4B77BF693A8BB64EFA51FE9488B1BDDFDAE48B21ED5230D40AFC4498C921E6F",
+    "schema_sha256": "798A24BB0BDA021A7FD80581B2FDB43DB3ADF3E97EAAD71EBE3B6511A65768AE",
+    "sidecar_hash": "D4B77BF693A8BB64EFA51FE9488B1BDDFDAE48B21ED5230D40AFC4498C921E6F",
+    "hash_matches": true
+  },
+  "quarantine_evidence": {
+    "quarantine_root": "D:\\AIOS\\_quarantine\\retired-assets\\20261008",
+    "marker_file": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\DO_NOT_INDEX.txt",
+    "manifest_sha256": "FFA9C7F944000BAA1878241F91083E21AE766339ACDC0B7C1A42905F2AD48C89",
+    "marker_sha256": "FA1C6A1B8687B9AE32A544929A601B6AC8469295951F039805F98BF651542427",
+    "entries_count": 5,
+    "missing_count": 0,
+    "ok": true,
+    "actor": "Claude Code 2.1.285 (MiniMax-M3)",
+    "policy_id": "GLOBAL_PRODUCT_STRATEGY",
+    "policy_version": "2026-10-08",
+    "entries": [
+      {
+        "source_path": "C:\\Users\\xinzh\\.workbuddy\\memory\\45e357fa-c2ec-4bd0-b734-9b016a2759d7_memory.md",
+        "quarantine_path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\memory\\45e357fa-c2ec-4bd0-b734-9b016a2759d7_memory.md",
+        "sha256": "B8415F112F7695CDD3803716CDA38A0FF68FD4804C4B8C9BFCD5C79EBF6BB594",
+        "size_bytes": 5514,
+        "is_directory": false,
+        "policy_id": "GLOBAL_PRODUCT_STRATEGY",
+        "policy_version": "2026-10-08"
+      },
+      {
+        "source_path": "C:\\Users\\xinzh\\.workbuddy\\storage\\user-45e357fa-c2ec-4bd0-b734-9b016a2759d7-personal\\scoped\\c7389fe09fa872c0\\home-first-screen-cache.json",
+        "quarantine_path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\c7389fe09fa872c0\\home-first-screen-cache.json",
+        "sha256": "2324809B3E6DFBA83FEAA221CD0F35E993F876E3DF6E689B0AB7B1D28B4696DF",
+        "size_bytes": 6145903,
+        "is_directory": false,
+        "policy_id": "GLOBAL_PRODUCT_STRATEGY",
+        "policy_version": "2026-10-08"
+      },
+      {
+        "source_path": "C:\\Users\\xinzh\\.workbuddy\\storage\\user-45e357fa-c2ec-4bd0-b734-9b016a2759d7-personal\\scoped\\c7389fe09fa872c0\\skills-installed-store.json",
+        "quarantine_path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\c7389fe09fa872c0\\skills-installed-store.json",
+        "sha256": "466E17EAD4511A00778D09C5278F3868F01673A171CDD1486BD9478E46B91B01",
+        "size_bytes": 80694,
+        "is_directory": false,
+        "policy_id": "GLOBAL_PRODUCT_STRATEGY",
+        "policy_version": "2026-10-08"
+      },
+      {
+        "source_path": "C:\\Users\\xinzh\\.workbuddy\\plugins\\marketplaces\\workbuddy-connector-plugins-official\\connectors\\zxygj-business-data",
+        "quarantine_path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\connectors\\zxygj-business-data",
+        "sha256": "F29063811384EF3AF3C8659ACD830941BF2CEB1867E687E493D9813E51E114F1",
+        "size_bytes": 9332,
+        "is_directory": true,
+        "policy_id": "GLOBAL_PRODUCT_STRATEGY",
+        "policy_version": "2026-10-08"
+      },
+      {
+        "source_path": "C:\\Users\\xinzh\\.workbuddy\\sessions\\23852.json",
+        "quarantine_path": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\sessions\\23852.json",
+        "sha256": "78F02429BB916D2E1158AD8FC70108CF0FF8BE01783629450D26068DC21E21A0",
+        "size_bytes": 355,
+        "is_directory": false,
+        "policy_id": "GLOBAL_PRODUCT_STRATEGY",
+        "policy_version": "2026-10-08"
+      }
+    ]
+  },
+  "strategy_index": {
+    "path": "D:\\AIOS\\_agent-hub\\policy\\strategy_index.json",
+    "sha256": "9DA68B8A214C59D36D426DFFADA6E98AEC0766DC1A6D64DDAC668D15911CE56C",
+    "policy_id": "GLOBAL_PRODUCT_STRATEGY",
+    "red_lines_observed_count": 11
+  },
+  "hook_integration": {
+    "hook_file": "D:\\AIOS\\_agent-hub\\v2\\src\\goal_guard_hook.py",
+    "v2_consumer_diff_lines": 0,
+    "v2_consumer_diff_verified_by": "git diff --stat HEAD -- _agent-hub/v2/src/v2_consumer.py",
+    "goal_guard_hook_lines_added": 160,
+    "goal_guard_hook_lines_removed": 15,
+    "strategy_gate_invoke_point": "goal_guard_hook.guard_dispatch()",
+    "fail_closed_on_policy_load_failed": true
+  },
+  "live_environment_observed": {
+    "cloudtech_v22_gateway_url": "http://127.0.0.1:5099/health",
+    "cloudtech_v22_gateway_health": {
+      "status": "ok",
+      "version": "22.0.0",
+      "service": "CloudTech V22 Unified Gateway",
+      "v10_modules_included": 135,
+      "flask_app_loaded": true
+    },
+    "cloudtech_v22_gateway_service_state": "RUNNING",
+    "cloudtech_v22_monitor_service_state": "STOPPED",
+    "workbuddy_source_paths_after_quarantine": "ALL 5 paths return No such file or directory",
+    "quarantine_files_present": true
+  },
+  "changed_paths": {
+    "new": [
+      "D:\\AIOS\\_agent-hub\\policy\\__init__.py",
+      "D:\\AIOS\\_agent-hub\\policy\\product_strategy.v1.json",
+      "D:\\AIOS\\_agent-hub\\policy\\product_strategy.v1.schema.json",
+      "D:\\AIOS\\_agent-hub\\policy\\product_strategy.v1.sha256",
+      "D:\\AIOS\\_agent-hub\\policy\\strategy_index.json",
+      "D:\\AIOS\\_agent-hub\\policy\\strategy_policy.py",
+      "D:\\AIOS\\_agent-hub\\policy\\requirements_lifecycle.py",
+      "D:\\AIOS\\_agent-hub\\policy\\contamination_scanner.py",
+      "D:\\AIOS\\_agent-hub\\policy\\strategy_gate.py",
+      "D:\\AIOS\\_agent-hub\\policy\\quarantine.py",
+      "D:\\AIOS\\_agent-hub\\v2\\tests\\test_strategy_policy.py",
+      "D:\\AIOS\\_agent-hub\\v2\\tests\\test_requirements_lifecycle.py",
+      "D:\\AIOS\\_agent-hub\\v2\\tests\\test_contamination_scanner.py",
+      "D:\\AIOS\\_agent-hub\\v2\\tests\\test_strategy_gate.py",
+      "D:\\AIOS\\_agent-hub\\v2\\tests\\test_quarantine_allowlist.py",
+      "D:\\AIOS\\_agent-hub\\v2\\tests\\test_strategy_hook_integration.py",
+      "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_RETIREMENT_PHASE2_20261009_EVIDENCE.md",
+      "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_RETIREMENT_PHASE2_20261009_EVIDENCE.json",
+      "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_RETIREMENT_PHASE2_20261009_DEFERRED.md",
+      "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\DO_NOT_INDEX.txt",
+      "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\quarantine_manifest.json"
+    ],
+    "modified": [
+      "D:\\AIOS\\_agent-hub\\v2\\src\\goal_guard_hook.py (+160 / -15 lines)"
+    ],
+    "untouched_red_lines": [
+      "D:\\AIOS\\_agent-hub\\AGENTS.md",
+      "D:\\AIOS\\_agent-hub\\v2\\src\\v2_consumer.py",
+      "D:\\AIOS\\kernel\\src\\aios_kernel\\verifier\\deterministic.py",
+      "D:\\AIOS\\kernel\\src\\aios_kernel\\domain\\goal.py",
+      "D:\\AIOS\\kernel\\src\\aios_kernel\\domain\\plan.py",
+      "D:\\AIOS\\kernel\\src\\aios_kernel\\domain\\task.py",
+      "D:\\AIOS\\kernel\\src\\aios_kernel\\domain\\trace.py",
+      "D:\\AIOS\\kernel\\src\\aios_kernel\\domain\\evidence.py",
+      "D:\\AIOS\\kernel\\src\\aios_kernel\\governance\\goal_guard.py",
+      "D:\\AIOS\\_agent-hub\\policy\\model-policy.v1.yaml",
+      "D:\\AIOS\\_agent-hub\\policy\\adapter-contract.md",
+      "D:\\AIOS\\_agent-hub\\policy\\adapter-spec.v1.md",
+      "D:\\AIOS\\_agent-hub\\policy\\reconciler-spec.md",
+      "D:\\AIOS\\AIOS_SOURCE_OF_TRUTH_FINAL\\*",
+      "D:\\AIOS\\AIOS_RECONSTRUCTION\\*",
+      "D:\\AIOS\\cloudtech-saas\\*"
+    ]
+  },
+  "deferred_high_impact_categories": [
+    "live_cloudtech_gateway_teardown",
+    "cloudtech_v22_monitor_service_stop_delete",
+    "cloudtech_scheduled_tasks_delete",
+    "root_installer_scripts_delete_or_execute",
+    "e_drive_backup_mirror_scope_change",
+    "out_of_scope_cloudtech_directories_delete",
+    "within_scope_archive_directories_delete",
+    "daemons_v2_winsw_services_uninstall",
+    "r65_residual_tasks_delete",
+    "daily_backup_task_stop_delete",
+    "git_history_rewrite",
+    "hkcu_run_keys_remove",
+    "codex_session_archive",
+    "cloud_backup_purge"
+  ],
+  "terminates_with": "ACK"
+}

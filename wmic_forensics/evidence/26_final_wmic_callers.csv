@@ -1,0 +1,8 @@
+﻿"File","Modified","Match"
+"D:\demo\AIOS_AUDIT_20260927\R253_cleanup_backup\2026-09-27-pre-control-plane.bak\hermes\.hermes\hermes-agent\tests\hermes_cli\test_gateway.py","2026/9/26 21:48:54","monkeypatch.setattr(gateway.shutil, ""which"", lambda name: ""wmic.exe"" if name == ""wmic"" else None)"
+"D:\Tools\TikTokDownloader\watchdog\_audit_subprocess_create_no_window.py","2026/9/20 11:53:27","""ffmpeg.exe"", ""ffprobe.exe"", ""ollama.exe"", ""wmic.exe"", ""tasklist.exe"","
+"D:\Tools\TikTokDownloader\watchdog\_popup_cure_watchdog.py","2026/9/25 21:33:01","""wmic.exe"","
+"D:\Tools\TikTokDownloader\watchdog\_stage_watchdog.py","2026/9/25 20:45:19","[""wmic"", ""process"", ""where"", f""ProcessId={pid}"", ""get"", ""CommandLi"
+"D:\Tools\TikTokDownloader\auto_shutdown.py","2026/9/20 11:53:08","# Windows: 涓嶈 wmic.exe / shutdown.exe 鑷繁寮归粦鑹叉帶鍒跺彴绐楀彛 (R78 V19 娌绘湰, 绾㈢嚎 #78)"
+"D:\Tools\TikTokDownloader\watchdog.py","2026/9/20 11:52:56","# Windows: 涓嶈 tasklist.exe / wmic.exe 鑷繁寮归粦鑹叉帶鍒跺彴绐楀彛 (R78 V19 娌绘湰, 绾㈢嚎 #78)"
+"C:\Users\xinzh\.claude\projects\C--Users-xinzh\memory\bin\skill_rating_monthly.bat","2026/9/3 15:58:55","REM 鏃堕棿鎴筹紙YYYY-MM-DD锛?for /f ""tokens=2 delims=="" %%I in ('wmic os get localdatetime /value') do set TS=%%I"

@@ -1,0 +1,2 @@
+﻿"CreatorSID","EventAccess","EventNamespace","Name","Query","QueryLanguage","PSComputerName"
+"System.Byte[]",,"root\cimv2","SCM Event Log Filter","select * from MSFT_SCMEventLogEvent","WQL",
