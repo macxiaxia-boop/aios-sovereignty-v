@@ -56,6 +56,9 @@ from .strategy_policy import (
     load_strategy_policy,
     retired_alias_kind_of,
 )
+# A-7 fix: terminal envelope types that bypass gate scanning
+_INTERNAL_MESSAGE_TYPES = frozenset(("result", "ack", "status", "heartbeat", "error"))
+
 from .requirements_lifecycle import (
     LifecycleState,
     RequirementsRegistry,
@@ -69,6 +72,9 @@ from .contamination_scanner import (
 
 # ---------------------------------------------------------------- Models
 @dataclass
+
+# A-7 fix: terminal envelope types that bypass gate scanning
+
 class GateEvent:
     """A single gate event emitted during evaluation."""
 
@@ -136,6 +142,21 @@ class GateDecision:
         return hits
 
 # ---------------------------------------------------------------- Gate
+
+@dataclass
+class _QuickAllow:
+    """Lightweight allow GateDecision (defense-in-depth)."""
+    allowed: bool = True
+    events: list = field(default_factory=list)
+    risk_envelope = None
+    reason: str = ""
+    envelope: dict = field(default_factory=dict)
+
+    def to_dict(self):
+        return {"allowed": self.allowed, "reason": self.reason,
+                "events": [e.to_dict() if hasattr(e, "to_dict") else e for e in self.events]}
+
+
 class StrategyGate:
     """The strategy gate. Stateless; everything comes from the policy + registry."""
 
@@ -175,6 +196,10 @@ class StrategyGate:
                 "envelope is not a dict",
             ))
             return self._reject(envelope, events, "invalid_envelope_shape")
+        # A-7 fix: terminal/internal envelopes bypass gate scanning
+        msg_type_check = envelope.get("message_type", "")
+        if isinstance(msg_type_check, str) and msg_type_check in _INTERNAL_MESSAGE_TYPES:
+            return self._allow(envelope, events, reason="internal_terminal_bypass")
 
         payload = envelope.get("payload") or {}
         msg_type = envelope.get("message_type") or ""
@@ -214,6 +239,24 @@ class StrategyGate:
             events.append(self._mk_event(
                 "DEPRECATED_ASSET_REFERENCED", "BLOCK",
                 f"references deprecated asset / source key {hit}",
+                matched_id=hit,
+            ))
+
+        # 3a. quarantine_paths (A-2 fix): WorkBuddy etc.
+        qp_hits = self._scan_for_quarantine_paths(text)
+        for hit in qp_hits:
+            events.append(self._mk_event(
+                "DEPRECATED_ASSET_REFERENCED", "BLOCK",
+                f"references quarantine path {hit}",
+                matched_id=hit,
+            ))
+
+        # 3b. prohibited_active_assets (A-1 / F-NEW-1): PA-01..12 from policy
+        pa_hits = self._scan_for_prohibited_assets(text)
+        for hit in pa_hits:
+            events.append(self._mk_event(
+                "DEPRECATED_ASSET_REFERENCED", "BLOCK",
+                f"references prohibited active asset {hit}",
                 matched_id=hit,
             ))
 
@@ -266,8 +309,16 @@ class StrategyGate:
                     source_classification="text_only",
                 ))
 
-        # 5. malformed payload: task/message envelopes need title + success_criteria
-        if msg_type in ("task", "message") and isinstance(payload, dict):
+        # 5. malformed payload: task/message envelopes need title + success_criteria (A-3 fix)
+        if msg_type in ("task", "message"):
+            if not isinstance(payload, dict):
+                # A-3: non-empty wrong-type payload (list/str/num) was bypassed before
+                events.append(self._mk_event(
+                    "INVALID_TASK_GENERATED", "BLOCK",
+                    f"task payload must be a dict, got {type(payload).__name__}",
+                    matched_id="payload_type",
+                ))
+                return self._reject(envelope, events, "payload_type_invalid")
             if not (payload.get("title") or payload.get("text")):
                 events.append(self._mk_event(
                     "INVALID_TASK_GENERATED", "BLOCK",
@@ -343,6 +394,23 @@ class StrategyGate:
                 out.append(key)
         return sorted(set(out))
 
+    def _scan_for_quarantine_paths(self, text: str) -> list[str]:
+        """A-2 fix: scan for any policy-defined quarantine_paths match."""
+        hits = []
+        if not self.policy:
+            return hits
+        for qpath in self.policy.get("quarantine_paths", []) or []:
+            if not isinstance(qpath, str):
+                continue
+            tokens = qpath.split()[:3]
+            if len(tokens) < 1:
+                continue
+            fingerprint = " ".join(tokens)
+            if fingerprint in text:
+                hits.append(qpath)
+        return hits
+
+
     def _scan_for_archive_leak(self, text: str) -> list[str]:
         out: list[str] = []
         if not text:
@@ -389,6 +457,11 @@ class StrategyGate:
             matched_token=matched_token,
             source_classification=source_classification,
         )
+
+    def _allow(self, envelope, events, reason: str = ""):
+        """Helper: positive (allowed) GateDecision."""
+        return _QuickAllow(envelope=envelope, events=events, reason=reason)
+
 
     def _reject(self, envelope: dict, events: list[GateEvent], reason: str,
                 *, matched_event: str | None = None) -> GateDecision:
