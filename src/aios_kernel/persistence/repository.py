@@ -66,6 +66,10 @@ class SqlAlchemyRepository:
 
     def __init__(self, session):
         self.session = session
+        # Lightweight event log (Phase F backward-compat with InMemoryRepository).
+        # Tests introspect repo.events to count add/commit calls.
+        # AIOS-SOVEREIGNTY-V R2026-10-09: additive, non-breaking.
+        self.events: list = []
 
     async def add(self, obj):
         if type(obj) not in _TO_ORM:
@@ -73,9 +77,11 @@ class SqlAlchemyRepository:
         orm_cls, to_orm = _TO_ORM[type(obj)]
         orm_obj = to_orm(obj)
         await self.session.merge(orm_obj)
+        self.events.append(("add", type(obj).__name__))
 
     async def commit(self):
         await self.session.commit()
+        self.events.append(("commit", None))
 
     async def refresh(self, obj):
         await self.session.refresh(obj)

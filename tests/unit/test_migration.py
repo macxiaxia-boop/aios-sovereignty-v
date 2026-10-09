@@ -58,11 +58,13 @@ def test_upgrade_head_creates_all_tables(sqlite_url):
     assert expected.issubset(set(tables)), f"missing tables: {expected - set(tables)}"
 
 
-# 2. downgrade -1 removes all 8 tables
+# 2. downgrade base (all the way to 001) removes all 8 tables
+# Note: downgrade -1 from 003 only goes to 002, which drops decision_audit but
+# leaves goals/tasks/etc. Use downgrade base to reach 001, which drops goals.
 def test_downgrade_minus_one_removes_tables(sqlite_url):
     r1 = _run_alembic(["upgrade", "head"], sqlite_url)
     assert r1.returncode == 0
-    r2 = _run_alembic(["downgrade", "-1"], sqlite_url)
+    r2 = _run_alembic(["downgrade", "base"], sqlite_url)
     assert r2.returncode == 0, f"alembic downgrade failed: {r2.stderr}"
     tables = _tables_in(sqlite_url)
     assert "goals" not in tables
@@ -95,12 +97,12 @@ def test_upgrade_downgrade_upgrade_roundtrip(sqlite_url):
     assert "tasks" in tables
 
 
-# 5. current revision is 001
-def test_current_revision_is_001(sqlite_url):
+# 5. current revision is 003 (head)
+def test_current_revision_is_003(sqlite_url):
     _run_alembic(["upgrade", "head"], sqlite_url)
     result = _run_alembic(["current"], sqlite_url)
     assert result.returncode == 0
-    assert "001" in result.stdout
+    assert "003" in result.stdout
 
 
 # 6. ORM can read alembic-created schema
@@ -117,3 +119,5 @@ async def test_orm_can_read_migrated_schema(sqlite_url):
             count = r.scalar()
             assert count == 0
     await engine.dispose()
+
+
