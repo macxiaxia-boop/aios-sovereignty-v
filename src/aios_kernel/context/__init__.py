@@ -15,6 +15,11 @@ from aios_kernel.context.compiler import (
     ContextChunk,
     ContextCompiler,
 )
+from aios_kernel.context.models import (
+    ContextSource,
+    MAX_CONTEXT_TOKENS,
+    TaskDescriptor,
+)
 from aios_kernel.context.knowledge import (
     Document,
     DocumentChunk,
@@ -35,6 +40,9 @@ __all__ = [
     "CompiledContext",
     "ContextChunk",
     "ContextCompiler",
+    "ContextSource",
+    "MAX_CONTEXT_TOKENS",
+    "TaskDescriptor",
     "Document",
     "DocumentChunk",
     "Knowledge",
@@ -42,3 +50,5 @@ __all__ = [
     "cosine",
     "hash_embed",
 ]
+
+

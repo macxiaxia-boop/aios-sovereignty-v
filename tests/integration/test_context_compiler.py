@@ -35,7 +35,7 @@ import pytest
 
 from aios_kernel.context import (
     MAX_CONTEXT_TOKENS,
-    CandidateChunk,
+    ContextChunk,
     CompiledContext,
     ContextChunk,
     ContextSource,
@@ -51,8 +51,8 @@ from aios_kernel.context import (
 # ---------------------------------------------------------------------------
 
 
-def _make_chunk(source: ContextSource, content: str, raw_relevance: float = 0.5) -> CandidateChunk:
-    return CandidateChunk(source=source, content=content, raw_relevance=raw_relevance)
+def _make_chunk(source: ContextSource, content: str, raw_relevance: float = 0.5) -> ContextChunk:
+    return ContextChunk(source=source, content=content, relevance=raw_relevance)
 
 
 def _chunk_text(n_words: int) -> str:
@@ -387,4 +387,5 @@ async def test_invalidate_clears_cache() -> None:
     assert compiler.cache_size() == 2
     assert compiler.invalidate() == 2
     assert compiler.cache_size() == 0
+
 

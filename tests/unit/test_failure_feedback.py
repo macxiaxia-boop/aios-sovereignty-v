@@ -162,12 +162,30 @@ async def test_apply_clusters_below_min_occurrence_skipped():
 
 
 @pytest.mark.asyncio
-async def test_apply_clusters_goal_not_found_raises():
+async def test_apply_clusters_goal_not_found_returns_empty():
+    """G002-FIX-UUID: 容错 non-existent goal_id — 返回 (None, []) 而非 raise.
+
+    防止整个 FailureFeedback pipeline 因单个 missing goal 崩溃.
+    """
     repo = InMemoryRepository()
     svc = FailureFeedbackService(repo, repo)
     missing_id = str(uuid.uuid4())
-    with pytest.raises(ValueError, match="goal " + missing_id + " not found"):
-        await svc.apply_clusters_to_goal(missing_id, [_make_cluster()])
+    goal, added = await svc.apply_clusters_to_goal(missing_id, [_make_cluster()])
+    assert goal is None
+    assert added == []
+
+@pytest.mark.asyncio
+async def test_apply_clusters_non_uuid_goal_id_returns_empty():
+    """G002-FIX-UUID: 容错非 UUID goal_id — 上游可能传 'P8-T24' 等 identifier.
+    返回 (None, []) 而不是 raise ValueError (避免 pipeline 崩溃).
+    """
+    repo = InMemoryRepository()
+    svc = FailureFeedbackService(repo, repo)
+    # 'test-goal-001' 不是 UUID
+    goal, added = await svc.apply_clusters_to_goal("test-goal-001", [_make_cluster()])
+    assert goal is None
+    assert added == []
+
 
 
 @pytest.mark.asyncio

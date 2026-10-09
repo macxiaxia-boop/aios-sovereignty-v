@@ -194,7 +194,7 @@ class StubSourceProvider:
                 CandidateChunk(
                     source=source,
                     content=content,
-                    raw_relevance=float(relevance),
+                    relevance=float(relevance),
                     tags=list(tags or []),
                     evidence_id=evidence_id,
                 )
@@ -210,7 +210,7 @@ class StubSourceProvider:
             CandidateChunk(
                 source=self.source,
                 content=content,
-                raw_relevance=float(relevance),
+                relevance=float(relevance),
                 tags=list(tags or []),
                 evidence_id=evidence_id,
             )
@@ -496,3 +496,4 @@ __all__ = [
     "default_compiler",
     "MAX_CONTEXT_TOKENS",
 ]
+
