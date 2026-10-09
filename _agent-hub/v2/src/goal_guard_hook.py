@@ -185,10 +185,7 @@ def resolve_v2_root(caller_root: Path | str | None = None) -> Path:
 def envelope_to_contract(envelope: dict) -> dict | None:
     """Pull a GoalContract-shaped dict out of an envelope payload.
 
-    Convention (Phase F §5): envelopes carrying user goals have
-        payload.goal = { ...12 fields... }
-    Envelopes without `payload.goal` are not GoalContracts; the caller
-    is expected to short-circuit them.
+    Round 6 A-4 fix: also handles nested input_payload.goal (used by submit_task).
     """
     if not isinstance(envelope, dict):
         return None
@@ -206,6 +203,16 @@ def envelope_to_contract(envelope: dict) -> dict | None:
                 "permission_scope", "failure_modes", "missing_evidence",
                 "autonomous_scope", "requires_authorization",
             ) if k in payload}
+        # Round 6 A-4 fix: nested input_payload.goal
+        nested = payload.get("input_payload") if isinstance(payload.get("input_payload"), dict) else None
+        if isinstance(nested, dict):
+            nested_goal = nested.get("goal")
+            if isinstance(nested_goal, dict) and "title" in nested_goal:
+                return {k: nested_goal[k] for k in (
+                    "title", "success_criteria", "budget", "owner", "status",
+                    "permission_scope", "failure_modes", "missing_evidence",
+                    "autonomous_scope", "requires_authorization",
+                ) if k in nested_goal}
     return None
 
 
