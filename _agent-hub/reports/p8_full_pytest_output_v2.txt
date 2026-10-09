@@ -1,0 +1,34 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.14, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\python.exe
+cachedir: .pytest_cache
+rootdir: D:\AIOS\_agent-hub\v2
+plugins: asyncio-1.4.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 24 items
+
+tests/test_p8_t07.py::test_t07_hermes_subprocess_timeout PASSED          [  4%]
+tests/test_p8_t08.py::test_t08_hermes_invalid_subcommand_falls_back_to_doctor PASSED [  8%]
+tests/test_p8_t09.py::test_t09_openclaw_connection_refused PASSED        [ 12%]
+tests/test_p8_t10.py::test_t10_openclaw_unknown_action_routes_to_health PASSED [ 16%]
+tests/test_p8_t11.py::test_t11_workbuddy_probe_returns_honest_evidence PASSED [ 20%]
+tests/test_p8_t12.py::test_t12_workbuddy_dispatch_blocked_with_evidence PASSED [ 25%]
+tests/test_p8_t13.py::test_t13_parallel_dispatch_all_adapters PASSED     [ 29%]
+tests/test_p8_t14.py::test_t14_hermes_large_output_truncation PASSED     [ 33%]
+tests/test_p8_t15.py::test_t15_set_dispatcher_injects_each_adapter PASSED [ 37%]
+tests/test_p8_t16.py::test_t16_hermes_burst_10_envelopes PASSED          [ 41%]
+tests/test_p8_t17.py::test_t17_openclaw_burst_10_envelopes PASSED        [ 45%]
+tests/test_p8_t18.py::test_t18_idempotent_retry_of_same_envelope PASSED  [ 50%]
+tests/test_p8_t19.py::test_t19_goalguard_allows_normal_hermes_task PASSED [ 54%]
+tests/test_p8_t20.py::test_t20_real_hermes_dispatch_end_to_end PASSED    [ 58%]
+tests/test_p8_t21.py::test_t21_real_openclaw_dispatch_end_to_end PASSED  [ 62%]
+tests/test_p8_t22.py::test_t22_real_workbuddy_probe_end_to_end PASSED    [ 66%]
+tests/test_p8_t23.py::test_t23_resume_after_partial_failure PASSED       [ 70%]
+tests/test_p8_t24.py::test_t24_e2e_three_adapters_full_smoke PASSED      [ 75%]
+tests/test_verifier.py::test_verifier_hermes_subprocess PASSED           [ 79%]
+tests/test_verifier.py::test_verifier_openclaw_http PASSED               [ 83%]
+tests/test_verifier.py::test_verifier_workbuddy_probe PASSED             [ 87%]
+tests/test_verifier.py::test_verifier_all_three_adapters_combined PASSED [ 91%]
+tests/test_dispatch_runtime.py::test_subprocess_retry_uses_exponential_backoff PASSED [ 95%]
+tests/test_dispatch_runtime.py::test_subprocess_parallelism_is_capped_at_three PASSED [100%]
+
+============================= 24 passed in 47.64s =============================

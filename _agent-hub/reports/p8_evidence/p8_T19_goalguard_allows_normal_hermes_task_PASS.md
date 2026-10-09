@@ -1,8 +1,8 @@
-# test_p8_t22::real_workbuddy_probe_e2e — NOT_RUN
+# test_p8_t19::goalguard_allows_normal_hermes_task — NOT_RUN
 
 **Date (UTC)**: 2026-10-09T02:37:56.055296+00:00
-**Test file**: `tests/test_p8_t22.py`
-**Test function**: `test_real_workbuddy_probe_e2e`
+**Test file**: `tests/test_p8_t19.py`
+**Test function**: `test_goalguard_allows_normal_hermes_task`
 **pytest status**: **NOT_RUN**
 **Test position in run**: 0%
 **Wallclock**: n/a
@@ -23,7 +23,7 @@
 
 ## Status: NOT_RUN
 
-Source: `python -m pytest tests/test_p8_t22.py::test_real_workbuddy_probe_e2e -v --tb=long` run at 2026-10-09T02:37:56.055296+00:00.
+Source: `python -m pytest tests/test_p8_t19.py::test_goalguard_allows_normal_hermes_task -v --tb=long` run at 2026-10-09T02:37:56.055296+00:00.
 Full output saved in `D:\AIOS\_agent-hub\reports\p8_full_pytest_output.txt`.
 
 ---
