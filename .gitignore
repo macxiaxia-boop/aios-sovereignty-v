@@ -149,3 +149,23 @@ _workbuddy_connector.log
 # ===== Test temp =====
 test_*/
 tmp/
+
+
+# ===== Post-summit cleanup 2026-10-09 (added by Codex) =====
+# Worker scratch files (one-off) — not part of product
+_*test_*.py
+_*p5_*.py
+_*p8_*.py
+_*fix_*.py
+_*patch_*.py
+_*gen_*.py
+_*verify_*.py
+_*burst_*.py
+_*t07*.py
+_*t08*.py
+_*t16*.py
+_*t17*.py
+_*t18*.py
+_*enqueue*.py
+_*audit_fix*.py
+_*fix_*.py
