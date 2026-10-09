@@ -206,3 +206,12 @@ _t08*.py
 /_r348_model_swap_bak_20260930-092918/
 /_schtasks_bak_R344_20260930-001732/
 /_schtasks_bak_R344_action_20260930-001910/
+# Windows reserved name (cannot be added to git)
+NUL
+
+# Quarantined retired assets (Phase-3 deactivation)
+_quarantine/
+
+# Sovereignty-V ad-hoc investigation scripts (already in reports/)
+_agent-hub/reports/sovereignty-v/R*.py
+_agent-hub/reports/sovereignty-v/find_*.py

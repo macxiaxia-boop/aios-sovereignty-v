@@ -1,0 +1,1 @@
+{"ts": "2026-10-09T02:11:44Z", "event_type": "inbound_goal_active", "goal_id": "e39f155a-6741-4338-86ee-a4fadb707425", "title": "Verify G002 active transition", "owner": "codex", "envelope_id": "verify-active-final", "rationale": "G002 inbound_goal_generation passed GoalGuard; auto-activated for dispatch."}

@@ -1,0 +1,76 @@
+你是 AIOS sovereignty-v 工程线程 01a11c33 的 Claude Code 执行者（R2 修复专单 · 用户"全部授权"已生效）
+
+## 任务
+
+**R2 风险根治** —— 移除 cc-switch 注入的 `deepseek-v4-flash` fallback · 让 reconciler drift 计数降到 0
+
+## 用户授权链（已生效）
+
+- 你就开始
+- 继续
+- 我目前只用了一个api就是MiniMax
+- 那你叫cc去落地啊
+- 搭建执行任务，全部做掉
+- 全部授权，全部做掉
+
+## R2 现状（已知）
+
+- cc-switch 的 `settings.common_config_claude` 注入 `ANTHROPIC_DEFAULT_SONNET_MODEL_FALLBACK = deepseek-v4-flash`
+- W3 audit 记录：https://api.minimaxi.com + ANTHROPIC_BASE_URL 已指向 MiniMax · 但 deepseek fallback 在某些触发条件下可能覆盖
+- 每次 Reconciler 跑都告警：`[codex] drift=profile_drift severity=warn paths=2`
+- 父线程在 model-policy.v1.yaml 的 `prohibited_runtime_routes` 已显式列出 `deepseek-v4-flash fallback`
+
+## 必须做
+
+### 步骤 1 · 定位
+```powershell
+Get-ChildItem !.cc-switch -Recurse -ErrorAction SilentlyContinue | Select FullName, Length, LastWriteTime
+Get-ChildItem !$env:USERPROFILE\.cc-switch -Recurse -ErrorAction SilentlyContinue | Select FullName, Length
+Select-String -Path !.cc-switch\* -Pattern "deepseek-v4-flash|deepseek" -ErrorAction SilentlyContinue | Select Path, LineNumber, Line
+```
+输出: 列出所有含 deepseek 关键字的文件 + 行号 + 内容
+
+### 步骤 2 · 修方案（推荐 A · 用户授权过"全部做掉"）
+
+**A 方案（首选）**:
+1. 在 cc-switch.db / settings.json 中找到含 `deepseek-v4-flash` 的字段
+2. 备份文件 `*.bak.2026-10-09R2-fix`
+3. 修改为 `ANTHROPIC_DEFAULT_SONNET_MODEL_FALLBACK = MiniMax-M2.7`（MiniMax 内 fallback，符合 policy.yaml allowed_fallbacks）
+4. 验证 Select-String 找不到 deepseek
+
+**B 方案（备选 · 如果 A 受限）**:
+1. 删除整个 fallback 字段
+2. 验证 Claude Code 仍能启动
+
+### 步骤 3 · 验证
+```bash
+python D:\AIOS\_agent-hub\policy\reconciler\reconciler.py --once
+```
+预期: `OK: procs=1 env=11 drift=0` · `[codex] drift=none severity=ok`
+
+### 步骤 4 · 跑回归
+```bash
+cd D:\AIOS\_agent-hub\policy\regression-tests
+python regression_tests.py
+```
+预期: 29/22 PASS · 0 FAIL (可能 30/22 因为 R2 测试新增 PASS)
+
+## 红线
+
+- ❌ 不动 policy/model-policy.v1.yaml
+- ❌ 不删 cc-switch.db 整个文件（只改字段）
+- ❌ 不动 ~/.codex 或 ~/.claude 配置（仅 cc-switch）
+- ❌ 任何删除操作前先 .bak.* 备份
+- ❌ 不调任何 provider API
+
+## 必写
+
+`D:\AIOS\_agent-hub\reports\sovereignty-v\tasks\T31.done` 含:
+- 修改前/后 select-string 输出
+- backup 文件路径
+- sha256 before/after of cc-switch 关键文件
+- Reconciler 跑结果（drift 计数）
+- regression 跑结果
+- 时间戳
+
+报告 done 路径 + drift 计数变化。

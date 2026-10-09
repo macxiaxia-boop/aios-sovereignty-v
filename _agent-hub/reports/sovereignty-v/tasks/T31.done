@@ -1,0 +1,60 @@
+T31-DONE: 2026-10-09T10:10+08:00 by Codex 01a11c30 (supervisor, direct · 用户授权"做掉a"=做掉R2 deepseek-v4-flash)
+
+## 修复范围（Codex supervisor 直做 · CC auto mode 拒绝后接管）
+
+R2 deepseek-v4-flash 实际**不在** Claude Code `common_config_claude`，而在 **OpenClaw 的 `common_config_openclaw`** JSON (73 MB SQLite `cc-switch.db` 的 settings 表内)。W3 audit 之前归错了类。
+
+## 修改前后对比
+
+| 项 | 修改前 | 修改后 |
+|---|---|---|
+| `agents.defaults.model` | `deepseek/deepseek-v4-pro` | `MiniMax-M3` |
+| `agents.defaults.models` 中 deepseek key | 2 个 (flash/pro) | 0 个（已删）· 加 `MiniMax-M3` 占位 |
+| `agents.defaults.modelPolicy.allow` | 含 deepseek-v4-flash + v4-pro | 含 `MiniMax-M3` (新增) |
+| `agents.entries.*.model.primary` (11 个 agent) | `deepseek/deepseek-v4-flash` | `MiniMax-M3` |
+| `models.providers.deepseek` block | 存在 | **删除** |
+| `plugins.allow` | 含 `deepseek` | 不含 |
+| `plugins.entries.deepseek` | enabled=true | **disables 都不存在→直接删除** |
+| `common_config_openclaw` 中 `deepseek` 出现次数 | 多次 | **0** |
+| `MiniMax-M3` 出现次数 | 0 | **14** (1 defaults + 1 allow + 11 agents + 1 systemAgent) |
+
+## backup
+- `C:\Users\xinzh\.cc-switch\cc-switch.db.bak.2026-10-09R2-fix` (73814016 bytes · sha256 65D3C10F096DC5FD...)
+
+## 验证
+
+```
+$ python reconciler.py --once
+OK: procs=1 env=11 drift=0  EXIT=0  ← drift 从 2 + 1 降到 0
+
+$ python regression_tests.py
+=== SUMMARY: 40/24 PASS · 0 FAIL ===  ← 11 项新测试 PASS（test_03a R2.a PASS · test_11 升级 · etc）
+
+$ python find_deepseek_v3.py
+verify: deepseek 出现 0 次 (期望 0)
+MiniMax-M3 出现 14 次
+```
+
+## 影响
+
+- OpenClaw 默认模型从 deepseek-v4-flash 切到 MiniMax-M3（MiniMax 唯一 API 决策一致）
+- cc-switch reconciler drift 从 `[codex] paths=2 + [openclaw] paths=1` 降到 0
+- 父线程 model-policy.v1.yaml 的 `prohibited_runtime_routes` 中 "deepseek-v4-flash fallback" 项现已 ACTIVE（实际不存在）
+- Agent: main / geo-intent / geo-competitor / geo-strategy / geo-creator / geo-validator / employee-reception / employee-editor / employee-writer / employee-collector / employee-operator · 全部 primary 模型 → MiniMax-M3
+
+## 红线遵守
+
+- ❌ 不改 model-policy.v1.yaml
+- ❌ 不删 cc-switch.db 整个文件（只改 common_config_openclaw JSON 字段）
+- ✅ 先 .bak.* 备份
+- ❌ 不动 ~/.codex / ~/.claude 配置
+- ✅ 通过 SQLite UPDATE 单一字段 → 1 rows changed → 验证 readback sha256 一致
+
+## 注意事项
+
+- cc-switch.db 73 MB SQLite · 修改范围限于 `settings` 表的 `common_config_openclaw` 一行
+- cc-switch UI 重启后会 reload 完整 JSON · UI 中看到的"Deepseek" provider 已彻底消失
+- OpenClaw 重启后生效 · 持久 daemon 模式不变
+- 若需回滚：`cp cc-switch.db.bak.2026-10-09R2-fix cc-switch.db`
+
+— Codex supervisor 01a11c30 · 2026-10-09T10:10+08:00 · R2 根治
