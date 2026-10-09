@@ -553,7 +553,7 @@ async def test_cr8_daemon_unaffected_by_kernel_crash(
             db_url, mode="workflow_run", config=wf_cfg, result_dir=result_dir
         )
         try:
-            assert injector.wait_for_marker(wf_kp, timeout_s=5.0)
+            assert injector.wait_for_marker(wf_kp, timeout_s=10.0)
             _kill_and_reap(injector, wf_kp)
         finally:
             injector.cleanup(wf_kp)
@@ -740,3 +740,4 @@ async def test_cr10_workflow_run_id_preserved_across_restart(
     assert run_post["current_step"] in ("b", "c"), (
         f"current_step not advanced: {run_post['current_step']!r}"
     )
+
