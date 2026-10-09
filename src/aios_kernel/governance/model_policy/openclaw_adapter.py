@@ -103,6 +103,8 @@ class OpenClawAdapter(ModelPolicyAdapter):
         env_keys_required = []
         for p in policy.providers:
             env_keys_required.extend(p.get("auth", {}).get("env_keys", []))
+        oa_auth = (policy.enforcement.get("openclaw", {}) or {}).get("auth", {})
+        env_keys_required.extend(oa_auth.get("env_keys", []))
         env_present = set(state["env_keys_present"])
         env_missing = set(env_keys_required) - env_present
         if env_missing:
@@ -163,3 +165,5 @@ class OpenClawAdapter(ModelPolicyAdapter):
                 drift.details["apply_error"] = str(e)
 
         return drift
+
+
