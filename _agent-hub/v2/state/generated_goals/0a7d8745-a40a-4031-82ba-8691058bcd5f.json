@@ -1,0 +1,95 @@
+{
+  "id": "0a7d8745-a40a-4031-82ba-8691058bcd5f",
+  "created_at": "2026-10-09T02:39:22.057973+00:00",
+  "updated_at": "2026-10-09T02:39:22.058689+00:00",
+  "schema_version": 1,
+  "title": "P8-T23-OK resume",
+  "description": "P8-T23-OK resume",
+  "success_criteria": "Goal achieved without violating defaults; user to confirm scope.",
+  "budget": 0.0,
+  "deadline": null,
+  "owner": "codex",
+  "status": "Active",
+  "tags": [],
+  "plan_ids": [],
+  "metadata": {
+    "source": "inbound_envelope",
+    "envelope_id": "996d6467-db08-4046-be28-e734a6ade5a5",
+    "intent_type": "IntentType.UNKNOWN",
+    "parsed_at": "2026-10-09T02:39:22.057769+00:00"
+  },
+  "inferred_intent": null,
+  "preserve_capabilities": [
+    "verifier/deterministic.py",
+    "v2 consumer main loop",
+    "AGENTS.md SSOT"
+  ],
+  "known_constraints": [],
+  "environment_context": {
+    "cwd": "D:\\AIOS\\_agent-hub\\v2",
+    "os": "win32 (python 3.13)",
+    "available_tools": [],
+    "recent_failures": [],
+    "history_refs": [
+      "996d6467-db08-4046-be28-e734a6ade5a5"
+    ]
+  },
+  "failure_modes": [
+    {
+      "description": "Output looks correct but does not match user intent (LLM hallucination)",
+      "detection": "deterministic verifier returns False OR user rejects result",
+      "indicator": "verifier.exit_code != 0"
+    }
+  ],
+  "permission_scope": {
+    "allowed_paths": [
+      "D:/AIOS/_agent-hub/v2/state/",
+      "D:/AIOS/_agent-hub/v2/messages/",
+      "D:/AIOS/_agent-hub/v2/src/"
+    ],
+    "allowed_ops": [
+      "read"
+    ],
+    "max_budget": 0.0,
+    "max_duration_sec": 300,
+    "requires_approval": [
+      "write",
+      "execute",
+      "delete"
+    ]
+  },
+  "missing_evidence": [
+    {
+      "description": "Could not classify intent from user text",
+      "source": "user_input",
+      "required": true
+    }
+  ],
+  "approved_tradeoffs": [],
+  "autonomous_scope": [
+    {
+      "domain": "file",
+      "action": "read",
+      "target": null
+    }
+  ],
+  "requires_authorization": [
+    {
+      "domain": "file",
+      "action": "write",
+      "target": null
+    },
+    {
+      "domain": "file",
+      "action": "execute",
+      "target": null
+    },
+    {
+      "domain": "file",
+      "action": "delete",
+      "target": null
+    }
+  ],
+  "_cached_at": "2026-10-09T02:39:22Z",
+  "_source_module": "aios_vnext.inbound_goal_generation"
+}

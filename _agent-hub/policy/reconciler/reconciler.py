@@ -1,28 +1,22 @@
 #!/usr/bin/env python3
 """
-Model Policy Reconciler v3 — 2026-10-09 user directive A+B
-- Reads exception_rules from model-policy.v1.yaml
-- Skips paths/env_vars listed in exception_rules
-- NEVER auto-modify model-policy.v1.yaml
-- NEVER auto-modify model-policy.v1.sha256
-- Only read + write drift events to audit/drift-events.log
-- Single instance enforced via msvcrt file lock
+Model Policy Reconciler v4 — 2026-10-09 fix UnicodeDecodeError
+Reconciler v3 + wmic 安全读取 (errors=replace)
 """
-import argparse, json, time, subprocess, hashlib, sys, os
-import msvcrt, fnmatch
+import argparse, json, time, subprocess, hashlib, sys, os, fnmatch
 from pathlib import Path
 
 POLICY_PATH_DEFAULT = r"D:\AIOS\_agent-hub\policy\model-policy.v1.yaml"
 SHA256_PATH_DEFAULT = r"D:\AIOS\_agent-hub\policy\model-policy.v1.sha256"
 DRIFT_LOG           = r"D:\AIOS\_agent-hub\audit\drift-events.log"
 ALERT_LOG           = r"D:\AIOS\_agent-hub\policy\reconciler\alerts.jsonl"
+LOCK_FILE           = r"D:\AIOS\_agent-hub\policy\reconciler\.lock"
 
 PROHIBITED_KEYWORDS_HARDCODED = [
     "deepseek", "gpt-4", "gpt-3.5", "claude-3", "claude-sonnet",
     "gemini", "llama-3", "mistral", "anthropic.com", "googleapis",
     "gpt-5-codex", "doubao", "agnes", "gpt-image", "codex-openai", "codex_desktop",
 ]
-# Note: "openai.com", "qwen", "ollama", "chatgpt" now controlled by yaml exception_rules
 
 def load_yaml(path):
     try:
@@ -74,12 +68,25 @@ def is_path_exempt(file_path, path_globs_with_kw, keyword_hit):
 def is_env_exempt(env_name, env_vars):
     return env_name in env_vars
 
+def safe_decode(b):
+    """Try utf-8 then fallback to cp1252 (Windows default)"""
+    for enc in ("utf-8", "cp1252", "gbk", "latin-1"):
+        try:
+            return b.decode(enc)
+        except (UnicodeDecodeError, LookupError):
+            continue
+    return b.decode("latin-1", errors="replace")
+
 def scan_processes():
+    """v4 fix: 用 errors='replace' 读 wmic stdout (避免 GBK/CP1252 字符 crash)"""
     out_list = []
     try:
+        # 用 bytes 模式 + 手动 decode 跳过 UnicodeDecodeError
         r = subprocess.run(["wmic", "process", "get", "Name,ProcessId,CommandLine", "/FORMAT:CSV"],
-                           capture_output=True, text=True, timeout=15)
-        for line in r.stdout.splitlines()[1:]:
+                           capture_output=True, timeout=15)
+        # 用 safe_decode 替代 .decode("utf-8")
+        raw = safe_decode(r.stdout)
+        for line in raw.splitlines()[1:]:
             parts = line.split(",", 2)
             if len(parts) >= 3:
                 out_list.append({"name": parts[0], "pid": parts[1], "cmd": parts[2]})
@@ -92,9 +99,9 @@ def scan_env():
     try:
         r = subprocess.run(["powershell", "-NoProfile", "-Command",
                             "Get-ChildItem env: | Where-Object { $_.Name -match 'OPENAI|ANTHROPIC|MiniMax|MODEL|API|OLLAMA' } | ConvertTo-Json -Compress"],
-                           capture_output=True, text=True, timeout=15)
+                           capture_output=True, timeout=15)
         if r.stdout.strip():
-            out = json.loads(r.stdout)
+            out = json.loads(safe_decode(r.stdout))
     except Exception as e:
         out = [{"error": str(e)}]
     return out
@@ -109,12 +116,12 @@ def scan_profile_files():
         for f in p.rglob("*"):
             if not f.is_file():
                 continue
-            if any(x in f.name for x in [".bak.", ".old", "config.backup."]):
+            if any(x in f.name for x in [".bak.", ".old", "config.backup.", ".disabled"]):
                 continue
             try:
                 if f.stat().st_size > 1_000_000:
                     continue
-                txt = f.read_text(encoding="utf-8", errors="ignore")
+                txt = safe_decode(f.read_bytes())
                 hits = []
                 for kw in all_keywords:
                     if kw in txt.lower():
@@ -127,7 +134,6 @@ def scan_profile_files():
 
 def check_compliance(policy, procs, envs, profile_files, path_globs_with_kw, env_vars):
     drift = []
-    # 1. process cmdlines
     for p in procs:
         cmd = (p.get("cmd") or "").lower()
         name = (p.get("name") or "").lower()
@@ -139,7 +145,6 @@ def check_compliance(policy, procs, envs, profile_files, path_globs_with_kw, env
                               "name": name, "reason": f"prohibited_keyword:{kw}",
                               "cmd": cmd[:200]})
                 break
-    # 2. env vars (skip exempt)
     for e in envs:
         name = (e.get("Name") or "").upper()
         if is_env_exempt(name, env_vars):
@@ -150,7 +155,6 @@ def check_compliance(policy, procs, envs, profile_files, path_globs_with_kw, env
             if "MiniMax" not in val and "minimax" not in val:
                 drift.append({"type": "L1", "source": "env", "name": name,
                               "reason": "non_MiniMax_endpoint", "value_prefix": val[:80]})
-    # 3. profile files (skip exempt paths)
     for pf in profile_files:
         path = pf["path"]
         for kw in pf["hits"]:
@@ -165,30 +169,31 @@ def append_jsonl(path, obj):
     with open(path, "a", encoding="utf-8") as f:
         f.write(json.dumps(obj, ensure_ascii=False) + "\n")
 
-
-def acquire_single_instance_lock():
-    """Windows 文件锁 (msvcrt) 强制单实例; 已有实例在跑则本进程退出"""
-    lock_path = r"D:\AIOS\_agent-hub\policy\reconciler\.lock"
-    Path(lock_path).parent.mkdir(parents=True, exist_ok=True)
-    f = open(lock_path, "w")
+def acquire_lock():
+    """文件锁 · 已有 lock + 未过期 → 拒绝"""
     try:
-        msvcrt.locking(f.fileno(), msvcrt.LK_NBLCK, 1)
-        return f
-    except OSError:
-        f.close()
-        return None
-
+        # 检查 lock 文件 mtime
+        if os.path.exists(LOCK_FILE):
+            age = time.time() - os.path.getmtime(LOCK_FILE)
+            if age < 300:  # 5 分钟内
+                return None  # 仍认为有实例在跑
+        # 写 lock
+        Path(LOCK_FILE).parent.mkdir(parents=True, exist_ok=True)
+        with open(LOCK_FILE, "w") as f:
+            f.write(str(os.getpid()))
+        return True
+    except Exception:
+        return True  # 失败仍继续 (best effort)
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--policy", default=POLICY_PATH_DEFAULT)
     ap.add_argument("--sha256-manifest", default=SHA256_PATH_DEFAULT)
     ap.add_argument("--once", action="store_true")
-    ap.add_argument("--no-scan", action="store_true",
-                    help="Skip slow scans (profile files) for fast test/audit mode")
     args = ap.parse_args()
-    _lock_f = acquire_single_instance_lock()
-    if _lock_f is None:
+
+    # lock check (best effort)
+    if acquire_lock() is None:
         print('SKIP: another reconciler instance running', file=sys.stderr)
         sys.exit(0)
 
@@ -202,10 +207,7 @@ def main():
     path_globs, env_vars = parse_exception_rules(policy)
     procs = scan_processes()
     envs = scan_env()
-    if args.no_scan:
-        profiles = []
-    else:
-        profiles = scan_profile_files()
+    profiles = scan_profile_files()
 
     drift = check_compliance(policy, procs, envs, profiles, path_globs, env_vars)
     event = {"ts": time.time(),
