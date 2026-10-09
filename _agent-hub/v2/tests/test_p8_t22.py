@@ -27,7 +27,7 @@ def test_t22_real_workbuddy_probe_end_to_end():
     try:
         env = build_envelope(
             "codex", "workbuddy", "task",
-            {"action": "probe",
+            {"title": "WorkBuddy probe e2e", "action": "probe",
              "evidence_marker": "P8-T22-" + uuid.uuid4().hex[:8]},
         )
         res = enqueue(env)

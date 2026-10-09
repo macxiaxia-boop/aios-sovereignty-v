@@ -26,7 +26,7 @@ def test_t19_goalguard_allows_normal_hermes_task():
     try:
         env = build_envelope(
             "codex", "hermes", "task",
-            {"args": ["version"],
+            {"title": "Hermes version sanity", "args": ["version"],
              "note": "p8-t19-sanity",
              "evidence_marker": "P8-T19-" + uuid.uuid4().hex[:8]},
         )

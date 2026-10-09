@@ -26,7 +26,7 @@ def test_t21_real_openclaw_dispatch_end_to_end():
     try:
         env = build_envelope(
             "codex", "openclaw", "task",
-            {"action": "health",
+            {"title": "OpenClaw health e2e", "action": "health",
              "evidence_marker": "P8-T21-" + uuid.uuid4().hex[:8]},
         )
         res = enqueue(env)

@@ -34,7 +34,7 @@ def test_t23_resume_after_partial_failure():
     set_dispatcher(_failing_dispatcher)
     env1 = build_envelope(
         "codex", "hermes", "task",
-        {"args": ["version"],
+        {"title": "P8-T23-fail resume", "args": ["version"],
          "marker": "p8-t23-fail",
          "evidence_marker": "P8-T23-FAIL-" + uuid.uuid4().hex[:8]},
     )
@@ -56,7 +56,7 @@ def test_t23_resume_after_partial_failure():
     set_dispatcher(make_hermes_adapter())
     env2 = build_envelope(
         "codex", "hermes", "task",
-        {"args": ["version"], "marker": "p8-t23-resume",
+        {"title": "P8-T23-OK resume", "args": ["version"], "marker": "p8-t23-resume",
          "evidence_marker": "P8-T23-OK-" + uuid.uuid4().hex[:8]},
     )
     res2 = enqueue(env2)

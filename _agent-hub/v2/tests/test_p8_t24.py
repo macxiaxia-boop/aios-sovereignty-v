@@ -57,17 +57,17 @@ def test_t24_e2e_three_adapters_full_smoke():
     out = {
         "hermes": _dispatch_and_verify(
             "hermes", make_hermes_adapter(),
-            {"args": ["version"], "evidence_marker": f"P8-T24-HERMES-{nonce}"},
+            {"title": "P8-T24 hermes e2e", "args": ["version"], "evidence_marker": f"P8-T24-HERMES-{nonce}"},
             f"P8-T24-HERMES-{nonce}",
         ),
         "openclaw": _dispatch_and_verify(
             "openclaw", make_openclaw_adapter(),
-            {"action": "health", "evidence_marker": f"P8-T24-OPENCLAW-{nonce}"},
+            {"title": "P8-T24 openclaw e2e", "action": "health", "evidence_marker": f"P8-T24-OPENCLAW-{nonce}"},
             f"P8-T24-OPENCLAW-{nonce}",
         ),
         "workbuddy": _dispatch_and_verify(
             "workbuddy", make_workbuddy_adapter(),
-            {"action": "probe", "evidence_marker": f"P8-T24-WORKBUDDY-{nonce}"},
+            {"title": "P8-T24 workbuddy e2e", "action": "probe", "evidence_marker": f"P8-T24-WORKBUDDY-{nonce}"},
             f"P8-T24-WORKBUDDY-{nonce}",
         ),
     }
