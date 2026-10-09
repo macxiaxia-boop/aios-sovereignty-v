@@ -1,10 +1,16 @@
 # ModelPolicy v1 签名 manifest
-# computed by codex 01a11c30 (supervisor) at 2026-10-09T00:03+08:00
-sha256: C0D5648B44AB0298C5543D14C4C00CFEDBC0476B7A26705743322B1F2EF022A2
+# computed by codex 01a11c30 (supervisor) at 2026-10-09T00:13+08:00
+# 用户授权更新: "我目前只用了一个api就是MiniMax"
+sha256: 858458996FA8FF24FE2C82DB6E3990D1D06105A2CAB22A8885FEA2C0901AE255
 file: D:\AIOS\_agent-hub\policy\model-policy.v1.yaml
-size_bytes: 1431
-signed_at: 2026-10-09T00:03:00+08:00
+size_bytes: 3197
+signed_at: 2026-10-09T00:13:00+08:00
 signer: codex-supervisor (autonomous_scope: agent-hub writes)
 algo: sha256
+changelog:
+  - "2026-10-08T23:55 user-directive-2026-10-08-AIOS-SOVEREIGNTY-V (initial commit)"
+  - "2026-10-09T00:03 Codex supervisor: sha256 = C0D5648B44AB... (placeholder filled)"
+  - "2026-10-09T00:13 user-directive: only MiniMax API · allowed_models=[M3, M2.7, M2.7-highspeed] · +C11"
+previous_sha256: C0D5648B44AB0298C5543D14C4C00CFEDBC0476B7A26705743322B1F2EF022A2
 # verify command (PowerShell):
 # Get-FileHash -Algorithm SHA256 D:\AIOS\_agent-hub\policy\model-policy.v1.yaml

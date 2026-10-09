@@ -1,0 +1,205 @@
+{
+  "policy_id": "GLOBAL_PRODUCT_STRATEGY",
+  "policy_version": "2026-10-08",
+  "title": "CloudTech Global Product Strategy Policy",
+  "product": "CloudTech",
+  "positioning": "HORIZONTAL_MARKETING_SAAS",
+  "business_scope": "GENERAL_MARKETING",
+  "vertical_product_strategy": "DISABLED",
+  "industry_presets": "DISABLED",
+  "status": "ACTIVE",
+  "owner": "USER",
+  "change_authority": "EXPLICIT_USER_APPROVAL",
+  "scope_note": "Horizontal marketing does not mean all-industry business management software. Customer-supplied materials may customize workers without restoring official industry presets.",
+  "deprecated_requirement_ids": [
+    "R-001", "R-002", "R-003", "R-004", "R-005",
+    "R-006", "R-007", "R-008", "R-009", "R-010",
+    "R-011", "R-012", "R-013", "R-014", "R-015",
+    "R-016", "R-017", "R-018", "R-019", "R-020"
+  ],
+  "prohibited_active_assets": [
+    {
+      "id": "PA-01",
+      "kind": "GATEWAY",
+      "summary": "CloudTech V22 Unified Gateway live on 127.0.0.1:5099",
+      "deactivation_required": "USER_AUTHORIZATION_REQUIRED",
+      "evidence": "GLOBAL_STRATEGY_RETIREMENT_AUDIT_20261008.json A-01"
+    },
+    {
+      "id": "PA-02",
+      "kind": "WINDOWS_SERVICE",
+      "summary": "CloudTechV22Monitor service (Stopped/Manual; restart-on-failure XML armed)",
+      "deactivation_required": "USER_AUTHORIZATION_REQUIRED",
+      "evidence": "GLOBAL_STRATEGY_RETIREMENT_AUDIT_20261008.json A-05"
+    },
+    {
+      "id": "PA-03",
+      "kind": "SCHEDULED_TASK_NAMESPACE",
+      "summary": "\\\\CloudTech\\\\* scheduled-task namespace (5 tasks: HealthCheck-Hourly / DailyReport-0300 / AIOSLightMonitor-30min / StartupCleanup-Once / SpecV1CI_Daily_0300) + CloudTech_V22Watchdog + CloudTech_V23FileWatcher",
+      "deactivation_required": "USER_AUTHORIZATION_REQUIRED",
+      "evidence": "GLOBAL_STRATEGY_RETIREMENT_AUDIT_20261008.json A-02/A-03/A-04"
+    },
+    {
+      "id": "PA-04",
+      "kind": "INSTALL_SKELETON",
+      "summary": "D:\\\\AIOS\\\\cloudtech-saas\\\\install.cmd + start_v22_watchdog.bat + cloudtech-saas.xml onfailure policy",
+      "deactivation_required": "USER_AUTHORIZATION_REQUIRED",
+      "evidence": "GLOBAL_STRATEGY_RETIREMENT_AUDIT_20261008.json A-06/A-07/A-10"
+    },
+    {
+      "id": "PA-05",
+      "kind": "BRIDGE_MODULE",
+      "summary": "D:\\\\AIOS\\\\_workzone\\\\src\\\\_aios_cloudtech_bridge.py (319 lines; CLOUDTECH_V22_ROOT path constant)",
+      "deactivation_required": "USER_AUTHORIZATION_REQUIRED",
+      "evidence": "GLOBAL_STRATEGY_RETIREMENT_AUDIT_20261008.json A-08"
+    },
+    {
+      "id": "PA-06",
+      "kind": "DAILY_BACKUP_MIRROR",
+      "summary": "E:\\\\AI_Backup\\\\DailyBackup_20261008\\\\AIOS\\\\ robocopy /MIR (PID 31360) preserving all _archived_* + cloudtech-saas\\\\",
+      "deactivation_required": "USER_AUTHORIZATION_REQUIRED",
+      "evidence": "GLOBAL_STRATEGY_RETIREMENT_AUDIT_20261008.json A-09"
+    },
+    {
+      "id": "PA-07",
+      "kind": "WORKBUDDY_USER_PROFILE",
+      "summary": "WorkBuddy persistent user profile (memory + home cache + skills store + zxygj-business-data plugin) — 4 HIGH-RISK reactivation paths",
+      "deactivation_required": "USER_AUTHORIZATION_REQUIRED",
+      "evidence": "GLOBAL_STRATEGY_RETIREMENT_AUDIT_20261008.json B-01/B-02/B-03/B-04",
+      "quarantine_target": "D:\\\\AIOS\\\\_quarantine\\\\retired-assets\\\\20261008\\\\"
+    },
+    {
+      "id": "PA-08",
+      "kind": "MODEL_POLICY_FALLBACK",
+      "summary": "deepseek-v4-flash fallback for CC (violates ModelPolicy v1 prohibited_runtime_routes)",
+      "deactivation_required": "USER_AUTHORIZATION_REQUIRED",
+      "evidence": "GLOBAL_STRATEGY_RETIREMENT_AUDIT_20261008.json H-11"
+    },
+    {
+      "id": "PA-09",
+      "kind": "PROVIDER_STRING_DRIFT",
+      "summary": "minimax / minimax-cn legacy provider strings (canonical = MiniMax)",
+      "deactivation_required": "USER_AUTHORIZATION_REQUIRED",
+      "evidence": "GLOBAL_STRATEGY_RETIREMENT_AUDIT_20261008.json H-10"
+    },
+    {
+      "id": "PA-10",
+      "kind": "ROOT_INSTALLER",
+      "summary": "install_aios_loop.cmd + install_aios_watchdog.cmd + R65_右键管理员运行_一键注册.bat (SYSTEM-priority ONSTART re-arm)",
+      "deactivation_required": "USER_AUTHORIZATION_REQUIRED",
+      "evidence": "GLOBAL_STRATEGY_RETIREMENT_AUDIT_20261008.json C-04/C-05/C-06"
+    },
+    {
+      "id": "PA-11",
+      "kind": "DR_RESTORE_TOOLING",
+      "summary": "_dr_v3.0_uncompressed_workspace (E:\\\\移动硬盘 external media)",
+      "deactivation_required": "USER_AUTHORIZATION_REQUIRED",
+      "evidence": "GLOBAL_STRATEGY_RETIREMENT_AUDIT_20261008.json C-08"
+    },
+    {
+      "id": "PA-12",
+      "kind": "EXECUTABLE_BACKUP",
+      "summary": "_backup_aios_exe binaries (4 daemon .exe 8.9-10.1 MB)",
+      "deactivation_required": "USER_AUTHORIZATION_REQUIRED",
+      "evidence": "GLOBAL_STRATEGY_RETIREMENT_AUDIT_20261008.json C-09"
+    }
+  ],
+  "quarantine_paths": [
+    "C:\\Users\\xinzh\\.workbuddy\\memory\\45e357fa-c2ec-4bd0-b734-9b016a2759d7_memory.md",
+    "C:\\Users\\xinzh\\.workbuddy\\storage\\user-45e357fa-c2ec-4bd0-b734-9b016a2759d7-personal\\scoped\\c7389fe09fa872c0\\home-first-screen-cache.json",
+    "C:\\Users\\xinzh\\.workbuddy\\storage\\user-45e357fa-c2ec-4bd0-b734-9b016a2759d7-personal\\scoped\\c7389fe09fa872c0\\skills-installed-store.json",
+    "C:\\Users\\xinzh\\.workbuddy\\plugins\\marketplaces\\workbuddy-connector-plugins-official\\connectors\\zxygj-business-data",
+    "C:\\Users\\xinzh\\.workbuddy\\sessions\\23852.json"
+  ],
+  "industry_presets_blocked": [
+    "industry-cloudtech",
+    "industry-zhuangxiu",
+    "industry-jiaoyu",
+    "industry-zhizao",
+    "industry-fuwu",
+    "industry-content-ip",
+    "industry-opc",
+    "industry-xiaohongshu",
+    "industry-装修矩阵",
+    "industry-灵策智算"
+  ],
+  "retired_aliases": [
+    "医美",
+    "装企",
+    "家居/医美",
+    "行业垂直",
+    "行业垂直文档",
+    "行业MVP",
+    "灵策智算",
+    "灵策AI",
+    "装修矩阵",
+    "装修矩阵V2",
+    "小红书仿写管线",
+    "CloudTech V22",
+    "CloudTech V23",
+    "CloudTechV22Monitor",
+    "CloudTech_V22Watchdog",
+    "CloudTech_V23FileWatcher",
+    "sk-industry",
+    "sk-cross-matrix",
+    "Phase 1 行业 SaaS"
+  ],
+  "retired_alias_kind": {
+    "industry_vertical": [
+      "医美",
+      "装企",
+      "家居/医美",
+      "行业垂直",
+      "行业垂直文档",
+      "行业MVP"
+    ],
+    "old_brand": [
+      "灵策智算",
+      "灵策AI",
+      "Phase 1 行业 SaaS"
+    ],
+    "vertical_workflow": [
+      "装修矩阵",
+      "装修矩阵V2",
+      "小红书仿写管线"
+    ],
+    "cloudtech_v22_v23": [
+      "CloudTech V22",
+      "CloudTech V23",
+      "CloudTechV22Monitor",
+      "CloudTech_V22Watchdog",
+      "CloudTech_V23FileWatcher"
+    ],
+    "skill_id": [
+      "sk-industry",
+      "sk-cross-matrix"
+    ]
+  },
+  "historical_source_prohibited_keys": [
+    "AIOS_SOURCE_OF_TRUTH_FINAL",
+    "AIOS_RECONSTRUCTION",
+    "D:\\CloudTech-Portable",
+    "D:\\CloudTech-Vault",
+    "D:\\CloudTech-Inbox",
+    "D:\\CloudTech-Live-Execution",
+    "_aios_cloudtech_bridge"
+  ],
+  "gate_event_types": [
+    "STRATEGY_DRIFT_DETECTED",
+    "RETIRED_REQUIREMENT_REACTIVATED",
+    "DEPRECATED_ASSET_REFERENCED",
+    "INVALID_TASK_GENERATED",
+    "ARCHIVE_LEAK_DETECTED",
+    "POLICY_GATE_REJECTED"
+  ],
+  "scanner_classifications": [
+    "ACTIVE_VIOLATION",
+    "ARCHIVED_REFERENCE",
+    "FALSE_POSITIVE",
+    "UNVERIFIED"
+  ],
+  "evidence_source": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_RETIREMENT_AUDIT_20261008.md",
+  "evidence_json": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_RETIREMENT_AUDIT_20261008.json",
+  "created_at_utc": "2026-10-09T00:40:00Z",
+  "created_by": "Claude Code 2.1.285 (MiniMax-M3)"
+}

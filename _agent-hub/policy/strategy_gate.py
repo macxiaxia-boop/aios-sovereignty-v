@@ -1,0 +1,423 @@
+"""strategy_gate.py — Strategy Gate that emits gate events.
+
+This module evaluates an envelope / task / Goal payload against the
+loaded Strategy Policy + Requirements Registry + Contamination Scanner,
+and returns:
+
+  - allowed: bool
+  - events:  list of dicts (gate event types per policy)
+  - risk_envelope: dict or None (mirror-shape of goal_guard_hook)
+
+Event types emitted (per `gate_event_types` in the policy):
+
+    STRATEGY_DRIFT_DETECTED
+        Generic drift: payload hints at vertical / industry / historical
+        CloudTech direction without a specific retired-id match.
+
+    RETIRED_REQUIREMENT_REACTIVATED
+        Payload references an id in `deprecated_requirement_ids`.
+
+    DEPRECATED_ASSET_REFERENCED
+        Payload references a path or asset listed in
+        `prohibited_active_assets` or `historical_source_prohibited_keys`.
+
+    INVALID_TASK_GENERATED
+        Generic malformed/under-specified task payload (e.g. missing
+        title / success_criteria).
+
+    ARCHIVE_LEAK_DETECTED
+        Payload sources its content from an archived / read-only /
+        quarantine surface AND is being re-introduced into an active
+        loader.
+
+    POLICY_GATE_REJECTED
+        Generic catch-all when the gate refuses dispatch.
+
+The gate is fail-CLOSED: if the policy itself fails to load, every
+event is POLICY_GATE_REJECTED with reason=policy_load_failed and
+allowed=False. The hook layer must treat that as a hard block.
+
+The gate never modifies the envelope. It is read-only.
+"""
+from __future__ import annotations
+
+import time
+import uuid
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Any
+
+from .strategy_policy import (
+    PolicyLoadResult,
+    is_retired_id,
+    is_industry_preset_blocked,
+    is_prohibited_path,
+    is_retired_alias,
+    load_strategy_policy,
+    retired_alias_kind_of,
+)
+from .requirements_lifecycle import (
+    LifecycleState,
+    RequirementsRegistry,
+)
+from .contamination_scanner import (
+    Classification,
+    ContaminationScanner,
+    ScanReport,
+)
+
+
+# ---------------------------------------------------------------- Models
+@dataclass
+class GateEvent:
+    """A single gate event emitted during evaluation."""
+
+    event_type: str
+    severity: str  # INFO | WARN | BLOCK
+    message: str
+    matched_token: str | None = None
+    matched_id: str | None = None
+    source_classification: str = "UNKNOWN"
+    ts: float = field(default_factory=lambda: time.time())
+
+    def to_dict(self) -> dict:
+        return {
+            "event_type": self.event_type,
+            "severity": self.severity,
+            "message": self.message,
+            "matched_token": self.matched_token,
+            "matched_id": self.matched_id,
+            "source_classification": self.source_classification,
+            "ts": self.ts,
+        }
+
+
+@dataclass
+class GateDecision:
+    """The result of evaluating a payload through the strategy gate."""
+
+    allowed: bool
+    events: list[GateEvent] = field(default_factory=list)
+    risk_envelope: dict | None = None
+    reason: str = ""
+
+    def to_dict(self) -> dict:
+        return {
+            "allowed": self.allowed,
+            "reason": self.reason,
+            "events": [e.to_dict() for e in self.events],
+        }
+
+
+# ---------------------------------------------------------------- Gate
+class StrategyGate:
+    """The strategy gate. Stateless; everything comes from the policy + registry."""
+
+    def __init__(
+        self,
+        policy: dict,
+        registry: RequirementsRegistry | None = None,
+        scanner: ContaminationScanner | None = None,
+        quarantine_root: str | None = None,
+        archived_roots: list[str] | None = None,
+    ) -> None:
+        self.policy = policy
+        self.registry = registry or RequirementsRegistry()
+        self.quarantine_root = quarantine_root
+        self.archived_roots = archived_roots or []
+        self.scanner = scanner or ContaminationScanner(
+            policy,
+            quarantine_root=quarantine_root,
+            archived_roots=archived_roots,
+        )
+
+    # ----- Public entry
+    def evaluate_envelope(self, envelope: dict) -> GateDecision:
+        """Evaluate an envelope payload.
+
+        The envelope's payload is checked for:
+          1. retired requirement id references (text + structured)
+          2. blocked industry preset references (text)
+          3. prohibited path / asset references (text)
+          4. malformed task payload (missing title or success_criteria)
+          5. archive leak (source references an archived surface)
+        """
+        events: list[GateEvent] = []
+        if not isinstance(envelope, dict):
+            events.append(self._mk_event(
+                "INVALID_TASK_GENERATED", "BLOCK",
+                "envelope is not a dict",
+            ))
+            return self._reject(envelope, events, "invalid_envelope_shape")
+
+        payload = envelope.get("payload") or {}
+        msg_type = envelope.get("message_type") or ""
+        sender = envelope.get("sender") or ""
+        text = ""
+        structured_fields: dict[str, str] = {}
+        if isinstance(payload, dict):
+            for f in ("text", "title", "description", "summary"):
+                v = payload.get(f)
+                if v:
+                    structured_fields[f] = str(v)
+            text = " ".join(structured_fields.values())
+        else:
+            text = str(payload) if payload else ""
+
+        # 1. retired ids (look for R-NNN token in text and structured fields)
+        retired_hits = self._scan_for_retired_ids(text)
+        for hit in retired_hits:
+            events.append(self._mk_event(
+                "RETIRED_REQUIREMENT_REACTIVATED", "BLOCK",
+                f"references retired requirement id {hit}",
+                matched_id=hit,
+            ))
+
+        # 2. industry preset blocks
+        preset_hits = self._scan_for_industry_presets(text)
+        for hit in preset_hits:
+            events.append(self._mk_event(
+                "STRATEGY_DRIFT_DETECTED", "BLOCK",
+                f"references blocked industry preset {hit}",
+                matched_id=hit,
+            ))
+
+        # 3. prohibited path / asset keys
+        path_hits = self._scan_for_prohibited_paths(text)
+        for hit in path_hits:
+            events.append(self._mk_event(
+                "DEPRECATED_ASSET_REFERENCED", "BLOCK",
+                f"references deprecated asset / source key {hit}",
+                matched_id=hit,
+            ))
+
+        # 4. retired aliases (correction 2026-10-09). Alias hits are NEVER
+        # the sole decision. We combine:
+        #   - structured-field presence (title/description/summary field)
+        #   - existing-signal context (any retired id / prohibited path / preset hit)
+        #   - active task-envelope source context
+        # Bare alias in pure text without any of the above is emitted as
+        # WARN, not BLOCK. When the alias is paired with structured field
+        # presence OR with an existing signal OR with cloudtech_v22_v23 kind
+        # (which directly maps to prohibited_active_assets), it BLOCKs.
+        alias_hits = is_retired_alias(self.policy, text)
+        combined_signal_present = bool(
+            retired_hits or preset_hits or path_hits
+        )
+        for alias in alias_hits:
+            kind = retired_alias_kind_of(self.policy, alias)
+            in_structured = self._alias_in_structured_fields(alias, structured_fields)
+            is_cloudtech_kind = kind == "cloudtech_v22_v23"
+            is_combined = bool(
+                in_structured
+                or combined_signal_present
+                or is_cloudtech_kind
+            )
+            if kind == "cloudtech_v22_v23" or kind == "skill_id":
+                event_type = "DEPRECATED_ASSET_REFERENCED"
+            else:
+                event_type = "STRATEGY_DRIFT_DETECTED"
+            if is_combined:
+                events.append(self._mk_event(
+                    event_type, "BLOCK",
+                    (
+                        f"references retired alias {alias!r} (kind={kind or 'unclassified'}) "
+                        f"in active task context"
+                    ),
+                    matched_id=alias,
+                    matched_token=alias,
+                    source_classification="active_envelope",
+                ))
+            else:
+                events.append(self._mk_event(
+                    event_type, "WARN",
+                    (
+                        f"references retired alias {alias!r} (kind={kind or 'unclassified'}) "
+                        f"without combined signal; bare hit not blocked"
+                    ),
+                    matched_id=alias,
+                    matched_token=alias,
+                    source_classification="text_only",
+                ))
+
+        # 5. malformed payload: task/message envelopes need title + success_criteria
+        if msg_type in ("task", "message") and isinstance(payload, dict):
+            if not (payload.get("title") or payload.get("text")):
+                events.append(self._mk_event(
+                    "INVALID_TASK_GENERATED", "BLOCK",
+                    "task payload missing title/text",
+                ))
+            # GoalContract-bearing payloads should carry success_criteria
+            goal = payload.get("goal") if isinstance(payload, dict) else None
+            if isinstance(goal, dict) and not goal.get("success_criteria"):
+                events.append(self._mk_event(
+                    "INVALID_TASK_GENERATED", "WARN",
+                    "goal payload missing success_criteria",
+                ))
+
+        # 6. archive leak: source references a path that lives in quarantine/
+        # archived surface
+        archive_hits = self._scan_for_archive_leak(text)
+        for hit in archive_hits:
+            events.append(self._mk_event(
+                "ARCHIVE_LEAK_DETECTED", "BLOCK",
+                f"references archived surface {hit}",
+                matched_id=hit,
+            ))
+
+        # Determine allowed
+        blocking = [e for e in events if e.severity == "BLOCK"]
+        if blocking:
+            return self._reject(envelope, events, "strategy_gate_blocked",
+                                matched_event=blocking[0].event_type)
+
+        return GateDecision(
+            allowed=True,
+            events=events,
+            reason="allowed",
+        )
+
+    def scan_report(self, paths: list[str]) -> ScanReport:
+        """Run the contamination scanner across a list of paths."""
+        report = ScanReport()
+        for p in paths:
+            report.items_scanned += 1
+            for f in self.scanner.scan_path(p):
+                report.add(f)
+        report.scan_finished = time.time()
+        return report
+
+    # ----- Helpers
+    def _scan_for_retired_ids(self, text: str) -> list[str]:
+        out: list[str] = []
+        if not text:
+            return out
+        import re as _re
+        for m in _re.finditer(r"R-\d{3}", text):
+            rid = m.group(0)
+            if is_retired_id(self.policy, rid):
+                out.append(rid)
+        return sorted(set(out))
+
+    def _scan_for_industry_presets(self, text: str) -> list[str]:
+        out: list[str] = []
+        if not text:
+            return out
+        for preset in self.policy.get("industry_presets_blocked", []) or []:
+            if preset.lower() in text.lower():
+                out.append(preset)
+        return sorted(set(out))
+
+    def _scan_for_prohibited_paths(self, text: str) -> list[str]:
+        out: list[str] = []
+        if not text:
+            return out
+        for key in self.policy.get("historical_source_prohibited_keys", []) or []:
+            if key.lower() in text.lower():
+                out.append(key)
+        return sorted(set(out))
+
+    def _scan_for_archive_leak(self, text: str) -> list[str]:
+        out: list[str] = []
+        if not text:
+            return out
+        # Look for explicit quarantine / archived markers in text
+        for marker in (
+            "D:\\AIOS\\_quarantine\\",
+            "D:\\AIOS\\_archived_",
+            "D:\\AIOS\\_backup",
+            "D:\\CloudTech-Portable",
+            "D:\\CloudTech-Vault",
+            "D:\\CloudTech-Inbox",
+            "AIOS_SOURCE_OF_TRUTH_FINAL",
+            "AIOS_RECONSTRUCTION",
+        ):
+            if marker.lower() in text.lower():
+                out.append(marker)
+        return sorted(set(out))
+
+    def _alias_in_structured_fields(self, alias: str, fields: dict[str, str]) -> bool:
+        """Return True iff alias appears in any of the named structured fields.
+
+        `fields` maps field-name -> value (e.g. 'title', 'description',
+        'summary', 'text'). The alias must be present in at least one
+        value. This is the 'structured-field presence' signal used to
+        upgrade alias hits from WARN to BLOCK in the gate.
+        """
+        if not alias or not fields:
+            return False
+        for value in fields.values():
+            if value and alias in value:
+                return True
+        return False
+
+    def _mk_event(self, event_type: str, severity: str, message: str,
+                  *, matched_id: str | None = None,
+                  matched_token: str | None = None,
+                  source_classification: str = "UNKNOWN") -> GateEvent:
+        return GateEvent(
+            event_type=event_type,
+            severity=severity,
+            message=message,
+            matched_id=matched_id,
+            matched_token=matched_token,
+            source_classification=source_classification,
+        )
+
+    def _reject(self, envelope: dict, events: list[GateEvent], reason: str,
+                *, matched_event: str | None = None) -> GateDecision:
+        # Emit a POLICY_GATE_REJECTED as the umbrella event if no matched event given
+        if matched_event is None:
+            events.insert(0, self._mk_event(
+                "POLICY_GATE_REJECTED", "BLOCK",
+                f"gate rejected envelope: {reason}",
+            ))
+        risk = self._make_risk_envelope(envelope, events, reason)
+        return GateDecision(
+            allowed=False,
+            events=events,
+            risk_envelope=risk,
+            reason=reason,
+        )
+
+    def _make_risk_envelope(self, envelope: dict, events: list[GateEvent], reason: str) -> dict:
+        env_id = envelope.get("id") if isinstance(envelope, dict) else None
+        sender = envelope.get("sender") if isinstance(envelope, dict) else None
+        return {
+            "envelope_type": "strategy_gate_risk",
+            "original_envelope_id": env_id,
+            "original_sender": sender,
+            "reason": reason,
+            "events": [e.to_dict() for e in events],
+            "ts": time.time(),
+            "policy_id": self.policy.get("policy_id"),
+            "policy_version": self.policy.get("policy_version"),
+            "schema_version": "1.0",
+        }
+
+
+# ---------------------------------------------------------------- Bootstrap helpers
+def gate_from_policy_dir(
+    policy_dir: Path | str | None = None,
+    *,
+    quarantine_root: str | None = None,
+    archived_roots: list[str] | None = None,
+) -> tuple[PolicyLoadResult, StrategyGate | None]:
+    """Build a StrategyGate from a policy dir (returns (load_result, gate_or_None))."""
+    res = load_strategy_policy(policy_dir)
+    if not res.ok:
+        return res, None
+    gate = StrategyGate(
+        res.policy,  # type: ignore[arg-type]
+        quarantine_root=quarantine_root,
+        archived_roots=archived_roots,
+    )
+    return res, gate
+
+
+__all__ = [
+    "GateEvent",
+    "GateDecision",
+    "StrategyGate",
+    "gate_from_policy_dir",
+]

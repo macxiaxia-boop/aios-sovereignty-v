@@ -1,0 +1,5 @@
+# SHA-256 sidecar for CloudTech Global Product Strategy Policy v1
+# generated: 2026-10-09T01:30:00Z
+# generated_by: Claude Code 2.1.285 (MiniMax-M3) — executor (alias correction)
+# verification: python -c "import hashlib,sys;print(hashlib.sha256(open('product_strategy.v1.json','rb').read()).hexdigest().upper())"
+270B9A02C76D0F9F904E3E1F9693CDE167C63D96B02B45DA3B8D29D7971FED74  product_strategy.v1.json

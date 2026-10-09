@@ -1,0 +1,154 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://aios.local/schemas/product_strategy.v1.schema.json",
+  "title": "CloudTech Global Product Strategy Policy v1",
+  "type": "object",
+  "required": [
+    "policy_id",
+    "policy_version",
+    "title",
+    "product",
+    "positioning",
+    "business_scope",
+    "vertical_product_strategy",
+    "industry_presets",
+    "status",
+    "owner",
+    "change_authority",
+    "scope_note",
+    "deprecated_requirement_ids",
+    "prohibited_active_assets",
+    "quarantine_paths",
+    "industry_presets_blocked",
+    "retired_aliases",
+    "retired_alias_kind",
+    "historical_source_prohibited_keys",
+    "gate_event_types",
+    "scanner_classifications"
+  ],
+  "properties": {
+    "policy_id": {
+      "type": "string",
+      "const": "GLOBAL_PRODUCT_STRATEGY"
+    },
+    "policy_version": {
+      "type": "string",
+      "pattern": "^20[0-9]{2}-[0-9]{2}-[0-9]{2}$"
+    },
+    "title": { "type": "string" },
+    "product": { "type": "string", "const": "CloudTech" },
+    "positioning": {
+      "type": "string",
+      "enum": ["HORIZONTAL_MARKETING_SAAS"]
+    },
+    "business_scope": {
+      "type": "string",
+      "enum": ["GENERAL_MARKETING"]
+    },
+    "vertical_product_strategy": {
+      "type": "string",
+      "enum": ["DISABLED"]
+    },
+    "industry_presets": {
+      "type": "string",
+      "enum": ["DISABLED"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["ACTIVE", "SUSPENDED", "DRAFT"]
+    },
+    "owner": { "type": "string" },
+    "change_authority": {
+      "type": "string",
+      "enum": ["EXPLICIT_USER_APPROVAL"]
+    },
+    "scope_note": { "type": "string" },
+    "deprecated_requirement_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^R-[0-9]{3}$"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "prohibited_active_assets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "summary", "deactivation_required"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^PA-[0-9]{2}$" },
+          "kind": { "type": "string" },
+          "summary": { "type": "string" },
+          "deactivation_required": {
+            "type": "string",
+            "enum": ["USER_AUTHORIZATION_REQUIRED", "SAFE_REVERSIBLE"]
+          },
+          "evidence": { "type": "string" },
+          "quarantine_target": { "type": "string" }
+        }
+      }
+    },
+    "quarantine_paths": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "industry_presets_blocked": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    },
+    "retired_aliases": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "retired_alias_kind": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": { "type": "string" },
+        "uniqueItems": true
+      }
+    },
+    "historical_source_prohibited_keys": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    },
+    "gate_event_types": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "STRATEGY_DRIFT_DETECTED",
+          "RETIRED_REQUIREMENT_REACTIVATED",
+          "DEPRECATED_ASSET_REFERENCED",
+          "INVALID_TASK_GENERATED",
+          "ARCHIVE_LEAK_DETECTED",
+          "POLICY_GATE_REJECTED"
+        ]
+      }
+    },
+    "scanner_classifications": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "ACTIVE_VIOLATION",
+          "ARCHIVED_REFERENCE",
+          "FALSE_POSITIVE",
+          "UNVERIFIED"
+        ]
+      }
+    },
+    "evidence_source": { "type": "string" },
+    "evidence_json": { "type": "string" },
+    "created_at_utc": { "type": "string" },
+    "created_by": { "type": "string" }
+  },
+  "additionalProperties": false
+}

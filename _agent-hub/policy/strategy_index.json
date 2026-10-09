@@ -1,0 +1,83 @@
+{
+  "index_id": "GLOBAL_STRATEGY_RETIREMENT_INDEX",
+  "index_version": "2026-10-09",
+  "owner": "USER",
+  "change_authority": "EXPLICIT_USER_APPROVAL",
+  "policy": {
+    "path": "D:\\AIOS\\_agent-hub\\policy\\product_strategy.v1.json",
+    "schema": "D:\\AIOS\\_agent-hub\\policy\\product_strategy.v1.schema.json",
+    "sha256_sidecar": "D:\\AIOS\\_agent-hub\\policy\\product_strategy.v1.sha256"
+  },
+  "registry": {
+    "policy_loader": "policy.strategy_policy.load_strategy_policy",
+    "lifecycle": "policy.requirements_lifecycle.RequirementsRegistry",
+    "scanner": "policy.contamination_scanner.ContaminationScanner",
+    "gate": "policy.strategy_gate.StrategyGate"
+  },
+  "integration": {
+    "hook": "D:\\AIOS\\_agent-hub\\v2\\src\\goal_guard_hook.py",
+    "hook_call": "strategy_gate_for_root(v2_root).evaluate_envelope(envelope)",
+    "v2_consumer_diff_lines": 0,
+    "kernel_goal_guard_unchanged": true,
+    "verifier_unchanged": true,
+    "verifier_path": "D:\\AIOS\\kernel\\src\\aios_kernel\\verifier\\deterministic.py"
+  },
+  "tests": {
+    "policy_load_hash_approval": "D:\\AIOS\\_agent-hub\\v2\\tests\\test_strategy_policy.py",
+    "lifecycle_transitions": "D:\\AIOS\\_agent-hub\\v2\\tests\\test_requirements_lifecycle.py",
+    "scanner_classifications": "D:\\AIOS\\_agent-hub\\v2\\tests\\test_contamination_scanner.py",
+    "strategy_gate_events": "D:\\AIOS\\_agent-hub\\v2\\tests\\test_strategy_gate.py",
+    "quarantine_allowlist": "D:\\AIOS\\_agent-hub\\v2\\tests\\test_quarantine_allowlist.py",
+    "hook_integration": "D:\\AIOS\\_agent-hub\\v2\\tests\\test_strategy_hook_integration.py",
+    "alias_correction": "D:\\AIOS\\_agent-hub\\v2\\tests\\test_strategy_alias_correction.py",
+    "evidence": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_RETIREMENT_PHASE2_20261009_EVIDENCE.json"
+  },
+  "quarantine": {
+    "root": "D:\\AIOS\\_quarantine\\retired-assets\\20261008",
+    "manifest": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\quarantine_manifest.json",
+    "marker": "D:\\AIOS\\_quarantine\\retired-assets\\20261008\\DO_NOT_INDEX.txt",
+    "policy_entry": "policy.quarantine.apply_quarantine"
+  },
+  "alias_correction": {
+    "added_at_utc": "2026-10-09T01:30:00Z",
+    "scope": "retired_aliases list + structured gate + scanner content tokens",
+    "evidence": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_ALIAS_CORRECTION_20261009_EVIDENCE.md",
+    "contract": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_ALIAS_CORRECTION_20261009.md",
+    "alias_kinds": [
+      "industry_vertical",
+      "old_brand",
+      "vertical_workflow",
+      "cloudtech_v22_v23",
+      "skill_id"
+    ]
+  },
+  "deferred_manifest": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_RETIREMENT_PHASE2_20261009_DEFERRED.md",
+  "evidence": {
+    "phase2_markdown": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_RETIREMENT_PHASE2_20261009_EVIDENCE.md",
+    "phase2_json": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_RETIREMENT_PHASE2_20261009_EVIDENCE.json",
+    "alias_markdown": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_ALIAS_CORRECTION_20261009_EVIDENCE.md",
+    "alias_json": "D:\\AIOS\\_agent-hub\\reports\\GLOBAL_STRATEGY_ALIAS_CORRECTION_20261009_EVIDENCE.json"
+  },
+  "retired_requirement_ids": [
+    "R-001", "R-002", "R-003", "R-004", "R-005",
+    "R-006", "R-007", "R-008", "R-009", "R-010",
+    "R-011", "R-012", "R-013", "R-014", "R-015",
+    "R-016", "R-017", "R-018", "R-019", "R-020"
+  ],
+  "red_lines_observed": {
+    "AGENTS_md_untouched": true,
+    "kernel_models_unchanged": true,
+    "verifier_unchanged": true,
+    "v2_consumer_diff_lines": 0,
+    "model_policy_yaml_unchanged": true,
+    "sovereignty_v_unchanged": true,
+    "no_service_starts_stops": true,
+    "no_history_rewrites": true,
+    "no_cloud_backup_deletions": true,
+    "no_personal_file_deletions": true,
+    "no_keyword_only_blocking": true
+  },
+  "created_at_utc": "2026-10-09T00:45:00Z",
+  "updated_at_utc": "2026-10-09T01:30:00Z",
+  "created_by": "Claude Code 2.1.285 (MiniMax-M3) — executor"
+}

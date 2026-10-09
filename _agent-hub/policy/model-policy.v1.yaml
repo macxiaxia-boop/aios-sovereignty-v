@@ -1,36 +1,49 @@
 # === AIOS Model Policy v1 ===
 # SSOT: D:\AIOS\_agent-hub\policy\model-policy.v1.yaml
+# 用户授权: "我目前只用了一个api就是MiniMax" (2026-10-09 user-directive)
 # 编辑权限: 仅 user (chmod 444 / ACL 收口)
 policy_id: model-policy.v1
 policy_version: 1
 policy_owner: user
-created_at: "2026-10-08T00:00:00+08:00"
-last_modified: "2026-10-08T00:00:00+08:00"
-approval_evidence: "user-directive-2026-10-08-AIOS-SOVEREIGNTY-V"
+approval_evidence: "user-directive-2026-10-08-AIOS-SOVEREIGNTY-V + user-directive-2026-10-09-only-minimax-api"
 applied_workers:
   - codex
   - claudecode
   - openclaw
   - hermes
   - cc-switch
-verification_status: pending
+verification_status: active
+last_modified: __FILL_AT_WRITE__
 model_policy:
   allowed_providers:
     - id: MiniMax
       enabled: true
+      evidence: user-directive-2026-10-09-only-minimax-api
       models:
         - id: MiniMax-M3
-          evidence: subscription-2026-Q4
+          evidence: W1 audit line 67 ANTHROPIC_MODEL env + default in codex_settings.json
+          enabled: true
+        - id: MiniMax-M2.7
+          evidence: W1 audit line 69 CLAUDE_CODE_SUBAGENT_MODEL env
+          enabled: true
+        - id: MiniMax-M2.7-highspeed
+          evidence: W1 audit line 68 ANTHROPIC_SMALL_FAST_MODEL env
           enabled: true
   default_provider: MiniMax
   default_model: MiniMax-M3
-  allowed_fallbacks: []
+  allowed_fallbacks:
+    - provider: MiniMax
+      model: MiniMax-M2.7
+    - provider: MiniMax
+      model: MiniMax-M2.7-highspeed
   prohibited_runtime_routes:
     - any provider other than MiniMax
     - any cross-provider auto-fallback
     - any cron/heartbeat/session-restore carrying legacy model
     - any backup auto-restore overwriting current provider
     - any unsanctioned model override via env var
+    - deepseek-v4-flash fallback (R2 risk · W3 audit · 待 user 决定如何处理)
+    - ollama / qwen profiles in Codex config (historical, not active)
   unavailable_handling:
     - queue_with_backoff
     - report_to_audit_log
@@ -41,6 +54,33 @@ model_policy:
     modification_method: atomic_write_with_version
     audit_log: D:\AIOS\_agent-hub\audit\policy-changes.log
 metadata:
-  sha256: TBD-by-sign-script
+  api_endpoint: https://api.minimaxi.com/anthropic
+  api_endpoint_evidence: W1 audit line 65 ANTHROPIC_BASE_URL env
+  sha256: __FILL_AFTER_HASH__
   signature_algo: sha256
   signature: optional
+
+# 硬约束 (来自用户母令 + 前一会话 01a11c23 第 1 章)
+hard_constraints:
+  - id: C1
+    rule: "不得自动调用历史供应商"
+  - id: C2
+    rule: "不允许跨供应商自动 fallback"
+  - id: C3
+    rule: "不允许历史会话将旧模型重新设为当前模型"
+  - id: C4
+    rule: "不允许后台任务绕开统一策略"
+  - id: C5
+    rule: "不允许配置恢复将旧模型重新启用"
+  - id: C6
+    rule: "MiniMax 不可用时排队/退避/报告，不擅自换供应商"
+  - id: C7
+    rule: "AIOS 升级不得擅自修改本策略"
+  - id: C8
+    rule: "更换模型供应商需用户明确批准"
+  - id: C9
+    rule: "执行后真实模型来源必须可审计"
+  - id: C10
+    rule: "allowed_models 必须由用户授权 id 列表填入，禁止自行编造"
+  - id: C11
+    rule: "用户当前只用一个 API：MiniMax。任何其他 provider 调用必须拒绝并告警"

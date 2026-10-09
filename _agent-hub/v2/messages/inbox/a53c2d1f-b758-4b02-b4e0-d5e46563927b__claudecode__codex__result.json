@@ -1,0 +1,28 @@
+{
+  "correlation_id": "c2904809-3554-4f24-b7bc-ab93d16edaf3",
+  "id": "a53c2d1f-b758-4b02-b4e0-d5e46563927b",
+  "idempotency_key": "ac5a997f025ffebd251d5fb9d59babc62c6360fa6c3d9c9e7afc39ae6b4ccfb4",
+  "in_reply_to": "c2904809-3554-4f24-b7bc-ab93d16edaf3",
+  "message_type": "result",
+  "payload": {
+    "output": {
+      "attempts": 3,
+      "backoff_delays_ms": [
+        1139,
+        2045
+      ],
+      "duration_ms": 8765,
+      "exit_code": 1,
+      "ok": false,
+      "stderr_tail": "#< CLIXML\r\n<Objs Version=\"1.1.0.1\" xmlns=\"http://schemas.microsoft.com/powershell/2004/04\"><Obj S=\"progress\" RefId=\"0\"><TN RefId=\"0\"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N=\"SourceId\">1</I64><PR N=\"Record\"><AV>����׼���״�ʹ��ģ�顣</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>",
+      "stdout_tail": "Not logged in · Please run /login\n",
+      "transport": "claude_p_subprocess"
+    }
+  },
+  "recipient": "codex",
+  "retry_count": 0,
+  "schema_version": "1.0",
+  "sender": "claudecode",
+  "timestamp": "2026-10-09T01:11:03Z",
+  "ttl_ms": 600000
+}
