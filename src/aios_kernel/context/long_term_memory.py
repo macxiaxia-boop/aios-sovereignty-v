@@ -329,7 +329,7 @@ class LongTermMemoryService:
             tag_conds = []
             for t in tags:
                 # JSON-array "contains scalar t" - works on SQLite JSON1 and PG JSONB.
-                tag_conds.append(LongTermMemoryORM.tags.contains([t]))
+                tag_conds.append(LongTermMemoryORM.tags.like(f"%{t}%"))
             conditions.append(or_(*tag_conds))
         if after is not None:
             if after.tzinfo is None:
