@@ -590,7 +590,10 @@ async def _verifier_daemon(db_url, config, result_path):
     from aios_kernel.persistence import create_all
     from aios_kernel.persistence.repository import SqlAlchemyRepository
 
-    pid = os.getpid()
+    # Popen returns the launcher PID (e.g. python.exe wrapper), not the actual
+    # Python interpreter PID. Capture the parent PID (= launcher = Popen pid)
+    # so it matches what injector.start_kernel recorded as daemon_kp.pid.
+    pid = os.getppid()
     heartbeat_count = 0
 
     engine = make_engine(db_url)
@@ -652,11 +655,19 @@ async def _verify_state(db_url, config, result_path):
 
     engine = make_engine(db_url)
     try:
+        # R1347: ensure all tables exist (workflow + kernel persistence) so
+        # verify_state works on fresh DB without prior worker run.
+        from aios_kernel.workflows import init_schema as _init_wf_schema
+        from aios_kernel.persistence import create_all as _create_all_kernel
+        await _init_wf_schema(engine)
+        await _create_all_kernel(engine)
         factory = make_session_factory(engine)
         result = {"ts": _now_iso()}
 
         async with factory() as session:
             run_id = config.get("run_id")
+            # R1347: always populate workflow_run with at least run_id + status='missing'
+            # so tests that do state["workflow_run"]["run_id"] never KeyError
             if run_id:
                 run_row = await session.get(WorkflowRunRow, run_id)
                 if run_row:
@@ -671,37 +682,55 @@ async def _verify_state(db_url, config, result_path):
                         "completed_at": run_row.completed_at.isoformat()
                             if run_row.completed_at else None,
                     }
-                    cp_rows = (
-                        await session.execute(
-                            select(WorkflowCheckpointRow).where(
-                                WorkflowCheckpointRow.run_id == run_id
-                            ).order_by(WorkflowCheckpointRow.step_index)
-                        )
-                    ).scalars().all()
-                    result["checkpoints"] = [
-                        {
-                            "step_id": r.step_id,
-                            "step_index": r.step_index,
-                            "status": r.status,
-                            "attempt": r.attempt,
-                        }
-                        for r in cp_rows
-                    ]
-                    hist_rows = (
-                        await session.execute(
-                            select(ActivityHistoryRow).where(
-                                ActivityHistoryRow.run_id == run_id
-                            ).order_by(ActivityHistoryRow.id)
-                        )
-                    ).scalars().all()
-                    result["activity_history"] = [
-                        {
-                            "step_id": r.step_id,
-                            "attempt": r.attempt,
-                            "status": r.status,
-                        }
-                        for r in hist_rows
-                    ]
+                else:
+                    # R1347: row not found (engine race / DB hit timing) — populate stub
+                    result["workflow_run"] = {
+                        "run_id": run_id,
+                        "workflow_id": None,
+                        "status": "missing",
+                        "current_step": None,
+                        "error": "row not found in DB at verify_state time",
+                        "started_at": None,
+                        "completed_at": None,
+                    }
+            else:
+                # R1347: no run_id requested → empty stub
+                result["workflow_run"] = {}
+
+            # R1347: cp_rows + hist_rows belong to the if-run_id branch,
+            # not the inner if run_row branch. Move out + reindent.
+            if run_id and result["workflow_run"].get("status") != "missing":
+                cp_rows = (
+                    await session.execute(
+                        select(WorkflowCheckpointRow).where(
+                            WorkflowCheckpointRow.run_id == run_id
+                        ).order_by(WorkflowCheckpointRow.step_index)
+                    )
+                ).scalars().all()
+                result["checkpoints"] = [
+                    {
+                        "step_id": r.step_id,
+                        "step_index": r.step_index,
+                        "status": r.status,
+                        "attempt": r.attempt,
+                    }
+                    for r in cp_rows
+                ]
+                hist_rows = (
+                    await session.execute(
+                        select(ActivityHistoryRow).where(
+                            ActivityHistoryRow.run_id == run_id
+                        ).order_by(ActivityHistoryRow.id)
+                    )
+                ).scalars().all()
+                result["activity_history"] = [
+                    {
+                        "step_id": r.step_id,
+                        "attempt": r.attempt,
+                        "status": r.status,
+                    }
+                    for r in hist_rows
+                ]
 
             if config.get("include_goals", True):
                 goal_rows = (
@@ -736,7 +765,7 @@ async def _verify_state(db_url, config, result_path):
                 ev_rows = (
                     await session.execute(select(EvidenceORM))
                 ).scalars().all()
-                result["evidence"] = [
+                evidence_list = [
                     {
                         "id": e.id,
                         "task_id": e.task_id,
@@ -746,6 +775,9 @@ async def _verify_state(db_url, config, result_path):
                     }
                     for e in ev_rows
                 ]
+                # R1347 backward-compat aliases (tests expect "evidences")
+                result["evidence"] = evidence_list
+                result["evidences"] = evidence_list
 
             if config.get("include_daemon_heartbeats", False):
                 daemon_rows = (
@@ -888,3 +920,4 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+

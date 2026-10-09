@@ -444,6 +444,22 @@ def task_to_orm(p):
 
 
 def plan_to_orm(p):
+    # Pydantic.model_validate() may leave steps/dependencies as raw dicts
+    # if the Plan field type is generic `list`. Re-hydrate via PlanStep/
+    # Dependency so .model_dump() works on the revalidator side.
+    from aios_kernel.domain.plan import PlanStep as _PlanStep, Dependency as _Dep
+    def _coerce(items, model_cls):
+        out = []
+        for s in items or []:
+            if isinstance(s, model_cls):
+                out.append(s)
+            elif isinstance(s, dict):
+                out.append(model_cls.model_validate(s))
+            else:
+                raise TypeError(f"unsupported step type: {type(s).__name__}")
+        return out
+    steps_obj = _coerce(p.steps, _PlanStep)
+    deps_obj = _coerce(p.dependencies, _Dep)
     return PlanORM(
         id=p.id,
         goal_id=p.goal_id,
@@ -454,14 +470,15 @@ def plan_to_orm(p):
         description=p.description,
         rollback_to=p.rollback_to,
         created_by=p.created_by,
-        steps=[s.model_dump(mode='json') for s in p.steps],
-        dependencies=[d.model_dump(mode='json') for d in p.dependencies],
+        steps=[s.model_dump(mode="json") for s in steps_obj],
+        dependencies=[d.model_dump(mode="json") for d in deps_obj],
         metadata_=dict(p.metadata),
         envelope_json=envelope_json_of(p),
         schema_version=p.schema_version,
         created_at=p.created_at,
         updated_at=p.updated_at,
     )
+
 
 
 def artifact_to_orm(p):
@@ -789,4 +806,5 @@ def decision_to_orm(p):
         created_at=p.created_at,
         updated_at=p.updated_at,
     )
+
 
