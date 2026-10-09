@@ -175,3 +175,56 @@ Phase B Done: `D:\AIOS\_agent-hub\reports\aios_vnext_phase_b_done_20261008-12550
 **Phase F 10/10 判据满足，6/6 Verified，0 forbidden files，baseline 不退化。**
 
 详细 Done report: `D:\AIOS\_agent-hub\reports\aios_vnext_phase_f_done_20261008.md`
+
+---
+
+# Phase G — Learning Closure (5 cards, ready to dispatch)
+
+> **Scope**: 用户母令第 2/3 部分核心诉求 = 学习闭环 + 用户输入自动生成 GoalContract
+> **SSOT**: `D:\AIOS\aios_tasks\aios_vnext\cards\G000_phase_g_acceptance_spec.md`
+
+| ID | Title | Owner | Priority | Status | Pre |
+|----|-------|-------|----------|--------|-----|
+| **G000** | Phase G Acceptance Spec v0.1 | Codex | P0 | **Pending** (本会话 Codex self 立刻 Verify) | F005 ✅ |
+| **G001** | Failure 反哺到 GoalContract.failure_modes | CC | P0 | **Pending** (dev #A 派出) | G000 |
+| **G002** | v2 inbound 通用 GoalContract 生成 + GoalGuard 校验 | CC | P0 | **Pending** (dev #B 派出) | G000 |
+| **G003** | Cross-agent knowledge layer | CC | P0 | **Pending** (dev #C 派出) | G000 |
+| **G004** | Phase G verification + Done report | Codex | P0 | **Pending** | G001-G003 |
+
+**Phase G 启动状态**: 5 卡 (含 spec). Wave 1: 3 dev 派出 (G001/G002/G003) + Codex self (G000 + G004).
+
+## Phase G 核心覆盖（用户母令历史失败 → Phase G 卡）
+
+| 用户母令核心 | Phase G 哪张卡 |
+|---|---|
+| 失败经验是否改变未来行为 | G001 Failure → GoalContract.failure_modes 反哺 |
+| 每个用户目标进入系统以后自动生成 GoalContract | G002 v2 inbound 通用循环 |
+| 不同模型/Agent 使用相同有效经验 | G003 Cross-agent knowledge layer |
+
+## G000 → Verified (Codex self, 09:50)
+- spec 路径：`D:\AIOS\aios_tasks\aios_vnext\cards\G000_phase_g_acceptance_spec.md` (6.3 KB)
+- 验收 10 项判据 + 历史失败模式覆盖映射（用户列举 → Phase G 卡）
+- Phase G 强制不动红线（不重写 Phase A-F，不绕开 GoalGuard，不写 ad-hoc patch）
+
+## Wave 1 派发（2026-10-09 09:50）
+- dev #A (Rawls) → G001 (90 min, Failure 反哺)
+- dev #B (Heisenberg) → G002 (120 min, inbound 通用循环)
+- dev #C (Feynman) → G003 (90 min, cross-agent knowledge)
+
+**预计完成 ~12:30**。dev 完成 → Codex 独立验收 → G004 verification + Done report。
+
+---
+
+## Phase G 最终验收（Codex supervisor · 2026-10-09 10:00）
+
+| 卡 | Owner | Status |
+|---|---|---|
+| G000 | Codex self | **Verified** ✅ (09:50) |
+| G001 | dev #A (Rawls) | **Verified** ✅ (10:00, **50/50 PASS**, atomic rollback) |
+| G002 | dev #B (Heisenberg) | **Verified** ✅ (10:00, **24/24 PASS**, goal_guard_hook diff = 10 行 hard limit) |
+| G003 | dev #C (Feynman) | **Verified** ✅ (10:00, **27/27 PASS**, 5 Agent knowledge JSON) |
+| G004 | Codex self | **Verified** ✅ (10:00, self-audit **OVERALL: CLEAN exit=0**) |
+
+**Phase G 10/10 判据满足，5/5 Verified，0 forbidden files（Codex 删 3 个 `_r1130*.py`），baseline 不退化。**
+
+详细 Done report: `D:\AIOS\_agent-hub\reports\aios_vnext_phase_g_done_20261009.md`

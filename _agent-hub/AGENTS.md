@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 # AIOS Current Shared Protocol Bootstrap
 
 > **SSOT**: `D:/AIOS/_agent-hub/AGENTS.md` — 中央共享协议唯一真实来源
@@ -11,6 +12,12 @@
 
 > **Read by**: codex, claudecode, Hermes, OpenClaw (all agents that support AGENTS.md convention)
 > **拓扑**: `D:\AIOS\AGENTS.md` 是本文件的同卷硬链接；各 Agent 原生入口通过 bootstrap 引用本中央 SSOT；不得声称全部是 junction
+=======
+# AGENTS.md - Shared Agent Instructions
+
+> **Read by**: codex (and any agent that supports AGENTS.md convention)
+> **Linked to**: `~/.codex/AGENTS.md` via junction
+>>>>>>> Stashed changes
 
 ## Mission
 
@@ -51,6 +58,7 @@ Append to `D:\AIOS\_agent-hub\memory\YYYY-MM-DD.md` for substantive work. This f
 
 ---
 
+<<<<<<< Updated upstream
 _Only edit this SSOT (`D:\AIOS\_agent-hub\AGENTS.md`). Each agent reads the central SSOT via its native bootstrap/workspace hard-link entry point; a broken entry link must FAIL._
 
 ## Phase F — Cognitive Governance Plane (2026-10-08 Verified ✅)
@@ -122,3 +130,29 @@ self-audit 自动:
 5. 写 self-audit 段落到当天 memory log
 
 DEGRADED 时按 autonomous_scope 自动修；BROKEN 时写 risk report 等用户回来。
+=======
+_Edit here, all agents that read AGENTS.md see the change automatically via junction._
+>>>>>>> Stashed changes
+
+## Phase G — Learning Closure (2026-10-09 10:00 Verified ✅)
+
+用户母令 3 个核心缺口已补齐:
+
+- **失败经验改变未来行为** — `FailureFeedbackService` (G001) 自动把 F004 cluster 写回 `GoalContract.failure_modes` (atomic rollback)
+- **每个用户目标自动生成 GoalContract** — `process_inbound_envelope()` (G002) 通用循环接入 `goal_guard_hook.guard_dispatch()`
+- **不同 Agent 共享有效经验** — `CrossAgentKnowledgeService` (G003) 5 Agent (codex/claudecode/hermes/openclaw/human) 共享 failure cluster + capability index
+
+详见: `D:\AIOS\_agent-hub\reports\aios_vnext_phase_g_done_20261009.md`
+
+## Phase G 强制新增红线（2026-10-09 起生效）
+
+- ❌ 不重写 Phase A-G Verified 卡
+- ❌ 不绕开 GoalGuard dispatch (每个 inbound 必须经 GoalGuard)
+- ❌ 不重写 FailureFeedbackService / CrossAgentKnowledgeService / process_inbound_envelope
+- ❌ 不修改 `_agent-hub/v2/src/goal_guard_hook.py` 大于 10 行
+- ❌ 不删 `failure_modes` (即使看起来 redundant) — 反哺是 idempotent
+
+任何 Phase G 后续工作必须复用:
+- 失败反哺: `aios_kernel.learning.failure_feedback.FailureFeedbackService`
+- Inbound 通用: `process_inbound_envelope()` in `_agent-hub/v2/src/inbound_goal_generation.py`
+- Cross-agent knowledge: `aios_kernel.learning.cross_agent_knowledge.CrossAgentKnowledgeService`
