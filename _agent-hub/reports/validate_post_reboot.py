@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """validate_post_reboot.py — corrected version with -p no:anyio + datetime fix"""
 import subprocess
 import json
