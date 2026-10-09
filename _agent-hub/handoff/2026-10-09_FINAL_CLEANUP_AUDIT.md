@@ -11,11 +11,9 @@
 - Remaining lines are pre-existing/shared-worktree state, not deleted by this worker:
 
 ```text
- M _agent-hub/policy/model-policy.v1.sha256
- M _agent-hub/policy/model-policy.v1.yaml
- M _agent-hub/policy/reconciler/reconciler.py
- M kernel
-?? _scheduled/AIOS_Sovereignty_CI_Verify_Daily.xml
+ m kernel
+?? aios_tasks/aios_vnext/evidence/preflight_20261009-103016.txt
+(status snapshot at final verification, after concurrent shared-worktree activity)
 ```
 
 - Worker scratch rules are present in `.gitignore` for `_test_*.py`, `_p5_*.py`, `_p8_*.py`, `_fix_*.py`, `_patch_*.py`, `_gen_*.py`, `_verify_*.py`, `_burst_*.py`, `_t07*.py`, `_t16*.py`, `_t08*.py`, and `**/__pycache__/`.
@@ -58,5 +56,6 @@
 ## Verdict
 
 A, B, C, D, and E work products are present and committed in their respective repositories. The repository status target is met, but the open audit findings and runtime process ownership issues above remain real and are not hidden.
+
 
 
