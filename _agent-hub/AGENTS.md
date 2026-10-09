@@ -156,3 +156,33 @@ _Edit here, all agents that read AGENTS.md see the change automatically via junc
 - 失败反哺: `aios_kernel.learning.failure_feedback.FailureFeedbackService`
 - Inbound 通用: `process_inbound_envelope()` in `_agent-hub/v2/src/inbound_goal_generation.py`
 - Cross-agent knowledge: `aios_kernel.learning.cross_agent_knowledge.CrossAgentKnowledgeService`
+
+## Phase B — Context Plane (2026-10-08 Verified ✅)
+
+8 modules (working memory / long-term memory / compiler / RAG / skills) + governance fixes. 13 card all Verified (with caveats on 2).
+
+详见: `D:\AIOS\_agent-hub\reports\aios_vnext_phase_b_done_20261008-125500.md`
+
+## Phase C — Learning Plane (2026-10-08 Verified ✅)
+
+8 modules (trace mining / failure detect / eval / replay / skill usage / skill deprecation / skill canary). 32/32 tests PASS, Learning Loop closed. 4 skills promoted.
+
+详见: `D:\AIOS\_agent-hub\reports\aios_vnext_phase_c_done_20261008-132000.md`
+
+## Phase D — Business Intelligence (2026-10-08 Verified ✅)
+
+5 modules (industry scout / experiment engine / CRM / marketing / KPI dashboard). 8/8 card all Verified. Phase D→C skill promotion loop closed.
+
+详见: `D:\AIOS\_agent-hub\reports\aios_vnext_phase_d_done_20261008-134000.md`
+
+## Phase E — CloudTech Productization (2026-10-08 Verified ✅)
+
+8 modules (multi-tenant / billing & credits / RBAC / workflow marketplace / private deployment). 8/8 card all Verified. 25/25 tests PASS, full stack closed loop.
+
+详见: `D:\AIOS\_agent-hub\reports\aios_vnext_phase_e_done_20261008.md`
+
+## Phase F — Cognitive Governance Plane (2026-10-08 Verified ✅)
+
+12-field GoalContract + Decision Audit Log + Intent Parser + Failure Pattern Merger + GoalGuard Hook. 6/6 cards Verified, 10/10 验收判据满足.
+
+详见: `D:\AIOS\_agent-hub\reports\aios_vnext_phase_f_done_20261008.md`
