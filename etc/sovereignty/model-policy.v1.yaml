@@ -1,0 +1,150 @@
+allowlist:
+  denylist:
+  - id: deepseek-v4-pro
+    reason: R262 用户决策 — 默认 MiniMax, 不 fallback deepseek
+  - id: deepseek-v4-flash
+    reason: 同上
+  - id: qwen3:14b
+    reason: ollama local — 用户已不再用 ollama 默认
+  - id: qwen2.5:7b
+    reason: 同上
+  - id: qwen3-coder-plus
+    reason: 未授权为 canonical
+  - id: qwen3.7-flash
+    reason: 同上
+  - id: agnes-2.5-flash
+    reason: R159b 旧 agnes 已淘汰
+  - id: glm-4-flash
+    reason: 智谱非 canonical
+  - id: glm-4.7-flash
+    reason: 同上
+  - id: gpt-5.6-sol
+    reason: OpenAI Atlas 非 canonical
+  - id: openai/gpt-5.6-sol
+    reason: 同上 hermes 镜像
+  optional:
+  - id: MiniMax-M3
+    note: primary 默认
+  - id: MiniMax-M2.7
+    note: subagent 默认
+  - id: MiniMax-M2.7-highspeed
+    note: 小模型/快速
+  - id: agnes-2.5-pro-alpha
+    note: 可选 — 用户原话'用agensII', R152b 留口子但非默认
+  - id: agnes-3.0-flash
+    note: 可选
+  - id: agnes-2.0-flash
+    note: 可选
+  providers:
+  - auth:
+      env_keys:
+      - MINIMAX_API_KEY
+      - MINIMAX_CN_API_KEY
+      - ANTHROPIC_AUTH_TOKEN
+      token_ref: mcp_credentials.env
+    base_urls:
+    - https://api.minimaxi.com/v1
+    - https://api.minimaxi.com/anthropic
+    display_name: MiniMax
+    id: MiniMax
+    models:
+    - context_window: 100000
+      id: MiniMax-M3
+      max_output: 8000
+      reasoning_effort:
+      - high
+      - medium
+      - low
+      - none
+      role:
+      - main
+      - fallback
+      - opus
+      thinking_budget: 32000
+    - context_window: 100000
+      id: MiniMax-M2.7
+      max_output: 8000
+      reasoning_effort:
+      - medium
+      - low
+      role:
+      - subagent
+      - haiku
+      - fallback
+    - context_window: 100000
+      id: MiniMax-M2.7-highspeed
+      max_output: 8000
+      reasoning_effort:
+      - low
+      - none
+      role:
+      - haiku
+      - small_fast
+    type: primary
+authorizer: user-2026-10-08T23:55
+created_at: '2026-10-09T00:00:00+08:00'
+created_by: codex-supervisor
+credential_sync:
+  mirrors:
+  - ~/.openclaw/.env
+  - ~/.claude/settings.json
+  - ~/.codex/auth.json
+  - process.env
+  rotation_protocol: '红线 #62 双轨 SSOT'
+  ssot: mcp_credentials.env
+enforcement:
+  cc_settings_json:
+    frozen: true
+    reconcile_strategy: warn_only
+  cc_switch:
+    common_config_claude:
+      ANTHROPIC_DEFAULT_HAIKU_MODEL: MiniMax-M2.7
+      ANTHROPIC_DEFAULT_HAIKU_MODEL_FALLBACK: MiniMax-M2.7
+      ANTHROPIC_DEFAULT_OPUS_MODEL: MiniMax-M3
+      ANTHROPIC_DEFAULT_OPUS_MODEL_FALLBACK: MiniMax-M3
+      ANTHROPIC_DEFAULT_SONNET_MODEL: MiniMax-M3
+      ANTHROPIC_DEFAULT_SONNET_MODEL_FALLBACK: MiniMax-M2.7
+      ANTHROPIC_SMALL_FAST_MODEL: MiniMax-M2.7-highspeed
+      CLAUDE_CODE_SUBAGENT_MODEL: MiniMax-M2.7
+    common_config_codex:
+      model_reasoning_effort: high
+    common_config_openclaw:
+      meta.migrations.modelPolicyAllowlist: true
+  codex_config_toml:
+    allowed_profiles: []
+    profiles_legacy_cleanup:
+    - ollama
+    - qwen25
+  hermes:
+    cli_config_provider_denylist:
+    - openrouter - nous - nous-api - openai-codex - copilot - gemini - zai - kimi-coding
+    - huggingface - nvidia - xiaomi - arcee - ollama-cloud - kilocode
+    - azure-foundry - lmstudio - lmstudio-cloud
+    cli_config_provider_first:
+    - minimax
+    - minimax-cn
+  openclaw:
+    gateway_hook: aios_kernel.governance.model_policy_hook
+    sqlite_table: policy_allowlist
+    yaml_mirror: ~/.openclaw/etc/policy.yaml
+governance:
+  audit:
+    append_only: true
+    boundary_check: aios_kernel.governance.decision_service.DecisionService
+    log_table: decision_audit
+  mutation_window:
+    max_changes_per_day: 10
+    min_interval_seconds: 60
+  owner: codex-supervisor
+  quorum: 1
+  required_signers:
+  - codex-supervisor-ed25519
+hash_alg: sha256
+policy_id: mp-2026-10-09-0001-draft
+schema_version: 1.0.0
+sig_alg: ed25519
+signature:
+  alg: ed25519
+  public_key_path: D:\AIOS\kernel\etc\sovereignty\codex_supervisor.ed25519.pub
+  value: hJr1X6TFrXsMMAAg8GNQyNcGB9sGw4He6jK+ac6qJP8ETd3eCf9mK/+hxYpRLGHOcnAP0fU/XvZPN7140OQbCQ==
+status: SIGNED
