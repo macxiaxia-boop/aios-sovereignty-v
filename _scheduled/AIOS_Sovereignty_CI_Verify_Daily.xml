@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-16"?>
+<Task version="1.4" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
+  <RegistrationInfo>
+    <Author>AIOS Codex Supervisor</Author>
+    <Description>AIOS-SOVEREIGNTY-V daily CI verification (ed25519 sig + 26 tests + secret scan). R2026-10-09 sovereignty-V T8.</Description>
+    <URI>\AIOS\AIOS_Sovereignty_CI_Verify_Daily</URI>
+  </RegistrationInfo>
+  <Triggers>
+    <CalendarTrigger>
+      <StartBoundary>2026-10-10T03:00:00</StartBoundary>
+      <Enabled>true</Enabled>
+      <ScheduleByDay>
+        <DaysInterval>1</DaysInterval>
+      </ScheduleByDay>
+    </CalendarTrigger>
+  </Triggers>
+  <Settings>
+    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>
+    <StartWhenAvailable>true</StartWhenAvailable>
+    <ExecutionTimeLimit>PT5M</ExecutionTimeLimit>
+    <Priority>7</Priority>
+  </Settings>
+  <Actions>
+    <Exec>
+      <Command>D:\AIOS\kernel\.venv\Scripts\python.exe</Command>
+      <Arguments>D:\AIOS\kernel\scripts\ci_verify_sovereignty.py --strict</Arguments>
+      <WorkingDirectory>D:\AIOS\kernel</WorkingDirectory>
+    </Exec>
+  </Actions>
+</Task>
