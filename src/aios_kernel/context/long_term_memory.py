@@ -298,7 +298,16 @@ class LongTermMemoryService:
             row = (await session.execute(stmt)).scalar_one_or_none()
             if row is None:
                 return None
-            return _row_to_entry(row).value  # return raw value dict
+            entry = _row_to_entry(row)
+            # Merge source_evidence_id metadata into the returned dict so
+            # callers can read both user value and capability back-link in one place.
+            if isinstance(entry.value, dict):
+                result = dict(entry.value)
+            else:
+                result = {"data": entry.value}
+            if entry.source_evidence_id is not None:
+                result["source_evidence_id"] = entry.source_evidence_id
+            return result
 
     async def query(
         self,
