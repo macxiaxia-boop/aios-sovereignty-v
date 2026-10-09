@@ -1,0 +1,11 @@
+boot_ms     = 1303.4
+kernel_pid  = 20288
+verifier_pid= 33568
+differ      = True
+rules_loaded= ['evidence_list_nonempty', 'evidence_exists', 'evidence_hash_matches', 'artifact_exists', 'success_criteria', 'budget_not_overflow']
+verifier_id = pidproof-1
+status      = healthy
+uptime_s    = 0.67458
+started_at  = 2026-10-08T03:56:08.621696Z
+verify_status_code = 200
+verify_response    = {"verdict":{"task_id":"pid-probe","verifier_id":"pidproof-1","verdict":"FAIL","reason":"rule 'evidence_list_nonempty' failed: worker produced 0 evidence records","details":{"evidence_list_nonempty":{"ok":false,"message":"worker produced 0 evidence records"},"_meta":{"elapsed_s":0.000012,"rules_run":

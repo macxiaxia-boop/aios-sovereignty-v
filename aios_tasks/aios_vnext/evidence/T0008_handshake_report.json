@@ -1,0 +1,94 @@
+{
+  "task_id": "T0008",
+  "title": "Five-Agent handshake 验证",
+  "executed_by": "CC dev #6",
+  "executed_at": "2026-10-08T11:08:41+08:00",
+  "central_agents_md_hash_actual": "6FD99AAAAADE4F5D5FAC97AF154AA84E77D3120C9BDB6CD438CD98648FF6CF14",
+  "central_agents_md_hash_expected_per_t0008_spec": "6FD99AAAAADE4F5D5FAC97AF154AA84E77D3812C9BDB6CD438CD98648FF6CF14",
+  "central_agents_md_hash_match_with_spec": false,
+  "central_agents_md_hash_mismatch_detail": "Actual hash differs from T0008 spec at byte position 35-37 (hex): expected '812C', actual '120C'. File size 2843 bytes matches spec. Last modified 2026-09-30 15:05:21 (pre-task creation, content is the canonical AIOS Shared Protocol Bootstrap). Likely the T0008 spec hash was computed against a draft version of the SSOT, or the SSOT was finalized after the spec was written. Codex supervisor should re-verify and update the spec if appropriate.",
+  "central_agents_md_size": 2843,
+  "central_agents_md_path": "D:\\AIOS\\_agent-hub\\AGENTS.md",
+  "central_agents_md_mtime": "2026-09-30T15:05:21",
+  "central_agents_md_hardlinks": [
+    "D:\\AIOS\\AGENTS.md"
+  ],
+  "daily_memory_hash": "DE14C8A50482640B89D2AE9436CFDC2532C22C6C554D5F7697542C11334B6FE7",
+  "daily_memory_size": 1351,
+  "daily_memory_path": "D:\\AIOS\\_agent-hub\\memory\\2026-10-08.md",
+  "daily_memory_mtime": "2026-10-08T10:48:44",
+  "agents": {
+    "codex": {
+      "status": "OK",
+      "entry_path": "C:\\Users\\xinzh\\.codex\\",
+      "agents_md_path": "C:\\Users\\xinzh\\.codex\\AGENTS.md",
+      "agents_md_size": 2843,
+      "agents_md_hash": "F80741FED0503E268F6C8AA4A2DA3CBD292DF045330C444A44FDCDC9ED0B9111",
+      "daily_memory_hash_observed": "DE14C8A50482640B89D2AE9436CFDC2532C22C6C554D5F7697542C11334B6FE7",
+      "matches_central_ssot": false,
+      "matches_daily_memory": true,
+      "delegates_to_central_ssot": true,
+      "note": "Native Codex bootstrap copy of central SSOT. File content explicitly states: 'edit the central SSOT at D:\\AIOS\\_agent-hub\\AGENTS.md, then revalidate this entry'. The local hash differs from central because the Codex copy prepends a Codex-specific bootstrap note ('This is the Codex native loader bootstrap...'). The local file references the central as the SSOT. Architecture OK."
+    },
+    "claude_code": {
+      "status": "OK",
+      "entry_path": "C:\\Users\\xinzh\\.claude\\",
+      "agents_md_path": "C:\\Users\\xinzh\\.claude\\CLAUDE.md",
+      "agents_md_size": 6963,
+      "agents_md_hash": "FF5F2B10CF5547AE50C5F411F6FA6AFA7C45091E9003D4A0FED8650EBDB14B11",
+      "daily_memory_hash_observed": "DE14C8A50482640B89D2AE9436CFDC2532C22C6C554D5F7697542C11334B6FE7",
+      "matches_central_ssot": false,
+      "matches_daily_memory": true,
+      "delegates_to_central_ssot": true,
+      "note": "CC's native entry is CLAUDE.md (not AGENTS.md). File content explicitly states: 'Native loader entry; delegates current shared rules to central SSOT' and '前置读取: 每次 substantive work 前必须读取 D:/AIOS/_agent-hub/AGENTS.md'. The local hash differs from central because CC's copy appends Moon Capsule L0 Kernel (R362-R384 revisions). Architecture OK."
+    },
+    "workbuddy": {
+      "status": "MISSING_NATIVE_AGENTS",
+      "entry_path": "C:\\Users\\xinzh\\.workbuddy\\",
+      "agents_md_path": "C:\\Users\\xinzh\\.workbuddy\\CLAUDE.md (junction to D:\\AIOS\\_relinked\\workbuddy\\CLAUDE.md)",
+      "agents_md_size": 509,
+      "agents_md_hash": "62147186CCC4FB8D01B7943095EE12F70A0A08D68914A4CB346A5E5AB4745503",
+      "daily_memory_hash_observed": "N/A",
+      "matches_central_ssot": false,
+      "matches_daily_memory": false,
+      "delegates_to_central_ssot": false,
+      "note": "WorkBuddy has NO native AGENTS.md — only CLAUDE.md (Moon Capsule L0 Kernel Subset, R401 seed). Per T0008 spec: '如缺失：记录为 MISSING_NATIVE_AGENTS 状态 + 报告（这是 10-03 已知的，不要私自补 native AGENTS）'. This finding is consistent with the 10-03 log §P1-FIVE-AGENT-HANDSHAKE. Per Out-of-scope, CC did NOT create a native AGENTS.md (that's a user decision). The CLAUDE.md file does NOT reference the central SSOT — it only contains the Moon Capsule L0 Kernel Subset."
+    },
+    "hermes": {
+      "status": "NOT_FOUND",
+      "entry_path": null,
+      "agents_md_path": null,
+      "agents_md_size": null,
+      "agents_md_hash": null,
+      "daily_memory_hash_observed": null,
+      "matches_central_ssot": false,
+      "matches_daily_memory": false,
+      "delegates_to_central_ssot": false,
+      "note": "Searched D:\\AIOS\\hermes (NOT FOUND), D:\\AIOS\\aios_tools\\hermes (NOT FOUND), D:\\AIOS\\hermes* patterns (no matches). Hermes entry point is not present in this environment. Per T0008 spec, NOT_FOUND is the correct status. No fallback path attempted (Out-of-scope: '❌ 不要修改任何 agent 的 native AGENTS.md')."
+    },
+    "openclaw": {
+      "status": "FAIL",
+      "entry_path": "C:\\Users\\xinzh\\.openclaw\\ (junction to D:\\AIOS\\_relinked\\openclaw\\)",
+      "agents_md_path": "C:\\Users\\xinzh\\.openclaw\\CLAUDE.md (junction to D:\\AIOS\\_relinked\\openclaw\\CLAUDE.md)",
+      "agents_md_size": 518,
+      "agents_md_hash": "4DADA51D3E4062B99C25B83BA3AFC290607E6D33496BD50C68BB749A9466C276",
+      "daily_memory_hash_observed": "N/A",
+      "matches_central_ssot": false,
+      "matches_daily_memory": false,
+      "delegates_to_central_ssot": false,
+      "note": "OpenClaw has NO native AGENTS.md — only CLAUDE.md (Moon Capsule L0 Kernel Subset, R401 seed). The CLAUDE.md does NOT reference the central SSOT (no mention of D:/AIOS/_agent-hub/AGENTS.md). Unlike Codex/CC, OpenClaw's entry file does NOT contain a 'delegates to central SSOT' header. Per T0008 evidence template, status=FAIL because the entry file exists but does not link to the central SSOT (a structural handshake break)."
+    }
+  },
+  "handshake_consistency": {
+    "central_ssot_consistent_across_agents": false,
+    "daily_memory_consistent_across_agents": "partial (only Codex and CC have files that observe the daily memory log; WorkBuddy, OpenClaw, Hermes have no equivalent entry file)",
+    "all_5_agents_have_native_agents_md": false,
+    "all_5_agents_delegate_to_central_ssot": false,
+    "summary": "2 of 5 agents (Codex, Claude Code) have entry files that explicitly delegate to the central SSOT. 1 agent (WorkBuddy) has only Moon Capsule L0 CLAUDE.md and no AGENTS.md. 1 agent (Hermes) does not exist. 1 agent (OpenClaw) has only Moon Capsule L0 CLAUDE.md, no AGENTS.md, no SSOT delegation. The 5-agent handshake is structurally broken at the file-system level — the architecture only partially implements SSOT delegation. This is a finding for Codex supervisor, not a code change (Out-of-scope explicitly forbids modifying any agent's native AGENTS.md)."
+  },
+  "forbidden_files_check": "CLEAN — no forbidden files created during this task. Only files written: T0008_handshake_report.json + T0008__20261008-110841.md (both in evidence/ which is whitelisted).",
+  "preflight_status": "CLEAN",
+  "out_of_scope_respected": true,
+  "single_channel_only": true,
+  "note_on_native_files_touched": "No native agent files were modified, created, or deleted. Read-only verification only."
+}

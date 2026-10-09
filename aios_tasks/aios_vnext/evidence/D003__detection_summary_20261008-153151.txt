@@ -1,0 +1,11 @@
+=== D003 Evidence — Detection accuracy over 100 experiments ===
+treatment wins (correct): 98/100
+control wins (false-positive): 0/100
+inconclusive (no call): 2/100
+detection_accuracy: 98% (spec required >= 80%)
+p_value range: [0.0000, 0.0737]
+p_value median: 0.0000
+
+=== D003 Evidence — 100 experiments robustness (null effect) ===
+  total experiments: 100
+  status distribution (null effect 10% vs 10%): {'treatment': 2, 'control': 0, 'inconclusive': 98}

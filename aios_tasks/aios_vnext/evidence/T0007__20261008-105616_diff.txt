@@ -1,0 +1,27 @@
+T0007 - Unified Diff (v1 backup -> v2 live registry)
+==============================================================================
+
+--- D:\AIOS\_backups\task-t0007-registry-20261008-105437.json
++++ D:\AIOS\_agent-hub\v2\governance\PROTOCOL_REGISTRY.json
+@@ -370,8 +370,9 @@
+       "superseded_by": null,
+       "evidence": [
+-        "Propagates to ~/.codex/AGENTS.md via install-links.ps1 / sync-from-hub.ps1"
+-      ],
+-      "hash": "27901fc015e167ee272e3b58eb26a0be6f67eda8a1593926f10a7700cf5805b5",
+-      "hash_size_bytes": 2052
++        "Propagates to ~/.codex/AGENTS.md via install-links.ps1 / sync-from-hub.ps1",
++        "T0007 update 2026-10-08: hash re-anchored to central SSOT baseline (T0002 AIOS_VNEXT_BASELINE_v0 freeze time); size updated to 2843 bytes; supersedes and other fields preserved"
++      ],
++      "hash": "6FD99AAAAADE4F5D5FAC97AF154AA84E77D3120C9BDB6CD438CD98648FF6CF14",
++      "hash_size_bytes": 2843
+     },
+     {
+
+Summary:
+  - Old block occurrence (v1): 1
+  - New block occurrence (v2): 1
+  - Added lines: 5
+  - Removed lines: 4
+  - Other entries: 41/41 unchanged (verified by json.dumps sort_keys=True)
+  - Top-level fields: 7/7 unchanged

@@ -1,0 +1,265 @@
+F401 [*] `datetime.datetime` imported but unused
+  --> src\aios_kernel\verifier\deterministic.py:25:22
+   |
+23 | import os
+24 | import time
+25 | from datetime import datetime
+   |                      ^^^^^^^^
+26 | from typing import Any, ClassVar
+   |
+help: Remove unused import: `datetime.datetime`
+   |
+24 | import time
+   - from datetime import datetime
+25 | from typing import Any, ClassVar
+   |
+
+F401 [*] `typing.Any` imported but unused
+  --> src\aios_kernel\verifier\deterministic.py:26:20
+   |
+24 | import time
+25 | from datetime import datetime
+26 | from typing import Any, ClassVar
+   |                    ^^^
+27 |
+28 | from aios_kernel.verifier.evidence_store import (
+   |
+help: Remove unused import: `typing.Any`
+   |
+25 | from datetime import datetime
+   - from typing import Any, ClassVar
+26 + from typing import ClassVar
+27 |
+   |
+
+F401 [*] `aios_kernel.verifier.evidence_store.ArtifactRecord` imported but unused
+  --> src\aios_kernel\verifier\deterministic.py:29:5
+   |
+28 | from aios_kernel.verifier.evidence_store import (
+29 |     ArtifactRecord,
+   |     ^^^^^^^^^^^^^^
+30 |     EvidenceRecord,
+31 |     EvidenceStore,
+   |
+help: Remove unused import
+   |
+28 | from aios_kernel.verifier.evidence_store import (
+   -     ArtifactRecord,
+   -     EvidenceRecord,
+29 |     EvidenceStore,
+   |
+
+F401 [*] `aios_kernel.verifier.evidence_store.EvidenceRecord` imported but unused
+  --> src\aios_kernel\verifier\deterministic.py:30:5
+   |
+28 | from aios_kernel.verifier.evidence_store import (
+29 |     ArtifactRecord,
+30 |     EvidenceRecord,
+   |     ^^^^^^^^^^^^^^
+31 |     EvidenceStore,
+32 |     artifact_record_payload_exists,
+   |
+help: Remove unused import
+   |
+28 | from aios_kernel.verifier.evidence_store import (
+   -     ArtifactRecord,
+   -     EvidenceRecord,
+29 |     EvidenceStore,
+   |
+
+F811 [*] Redefinition of unused `datetime` from line 25
+   --> src\aios_kernel\verifier\deterministic.py:450:31
+    |
+449 | def _now_utc():
+450 |     from datetime import UTC, datetime
+    |                               ^^^^^^^^ `datetime` redefined here
+451 |     return datetime.now(UTC)
+    |
+   ::: src\aios_kernel\verifier\deterministic.py:25:22
+    |
+ 23 | import os
+ 24 | import time
+ 25 | from datetime import datetime
+    |                      -------- previous definition of `datetime` here
+ 26 | from typing import Any, ClassVar
+    |
+help: Remove definition: `datetime`
+    |
+449 | def _now_utc():
+    -     from datetime import UTC, datetime
+450 +     from datetime import UTC
+451 |     return datetime.now(UTC)
+    |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> src\aios_kernel\verifier\protocol.py:14:1
+   |
+12 |   - VerifyRequest: inbound payload schema
+13 |   """
+14 | / from __future__ import annotations
+15 | |
+16 | | from datetime import datetime
+17 | | from enum import Enum
+18 | | from typing import Any, ClassVar, Protocol, runtime_checkable
+19 | |
+20 | | from pydantic import BaseModel, ConfigDict, Field
+   | |_________________________________________________^
+help: Organize imports
+   |
+21 |
+   -
+22 | # ---------- Verdict codes ----------------------------------------------------
+   |
+
+F401 [*] `datetime.UTC` imported but unused
+  --> src\aios_kernel\verifier\server.py:19:22
+   |
+17 | import logging
+18 | import os
+19 | from datetime import UTC, datetime
+   |                      ^^^
+20 | from typing import Any
+   |
+help: Remove unused import
+   |
+18 | import os
+   - from datetime import UTC, datetime
+19 | from typing import Any
+   |
+
+F401 [*] `datetime.datetime` imported but unused
+  --> src\aios_kernel\verifier\server.py:19:27
+   |
+17 | import logging
+18 | import os
+19 | from datetime import UTC, datetime
+   |                           ^^^^^^^^
+20 | from typing import Any
+   |
+help: Remove unused import
+   |
+18 | import os
+   - from datetime import UTC, datetime
+19 | from typing import Any
+   |
+
+F401 [*] `typing.Any` imported but unused
+  --> src\aios_kernel\verifier\server.py:20:20
+   |
+18 | import os
+19 | from datetime import UTC, datetime
+20 | from typing import Any
+   |                    ^^^
+21 |
+22 | from fastapi import FastAPI, HTTPException
+   |
+help: Remove unused import: `typing.Any`
+   |
+19 | from datetime import UTC, datetime
+   - from typing import Any
+20 |
+   |
+
+F401 [*] `aios_kernel.verifier.evidence_store.InMemoryEvidenceStore` imported but unused
+  --> src\aios_kernel\verifier\server.py:27:5
+   |
+25 | from aios_kernel.verifier.deterministic import DeterministicVerifier
+26 | from aios_kernel.verifier.evidence_store import (
+27 |     InMemoryEvidenceStore,
+   |     ^^^^^^^^^^^^^^^^^^^^^
+28 |     SqlAlchemyEvidenceStore,
+29 | )
+   |
+help: Remove unused import: `aios_kernel.verifier.evidence_store.InMemoryEvidenceStore`
+   |
+26 | from aios_kernel.verifier.evidence_store import (
+   -     InMemoryEvidenceStore,
+27 |     SqlAlchemyEvidenceStore,
+   |
+
+F401 [*] `aios_kernel.verifier.protocol.VerdictCode` imported but unused
+  --> src\aios_kernel\verifier\server.py:33:5
+   |
+31 |     HealthReport,
+32 |     Verdict,
+33 |     VerdictCode,
+   |     ^^^^^^^^^^^
+34 |     VerifyRequest,
+35 | )
+   |
+help: Remove unused import: `aios_kernel.verifier.protocol.VerdictCode`
+   |
+32 |     Verdict,
+   -     VerdictCode,
+33 |     VerifyRequest,
+   |
+
+F401 [*] `aios_kernel.verifier.protocol.HealthReport` imported but unused
+  --> src\aios_kernel\verifier\workflow_integration.py:42:5
+   |
+41 | from aios_kernel.verifier.protocol import (
+42 |     HealthReport,
+   |     ^^^^^^^^^^^^
+43 |     Verdict,
+44 |     VerdictCode,
+   |
+help: Remove unused import: `aios_kernel.verifier.protocol.HealthReport`
+   |
+41 | from aios_kernel.verifier.protocol import (
+   -     HealthReport,
+42 |     Verdict,
+   |
+
+F841 Local variable `evidence_ids` is assigned to but never used
+   --> src\aios_kernel\verifier\workflow_integration.py:150:9
+    |
+148 |     async def _run(ctx: ActivityContext) -> ActivityResult:
+149 |         task_id = str(ctx.input.get("task_id") or "")
+150 |         evidence_ids = list(ctx.input.get("evidence_ids") or [])
+    |         ^^^^^^^^^^^^
+151 |         task = {**ctx.input, "id": task_id}
+152 |         payload: dict[str, Any] = {"task": task}
+    |
+help: Remove assignment to unused variable `evidence_ids`
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> tests\integration\test_verifier_independent.py:42:1
+   |
+40 |   sys.path.insert(0, str(_SRC))
+41 |
+42 | / from aios_kernel.verifier import (  # noqa: E402
+43 | |     ArtifactRecord,
+44 | |     DeterministicVerifier,
+45 | |     EvidenceRecord,
+46 | |     InMemoryEvidenceStore,
+47 | |     VerdictCode,
+48 | | )
+   | |_^
+help: Organize imports
+   |
+49 |
+   -
+50 | # ---------- helpers ---------------------------------------------------------
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+   --> tests\integration\test_verifier_independent.py:376:5
+    |
+374 |     code (for completeness, since the schema must support it).
+375 |     """
+376 |     from aios_kernel.verifier.protocol import Verdict, VerdictCode as VC
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+377 |
+378 |     now = _now()
+    |
+help: Organize imports
+    |
+375 |     """
+    -     from aios_kernel.verifier.protocol import Verdict, VerdictCode as VC
+376 +     from aios_kernel.verifier.protocol import Verdict
+377 +     from aios_kernel.verifier.protocol import VerdictCode as VC
+378 |
+    |
+
+Found 15 errors.
+[*] 14 fixable with the `--fix` option (1 hidden fix can be enabled with the `--unsafe-fixes` option).

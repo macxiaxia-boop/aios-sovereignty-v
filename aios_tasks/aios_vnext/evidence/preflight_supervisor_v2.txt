@@ -1,0 +1,61 @@
+# Preflight Check Report v2
+
+**Timestamp**: 20261008-103727
+**Status**: DIRTY
+**Total Issues**: 134
+**Max Depth**: 3
+
+## aios_root_md: 2 files
+- D:/AIOS/AGENTS.md
+- D:/AIOS/_popup_system_README.md
+
+## aios_tasks_root_md: 0 files
+
+## cards_md: 21 files
+- D:/AIOS/aios_tasks/aios_vnext/cards/T0001_cc_cli_route_repair.md
+- D:/AIOS/aios_tasks/aios_vnext/cards/T0002_baseline_freeze.md
+- D:/AIOS/aios_tasks/aios_vnext/cards/T0003_nightly_cron_fix.md
+- D:/AIOS/aios_tasks/aios_vnext/cards/T0004_restic_lock_exclude.md
+- D:/AIOS/aios_tasks/aios_vnext/cards/T0005_r176_r153_ssot.md
+- D:/AIOS/aios_tasks/aios_vnext/cards/T0006_sampling_ssot.md
+- D:/AIOS/aios_tasks/aios_vnext/cards/T0007_protocol_registry.md
+- D:/AIOS/aios_tasks/aios_vnext/cards/T0008_five_agent_handshake.md
+- D:/AIOS/aios_tasks/aios_vnext/cards/T0009_growth_capability_closure.md
+- D:/AIOS/aios_tasks/aios_vnext/cards/T0010_track01_signoff.md
+- D:/AIOS/aios_tasks/aios_vnext/cards/T0020_phase0_audit.md
+- D:/AIOS/aios_tasks/aios_vnext/cards/T0030_phase_a_acceptance_spec.md
+- D:/AIOS/aios_tasks/aios_vnext/cards/T0031_kernel_repo_init.md
+- D:/AIOS/aios_tasks/aios_vnext/cards/T0032_schema_migration.md
+- D:/AIOS/aios_tasks/aios_vnext/cards/T0033_durable_execution.md
+- D:/AIOS/aios_tasks/aios_vnext/cards/T0034_worker_adapters.md
+- D:/AIOS/aios_tasks/aios_vnext/cards/T0035_verifier_independent.md
+- D:/AIOS/aios_tasks/aios_vnext/cards/T0036_100task_closed_loop.md
+- D:/AIOS/aios_tasks/aios_vnext/cards/T0037_crash_recovery.md
+- D:/AIOS/aios_tasks/aios_vnext/cards/T0038_phase_a_signoff.md
+- ... and 1 more
+
+## protocol_patterns: 111 files
+- D:/AIOS/aios_tools/lingma_aios_interop_patch/r293_patch_lingma.py
+- D:/AIOS/aios_tools/r291_memory_merge_dryrun.py
+- D:/AIOS/aios_tools/r293_cross_entrypoint_rag.py
+- D:/AIOS/aios_tools/r293_physical_merge_soft.py
+- D:/AIOS/aios_tools/r293_register_5entrypoint_handoff.py
+- D:/AIOS/aios_tools/r294_cron_monitor.py
+- D:/AIOS/aios_tools/r295_create_task.py
+- D:/AIOS/aios_tools/r295_cross_entrypoint_session.py
+- D:/AIOS/aios_tools/r296_send_feishu.py
+- D:/AIOS/aios_tools/r299_e2e_test.py
+- D:/AIOS/aios_tools/r300_cleanup_test_sessions.py
+- D:/AIOS/aios_tools/r301_feishu_alert.py
+- D:/AIOS/aios_tools/r301_unified_memory_view.py
+- D:/AIOS/aios_tools/r302_auto_register_capability.py
+- D:/AIOS/aios_tools/r302_workbuddy_health.py
+- D:/AIOS/aios_tools/r303_cron_health_check.py
+- D:/AIOS/aios_tools/r303_openclaw_auto_restart.py
+- D:/AIOS/aios_tools/r304_concurrent_12tools_test.py
+- D:/AIOS/aios_tools/r304_entrypoint_dashboard.py
+- D:/AIOS/aios_tools/r306_dashboard_supervisor.py
+- ... and 91 more
+
+## Verdict
+**FAIL** — 禁止开工，先回滚上面列出的 forbidden 文件

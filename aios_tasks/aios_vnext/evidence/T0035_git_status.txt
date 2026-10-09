@@ -1,0 +1,23 @@
+ M alembic.ini
+ M pyproject.toml
+ M scripts/run_verifier.sh
+ M src/aios_kernel/verifier/__init__.py
+?? aios_kernel.db
+?? scripts/persistence/
+?? scripts/run_verifier.py
+?? src/aios_kernel/verifier/deterministic.py
+?? src/aios_kernel/verifier/evidence_store.py
+?? src/aios_kernel/verifier/protocol.py
+?? src/aios_kernel/verifier/server.py
+?? src/aios_kernel/verifier/workflow_integration.py
+?? tests/__init__.py
+?? tests/integration/_kernel_worker.py
+?? tests/integration/pytest_t0036_final.txt
+?? tests/integration/test_100_task_closed_loop.py
+?? tests/integration/test_false_completion.py
+?? tests/integration/test_verifier_independent.py
+?? tests/sim/mocks/
+?? tests/sim/runner.py
+?? tests/sim/runner_report.json
+?? tests/sim/test_simulation_e2e.py
+?? tests/sim/test_simulation_e2e_report.json

@@ -1,0 +1,55 @@
+﻿# T0003 launcher diff (D:\demo\start-cc-current.ps1)
+# Backup SHA1: 277F96F3E0B470AE59517BDCC3B25936E7407EC1
+# Current SHA1: 95BC18E314357ACD8E7E1B04D70FD88066D433C4
+# Backup lines (trimmed): 63; Current lines (trimmed): 65
+# Stale branch grew from 3 lines to 5 lines (delta=+2).
+
+## Hunk: stale branch (file line 32-37)
+
+Backup (lines 32-35):
+```powershell
+32: if ($generatedAt -gt $now.AddMinutes(5) -or $expiresAt -le $now -or ($now - $generatedAt).TotalHours -gt 12) {
+33:     Write-Error "STALE_HANDOFF: generated=$generatedAt expires=$expiresAt now=$now"
+34:     exit 42
+35: }
+```
+
+Current (lines 32-37):
+```powershell
+32: if ($generatedAt -gt $now.AddMinutes(5) -or $expiresAt -le $now -or ($now - $generatedAt).TotalHours -gt 12) {
+33:     $staleMsg = "STALE_HANDOFF: generated=$generatedAt expires=$expiresAt now=$now"
+34:     Write-Output $staleMsg
+35:     Write-Error -Message $staleMsg -ErrorAction SilentlyContinue
+36:     exit 42
+37: }
+```
+
+## Verification: lines 1-31 byte-identical
+```
+OK: lines 1-31 are byte-identical
+```
+
+## Verification: business-launch block byte-identical (offset +2 for stale branch growth)
+```
+OK: lines 36-end of backup match lines 38-end of current (delta=+2 lines from stale branch growth)
+```
+
+## Summary of modification
+
+- Original 3 lines (backup lines 32-35):
+    if (...) {
+        Write-Error "STALE_HANDOFF: ..."
+        exit 42
+    }
+- New 6 lines (current lines 32-37):
+    if (...) {
+        $staleMsg = "STALE_HANDOFF: ..."
+        Write-Output $staleMsg
+        Write-Error -Message $staleMsg -ErrorAction SilentlyContinue
+        exit 42
+    }
+
+Why -ErrorAction SilentlyContinue is needed: the file sets `Continue = 'Stop'` at the top,
+which converts `Write-Error` into a terminating error and overrides the explicit `exit 42` (the script
+would exit with code 1 instead). `-ErrorAction SilentlyContinue` on the Write-Error call keeps the
+stderr message visible while letting control flow reach `exit 42`.

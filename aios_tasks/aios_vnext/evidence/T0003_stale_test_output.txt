@@ -1,0 +1,116 @@
+# T0003 stale rejection test (v2 — after -ErrorAction SilentlyContinue fix)
+# Test runner: xinzh @ DESKTOP-0JKD1FQ
+# Run time: 2026-10-08T11:15:30.6837868+08:00
+# Launcher: D:\\demo\\start-cc-current.ps1 (sha1=95BC18E314357ACD8E7E1B04D70FD88066D433C4)
+# Handoff:   D:\\demo\\handoff-to-cc-current.md (already stale: generated_at=2026-09-29, expires_at=2026-09-30)
+# Stale tag: 20261008-110409
+
+## Pre-test snapshot: CC / Claude / node processes before invocation
+```
+
+ProcessName    Id StartTime
+-----------    -- ---------
+claude      11180 2026/10/8 10:17:14
+claude      18696 2026/10/8 9:30:40
+claude      23316 2026/10/8 10:16:54
+claude      26988 2026/10/8 10:52:57
+claude      29860 2026/10/8 10:52:36
+claude      30116 2026/10/8 11:01:51
+node         1620 2026/10/8 10:52:58
+node         5028 2026/10/8 11:01:52
+node         6152 2026/10/8 9:51:44
+node         6684 2026/10/8 10:16:55
+node         8804 2026/10/8 9:32:04
+node        11120 2026/10/8 10:52:58
+node        12284 2026/10/8 10:48:44
+node        12756 2026/10/8 10:48:49
+node        12828 2026/10/8 9:33:57
+node        12968 2026/10/8 11:01:51
+node        13328 2026/10/8 10:52:58
+node        13516 2026/10/8 11:01:52
+node        14328 2026/10/8 10:16:55
+node        14504 2026/10/8 9:51:40
+node        15868 2026/10/8 10:52:37
+node        18224 2026/10/8 9:30:43
+node        18276 2026/10/8 10:16:55
+node        18576 2026/10/8 10:52:40
+node        18596 2026/10/8 11:01:52
+node        19516 2026/10/8 9:30:41
+node        19612 2026/10/8 9:30:40
+node        20060 2026/10/8 10:16:55
+node        20164 2026/10/8 10:48:44
+node        20524 2026/10/8 10:48:49
+
+```
+
+## Invocation
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File D:\demo\start-cc-current.ps1
+```
+
+## stdout+stderr (combined) + exit code
+```
+STDOUT:
+STALE_HANDOFF: generated=09/29/2026 14:15:00 +08:00 expires=09/30/2026 00:00:00 +08:00 now=10/08/2026 11:15:31 +08:00
+
+
+STDERR:
+
+
+EXIT CODE: 42
+```
+
+## Acceptance gate
+- [X] exit code = 42 (actual=42)
+- [X] STALE_HANDOFF substring present in output
+
+## Post-test snapshot: CC / Claude / node processes after invocation
+```
+
+ProcessName    Id StartTime
+-----------    -- ---------
+claude      11180 2026/10/8 10:17:14
+claude      18696 2026/10/8 9:30:40
+claude      23316 2026/10/8 10:16:54
+claude      26988 2026/10/8 10:52:57
+claude      29860 2026/10/8 10:52:36
+claude      30116 2026/10/8 11:01:51
+node         1620 2026/10/8 10:52:58
+node         5028 2026/10/8 11:01:52
+node         6152 2026/10/8 9:51:44
+node         6684 2026/10/8 10:16:55
+node         8804 2026/10/8 9:32:04
+node        11120 2026/10/8 10:52:58
+node        12284 2026/10/8 10:48:44
+node        12756 2026/10/8 10:48:49
+node        12828 2026/10/8 9:33:57
+node        12968 2026/10/8 11:01:51
+node        13328 2026/10/8 10:52:58
+node        13516 2026/10/8 11:01:52
+node        14328 2026/10/8 10:16:55
+node        14504 2026/10/8 9:51:40
+node        15868 2026/10/8 10:52:37
+node        18224 2026/10/8 9:30:43
+node        18276 2026/10/8 10:16:55
+node        18576 2026/10/8 10:52:40
+node        18596 2026/10/8 11:01:52
+node        19516 2026/10/8 9:30:41
+node        19612 2026/10/8 9:30:40
+node        20060 2026/10/8 10:16:55
+node        20164 2026/10/8 10:48:44
+node        20524 2026/10/8 10:48:49
+
+```
+
+## New processes detected: 0
+
+## Overnight log directory snapshot (no new logs expected)
+```
+(overnight-logs does not exist)
+```
+
+## Git worktree status (must be unchanged)
+```
+
+```
+

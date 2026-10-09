@@ -1,0 +1,11 @@
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 001, initial schema
+INFO  [alembic.runtime.migration] Running upgrade 001 -> 002, decision audit log (Phase F F003)
+INFO  [alembic.runtime.migration] Running upgrade 002 -> 003, goal contract 12 fields (Phase F F001)
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running downgrade 003 -> 002, goal contract 12 fields (Phase F F001)
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade 002 -> 003, goal contract 12 fields (Phase F F001)

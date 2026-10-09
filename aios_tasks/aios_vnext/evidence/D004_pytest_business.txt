@@ -1,0 +1,53 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.14, pytest-9.1.1, pluggy-1.6.0 -- D:\AIOS\kernel\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: D:\AIOS\kernel
+configfile: pyproject.toml
+plugins: asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 42 items
+
+tests/integration/test_crm_feedback.py::test_ingest_single PASSED        [  2%]
+tests/integration/test_crm_feedback.py::test_hash_customer_id PASSED     [  4%]
+tests/integration/test_crm_feedback.py::test_categorize_correct PASSED   [  7%]
+tests/integration/test_crm_feedback.py::test_privacy_already_500 PASSED  [  9%]
+tests/integration/test_crm_feedback.py::test_audit PASSED                [ 11%]
+tests/integration/test_business_kpi.py::test_track_kpi_basic PASSED      [ 14%]
+tests/integration/test_business_kpi.py::test_dashboard_20_kpis PASSED    [ 16%]
+tests/integration/test_business_kpi.py::test_trend_up_down PASSED        [ 19%]
+tests/integration/test_business_kpi.py::test_skill_promotion_trigger_high_roi PASSED [ 21%]
+tests/integration/test_business_kpi.py::test_skill_promotion_low_roi_no_trigger PASSED [ 23%]
+tests/integration/test_eval_builder.py::test_from_real PASSED            [ 26%]
+tests/integration/test_eval_builder.py::test_synthetic PASSED            [ 28%]
+tests/integration/test_eval_builder.py::test_merge_dedup PASSED          [ 30%]
+tests/integration/test_eval_builder.py::test_mix_50_50 PASSED            [ 33%]
+tests/integration/test_skill_deprecation.py::test_detect_deprecated_old_skill PASSED [ 35%]
+tests/integration/test_skill_deprecation.py::test_detect_recent_skill_not_deprecated PASSED [ 38%]
+tests/integration/test_skill_deprecation.py::test_audit_log_present PASSED [ 40%]
+tests/integration/test_skill_deprecation.py::test_multiple_deprecated PASSED [ 42%]
+tests/integration/test_skill_deprecation.py::test_format PASSED          [ 45%]
+tests/integration/test_canary.py::test_deploy_start PASSED               [ 47%]
+tests/integration/test_canary.py::test_advance_through_steps PASSED      [ 50%]
+tests/integration/test_canary.py::test_auto_rollback_on_high_error_rate PASSED [ 52%]
+tests/integration/test_canary.py::test_auto_rollback_on_slow_latency PASSED [ 54%]
+tests/integration/test_canary.py::test_audit_log PASSED                  [ 57%]
+tests/integration/test_skill_usage.py::test_track_basic PASSED           [ 59%]
+tests/integration/test_skill_usage.py::test_get_usage_time_range PASSED  [ 61%]
+tests/integration/test_skill_usage.py::test_success_rate PASSED          [ 64%]
+tests/integration/test_skill_usage.py::test_deprecate_candidate PASSED   [ 66%]
+tests/integration/test_skill_usage.py::test_format PASSED                [ 69%]
+tests/integration/test_skill_usage.py::test_500_calls_all_captured PASSED [ 71%]
+tests/integration/test_failure_detector.py::test_detect_empty PASSED     [ 73%]
+tests/integration/test_failure_detector.py::test_detect_clusters_similar_failures PASSED [ 76%]
+tests/integration/test_failure_detector.py::test_detect_clusters_separate_failures PASSED [ 78%]
+tests/integration/test_failure_detector.py::test_prioritize_by_severity PASSED [ 80%]
+tests/integration/test_replay_engine.py::test_replay_success PASSED      [ 83%]
+tests/integration/test_replay_engine.py::test_replay_drift PASSED        [ 85%]
+tests/integration/test_replay_engine.py::test_replay_failure_when_outputs_empty PASSED [ 88%]
+tests/integration/test_replay_engine.py::test_diff_detect_added_keys PASSED [ 90%]
+tests/integration/test_replay_engine.py::test_replay_100_runs PASSED     [ 92%]
+tests/integration/test_trace_miner.py::test_mine_empty PASSED            [ 95%]
+tests/integration/test_trace_miner.py::test_mine_extracts_success_and_failure PASSED [ 97%]
+tests/integration/test_trace_miner.py::test_pattern_includes_example_ids PASSED [100%]
+
+============================= 42 passed in 0.75s ==============================

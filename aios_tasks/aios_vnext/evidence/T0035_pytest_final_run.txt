@@ -1,0 +1,18 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.14, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\python.exe
+cachedir: .pytest_cache
+rootdir: D:\AIOS\kernel
+configfile: pyproject.toml
+plugins: anyio-4.15.1, asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 7 items
+
+tests/integration/test_verifier_independent.py::test_verifier_pid_differs_from_kernel PASSED [ 14%]
+tests/integration/test_verifier_independent.py::test_missing_evidence_returns_fail PASSED [ 28%]
+tests/integration/test_verifier_independent.py::test_evidence_hash_mismatch_returns_fail PASSED [ 42%]
+tests/integration/test_verifier_independent.py::test_artifact_missing_returns_fail PASSED [ 57%]
+tests/integration/test_verifier_independent.py::test_budget_overflow_returns_fail PASSED [ 71%]
+tests/integration/test_verifier_independent.py::test_all_rules_pass_returns_pass PASSED [ 85%]
+tests/integration/test_verifier_independent.py::test_blocked_partial_evidence_scenario PASSED [100%]
+
+============================== 7 passed in 1.53s ==============================

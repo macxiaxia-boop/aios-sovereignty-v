@@ -1,0 +1,55 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.14, pytest-9.1.1, pluggy-1.6.0 -- D:\AIOS\kernel\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: D:\AIOS\kernel
+configfile: pyproject.toml
+plugins: asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 38 items
+
+tests/unit/test_intent_parser.py::TestCommandCategory::test_parse_command_simple PASSED [  2%]
+tests/unit/test_intent_parser.py::TestCommandCategory::test_parse_command_with_target PASSED [  5%]
+tests/unit/test_intent_parser.py::TestCommandCategory::test_parse_command_imperative PASSED [  7%]
+tests/unit/test_intent_parser.py::TestCommandCategory::test_command_permission_scope_has_write PASSED [ 10%]
+tests/unit/test_intent_parser.py::TestStatementCategory::test_parse_statement_need PASSED [ 13%]
+tests/unit/test_intent_parser.py::TestStatementCategory::test_parse_statement_progress PASSED [ 15%]
+tests/unit/test_intent_parser.py::TestStatementCategory::test_parse_statement_intent PASSED [ 18%]
+tests/unit/test_intent_parser.py::TestQuestionCategory::test_parse_question_how PASSED [ 21%]
+tests/unit/test_intent_parser.py::TestQuestionCategory::test_parse_question_why PASSED [ 23%]
+tests/unit/test_intent_parser.py::TestQuestionCategory::test_parse_question_what PASSED [ 26%]
+tests/unit/test_intent_parser.py::TestConstrainedCategory::test_parse_constrained_path PASSED [ 28%]
+tests/unit/test_intent_parser.py::TestConstrainedCategory::test_parse_constrained_budget PASSED [ 31%]
+tests/unit/test_intent_parser.py::TestConstrainedCategory::test_parse_constrained_timeout PASSED [ 34%]
+tests/unit/test_intent_parser.py::TestTradeoffCategory::test_parse_tradeoff_ke_neng PASSED [ 36%]
+tests/unit/test_intent_parser.py::TestTradeoffCategory::test_parse_tradeoff_accept PASSED [ 39%]
+tests/unit/test_intent_parser.py::TestTradeoffCategory::test_parse_tradeoff_reject PASSED [ 42%]
+tests/unit/test_intent_parser.py::TestMixedInputs::test_parse_mixed_command_constraint_tradeoff PASSED [ 44%]
+tests/unit/test_intent_parser.py::TestMixedInputs::test_mixed_permission_scope_merged PASSED [ 47%]
+tests/unit/test_intent_parser.py::TestEdgeCases::test_parse_missing_evidence_detected PASSED [ 50%]
+tests/unit/test_intent_parser.py::TestEdgeCases::test_parse_unknown_intent_fallback PASSED [ 52%]
+tests/unit/test_intent_parser.py::TestEdgeCases::test_parse_empty_input PASSED [ 55%]
+tests/unit/test_intent_parser.py::TestEdgeCases::test_parse_whitespace_only PASSED [ 57%]
+tests/unit/test_intent_parser.py::TestSchemaCompleteness::test_all_12_fields_present PASSED [ 60%]
+tests/unit/test_intent_parser.py::TestSchemaCompleteness::test_env_snapshot_default PASSED [ 63%]
+tests/unit/test_intent_parser.py::TestSchemaCompleteness::test_env_snapshot_caller_supplied PASSED [ 65%]
+tests/unit/test_intent_parser.py::TestLLMAdapter::test_default_adapter_is_null PASSED [ 68%]
+tests/unit/test_intent_parser.py::TestLLMAdapter::test_null_adapter_returns_none PASSED [ 71%]
+tests/unit/test_intent_parser.py::TestLLMAdapter::test_null_adapter_records_calls PASSED [ 73%]
+tests/unit/test_intent_parser.py::TestLLMAdapter::test_custom_adapter_injectable PASSED [ 76%]
+tests/unit/test_intent_parser.py::TestPatternsVisible::test_constraint_patterns_nonempty PASSED [ 78%]
+tests/unit/test_intent_parser.py::TestPatternsVisible::test_tradeoff_patterns_nonempty PASSED [ 81%]
+tests/unit/test_intent_parser.py::TestPatternsVisible::test_intent_classifier_nonempty PASSED [ 84%]
+tests/unit/test_intent_parser.py::TestPatternsVisible::test_sample_pattern_hits_real_input PASSED [ 86%]
+tests/unit/test_intent_parser.py::TestTypeSanity::test_op_type_validation PASSED [ 89%]
+tests/unit/test_intent_parser.py::TestTypeSanity::test_constraint_validation PASSED [ 92%]
+tests/unit/test_intent_parser.py::TestTypeSanity::test_permission_scope_defaults PASSED [ 94%]
+tests/unit/test_intent_parser.py::TestTypeSanity::test_tradeoff_basic PASSED [ 97%]
+tests/unit/test_intent_parser.py::TestTypeSanity::test_failure_mode_basic PASSED [100%]
+
+============================== warnings summary ===============================
+tests/unit/test_intent_parser.py::TestCommandCategory::test_parse_command_simple
+  D:\AIOS\kernel\.venv\Lib\site-packages\pytest_asyncio\plugin.py:916: PytestDeprecationWarning: Overriding the "event_loop_policy" fixture is deprecated and will be removed in a future version of pytest-asyncio. Use the "pytest_asyncio_loop_factories" hook to customize event loop creation.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 38 passed, 1 warning in 0.25s ========================

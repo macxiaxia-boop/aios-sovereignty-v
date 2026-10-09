@@ -1,0 +1,61 @@
+# T0001 - env block Diff Detail
+
+## env block (before):
+
+    "ANTHROPIC_BASE_URL": "https://api.minimaxi.com/anthropic",
+    "ANTHROPIC_AUTH_TOKEN": "sk-cp-mfkOcQH4RKNdoXIFELSKiy36jMGkxY945S7ffwoM_uIaTZuROMoWyKboJE4lwgimzBGWsKoKMn4o8eIwzc0G_gCmn4sWeZj176aclDgaKXSkr33tjlv2xJ8",
+    "CLAUDE_CODE_DISABLE_TELEMETRY": "1",
+    "MAX_THINKING_TOKENS": "32000",
+    "CLAUDE_MAX_CONTEXT_WINDOW": "100000",
+    "CLAUDE_MAX_OUTPUT_TOKENS": "8000",
+    "CLAUDE_AUTOCOMPACT_PCT": "25",
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+    "ANTHROPIC_MODEL": "MiniMax-M3",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "MiniMax-M3",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "MiniMax-M3",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "MiniMax-M2.7",
+    "ANTHROPIC_SMALL_FAST_MODEL": "MiniMax-M2.7-highspeed",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "MiniMax-M2.7",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL_FALLBACK": "MiniMax-M3",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL_FALLBACK": "MiniMax-M2.7",
+    "_AGNES_II_MODELS_NOTE": "R155b user-added 2026-09-22: 用户原话\"直接把 agens 和 ollama 加入就好了\"。agnes-II (OpenAI 兼容) baseUrl=https://apihub.agnes-ai.com/v1 auth=AGNES_API_KEY_II (in ~/.openclaw/.env)。可选 model: agnes-2.5-pro-alpha (🔥最强), agnes-3.0-flash, agnes-2.0-flash。Claude Code CLI 默认走 MiniMax 不动,切换方式:cc-switch.exe / 自己手动改 ANTHROPIC_BASE_URL+ANTHROPIC_AUTH_TOKEN。",
+    "_OLLAMA_MODELS_NOTE": "R155b user-added 2026-09-22: Ollama 本地 baseUrl=http://localhost:11434/v1 (OpenAI 兼容, 无 auth)。可选 model: qwen3:14b (本地免费, 当前 GPU 装不下 CUDA0 buffer 8.83GB)。Claude Code CLI 默认走 MiniMax 不动, 切换方式:cc-switch.exe / 自己手动改 ANTHROPIC_BASE_URL+ANTHROPIC_AUTH_TOKEN。",
+    "_NOTES": "R262: 用户原话 'cc 是智障, 现在默认用的就是 minimax, 每次都忘'. 本 MCP 默认走 MiniMax API (https://api.minimaxi.com/anthropic), model name 在 settings.json env 里. CC 启动时自动认. 不要试图 fallback 到其他 model.",
+    "CLAUDE_CODE_DISABLE_UNKNOWN_MODEL_WINDOW_ENFORCEMENT": "1"
+  
+
+## env block (after):
+
+    "ANTHROPIC_BASE_URL": "https://api.minimaxi.com/anthropic",
+    "ANTHROPIC_AUTH_TOKEN": "sk-cp-mfkOcQH4RKNdoXIFELSKiy36jMGkxY945S7ffwoM_uIaTZuROMoWyKboJE4lwgimzBGWsKoKMn4o8eIwzc0G_gCmn4sWeZj176aclDgaKXSkr33tjlv2xJ8",
+    "CLAUDE_CODE_DISABLE_TELEMETRY": "1",
+    "MAX_THINKING_TOKENS": "32000",
+    "CLAUDE_MAX_CONTEXT_WINDOW": "100000",
+    "CLAUDE_MAX_OUTPUT_TOKENS": "8000",
+    "CLAUDE_AUTOCOMPACT_PCT": "25",
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+    "ANTHROPIC_MODEL": "MiniMax-M3",
+    "ANTHROPIC_DEFAULT_MODEL": "MiniMax-M3",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "MiniMax-M3",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "MiniMax-M3",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "MiniMax-M2.7",
+    "ANTHROPIC_SMALL_FAST_MODEL": "MiniMax-M2.7-highspeed",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "MiniMax-M2.7",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL_FALLBACK": "MiniMax-M3",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL_FALLBACK": "MiniMax-M2.7",
+    "_AGNES_II_MODELS_NOTE": "R155b user-added 2026-09-22: 用户原话\"直接把 agens 和 ollama 加入就好了\"。agnes-II (OpenAI 兼容) baseUrl=https://apihub.agnes-ai.com/v1 auth=AGNES_API_KEY_II (in ~/.openclaw/.env)。可选 model: agnes-2.5-pro-alpha (🔥最强), agnes-3.0-flash, agnes-2.0-flash。Claude Code CLI 默认走 MiniMax 不动,切换方式:cc-switch.exe / 自己手动改 ANTHROPIC_BASE_URL+ANTHROPIC_AUTH_TOKEN。",
+    "_OLLAMA_MODELS_NOTE": "R155b user-added 2026-09-22: Ollama 本地 baseUrl=http://localhost:11434/v1 (OpenAI 兼容, 无 auth)。可选 model: qwen3:14b (本地免费, 当前 GPU 装不下 CUDA0 buffer 8.83GB)。Claude Code CLI 默认走 MiniMax 不动, 切换方式:cc-switch.exe / 自己手动改 ANTHROPIC_BASE_URL+ANTHROPIC_AUTH_TOKEN。",
+    "_NOTES": "R262: 用户原话 'cc 是智障, 现在默认用的就是 minimax, 每次都忘'. 本 MCP 默认走 MiniMax API (https://api.minimaxi.com/anthropic), model name 在 settings.json env 里. CC 启动时自动认. 不要试图 fallback 到其他 model.",
+    "CLAUDE_CODE_DISABLE_UNKNOWN_MODEL_WINDOW_ENFORCEMENT": "1"
+  
+
+## Lines added (only these are new):+     "ANTHROPIC_DEFAULT_MODEL": "MiniMax-M3",
+
+## Lines removed (should be empty):
+
+## Summary:
+- Added count: 1
+- Removed count: 0
+- Diff ≤ 5 lines: YES
+- Only model/gateway fields: YES
+

@@ -1,0 +1,4 @@
+[main c77a7e5] Phase D D004: CRM Feedback ingestion + 5/5 integration tests PASS
+ 2 files changed, 370 insertions(+)
+ create mode 100644 src/aios_kernel/business/crm_feedback.py
+ create mode 100644 tests/integration/test_crm_feedback.py

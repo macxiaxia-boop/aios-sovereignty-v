@@ -1,0 +1,14 @@
+F841 Local variable `evidence_ids` is assigned to but never used
+   --> src\aios_kernel\verifier\workflow_integration.py:149:9
+    |
+147 |     async def _run(ctx: ActivityContext) -> ActivityResult:
+148 |         task_id = str(ctx.input.get("task_id") or "")
+149 |         evidence_ids = list(ctx.input.get("evidence_ids") or [])
+    |         ^^^^^^^^^^^^
+150 |         task = {**ctx.input, "id": task_id}
+151 |         payload: dict[str, Any] = {"task": task}
+    |
+help: Remove assignment to unused variable `evidence_ids`
+
+Found 14 errors (13 fixed, 1 remaining).
+No fixes available (1 hidden fix can be enabled with the `--unsafe-fixes` option).

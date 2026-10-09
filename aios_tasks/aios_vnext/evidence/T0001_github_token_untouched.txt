@@ -1,0 +1,21 @@
+# T0001 - GitHub Token Untouched Verification
+
+## Token location
+- Path (WSL):    /root/.workbuddy/secrets/github-token
+- Windows path:  \\wsl$\<distro>\root\.workbuddy\secrets\github-token
+- PowerShell cannot directly access WSL files; verified via 'wsl -e bash -c'
+
+## Token mtime
+2026-09-28 18:30:07.911182546 +0800
+
+## Today's date
+2026-10-08 10:57:37
+
+## Untouched verification
+- This task did NOT write to, edit, or read the token content
+- Only verified existence via 'wsl -e bash -c'
+- Token mtime is from Sep 28, 2026 (before today's T0001 task)
+- Permissions: -rw------- (chmod 600)
+
+## Conclusion
+PASS: GitHub token file is untouched.

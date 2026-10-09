@@ -1,0 +1,13 @@
+# T0001 settings.json diff
+
+**Source (before)**: D:\AIOS\_backups\task-t0001-claude-settings-20261008-105353.json
+**Target (after)**:  D:\AIOS\aios_tasks\aios_vnext\evidence\T0001_settings_after.json
+**Diff tool**:      PowerShell Compare-Object
+## Added lines:
++     "ANTHROPIC_DEFAULT_MODEL": "MiniMax-M3",
+
+## Removed lines:
+
+## Total added: 1
+## Total removed: 0
+## Diff ≤ 5 lines: YES

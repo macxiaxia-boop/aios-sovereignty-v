@@ -1,0 +1,17 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.14, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\python.exe
+cachedir: .pytest_cache
+rootdir: D:\AIOS\kernel
+configfile: pyproject.toml
+plugins: anyio-4.15.1, asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 6 items
+
+tests/integration/test_marketing_feedback.py::test_track_basic_appends_and_returns_same_instance PASSED [ 16%]
+tests/integration/test_marketing_feedback.py::test_roi_calc_correct_formula_and_zero_cost_undefined PASSED [ 33%]
+tests/integration/test_marketing_feedback.py::test_roi_validator_consistent_across_field_set PASSED [ 50%]
+tests/integration/test_marketing_feedback.py::test_skill_recommendation_high_roi_emits_recommendation PASSED [ 66%]
+tests/integration/test_marketing_feedback.py::test_low_roi_skip_returns_none PASSED [ 83%]
+tests/integration/test_marketing_feedback.py::test_audit_and_100_campaigns PASSED [100%]
+
+============================== 6 passed in 0.19s ==============================

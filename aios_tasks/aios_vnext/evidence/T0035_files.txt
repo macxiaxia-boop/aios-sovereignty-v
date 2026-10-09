@@ -1,0 +1,16 @@
+
+Path                                                                      Length
+----                                                                      ------
+src\aios_kernel\verifier\__init__.py                                        1991
+src\aios_kernel\verifier\deterministic.py                                  15654
+src\aios_kernel\verifier\evidence_store.py                                  8051
+src\aios_kernel\verifier\protocol.py                                        5278
+src\aios_kernel\verifier\server.py                                          5592
+src\aios_kernel\verifier\workflow_integration.py                            8071
+src\aios_kernel\verifier\__pycache__\__init__.cpython-313.pyc               1879
+src\aios_kernel\verifier\__pycache__\deterministic.cpython-313.pyc         17696
+src\aios_kernel\verifier\__pycache__\evidence_store.cpython-313.pyc        12008
+src\aios_kernel\verifier\__pycache__\protocol.cpython-313.pyc               6481
+src\aios_kernel\verifier\__pycache__\server.cpython-313.pyc                 7030
+src\aios_kernel\verifier\__pycache__\workflow_integration.cpython-313.pyc  10487
+

@@ -1,0 +1,511 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.14, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\python.exe
+cachedir: .pytest_cache
+rootdir: D:\AIOS\kernel
+configfile: pyproject.toml
+plugins: anyio-4.15.1, asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 99 items
+
+tests/integration/test_100_task_closed_loop.py::test_100_of_100_pass PASSED [  1%]
+tests/integration/test_100_task_closed_loop.py::test_worker_distribution_within_5pp PASSED [  2%]
+tests/integration/test_100_task_closed_loop.py::test_verifier_pid_independent PASSED [  3%]
+tests/integration/test_100_task_closed_loop.py::test_each_task_has_artifact_evidence_cost PASSED [  4%]
+tests/integration/test_100_task_closed_loop.py::test_cross_worker_tasks_all_pass PASSED [  5%]
+tests/integration/test_100_task_closed_loop.py::test_type_distribution_30_20_20_15_15 PASSED [  6%]
+tests/integration/test_false_completion.py::test_fake_done_5_of_5_rejected PASSED [  7%]
+tests/integration/test_false_completion.py::test_rejection_verdict_is_fail_or_blocked PASSED [  8%]
+tests/integration/test_false_completion.py::test_rejection_reason_mentions_evidence_missing PASSED [  9%]
+tests/integration/test_false_completion.py::test_fake_done_worker_contract PASSED [ 10%]
+tests/integration/test_false_completion.py::test_verifier_pid_independent_of_worker PASSED [ 11%]
+tests/integration/test_false_completion.py::test_no_false_pass_in_evidence_dump PASSED [ 12%]
+tests/integration/test_verifier_independent.py::test_verifier_pid_differs_from_kernel PASSED [ 13%]
+tests/integration/test_verifier_independent.py::test_missing_evidence_returns_fail PASSED [ 14%]
+tests/integration/test_verifier_independent.py::test_evidence_hash_mismatch_returns_fail PASSED [ 15%]
+tests/integration/test_verifier_independent.py::test_artifact_missing_returns_fail PASSED [ 16%]
+tests/integration/test_verifier_independent.py::test_budget_overflow_returns_fail PASSED [ 17%]
+tests/integration/test_verifier_independent.py::test_all_rules_pass_returns_pass PASSED [ 18%]
+tests/integration/test_verifier_independent.py::test_blocked_partial_evidence_scenario PASSED [ 19%]
+tests/integration/test_workflow_engine.py::test_start_three_step_completes PASSED [ 20%]
+tests/integration/test_workflow_engine.py::test_signal_custom_stored_in_metadata PASSED [ 21%]
+tests/integration/test_workflow_engine.py::test_query_status_history_step PASSED [ 22%]
+tests/integration/test_workflow_engine.py::test_cancel_marks_status PASSED [ 23%]
+tests/integration/test_workflow_engine.py::test_get_status_unknown_run_raises PASSED [ 24%]
+tests/integration/test_workflow_engine.py::test_kill_restart_resumes_from_checkpoint PASSED [ 25%]
+tests/integration/test_workflow_engine.py::test_retry_exponential_backoff_succeeds PASSED [ 26%]
+tests/integration/test_workflow_engine.py::test_permanent_failure_marks_run_failed PASSED [ 27%]
+tests/integration/test_workflow_engine.py::test_timeout_triggers_retry PASSED [ 28%]
+tests/unit/test_goal_schema.py::test_goal_required_fields PASSED         [ 29%]
+tests/unit/test_goal_schema.py::test_goal_optional_fields PASSED         [ 30%]
+tests/unit/test_goal_schema.py::test_goal_json_schema_export PASSED      [ 31%]
+tests/unit/test_goal_schema.py::test_goal_json_roundtrip PASSED          [ 32%]
+tests/unit/test_goal_schema.py::test_status_enum_has_5_states PASSED     [ 33%]
+tests/unit/test_goal_schema.py::test_goal_legal_transitions PASSED       [ 34%]
+tests/unit/test_goal_schema.py::test_goal_illegal_transition_raises PASSED [ 35%]
+tests/unit/test_goal_schema.py::test_goal_abort_paths PASSED             [ 36%]
+tests/unit/test_goal_schema.py::test_goal_naive_datetime_rejected PASSED [ 37%]
+tests/unit/test_goal_schema.py::test_goal_uuid_id_format PASSED          [ 38%]
+tests/unit/test_goal_schema.py::test_goal_budget_non_negative PASSED     [ 39%]
+tests/unit/test_goal_schema.py::test_goal_title_required PASSED          [ 40%]
+tests/unit/test_goal_schema.py::test_goal_plan_ids_idempotent PASSED     [ 41%]
+tests/unit/test_goal_schema.py::test_goal_remaining_budget PASSED        [ 42%]
+tests/unit/test_goal_schema.py::test_goal_transitions_table_completeness PASSED [ 43%]
+tests/unit/test_migration.py::test_upgrade_head_creates_all_tables PASSED [ 44%]
+tests/unit/test_migration.py::test_downgrade_minus_one_removes_tables PASSED [ 45%]
+tests/unit/test_migration.py::test_double_upgrade_is_idempotent PASSED   [ 46%]
+tests/unit/test_migration.py::test_upgrade_downgrade_upgrade_roundtrip PASSED [ 47%]
+tests/unit/test_migration.py::test_current_revision_is_001 PASSED        [ 48%]
+tests/unit/test_migration.py::test_orm_can_read_migrated_schema PASSED   [ 49%]
+tests/unit/test_plan_versioning.py::test_plan_v1_initial PASSED          [ 50%]
+tests/unit/test_plan_versioning.py::test_bump_version_increments PASSED  [ 51%]
+tests/unit/test_plan_versioning.py::test_plan_service_versions_v1_to_v5 PASSED [ 52%]
+tests/unit/test_plan_versioning.py::test_get_active_for_goal_highest_version PASSED [ 53%]
+tests/unit/test_plan_versioning.py::test_planstep_self_dep_rejected FAILED [ 54%]
+tests/unit/test_plan_versioning.py::test_dependency_self_edge_rejected FAILED [ 55%]
+tests/unit/test_plan_versioning.py::test_add_step_duplicate_rejected PASSED [ 56%]
+tests/unit/test_plan_versioning.py::test_add_dependency_unknown_step PASSED [ 57%]
+tests/unit/test_plan_versioning.py::test_create_plan_rebinds_step_plan_id PASSED [ 58%]
+tests/unit/test_plan_versioning.py::test_plan_json_schema PASSED         [ 59%]
+tests/unit/test_services_persistence.py::test_goal_service_persists_to_db PASSED [ 60%]
+tests/unit/test_services_persistence.py::test_goal_service_activate_and_complete FAILED [ 61%]
+tests/unit/test_services_persistence.py::test_task_full_lifecycle PASSED [ 62%]
+tests/unit/test_services_persistence.py::test_task_illegal_transition_via_service PASSED [ 63%]
+tests/unit/test_services_persistence.py::test_plan_service_v1_through_v3 PASSED [ 64%]
+tests/unit/test_services_persistence.py::test_full_artifact_evidence_trace_chain FAILED [ 65%]
+tests/unit/test_services_persistence.py::test_full_artifact_evidence_trace_chain ERROR [ 65%]
+tests/unit/test_services_persistence.py::test_naive_datetime_rejected_in_orm FAILED [ 66%]
+tests/unit/test_task_state_machine.py::test_task_default_state_pending PASSED [ 67%]
+tests/unit/test_task_state_machine.py::test_task_requires_goal_id_and_title PASSED [ 68%]
+tests/unit/test_task_state_machine.py::test_transition_pending_to_running PASSED [ 69%]
+tests/unit/test_task_state_machine.py::test_transition_pending_to_blocked PASSED [ 70%]
+tests/unit/test_task_state_machine.py::test_transition_pending_to_failed PASSED [ 71%]
+tests/unit/test_task_state_machine.py::test_transition_running_to_verifying PASSED [ 72%]
+tests/unit/test_task_state_machine.py::test_transition_running_to_failed PASSED [ 73%]
+tests/unit/test_task_state_machine.py::test_transition_running_to_blocked PASSED [ 74%]
+tests/unit/test_task_state_machine.py::test_transition_verifying_to_done PASSED [ 75%]
+tests/unit/test_task_state_machine.py::test_transition_verifying_to_running PASSED [ 76%]
+tests/unit/test_task_state_machine.py::test_transition_blocked_to_running PASSED [ 77%]
+tests/unit/test_task_state_machine.py::test_illegal_transitions_raise[Pending-Done] PASSED [ 78%]
+tests/unit/test_task_state_machine.py::test_illegal_transitions_raise[Pending-Verifying] PASSED [ 79%]
+tests/unit/test_task_state_machine.py::test_illegal_transitions_raise[Running-Done] PASSED [ 80%]
+tests/unit/test_task_state_machine.py::test_illegal_transitions_raise[Verifying-Blocked] PASSED [ 81%]
+tests/unit/test_task_state_machine.py::test_illegal_transitions_raise[Done-Running] PASSED [ 82%]
+tests/unit/test_task_state_machine.py::test_illegal_transitions_raise[Failed-Running] PASSED [ 83%]
+tests/unit/test_task_state_machine.py::test_illegal_transitions_raise[Done-Failed] PASSED [ 84%]
+tests/unit/test_task_state_machine.py::test_add_evidence_idempotent PASSED [ 85%]
+tests/unit/test_task_state_machine.py::test_add_artifact_idempotent PASSED [ 86%]
+tests/unit/test_task_state_machine.py::test_transitions_table_consistency PASSED [ 87%]
+tests/unit/test_workers.py::test_worker_adapter_protocol PASSED          [ 88%]
+tests/unit/test_workers.py::test_health_status_values PASSED             [ 89%]
+tests/unit/test_workers.py::test_health_report_dataclass PASSED          [ 90%]
+tests/unit/test_workers.py::test_codex_adapter PASSED                    [ 91%]
+tests/unit/test_workers.py::test_claude_code_adapter PASSED              [ 92%]
+tests/unit/test_workers.py::test_openclaw_adapter PASSED                 [ 93%]
+tests/unit/test_workers.py::test_hermes_adapter PASSED                   [ 94%]
+tests/unit/test_workers.py::test_registry_register_and_get PASSED        [ 95%]
+tests/unit/test_workers.py::test_registry_get_unknown_raises PASSED      [ 96%]
+tests/unit/test_workers.py::test_registry_route_preferred PASSED         [ 97%]
+tests/unit/test_workers.py::test_registry_route_by_type PASSED           [ 98%]
+tests/unit/test_workers.py::test_registry_route_round_robin PASSED       [100%]
+
+=================================== ERRORS ====================================
+________ ERROR at teardown of test_full_artifact_evidence_trace_chain _________
+
+    def finalizer() -> None:
+        """Yield again, to finalize."""
+    
+        async def async_finalizer() -> None:
+            try:
+                await gen_obj.__anext__()
+            except StopAsyncIteration:
+                pass
+            else:
+                msg = "Async generator fixture didn't stop."
+                msg += "Yield only once."
+                raise ValueError(msg)
+    
+>       runner.run(async_finalizer(), context=context)
+
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\pytest_asyncio\plugin.py:424: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\asyncio\runners.py:119: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\asyncio\base_events.py:725: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\pytest_asyncio\plugin.py:416: in async_finalizer
+    await gen_obj.__anext__()
+tests\unit\conftest.py:47: in db_repo
+    async with session_scope(session_factory) as session:
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\contextlib.py:221: in __aexit__
+    await anext(self.gen)
+src\aios_kernel\domain\services\repository.py:55: in session_scope
+    await session.commit()
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\sqlalchemy\ext\asyncio\session.py:1308: in commit
+    await greenlet_spawn(self.sync_session.commit)
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\sqlalchemy\util\concurrency.py:199: in greenlet_spawn
+    result = context.switch(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\sqlalchemy\orm\session.py:2095: in commit
+    trans.commit(_to_root=True)
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\sqlalchemy\orm\state_changes.py:101: in _go
+    self._raise_for_prerequisite_state(fn.__name__, current_state)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <sqlalchemy.orm.session.SessionTransaction object at 0x00000129EBF77B90>
+operation_name = 'commit', state = <SessionTransactionState.DEACTIVE: 4>
+
+    def _raise_for_prerequisite_state(
+        self, operation_name: str, state: _StateChangeState
+    ) -> NoReturn:
+        if state is SessionTransactionState.DEACTIVE:
+            if self._rollback_exception:
+>               raise sa_exc.PendingRollbackError(
+                    "This Session's transaction has been rolled back "
+                    "due to a previous exception during flush."
+                    " To begin a new transaction with this Session, "
+                    "first issue Session.rollback()."
+                    f" Original exception was: {self._rollback_exception}",
+                    code="7s2a",
+                )
+E               sqlalchemy.exc.PendingRollbackError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.TypeError) Object of type datetime is not JSON serializable
+E               [SQL: INSERT INTO traces (id, goal_id, task_id, workflow_run_id, name, spans, metadata, envelope_json, schema_version, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+E               [parameters: [{'goal_id': 'e96aaf0d-b4c9-4363-adcb-eee25a65bb17', 'task_id': 'dbe91b14-af0b-4d3e-93f9-094331363543', 'name': 'run-1', 'metadata': {}, 'spans': [{'id ... (1523 characters truncated) ...  tzinfo=datetime.timezone.utc), 'created_at': datetime.datetime(2026, 10, 8, 3, 55, 34, 85125, tzinfo=datetime.timezone.utc), 'workflow_run_id': None}]] (Background on this error at: https://sqlalche.me/e/21/7s2a)
+
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\sqlalchemy\orm\session.py:987: PendingRollbackError
+================================== FAILURES ===================================
+_______________________ test_planstep_self_dep_rejected _______________________
+
+    def test_planstep_self_dep_rejected():
+        s = _step("self")
+>       s.depends_on = [s.id]
+        ^^^^^^^^^^^^
+
+tests\unit\test_plan_versioning.py:91: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\pydantic\main.py:1049: in __setattr__
+    setattr_handler(self, name, value)  # call here to not memo on possibly unknown fields
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+model = PlanStep(id='d7dcda06-90f3-4ba6-b8f5-9b24820e4560', created_at=datetime.datetime(2026, 10, 8, 3, 55, 32, 325063, tzinf...ind=<DependencyKind.FINISH_TO_START: 'FS'>, task_id=None, order=0, timeout_seconds=None, input_payload={}, metadata={})
+name = 'depends_on', val = ['d7dcda06-90f3-4ba6-b8f5-9b24820e4560']
+
+>       'validate_assignment': lambda model, name, val: model.__pydantic_validator__.validate_assignment(model, name, val),  # pyright: ignore[reportAssignmentType]
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        'private': _private_setattr_handler,
+        'cached_property': lambda model, name, val: model.__dict__.__setitem__(name, val),
+        'extra_known': lambda model, name, val: _object_setattr(model, name, val),
+    }
+E   pydantic_core._pydantic_core.ValidationError: 1 validation error for PlanStep
+E     Value error, PlanStep cannot depend on itself [type=value_error, input_value=PlanStep(id='d7dcda06-90f...payload={}, metadata={}), input_type=PlanStep]
+E       For further information visit https://errors.pydantic.dev/2.13/v/value_error
+
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\pydantic\main.py:112: ValidationError
+_____________________ test_dependency_self_edge_rejected ______________________
+
+    def test_dependency_self_edge_rejected():
+>       d = Dependency(plan_id="p1", from_step_id="x", to_step_id="x")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for Dependency
+E         Value error, Dependency cannot have from_step_id == to_step_id [type=value_error, input_value={'plan_id': 'p1', 'from_s... 'x', 'to_step_id': 'x'}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.13/v/value_error
+
+tests\unit\test_plan_versioning.py:98: ValidationError
+___________________ test_goal_service_activate_and_complete ___________________
+
+db_repo = <aios_kernel.persistence.repository.SqlAlchemyRepository object at 0x00000129EBAB0690>
+
+    @pytest.mark.asyncio
+    async def test_goal_service_activate_and_complete(db_repo):
+        gs = GoalService(db_repo)
+        g = await gs.create_goal(title="g", success_criteria="x", budget=1.0, owner="o")
+        await gs.activate(g)
+        assert g.status == GoalStatus.ACTIVE
+        await gs.complete(g)
+        assert g.is_terminal
+        # Should also be persisted as Completed
+        from aios_kernel.domain.services.repository import session_scope, make_session_factory
+        from aios_kernel.domain.services.repository import make_engine
+        # Re-fetch via a separate transaction: we already have the session;
+        # the in-memory test orm has it. Just check the events list.
+>       kinds = [e[0] for e in db_repo.events]
+                               ^^^^^^^^^^^^^^
+E       AttributeError: 'SqlAlchemyRepository' object has no attribute 'events'
+
+tests\unit\test_services_persistence.py:75: AttributeError
+___________________ test_full_artifact_evidence_trace_chain ___________________
+
+self = <sqlalchemy.engine.base.Connection object at 0x00000129EBE8FE90>
+dialect = <sqlalchemy.dialects.sqlite.aiosqlite.SQLiteDialect_aiosqlite object at 0x00000129EBFF8190>
+constructor = <bound method DefaultExecutionContext._init_compiled of <class 'sqlalchemy.dialects.sqlite.aiosqlite.SQLiteExecutionContext_aiosqlite'>>
+statement = <sqlalchemy.dialects.sqlite.base.SQLiteCompiler object at 0x00000129EBFDB820>
+parameters = [{'goal_id': 'e96aaf0d-b4c9-4363-adcb-eee25a65bb17', 'task_id': 'dbe91b14-af0b-4d3e-93f9-094331363543', 'name': 'run-1', 'metadata': {}, ...}]
+execution_options = immutabledict({'compiled_cache': <sqlalchemy.util._collections.LRUCache object at 0x00000129EC2D4F90>})
+args = (<sqlalchemy.dialects.sqlite.base.SQLiteCompiler object at 0x00000129EBFDB820>, [{'goal_id': 'e96aaf0d-b4c9-4363-adcb-...f9-094331363543', 'name': 'run-1', 'metadata': {}, ...}], <sqlalchemy.sql.dml.Insert object at 0x00000129EBEA2850>, [])
+kw = {'cache_hit': <CacheStats.CACHE_MISS: 1>, 'param_dict': None}
+
+    def _execute_context(
+        self,
+        dialect: Dialect,
+        constructor: Callable[..., ExecutionContext],
+        statement: Union[str, Compiled],
+        parameters: Optional[_AnyMultiExecuteParams],
+        execution_options: _ExecuteOptions,
+        *args: Any,
+        **kw: Any,
+    ) -> CursorResult[Unpack[TupleAny]]:
+        """Create an :class:`.ExecutionContext` and execute, returning
+        a :class:`_engine.CursorResult`."""
+    
+        if execution_options:
+            yp = execution_options.get("yield_per", None)
+            if yp:
+                execution_options = execution_options.union(
+                    {"stream_results": True, "max_row_buffer": yp}
+                )
+        try:
+            conn = self._dbapi_connection
+            if conn is None:
+                conn = self._revalidate_connection()
+    
+>           context = constructor(
+                dialect, self, conn, execution_options, *args, **kw
+            )
+
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\sqlalchemy\engine\base.py:1794: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\sqlalchemy\engine\default.py:1750: in _init_compiled
+    flattened_processors[key](compiled_params[key])
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\sqlalchemy\sql\sqltypes.py:2973: in process
+    return json_serializer(value)
+           ^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\json\__init__.py:235: in dumps
+    return _default_encoder.encode(obj)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\json\encoder.py:202: in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\json\encoder.py:263: in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <json.encoder.JSONEncoder object at 0x00000129E69E7770>
+o = datetime.datetime(2026, 10, 8, 3, 55, 34, 85148, tzinfo=datetime.timezone.utc)
+
+    def default(self, o):
+        """Implement this method in a subclass such that it returns
+        a serializable object for ``o``, or calls the base implementation
+        (to raise a ``TypeError``).
+    
+        For example, to support arbitrary iterators, you could
+        implement default like this::
+    
+            def default(self, o):
+                try:
+                    iterable = iter(o)
+                except TypeError:
+                    pass
+                else:
+                    return list(iterable)
+                # Let the base class default method raise the TypeError
+                return super().default(o)
+    
+        """
+>       raise TypeError(f'Object of type {o.__class__.__name__} '
+                        f'is not JSON serializable')
+E       TypeError: Object of type datetime is not JSON serializable
+
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\json\encoder.py:182: TypeError
+
+The above exception was the direct cause of the following exception:
+
+db_repo = <aios_kernel.persistence.repository.SqlAlchemyRepository object at 0x00000129EBAB2210>
+async_engine = <sqlalchemy.ext.asyncio.engine.AsyncEngine object at 0x00000129EC26ACD0>
+
+    @pytest.mark.asyncio
+    async def test_full_artifact_evidence_trace_chain(db_repo, async_engine):
+        gs = GoalService(db_repo)
+        ts = TaskService(db_repo)
+        g = await gs.create_goal(title="g", success_criteria="x", budget=1.0, owner="o")
+        t = await ts.create_task(goal_id=g.id, title="t", task_type=TaskType.CUSTOM)
+        await ts.start(t)
+    
+        a = Artifact(
+            task_id=t.id, artifact_type=ArtifactType.TEXT, inline_content="hello"
+        )
+        e = Evidence(task_id=t.id, verifier_id="v-001", verdict=Verdict.PASS)
+        tr = Trace(goal_id=g.id, task_id=t.id, name="run-1")
+        sp = TraceSpan(trace_id=tr.id, span_id="s1", name="dispatch")
+        sp.finish()
+        tr.add_span(sp)
+    
+        await db_repo.add(a)
+        await db_repo.add(e)
+        await db_repo.add(tr)
+>       await db_repo.commit()
+
+tests\unit\test_services_persistence.py:146: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\aios_kernel\persistence\repository.py:64: in commit
+    await self.session.commit()
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\sqlalchemy\ext\asyncio\session.py:1308: in commit
+    await greenlet_spawn(self.sync_session.commit)
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\sqlalchemy\util\concurrency.py:212: in greenlet_spawn
+    result = context.switch(value)
+             ^^^^^^^^^^^^^^^^^^^^^
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\sqlalchemy\orm\session.py:2095: in commit
+    trans.commit(_to_root=True)
+<sqlalchemy generated _go() wrapper for sqlalchemy.orm.session.SessionTransaction.commit>:2: in commit
+    return target(fn, self, _to_root=_to_root)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\sqlalchemy\orm\state_changes.py:137: in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\sqlalchemy\orm\session.py:1330: in commit
+    self._prepare_impl()
+<sqlalchemy generated _go() wrapper for sqlalchemy.orm.session.SessionTransaction._prepare_impl>:2: in _prepare_impl
+    return target(fn, self)
+           ^^^^^^^^^^^^^^^^
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\sqlalchemy\orm\state_changes.py:137: in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\sqlalchemy\orm\session.py:1304: in _prepare_impl
+    self.session.flush()
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\sqlalchemy\orm\session.py:4536: in flush
+    self._flush(objects)
+<sqlalchemy generated warned() wrapper for sqlalchemy.orm.session.Session._flush>:2: in _flush
+    return target(fn, self, objects=objects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\sqlalchemy\util\deprecations.py:281: in warned
+    return fn(*args, **kwargs)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\sqlalchemy\orm\session.py:4679: in _flush
+    with util.safe_reraise():
+         ^^^^^^^^^^^^^^^^^^^
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\sqlalchemy\util\langhelpers.py:166: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\sqlalchemy\orm\session.py:4640: in _flush
+    flush_context.execute()
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\sqlalchemy\orm\unitofwork.py:467: in execute
+    rec.execute(self)
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\sqlalchemy\orm\unitofwork.py:643: in execute
+    util.preloaded.orm_persistence._save_obj(
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\sqlalchemy\orm\persistence.py:92: in _save_obj
+    _emit_insert_statements(
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\sqlalchemy\orm\persistence.py:1052: in _emit_insert_statements
+    result = connection.execute(
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\sqlalchemy\engine\base.py:1451: in execute
+    return meth(
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\sqlalchemy\sql\elements.py:533: in _execute_on_connection
+    return connection._execute_clauseelement(
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\sqlalchemy\engine\base.py:1671: in _execute_clauseelement
+    ret = self._execute_context(
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\sqlalchemy\engine\base.py:1800: in _execute_context
+    self._handle_dbapi_exception(
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\sqlalchemy\engine\base.py:2335: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\sqlalchemy\engine\base.py:1794: in _execute_context
+    context = constructor(
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\sqlalchemy\engine\default.py:1750: in _init_compiled
+    flattened_processors[key](compiled_params[key])
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\sqlalchemy\sql\sqltypes.py:2973: in process
+    return json_serializer(value)
+           ^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\json\__init__.py:235: in dumps
+    return _default_encoder.encode(obj)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\json\encoder.py:202: in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\json\encoder.py:263: in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <json.encoder.JSONEncoder object at 0x00000129E69E7770>
+o = datetime.datetime(2026, 10, 8, 3, 55, 34, 85148, tzinfo=datetime.timezone.utc)
+
+    def default(self, o):
+        """Implement this method in a subclass such that it returns
+        a serializable object for ``o``, or calls the base implementation
+        (to raise a ``TypeError``).
+    
+        For example, to support arbitrary iterators, you could
+        implement default like this::
+    
+            def default(self, o):
+                try:
+                    iterable = iter(o)
+                except TypeError:
+                    pass
+                else:
+                    return list(iterable)
+                # Let the base class default method raise the TypeError
+                return super().default(o)
+    
+        """
+>       raise TypeError(f'Object of type {o.__class__.__name__} '
+                        f'is not JSON serializable')
+E       sqlalchemy.exc.StatementError: (builtins.TypeError) Object of type datetime is not JSON serializable
+E       [SQL: INSERT INTO traces (id, goal_id, task_id, workflow_run_id, name, spans, metadata, envelope_json, schema_version, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+E       [parameters: [{'goal_id': 'e96aaf0d-b4c9-4363-adcb-eee25a65bb17', 'task_id': 'dbe91b14-af0b-4d3e-93f9-094331363543', 'name': 'run-1', 'metadata': {}, 'spans': [{'id ... (1523 characters truncated) ...  tzinfo=datetime.timezone.utc), 'created_at': datetime.datetime(2026, 10, 8, 3, 55, 34, 85125, tzinfo=datetime.timezone.utc), 'workflow_run_id': None}]]
+
+C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\json\encoder.py:182: StatementError
+_____________________ test_naive_datetime_rejected_in_orm _____________________
+
+db_repo = <aios_kernel.persistence.repository.SqlAlchemyRepository object at 0x00000129EBFFA210>
+async_engine = <sqlalchemy.ext.asyncio.engine.AsyncEngine object at 0x00000129ECECBA10>
+
+    @pytest.mark.asyncio
+    async def test_naive_datetime_rejected_in_orm(db_repo, async_engine):
+        """Inserting a row with a naive datetime must raise (constraint or
+        Pydantic rejection). The constraint is enforced by SQLite when the
+        column is declared with timezone info; SQLAlchemy will pass through
+        whatever Python datetime is given. We assert the Pydantic side rejects
+        first; if Pydantic is bypassed, the DB layer should still work
+        because we always use tz-aware datetimes in our models."""
+        from aios_kernel.domain.evidence import Evidence
+        from aios_kernel.domain.envelope import utcnow
+    
+        e = Evidence(task_id="t-1", verifier_id="v-1", signed_at=utcnow())
+        # Pydantic accepted (tz-aware). Round-trip through repo:
+        await db_repo.add(e)
+        await db_repo.commit()
+        # Re-read via fresh session to validate tz-aware persisted
+        from aios_kernel.domain.services.repository import session_scope, make_session_factory
+        factory = make_session_factory(async_engine)
+        async with session_scope(factory) as session:
+            e_orm = await session.get(EvidenceORM, e.id)
+            assert e_orm is not None
+>           assert e_orm.signed_at.tzinfo is not None
+E           assert None is not None
+E            +  where None = datetime.datetime(2026, 10, 8, 3, 55, 35, 135556).tzinfo
+E            +    where datetime.datetime(2026, 10, 8, 3, 55, 35, 135556) = <aios_kernel.persistence.models.EvidenceORM object at 0x00000129EBFDBCE0>.signed_at
+
+tests\unit\test_services_persistence.py:191: AssertionError
+============================== warnings summary ===============================
+tests\sim\test_simulation_e2e.py:72
+  D:\AIOS\kernel\tests\sim\test_simulation_e2e.py:72: PytestCollectionWarning: cannot collect test class 'TestFailure' because it has a __init__ constructor (from: tests/sim/test_simulation_e2e.py)
+    class TestFailure(AssertionError):
+
+tests/unit/test_goal_schema.py::test_goal_required_fields
+  C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\Lib\site-packages\pytest_asyncio\plugin.py:916: PytestDeprecationWarning: Overriding the "event_loop_policy" fixture is deprecated and will be removed in a future version of pytest-asyncio. Use the "pytest_asyncio_loop_factories" hook to customize event loop creation.
+    warnings.warn(
+
+tests/unit/test_workers.py::test_codex_adapter
+  D:\AIOS\kernel\src\aios_kernel\workers\base.py:57: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    last_check_at=datetime.utcnow(),
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+ERROR tests/unit/test_services_persistence.py::test_full_artifact_evidence_trace_chain
+FAILED tests/unit/test_plan_versioning.py::test_planstep_self_dep_rejected - ...
+FAILED tests/unit/test_plan_versioning.py::test_dependency_self_edge_rejected
+FAILED tests/unit/test_services_persistence.py::test_goal_service_activate_and_complete
+FAILED tests/unit/test_services_persistence.py::test_full_artifact_evidence_trace_chain
+FAILED tests/unit/test_services_persistence.py::test_naive_datetime_rejected_in_orm
+============= 5 failed, 94 passed, 3 warnings, 1 error in 24.90s ==============

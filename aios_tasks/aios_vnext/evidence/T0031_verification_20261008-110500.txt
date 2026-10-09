@@ -1,0 +1,44 @@
+=== T0031 EVIDENCE CAPTURE @ 20261008-110500 ===
+
+[1] python -c 'import aios_kernel'
+OK 0.1.0
+
+[2] aios-kernel --version (CLI)
+usage: aios-kernel [-h] [--version]
+
+AIOS Kernel CLI (VNext Phase A scaffold).
+
+options:
+  -h, --help  show this help message and exit
+  --version   show program's version number and exit
+
+[3] pytest --collect-only
+============================= test session starts =============================
+platform win32 -- Python 3.13.14, pytest-9.1.1, pluggy-1.6.0
+rootdir: D:\Documents\ChatGPT\codex
+plugins: anyio-4.15.1, asyncio-1.4.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 0 items
+
+========================= no tests collected in 0.01s =========================
+
+[4] ruff check src/
+E902 系统找不到指定的文件。 (os error 2)
+--> src:1:1
+
+Found 1 error.
+
+[5] git status --short
+?? .github/
+?? .gitignore
+?? README.md
+?? alembic.ini
+?? docker-compose.yml
+?? docs/
+?? pyproject.toml
+?? scripts/
+?? src/
+?? tests/
+
+[6] git branch
+

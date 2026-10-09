@@ -1,0 +1,16 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.14, pytest-9.1.1, pluggy-1.6.0 -- D:\AIOS\kernel\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: D:\AIOS\kernel
+configfile: pyproject.toml
+plugins: asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 5 items
+
+tests/integration/test_crm_feedback.py::test_ingest_single PASSED        [ 20%]
+tests/integration/test_crm_feedback.py::test_hash_customer_id PASSED     [ 40%]
+tests/integration/test_crm_feedback.py::test_categorize_correct PASSED   [ 60%]
+tests/integration/test_crm_feedback.py::test_privacy_already_500 PASSED  [ 80%]
+tests/integration/test_crm_feedback.py::test_audit PASSED                [100%]
+
+============================== 5 passed in 0.20s ==============================

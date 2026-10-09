@@ -1,0 +1,108 @@
+========================================================================
+INPUT (COMMAND): '建一个营销活动'
+========================================================================
+intent_type           : command
+stated_goal           : '建一个营销活动'
+inferred_intent       : "execute the user's imperative request"
+preserve_capabilities : []
+known_constraints     : []
+environment_context   : cwd='D:\\AIOS\\kernel' os='win32 (python 3.13)'
+success_criteria      : 'Action completed as stated and verified by deterministic check.'
+failure_modes         : [('Output looks correct but does not match ', 'deterministic verifier returns False OR '), ('Action runs against wrong target (typo i', 'diff before/after action does not includ')]
+permission_scope      : ops=['read', 'write'] budget=100.0 dur=3600 requires_approval=['execute', 'delete']
+missing_evidence      : []
+approved_tradeoffs    : []
+autonomous_scope      : [('file', 'read')]
+requires_authorization: [('file', 'write'), ('file', 'execute'), ('file', 'delete'), ('network', 'execute')]
+#constraints=0 #tradeoffs=0 #missing=0
+
+========================================================================
+INPUT (STATEMENT): '我需要把今天的工作收尾'
+========================================================================
+intent_type           : statement
+stated_goal           : '我需要把今天的工作收尾'
+inferred_intent       : "address the user's stated need"
+preserve_capabilities : []
+known_constraints     : []
+environment_context   : cwd='D:\\AIOS\\kernel' os='win32 (python 3.13)'
+success_criteria      : 'Stated need is addressed; deliverables produced.'
+failure_modes         : [('Output looks correct but does not match ', 'deterministic verifier returns False OR ')]
+permission_scope      : ops=['read'] budget=50.0 dur=1800 requires_approval=['write', 'execute', 'delete']
+missing_evidence      : [('Statement lacks measurable success criteria; ask user for ex', 'user_input')]
+approved_tradeoffs    : []
+autonomous_scope      : [('file', 'read')]
+requires_authorization: [('file', 'write'), ('file', 'execute'), ('file', 'delete')]
+#constraints=0 #tradeoffs=0 #missing=1
+
+========================================================================
+INPUT (QUESTION): '怎么让 AIOS 知道用户的目标'
+========================================================================
+intent_type           : question
+stated_goal           : '怎么让 AIOS 知道用户的目标'
+inferred_intent       : "answer the user's question"
+preserve_capabilities : []
+known_constraints     : []
+environment_context   : cwd='D:\\AIOS\\kernel' os='win32 (python 3.13)'
+success_criteria      : 'Question answered with cited sources and reproducible reasoning.'
+failure_modes         : [('Output looks correct but does not match ', 'deterministic verifier returns False OR '), ('Answer cites sources that do not actuall', 'validate every URL/source id before retu')]
+permission_scope      : ops=['read'] budget=0.0 dur=600 requires_approval=['write', 'execute', 'delete']
+missing_evidence      : []
+approved_tradeoffs    : []
+autonomous_scope      : [('file', 'read'), ('data', 'read')]
+requires_authorization: []
+#constraints=0 #tradeoffs=0 #missing=0
+
+========================================================================
+INPUT (CONSTRAINED): '在 D:/AIOS 内 不要改 verifier'
+========================================================================
+intent_type           : constrained
+stated_goal           : '在 D:/AIOS 内 不要改 verifier'
+inferred_intent       : 'execute the action under the stated constraints'
+preserve_capabilities : []
+known_constraints     : [('scope', '改 verifier')]
+environment_context   : cwd='D:\\AIOS\\kernel' os='win32 (python 3.13)'
+success_criteria      : 'Action completed within every stated constraint.'
+failure_modes         : [('Output looks correct but does not match ', 'deterministic verifier returns False OR ')]
+permission_scope      : ops=['read', 'write'] budget=50.0 dur=1800 requires_approval=['execute', 'delete']
+missing_evidence      : []
+approved_tradeoffs    : []
+autonomous_scope      : [('file', 'read')]
+requires_authorization: [('file', 'execute'), ('file', 'delete')]
+#constraints=1 #tradeoffs=0 #missing=0
+
+========================================================================
+INPUT (TRADEOFF): '宁可慢 不要出错'
+========================================================================
+intent_type           : tradeoff
+stated_goal           : '宁可慢 不要出错'
+inferred_intent       : 'execute the action while honouring the stated tradeoff'
+preserve_capabilities : []
+known_constraints     : []
+environment_context   : cwd='D:\\AIOS\\kernel' os='win32 (python 3.13)'
+success_criteria      : 'Action completed; the approved tradeoff is respected.'
+failure_modes         : [('Output looks correct but does not match ', 'deterministic verifier returns False OR ')]
+permission_scope      : ops=['read', 'write'] budget=50.0 dur=1800 requires_approval=['execute', 'delete']
+missing_evidence      : []
+approved_tradeoffs    : [('慢', '不要出错')]
+autonomous_scope      : [('file', 'read')]
+requires_authorization: [('file', 'execute'), ('file', 'delete')]
+#constraints=0 #tradeoffs=1 #missing=0
+
+========================================================================
+INPUT (MIXED): '30 分钟内完成 GoalContract，宁可慢不要出错'
+========================================================================
+intent_type           : tradeoff
+stated_goal           : '30 分钟内完成 GoalContract，宁可慢不要出错'
+inferred_intent       : 'execute the action while honouring the stated tradeoff'
+preserve_capabilities : []
+known_constraints     : [('timeout', 1800)]
+environment_context   : cwd='D:\\AIOS\\kernel' os='win32 (python 3.13)'
+success_criteria      : 'Action completed; the approved tradeoff is respected.'
+failure_modes         : [('Output looks correct but does not match ', 'deterministic verifier returns False OR ')]
+permission_scope      : ops=['read', 'write'] budget=50.0 dur=1800 requires_approval=['execute', 'delete']
+missing_evidence      : []
+approved_tradeoffs    : [('慢', '不要出错')]
+autonomous_scope      : [('file', 'read')]
+requires_authorization: [('file', 'execute'), ('file', 'delete')]
+#constraints=1 #tradeoffs=1 #missing=0
+

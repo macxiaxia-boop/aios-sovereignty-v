@@ -1,0 +1,55 @@
+# T0003 schtasks XML diff (\AIOS-Overnight-Daily-Continue)
+# Backup SHA1: 64BB51C8D428E417F5C92ADD651C2B853EEE3BAB
+# After   SHA1: 865892954839589A9B07291C46381CC01CFE5243
+# Lines changed: 2 (line 73 + line 75 in raw XML)
+
+## Diff (before -> after)
+```xml
+Line 73:
+  - <Arguments>-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File</Arguments>
+  + <Arguments>-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File "D:\demo\start-cc-current.ps1"</Arguments>
+Line 75:
+  - <WorkingDirectory>D:\demo\start-cc-current.ps1</WorkingDirectory>
+  + <WorkingDirectory>D:\demo</WorkingDirectory>
+```
+
+## Verification: identical fields outside the 2 changed lines
+```
+OK: 80 lines unchanged outside the 2 modified lines
+OK: NO unexpected diffs
+```
+
+## Verification: post-state via /query /fo LIST /v
+```
+
+Folder: \
+HostName:                             DESKTOP-0JKD1FQ
+TaskName:                             \AIOS-Overnight-Daily-Continue
+Next Run Time:                        2026/10/9 6:00:00
+Status:                               Ready
+Logon Mode:                           Interactive only
+Last Run Time:                        1999/11/30 0:00:00
+Last Result:                          267011
+Author:                               DESKTOP-0JKD1FQ\xinzh
+Task To Run:                          C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File "D:\demo\start-cc-current.ps1"
+Start In:                             D:\demo
+Comment:                              N/A
+Scheduled Task State:                 Enabled
+Idle Time:                            Disabled
+Power Management:                     Stop On Battery Mode, No Start On Batteries
+Run As User:                          xinzh
+Delete Task If Not Rescheduled:       Disabled
+Stop Task If Runs X Hours and X Mins: 72:00:00
+Schedule:                             Scheduling data is not available in this format.
+Schedule Type:                        Daily 
+Start Time:                           6:00:00
+Start Date:                           2026/9/26
+End Date:                             N/A
+Days:                                 Every 1 day(s)
+Months:                               N/A
+Repeat: Every:                        Disabled
+Repeat: Until: Time:                  Disabled
+Repeat: Until: Duration:              Disabled
+Repeat: Stop If Still Running:        Disabled
+```
+

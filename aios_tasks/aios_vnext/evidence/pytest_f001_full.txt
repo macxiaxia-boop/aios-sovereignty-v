@@ -1,0 +1,62 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.14, pytest-9.1.1, pluggy-1.6.0 -- D:\AIOS\kernel\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: D:\AIOS\kernel
+configfile: pyproject.toml
+plugins: asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 45 items
+
+tests/unit/test_goal_contract_12_fields.py::test_inferred_intent_optional PASSED [  2%]
+tests/unit/test_goal_contract_12_fields.py::test_preserve_capabilities_default_empty PASSED [  4%]
+tests/unit/test_goal_contract_12_fields.py::test_constraint_validation_budget PASSED [  6%]
+tests/unit/test_goal_contract_12_fields.py::test_constraint_validation_timeout PASSED [  8%]
+tests/unit/test_goal_contract_12_fields.py::test_constraint_validation_forbidden_path PASSED [ 11%]
+tests/unit/test_goal_contract_12_fields.py::test_env_snapshot_with_recent_failures PASSED [ 13%]
+tests/unit/test_goal_contract_12_fields.py::test_failure_modes_detection_required PASSED [ 15%]
+tests/unit/test_goal_contract_12_fields.py::test_permission_scope_allowed_ops_subset PASSED [ 17%]
+tests/unit/test_goal_contract_12_fields.py::test_permission_scope_requires_approval PASSED [ 20%]
+tests/unit/test_goal_contract_12_fields.py::test_evidence_request_required_vs_optional PASSED [ 22%]
+tests/unit/test_goal_contract_12_fields.py::test_tradeoff_approved_by_validation PASSED [ 24%]
+tests/unit/test_goal_contract_12_fields.py::test_op_type_domain_action_enum PASSED [ 26%]
+tests/unit/test_goal_contract_12_fields.py::test_existing_goal_10_fields_still_valid PASSED [ 28%]
+tests/unit/test_goal_contract_12_fields.py::test_round_trip_pydantic_to_orm_to_pydantic PASSED [ 31%]
+tests/unit/test_goal_contract_12_fields.py::test_permission_scope_max_budget_matches_goal_budget PASSED [ 33%]
+tests/unit/test_goal_contract_12_fields.py::test_autonomous_scope_disjoint_from_requires_authorization PASSED [ 35%]
+tests/unit/test_goal_contract_12_fields.py::test_failure_modes_minimum_one_required PASSED [ 37%]
+tests/unit/test_goal_contract_12_fields.py::test_env_snapshot_required_when_known_constraints_present PASSED [ 40%]
+tests/unit/test_goal_contract_12_fields.py::test_alembic_upgrade_003_adds_10_columns PASSED [ 42%]
+tests/unit/test_goal_contract_12_fields.py::test_alembic_downgrade_003_removes_10_columns PASSED [ 44%]
+tests/unit/test_goal_contract_12_fields.py::test_alembic_head_is_003 PASSED [ 46%]
+tests/unit/test_goal_contract_12_fields.py::test_alembic_upgrade_downgrade_upgrade_roundtrip PASSED [ 48%]
+tests/unit/test_goal_contract_12_fields.py::test_goal_json_schema_includes_all_12_fields PASSED [ 51%]
+tests/unit/test_goal_contract_12_fields.py::test_json_dump_roundtrip_submodels PASSED [ 53%]
+tests/unit/test_goal_contract_12_fields.py::test_allowed_ops_constant_exports PASSED [ 55%]
+tests/unit/test_goal_contract_12_fields.py::test_has_full_contract_helper PASSED [ 57%]
+tests/unit/test_goal_contract_12_fields.py::test_submodel_json_serialization PASSED [ 60%]
+tests/unit/test_goal_contract_12_fields.py::test_domain_package_exports_submodels PASSED [ 62%]
+tests/unit/test_goal_contract_12_fields.py::test_repository_goal_from_orm_roundtrip PASSED [ 64%]
+tests/unit/test_goal_contract_12_fields.py::test_default_field_types PASSED [ 66%]
+tests/unit/test_goal_schema.py::test_goal_required_fields PASSED         [ 68%]
+tests/unit/test_goal_schema.py::test_goal_optional_fields PASSED         [ 71%]
+tests/unit/test_goal_schema.py::test_goal_json_schema_export PASSED      [ 73%]
+tests/unit/test_goal_schema.py::test_goal_json_roundtrip PASSED          [ 75%]
+tests/unit/test_goal_schema.py::test_status_enum_has_5_states PASSED     [ 77%]
+tests/unit/test_goal_schema.py::test_goal_legal_transitions PASSED       [ 80%]
+tests/unit/test_goal_schema.py::test_goal_illegal_transition_raises PASSED [ 82%]
+tests/unit/test_goal_schema.py::test_goal_abort_paths PASSED             [ 84%]
+tests/unit/test_goal_schema.py::test_goal_naive_datetime_rejected PASSED [ 86%]
+tests/unit/test_goal_schema.py::test_goal_uuid_id_format PASSED          [ 88%]
+tests/unit/test_goal_schema.py::test_goal_budget_non_negative PASSED     [ 91%]
+tests/unit/test_goal_schema.py::test_goal_title_required PASSED          [ 93%]
+tests/unit/test_goal_schema.py::test_goal_plan_ids_idempotent PASSED     [ 95%]
+tests/unit/test_goal_schema.py::test_goal_remaining_budget PASSED        [ 97%]
+tests/unit/test_goal_schema.py::test_goal_transitions_table_completeness PASSED [100%]
+
+============================== warnings summary ===============================
+tests/unit/test_goal_contract_12_fields.py::test_inferred_intent_optional
+  D:\AIOS\kernel\.venv\Lib\site-packages\pytest_asyncio\plugin.py:916: PytestDeprecationWarning: Overriding the "event_loop_policy" fixture is deprecated and will be removed in a future version of pytest-asyncio. Use the "pytest_asyncio_loop_factories" hook to customize event loop creation.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================= 45 passed, 1 warning in 12.10s ========================

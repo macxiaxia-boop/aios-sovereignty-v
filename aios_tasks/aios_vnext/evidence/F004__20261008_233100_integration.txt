@@ -1,0 +1,13 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.14, pytest-9.1.1, pluggy-1.6.0 -- D:\AIOS\kernel\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: D:\AIOS\kernel
+configfile: pyproject.toml
+plugins: asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 2 items
+
+tests/integration/test_failure_merger_integration.py::test_50_real_failures_merged_to_clusters PASSED [ 50%]
+tests/integration/test_failure_merger_integration.py::test_clusters_can_be_loaded_into_goal_contract PASSED [100%]
+
+============================== 2 passed in 0.59s ==============================

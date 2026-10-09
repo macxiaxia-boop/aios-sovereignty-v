@@ -1,0 +1,39 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.14, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\python.exe
+cachedir: .pytest_cache
+rootdir: D:\AIOS\kernel
+configfile: pyproject.toml
+plugins: anyio-4.15.1, asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 28 items
+
+tests/integration/test_100_task_closed_loop.py::test_100_of_100_pass PASSED [  3%]
+tests/integration/test_100_task_closed_loop.py::test_worker_distribution_within_5pp PASSED [  7%]
+tests/integration/test_100_task_closed_loop.py::test_verifier_pid_independent PASSED [ 10%]
+tests/integration/test_100_task_closed_loop.py::test_each_task_has_artifact_evidence_cost PASSED [ 14%]
+tests/integration/test_100_task_closed_loop.py::test_cross_worker_tasks_all_pass PASSED [ 17%]
+tests/integration/test_100_task_closed_loop.py::test_type_distribution_30_20_20_15_15 PASSED [ 21%]
+tests/integration/test_false_completion.py::test_fake_done_5_of_5_rejected PASSED [ 25%]
+tests/integration/test_false_completion.py::test_rejection_verdict_is_fail_or_blocked PASSED [ 28%]
+tests/integration/test_false_completion.py::test_rejection_reason_mentions_evidence_missing PASSED [ 32%]
+tests/integration/test_false_completion.py::test_fake_done_worker_contract PASSED [ 35%]
+tests/integration/test_false_completion.py::test_verifier_pid_independent_of_worker PASSED [ 39%]
+tests/integration/test_false_completion.py::test_no_false_pass_in_evidence_dump PASSED [ 42%]
+tests/integration/test_verifier_independent.py::test_verifier_pid_differs_from_kernel PASSED [ 46%]
+tests/integration/test_verifier_independent.py::test_missing_evidence_returns_fail PASSED [ 50%]
+tests/integration/test_verifier_independent.py::test_evidence_hash_mismatch_returns_fail PASSED [ 53%]
+tests/integration/test_verifier_independent.py::test_artifact_missing_returns_fail PASSED [ 57%]
+tests/integration/test_verifier_independent.py::test_budget_overflow_returns_fail PASSED [ 60%]
+tests/integration/test_verifier_independent.py::test_all_rules_pass_returns_pass PASSED [ 64%]
+tests/integration/test_verifier_independent.py::test_blocked_partial_evidence_scenario PASSED [ 67%]
+tests/integration/test_workflow_engine.py::test_start_three_step_completes PASSED [ 71%]
+tests/integration/test_workflow_engine.py::test_signal_custom_stored_in_metadata PASSED [ 75%]
+tests/integration/test_workflow_engine.py::test_query_status_history_step PASSED [ 78%]
+tests/integration/test_workflow_engine.py::test_cancel_marks_status PASSED [ 82%]
+tests/integration/test_workflow_engine.py::test_get_status_unknown_run_raises PASSED [ 85%]
+tests/integration/test_workflow_engine.py::test_kill_restart_resumes_from_checkpoint PASSED [ 89%]
+tests/integration/test_workflow_engine.py::test_retry_exponential_backoff_succeeds PASSED [ 92%]
+tests/integration/test_workflow_engine.py::test_permanent_failure_marks_run_failed PASSED [ 96%]
+tests/integration/test_workflow_engine.py::test_timeout_triggers_retry PASSED [100%]
+
+============================= 28 passed in 3.56s ==============================

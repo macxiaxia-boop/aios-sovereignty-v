@@ -1,0 +1,55 @@
+=== T0031 FINAL VERIFICATION @ 20261008-110700 ===
+
+--- [1] python -c 'import aios_kernel' ---
+OK 0.1.0
+
+--- [2] aios-kernel --version ---
+aios-kernel 0.1.0
+
+--- [3] pytest --collect-only ---
+============================= test session starts =============================
+platform win32 -- Python 3.13.14, pytest-9.1.1, pluggy-1.6.0
+rootdir: D:\Documents\ChatGPT\codex
+plugins: anyio-4.15.1, asyncio-1.4.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 0 items
+
+========================= no tests collected in 0.01s =========================
+
+--- [4] ruff check src/ ---
+E902 系统找不到指定的文件。 (os error 2)
+--> src:1:1
+
+Found 1 error.
+
+--- [5] git log --oneline ---
+001b4d8 scaffold: aios vnext kernel
+
+--- [6] git status --short ---
+?? tests/__init__.py
+?? tests/sim/mocks/
+?? tests/sim/runner.py
+
+--- [7] git branch ---
+* main
+
+--- [8] pyproject.toml dependencies present ---
+deps: 12
+dev-deps: 4
+
+--- [4b] ruff check src/ (corrected cwd) ---
+All checks passed!
+ruff-exit:0
+
+--- [3b] pytest --collect-only (corrected cwd) ---
+============================= test session starts =============================
+platform win32 -- Python 3.13.14, pytest-9.1.1, pluggy-1.6.0
+rootdir: D:\AIOS\kernel
+configfile: pyproject.toml
+testpaths: tests
+plugins: anyio-4.15.1, asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 0 items
+
+========================= no tests collected in 0.03s =========================
+pytest-exit:5

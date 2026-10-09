@@ -1,0 +1,506 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.14, pytest-9.1.1, pluggy-1.6.0 -- D:\AIOS\kernel\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: D:\AIOS\kernel
+configfile: pyproject.toml
+plugins: asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 97 items
+
+tests/integration/test_100_task_closed_loop.py::test_100_of_100_pass PASSED [  1%]
+tests/integration/test_100_task_closed_loop.py::test_worker_distribution_within_5pp PASSED [  2%]
+tests/integration/test_100_task_closed_loop.py::test_verifier_pid_independent PASSED [  3%]
+tests/integration/test_100_task_closed_loop.py::test_each_task_has_artifact_evidence_cost PASSED [  4%]
+tests/integration/test_100_task_closed_loop.py::test_cross_worker_tasks_all_pass PASSED [  5%]
+tests/integration/test_100_task_closed_loop.py::test_type_distribution_30_20_20_15_15 PASSED [  6%]
+tests/integration/test_business_kpi.py::test_track_kpi_basic PASSED      [  7%]
+tests/integration/test_business_kpi.py::test_dashboard_20_kpis PASSED    [  8%]
+tests/integration/test_business_kpi.py::test_trend_up_down PASSED        [  9%]
+tests/integration/test_business_kpi.py::test_skill_promotion_trigger_high_roi PASSED [ 10%]
+tests/integration/test_business_kpi.py::test_skill_promotion_low_roi_no_trigger PASSED [ 11%]
+tests/integration/test_canary.py::test_deploy_start PASSED               [ 12%]
+tests/integration/test_canary.py::test_advance_through_steps PASSED      [ 13%]
+tests/integration/test_canary.py::test_auto_rollback_on_high_error_rate PASSED [ 14%]
+tests/integration/test_canary.py::test_auto_rollback_on_slow_latency PASSED [ 15%]
+tests/integration/test_canary.py::test_audit_log PASSED                  [ 16%]
+tests/integration/test_crash_recovery.py::test_cr1_goal_create_mid_crash_rolls_back PASSED [ 17%]
+tests/integration/test_crash_recovery.py::test_cr2_workflow_resume_does_not_redo_step_a PASSED [ 18%]
+tests/integration/test_crash_recovery.py::test_cr3_plan_revert_crash_leaves_consistent_state FAILED [ 19%]
+tests/integration/test_crash_recovery.py::test_cr4_verifier_call_mid_crash_atomic_evidence FAILED [ 20%]
+tests/integration/test_crash_recovery.py::test_cr5_budget_check_mid_crash_no_double_deduct PASSED [ 21%]
+tests/integration/test_crash_recovery.py::test_cr6_evidence_write_mid_crash_atomic FAILED [ 22%]
+tests/integration/test_crash_recovery.py::test_cr7_five_consecutive_crashes_recover_to_completed FAILED [ 23%]
+tests/integration/test_crash_recovery.py::test_cr8_daemon_unaffected_by_kernel_crash FAILED [ 24%]
+tests/integration/test_crash_recovery.py::test_cr9_db_disconnect_then_restart_rebuilds_connection FAILED [ 25%]
+tests/integration/test_crash_recovery.py::test_cr10_workflow_run_id_preserved_across_restart FAILED [ 26%]
+tests/integration/test_crm_feedback.py::test_ingest_single PASSED        [ 27%]
+tests/integration/test_crm_feedback.py::test_hash_customer_id PASSED     [ 28%]
+tests/integration/test_crm_feedback.py::test_categorize_correct PASSED   [ 29%]
+tests/integration/test_crm_feedback.py::test_privacy_already_500 PASSED  [ 30%]
+tests/integration/test_crm_feedback.py::test_audit PASSED                [ 31%]
+tests/integration/test_eval_builder.py::test_from_real PASSED            [ 32%]
+tests/integration/test_eval_builder.py::test_synthetic PASSED            [ 34%]
+tests/integration/test_eval_builder.py::test_merge_dedup PASSED          [ 35%]
+tests/integration/test_eval_builder.py::test_mix_50_50 PASSED            [ 36%]
+tests/integration/test_experiment_engine.py::test_create_experiment PASSED [ 37%]
+tests/integration/test_experiment_engine.py::test_run_basic PASSED       [ 38%]
+tests/integration/test_experiment_engine.py::test_winner_detection PASSED [ 39%]
+tests/integration/test_experiment_engine.py::test_inconclusive_low_sample PASSED [ 40%]
+tests/integration/test_experiment_engine.py::test_audit_and_persistence PASSED [ 41%]
+tests/integration/test_experiment_engine.py::test_100_experiments_robustness PASSED [ 42%]
+tests/integration/test_failure_detector.py::test_detect_empty PASSED     [ 43%]
+tests/integration/test_failure_detector.py::test_detect_clusters_similar_failures PASSED [ 44%]
+tests/integration/test_failure_detector.py::test_detect_clusters_separate_failures PASSED [ 45%]
+tests/integration/test_failure_detector.py::test_prioritize_by_severity PASSED [ 46%]
+tests/integration/test_false_completion.py::test_fake_done_5_of_5_rejected PASSED [ 47%]
+tests/integration/test_false_completion.py::test_rejection_verdict_is_fail_or_blocked PASSED [ 48%]
+tests/integration/test_false_completion.py::test_rejection_reason_mentions_evidence_missing PASSED [ 49%]
+tests/integration/test_false_completion.py::test_fake_done_worker_contract PASSED [ 50%]
+tests/integration/test_false_completion.py::test_verifier_pid_independent_of_worker PASSED [ 51%]
+tests/integration/test_false_completion.py::test_no_false_pass_in_evidence_dump PASSED [ 52%]
+tests/integration/test_knowledge_rag.py::test_add_and_retrieve PASSED    [ 53%]
+tests/integration/test_knowledge_rag.py::test_hash_embed_deterministic PASSED [ 54%]
+tests/integration/test_knowledge_rag.py::test_cosine_identical PASSED    [ 55%]
+tests/integration/test_knowledge_rag.py::test_cosine_orthogonal PASSED   [ 56%]
+tests/integration/test_knowledge_rag.py::test_chunk_text_500_token PASSED [ 57%]
+tests/integration/test_knowledge_rag.py::test_100_synthetic_query_recall PASSED [ 58%]
+tests/integration/test_long_term_memory.py::test_put_and_get_roundtrip PASSED [ 59%]
+tests/integration/test_long_term_memory.py::test_retention_days_below_30_rejected PASSED [ 60%]
+tests/integration/test_long_term_memory.py::test_query_by_tag FAILED     [ 61%]
+tests/integration/test_long_term_memory.py::test_source_evidence_backlink FAILED [ 62%]
+tests/integration/test_long_term_memory.py::test_delete_explicit_only PASSED [ 63%]
+tests/integration/test_memory_integration.py::test_working_memory_long_term_chain PASSED [ 64%]
+tests/integration/test_memory_integration.py::test_session_isolation_integration PASSED [ 65%]
+tests/integration/test_replay_engine.py::test_replay_success PASSED      [ 67%]
+tests/integration/test_replay_engine.py::test_replay_drift PASSED        [ 68%]
+tests/integration/test_replay_engine.py::test_replay_failure_when_outputs_empty PASSED [ 69%]
+tests/integration/test_replay_engine.py::test_diff_detect_added_keys PASSED [ 70%]
+tests/integration/test_replay_engine.py::test_replay_100_runs PASSED     [ 71%]
+tests/integration/test_skill_deprecation.py::test_detect_deprecated_old_skill PASSED [ 72%]
+tests/integration/test_skill_deprecation.py::test_detect_recent_skill_not_deprecated PASSED [ 73%]
+tests/integration/test_skill_deprecation.py::test_audit_log_present PASSED [ 74%]
+tests/integration/test_skill_deprecation.py::test_multiple_deprecated PASSED [ 75%]
+tests/integration/test_skill_deprecation.py::test_format PASSED          [ 76%]
+tests/integration/test_skill_usage.py::test_track_basic PASSED           [ 77%]
+tests/integration/test_skill_usage.py::test_get_usage_time_range PASSED  [ 78%]
+tests/integration/test_skill_usage.py::test_success_rate PASSED          [ 79%]
+tests/integration/test_skill_usage.py::test_deprecate_candidate PASSED   [ 80%]
+tests/integration/test_skill_usage.py::test_format PASSED                [ 81%]
+tests/integration/test_skill_usage.py::test_500_calls_all_captured PASSED [ 82%]
+tests/integration/test_trace_miner.py::test_mine_empty PASSED            [ 83%]
+tests/integration/test_trace_miner.py::test_mine_extracts_success_and_failure PASSED [ 84%]
+tests/integration/test_trace_miner.py::test_pattern_includes_example_ids PASSED [ 85%]
+tests/integration/test_workflow_engine.py::test_start_three_step_completes PASSED [ 86%]
+tests/integration/test_workflow_engine.py::test_signal_custom_stored_in_metadata PASSED [ 87%]
+tests/integration/test_workflow_engine.py::test_query_status_history_step PASSED [ 88%]
+tests/integration/test_workflow_engine.py::test_cancel_marks_status PASSED [ 89%]
+tests/integration/test_workflow_engine.py::test_get_status_unknown_run_raises PASSED [ 90%]
+tests/integration/test_workflow_engine.py::test_kill_restart_resumes_from_checkpoint PASSED [ 91%]
+tests/integration/test_workflow_engine.py::test_retry_exponential_backoff_succeeds PASSED [ 92%]
+tests/integration/test_workflow_engine.py::test_permanent_failure_marks_run_failed PASSED [ 93%]
+tests/integration/test_workflow_engine.py::test_timeout_triggers_retry PASSED [ 94%]
+tests/integration/test_working_memory.py::test_put_and_get_roundtrip PASSED [ 95%]
+tests/integration/test_working_memory.py::test_session_isolation PASSED  [ 96%]
+tests/integration/test_working_memory.py::test_ttl_expires PASSED        [ 97%]
+tests/integration/test_working_memory.py::test_list_keys PASSED          [ 98%]
+tests/integration/test_working_memory.py::test_clear_session PASSED      [100%]
+
+================================== FAILURES ===================================
+_____________ test_cr3_plan_revert_crash_leaves_consistent_state ______________
+
+injector = <tests.integration.crash_injector.CrashInjector object at 0x00000185EB943ED0>
+db_url = 'sqlite+aiosqlite:///D:/UsersTemp/aios_cr_klq8thnw/cr_d9ed3119.db'
+result_dir = WindowsPath('D:/UsersTemp/aios_cr_klq8thnw/results')
+
+    async def test_cr3_plan_revert_crash_leaves_consistent_state(
+        injector, db_url, result_dir
+    ):
+        """Plan reversion flips v1.is_active=False then adds v2. If killed
+        after mark_inactive but before commit, the transaction must roll back
+        (v1 stays active). On restart without crash hook, the reversion
+        completes cleanly: v1 inactive, v2 active.
+        """
+        goal_title = "cr3-goal"
+        config_crash = {
+            "goal_title": goal_title,
+            "crash_hook": "crash_after_old_inactive",
+        }
+    
+        kp = injector.start_kernel(
+            db_url, mode="plan_revert", config=config_crash, result_dir=result_dir
+        )
+        try:
+>           assert injector.wait_for_marker(kp, timeout_s=5.0), (
+                "worker did not reach crash_after_old_inactive hook"
+            )
+E           AssertionError: worker did not reach crash_after_old_inactive hook
+E           assert False
+E            +  where False = wait_for_marker(KernelProcess(proc=<Popen: returncode: 0 args: ['D:\\AIOS\\kernel\\.venv\\Scripts\\python.exe',...>, pid=4660, db_url='sqlite+aiosqlite:///D:/UsersTemp/aios_cr_klq8thnw/cr_d9ed3119.db', mode='plan_revert', config={'goal_title': 'cr3-goal', 'crash_hook': 'crash_after_old_inactive', 'marker_path': 'D:\\UsersTemp\\aios_cr_klq8thnw\\results\\result_3668_1791444705856710700.marker'}, result_path=WindowsPath('D:/UsersTemp/aios_cr_klq8thnw/results/result_3668_1791444705856710700.json'), marker_path=WindowsPath('D:/UsersTemp/aios_cr_klq8thnw/results/result_3668_1791444705856710700.marker'), started_at=1791444705.8627343, log_path=WindowsPath('D:/UsersTemp/aios_cr_klq8thnw/results/worker_3668_1791444705856836900.log')), timeout_s=5.0)
+E            +    where wait_for_marker = <tests.integration.crash_injector.CrashInjector object at 0x00000185EB943ED0>.wait_for_marker
+
+tests\integration\test_crash_recovery.py:253: AssertionError
+______________ test_cr4_verifier_call_mid_crash_atomic_evidence _______________
+
+injector = <tests.integration.crash_injector.CrashInjector object at 0x00000185EBA25350>
+db_url = 'sqlite+aiosqlite:///D:/UsersTemp/aios_cr_84esw4mc/cr_301999ce.db'
+result_dir = WindowsPath('D:/UsersTemp/aios_cr_84esw4mc/results')
+
+    async def test_cr4_verifier_call_mid_crash_atomic_evidence(
+        injector, db_url, result_dir
+    ):
+        """VerifierCall adds an Evidence row but crashes before the
+        session commit. Atomicity -> no evidence row in DB.
+        Then we run verifier_call cleanly -> 1 evidence row.
+        """
+        config_crash = {"crash_hook": "crash_after_record"}
+        kp = injector.start_kernel(
+            db_url, mode="verifier_call", config=config_crash, result_dir=result_dir
+        )
+        try:
+            assert injector.wait_for_marker(kp, timeout_s=5.0), (
+                "worker did not reach crash_after_record hook"
+            )
+            _kill_and_reap(injector, kp)
+        finally:
+            injector.cleanup(kp)
+    
+        # After crash: no evidence row in DB.
+        state = injector.verify_state(
+            db_url, include_evidence=True, result_dir=result_dir
+        )
+        evidences = state.get("evidences", [])
+        assert evidences == [], (
+            f"atomic rollback failed: evidence leaked after crash: {evidences}"
+        )
+    
+        # Now do a clean verifier_call -> exactly one evidence row.
+        kp2 = injector.start_kernel(
+            db_url,
+            mode="verifier_call",
+            config={"crash_hook": "none"},
+            result_dir=result_dir,
+        )
+        try:
+            result = kp2.read_result(timeout_s=10.0)
+            assert result is not None, "clean verifier_call produced no result"
+            assert "evidence_id" in result, f"missing evidence_id: {result}"
+        finally:
+            injector.cleanup(kp2)
+    
+        state_after = injector.verify_state(
+            db_url, include_evidence=True, result_dir=result_dir
+        )
+        evs_after = state_after.get("evidences", [])
+>       assert len(evs_after) == 1, (
+            f"expected exactly 1 evidence after clean run; got {len(evs_after)}: {evs_after}"
+        )
+E       AssertionError: expected exactly 1 evidence after clean run; got 0: []
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests\integration\test_crash_recovery.py:347: AssertionError
+__________________ test_cr6_evidence_write_mid_crash_atomic ___________________
+
+injector = <tests.integration.crash_injector.CrashInjector object at 0x00000185EBA1EC30>
+db_url = 'sqlite+aiosqlite:///D:/UsersTemp/aios_cr_r64xfaau/cr_698e0d96.db'
+result_dir = WindowsPath('D:/UsersTemp/aios_cr_r64xfaau/results')
+
+    async def test_cr6_evidence_write_mid_crash_atomic(
+        injector, db_url, result_dir
+    ):
+        """EvidenceWrite: in one transaction, writes a Task + Evidence.
+        Crashes before final commit -> both must roll back. Then a clean run
+        produces exactly one evidence row.
+        """
+        config_crash = {"crash_hook": "crash_before_final_commit"}
+        kp = injector.start_kernel(
+            db_url,
+            mode="evidence_write",
+            config=config_crash,
+            result_dir=result_dir,
+        )
+        try:
+            assert injector.wait_for_marker(kp, timeout_s=5.0), (
+                "worker did not reach crash_before_final_commit hook"
+            )
+            _kill_and_reap(injector, kp)
+        finally:
+            injector.cleanup(kp)
+    
+        state = injector.verify_state(
+            db_url, include_evidence=True, result_dir=result_dir
+        )
+        evidences = state.get("evidences", [])
+        assert evidences == [], (
+            f"atomic rollback failed: evidence present after crash: {evidences}"
+        )
+    
+        # Clean run.
+        kp2 = injector.start_kernel(
+            db_url,
+            mode="evidence_write",
+            config={"crash_hook": "none"},
+            result_dir=result_dir,
+        )
+        try:
+            result = kp2.read_result(timeout_s=10.0)
+            assert result is not None
+            assert "evidence_id" in result
+        finally:
+            injector.cleanup(kp2)
+    
+        state_after = injector.verify_state(
+            db_url, include_evidence=True, result_dir=result_dir
+        )
+>       assert len(state_after.get("evidences", [])) == 1
+E       AssertionError: assert 0 == 1
+E        +  where 0 = len([])
+E        +    where [] = <built-in method get of dict object at 0x00000185EBBC1E80>('evidences', [])
+E        +      where <built-in method get of dict object at 0x00000185EBBC1E80> = {'ts': '2026-10-08T07:31:56.089967+00:00', 'goals': [{'id': '332174e8-f438-4a06-8393-39c8fd418837', 'title': 'evidence-write-test', 'status': 'Pending', 'budget': 10.0, ...}, {'id': '75eee245-57bd-4b2f-be89-60e8088c37c9', 'title': 'evidence-write-test', 'status': 'Pending', 'budget': 10.0, ...}], 'evidence': [{'id': 'd7bbb86b-87ca-42b5-a822-c9d32178d79e', 'task_id': '9b5f9710-da28-4952-9b72-47da70b11db7', 'verifier_id': 'test-verifier', 'verdict': 'PASS', ...}]}.get
+
+tests\integration\test_crash_recovery.py:455: AssertionError
+___________ test_cr7_five_consecutive_crashes_recover_to_completed ____________
+
+injector = <tests.integration.crash_injector.CrashInjector object at 0x00000185EBA8DD00>
+db_url = 'sqlite+aiosqlite:///D:/UsersTemp/aios_cr_4am3blyk/cr_023355a5.db'
+result_dir = WindowsPath('D:/UsersTemp/aios_cr_4am3blyk/results')
+
+    async def test_cr7_five_consecutive_crashes_recover_to_completed(
+        injector, db_url, result_dir
+    ):
+        """Loop: start workflow with crash hook, kill, resume, repeat.
+        After 5 cycles the run must be Completed and step A's history must
+        still show attempt=1 only (idempotency holds across many cycles).
+        """
+        run_id = f"cr7-{uuid.uuid4().hex[:8]}"
+    
+        for i in range(5):
+            config = {
+                "run_id": run_id,
+                "workflow_mode": "kill_at_b",
+                "crash_hook": "crash_after_step_a",
+            }
+            kp = injector.start_kernel(
+                db_url, mode="workflow_run", config=config, result_dir=result_dir
+            )
+            try:
+>               assert injector.wait_for_marker(kp, timeout_s=5.0), (
+                    f"cycle {i}: worker did not reach crash hook"
+                )
+E               AssertionError: cycle 1: worker did not reach crash hook
+E               assert False
+E                +  where False = wait_for_marker(KernelProcess(proc=<Popen: returncode: 0 args: ['D:\\AIOS\\kernel\\.venv\\Scripts\\python.exe',...>, pid=15300, db_url='sqlite+aiosqlite:///D:/UsersTemp/aios_cr_4am3blyk/cr_023355a5.db', mode='workflow_run', config={'run_id': 'cr7-6a00f840', 'workflow_mode': 'kill_at_b', 'crash_hook': 'crash_after_step_a', 'marker_path': 'D:\\UsersTemp\\aios_cr_4am3blyk\\results\\result_3668_1791444717721938700.marker'}, result_path=WindowsPath('D:/UsersTemp/aios_cr_4am3blyk/results/result_3668_1791444717721938700.json'), marker_path=WindowsPath('D:/UsersTemp/aios_cr_4am3blyk/results/result_3668_1791444717721938700.marker'), started_at=1791444717.7278044, log_path=WindowsPath('D:/UsersTemp/aios_cr_4am3blyk/results/worker_3668_1791444717722090900.log')), timeout_s=5.0)
+E                +    where wait_for_marker = <tests.integration.crash_injector.CrashInjector object at 0x00000185EBA8DD00>.wait_for_marker
+
+tests\integration\test_crash_recovery.py:482: AssertionError
+_________________ test_cr8_daemon_unaffected_by_kernel_crash __________________
+
+injector = <tests.integration.crash_injector.CrashInjector object at 0x00000185EBA8E250>
+db_url = 'sqlite+aiosqlite:///D:/UsersTemp/aios_cr_2iw6mnvn/cr_c6db3390.db'
+result_dir = WindowsPath('D:/UsersTemp/aios_cr_2iw6mnvn/results')
+
+    async def test_cr8_daemon_unaffected_by_kernel_crash(
+        injector, db_url, result_dir
+    ):
+        """A verifier daemon runs as a separate subprocess writing
+        heartbeat evidence. Concurrently, we crash a workflow. The daemon
+        must keep writing heartbeats. PID must be different.
+        """
+        daemon_cfg = {"duration_s": 4.0}
+        daemon_kp = injector.start_kernel(
+            db_url,
+            mode="verifier_daemon",
+            config=daemon_cfg,
+            result_dir=result_dir,
+        )
+        try:
+            # Give daemon a moment to write at least one heartbeat.
+            time.sleep(0.3)
+    
+            # Now crash a workflow subprocess.
+            run_id = f"cr8-{uuid.uuid4().hex[:8]}"
+            wf_cfg = {
+                "run_id": run_id,
+                "workflow_mode": "kill_at_b",
+                "crash_hook": "crash_after_step_a",
+            }
+            wf_kp = injector.start_kernel(
+                db_url, mode="workflow_run", config=wf_cfg, result_dir=result_dir
+            )
+            try:
+                assert injector.wait_for_marker(wf_kp, timeout_s=5.0)
+                _kill_and_reap(injector, wf_kp)
+            finally:
+                injector.cleanup(wf_kp)
+    
+            # PID isolation
+            assert wf_kp.pid != daemon_kp.pid, (
+                f"daemon and workflow shared pid {wf_kp.pid}"
+            )
+    
+            # Wait for daemon to finish its loop.
+            rc = injector.wait_for_exit(daemon_kp, timeout_s=15.0)
+            daemon_payload = daemon_kp.read_result(timeout_s=2.0)
+        finally:
+            injector.cleanup(daemon_kp)
+    
+        assert daemon_payload is not None, "daemon produced no result"
+>       assert daemon_payload.get("daemon_pid") == daemon_kp.pid, (
+            f"daemon PID mismatch: {daemon_payload}"
+        )
+E       AssertionError: daemon PID mismatch: {'daemon_pid': 6136, 'task_id': 'ed07fa78-66a8-463d-8f05-75ff86462d76', 'heartbeat_count': 20, 'ts': '2026-10-08T07:32:03.499570+00:00'}
+E       assert 6136 == 30844
+E        +  where 6136 = <built-in method get of dict object at 0x00000185EBBE4B80>('daemon_pid')
+E        +    where <built-in method get of dict object at 0x00000185EBBE4B80> = {'daemon_pid': 6136, 'task_id': 'ed07fa78-66a8-463d-8f05-75ff86462d76', 'heartbeat_count': 20, 'ts': '2026-10-08T07:32:03.499570+00:00'}.get
+E        +  and   30844 = KernelProcess(proc=<Popen: returncode: 0 args: ['D:\\AIOS\\kernel\\.venv\\Scripts\\python.exe',...>, pid=30844, db_url='sqlite+aiosqlite:///D:/UsersTemp/aios_cr_2iw6mnvn/cr_c6db3390.db', mode='verifier_daemon', config={'duration_s': 4.0, 'marker_path': None}, result_path=WindowsPath('D:/UsersTemp/aios_cr_2iw6mnvn/results/result_3668_1791444718347529400.json'), marker_path=None, started_at=1791444718.353133, log_path=WindowsPath('D:/UsersTemp/aios_cr_2iw6mnvn/results/worker_3668_1791444718347623000.log')).pid
+
+tests\integration\test_crash_recovery.py:573: AssertionError
+___________ test_cr9_db_disconnect_then_restart_rebuilds_connection ___________
+
+injector = <tests.integration.crash_injector.CrashInjector object at 0x00000185EBA66F50>
+db_url = 'sqlite+aiosqlite:///D:/UsersTemp/aios_cr_fzjqz7hf/cr_f31b18e0.db'
+result_dir = WindowsPath('D:/UsersTemp/aios_cr_fzjqz7hf/results')
+tmp_test_dir = WindowsPath('D:/UsersTemp/aios_cr_fzjqz7hf')
+
+    async def test_cr9_db_disconnect_then_restart_rebuilds_connection(
+        injector, db_url, result_dir, tmp_test_dir
+    ):
+        """Simulate 'DB connection断开时 crash':
+          1) start a worker, let it write data, kill it (committed data
+             must survive)
+          2) move the DB file aside (simulating connection loss / file gone)
+          3) restart with same URL -> engine must re-init cleanly, returning
+             an empty fresh DB (no panic, no leaked connection)
+    
+        This proves restart-after-disconnect works: the engine builds a new
+        connection without holding on to a stale handle.
+        """
+        # Step 1: seed data via clean verifier_call.
+        kp = injector.start_kernel(
+            db_url, mode="verifier_call", config={"crash_hook": "none"}, result_dir=result_dir
+        )
+        try:
+            result = kp.read_result(timeout_s=10.0)
+            assert result is not None and "evidence_id" in result
+        finally:
+            injector.cleanup(kp)
+    
+        # Confirm seed.
+        state1 = injector.verify_state(
+            db_url, include_evidence=True, result_dir=result_dir
+        )
+>       assert len(state1.get("evidences", [])) == 1, "seed data missing"
+E       AssertionError: seed data missing
+E       assert 0 == 1
+E        +  where 0 = len([])
+E        +    where [] = <built-in method get of dict object at 0x00000185EBBE7B80>('evidences', [])
+E        +      where <built-in method get of dict object at 0x00000185EBBE7B80> = {'ts': '2026-10-08T07:32:05.394593+00:00', 'goals': [{'id': 'c6086b08-1a8f-4ddc-93ba-bbc73e62b7bd', 'title': 'verifier-crash-test', 'status': 'Pending', 'budget': 10.0, ...}], 'evidence': [{'id': 'd9527536-6a51-4ce8-b803-4a583740ab7c', 'task_id': '0422ae0e-0058-46bd-897d-3bbd3194c8aa', 'verifier_id': 'test-verifier', 'verdict': 'PASS', ...}]}.get
+
+tests\integration\test_crash_recovery.py:625: AssertionError
+_____________ test_cr10_workflow_run_id_preserved_across_restart ______________
+
+injector = <tests.integration.crash_injector.CrashInjector object at 0x00000185EBA67650>
+db_url = 'sqlite+aiosqlite:///D:/UsersTemp/aios_cr_os5mgpkd/cr_022b0b20.db'
+result_dir = WindowsPath('D:/UsersTemp/aios_cr_os5mgpkd/results')
+
+    async def test_cr10_workflow_run_id_preserved_across_restart(
+        injector, db_url, result_dir
+    ):
+        """Same as CR2 but the explicit assertion is that the resumed run
+        carries the SAME run_id (not a new UUID), and its status moves from
+        running/failed -> completed.
+    
+        The 'state continuous' part: the workflow_run row is the same row
+        (no second INSERT); only UPDATE happened.
+        """
+        run_id = f"cr10-{uuid.uuid4().hex[:8]}"
+    
+        cfg_crash = {
+            "run_id": run_id,
+            "workflow_mode": "kill_at_b",
+            "crash_hook": "crash_after_step_a",
+        }
+        kp = injector.start_kernel(
+            db_url, mode="workflow_run", config=cfg_crash, result_dir=result_dir
+        )
+        try:
+            assert injector.wait_for_marker(kp, timeout_s=5.0)
+            _kill_and_reap(injector, kp)
+        finally:
+            injector.cleanup(kp)
+    
+        # Read the run before resume.
+        state_pre = injector.verify_state(
+            db_url, expected_run_id=run_id, result_dir=result_dir
+        )
+>       run_pre = state_pre["workflow_run"]
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'workflow_run'
+
+tests\integration\test_crash_recovery.py:705: KeyError
+______________________________ test_query_by_tag ______________________________
+
+    @pytest.mark.asyncio
+    async def test_query_by_tag():
+        from aios_kernel.context.long_term_memory import LongTermMemoryService
+        from aios_kernel.domain.services.repository import session_scope, make_session_factory, make_engine
+        from aios_kernel.persistence import SqlAlchemyRepository
+        from aios_kernel.persistence import create_all, drop_all
+        eng = make_engine()
+        await create_all(eng)
+        try:
+            factory = make_session_factory(eng)
+            async with session_scope(factory) as session:
+                svc = LongTermMemoryService(factory)
+                await svc.put(key="a", value={"a": 1}, retention_days=30, tags=["alpha"])
+                await svc.put(key="b", value={"b": 2}, retention_days=30, tags=["beta"])
+                await svc.put(key="c", value={"c": 3}, retention_days=30, tags=["alpha", "common"])
+                results = await svc.query(tags=["alpha"])
+>               assert len(results) == 2
+E               AssertionError: assert 1 == 2
+E                +  where 1 = len([LongTermEntry(id='a125c920-34c5-418e-b0a2-bd77ad552d92', created_at=datetime.datetime(2026, 10, 8, 7, 32, 8, 962273, tzinfo=datetime.timezone.utc), updated_at=datetime.datetime(2026, 10, 8, 7, 32, 8, 962273, tzinfo=datetime.timezone.utc), schema_version=1, key='a', value={'a': 1}, retention_days=30, tags=['alpha'], source_evidence_id=None, expires_at=datetime.datetime(2026, 11, 7, 7, 32, 8, 962273, tzinfo=datetime.timezone.utc))])
+
+tests\integration\test_long_term_memory.py:62: AssertionError
+________________________ test_source_evidence_backlink ________________________
+
+    @pytest.mark.asyncio
+    async def test_source_evidence_backlink():
+        from aios_kernel.context.long_term_memory import LongTermMemoryService
+        from aios_kernel.domain.services.repository import session_scope, make_session_factory, make_engine
+        from aios_kernel.persistence import SqlAlchemyRepository
+        from aios_kernel.persistence import create_all, drop_all
+        eng = make_engine()
+        await create_all(eng)
+        try:
+            factory = make_session_factory(eng)
+            async with session_scope(factory) as session:
+                svc = LongTermMemoryService(factory)
+                ev_id = uuid4()
+                await svc.put(key="k", value={"v": 1}, retention_days=30, source_evidence_id=ev_id)
+                v = await svc.get("k")
+>               assert v.get("source_evidence_id") == str(ev_id) or v.get("source_evidence_id") == ev_id
+E               AssertionError: assert (None == 'af9963f1-13c3-4708-9db8-1207cea4853d' or None == UUID('af9963f1-13c3-4708-9db8-1207cea4853d'))
+E                +  where None = <built-in method get of dict object at 0x00000185EA880DC0>('source_evidence_id')
+E                +    where <built-in method get of dict object at 0x00000185EA880DC0> = {'v': 1}.get
+E                +  and   'af9963f1-13c3-4708-9db8-1207cea4853d' = str(UUID('af9963f1-13c3-4708-9db8-1207cea4853d'))
+E                +  and   None = <built-in method get of dict object at 0x00000185EA880DC0>('source_evidence_id')
+E                +    where <built-in method get of dict object at 0x00000185EA880DC0> = {'v': 1}.get
+
+tests\integration\test_long_term_memory.py:85: AssertionError
+============================== warnings summary ===============================
+tests/integration/test_long_term_memory.py::test_query_by_tag
+  D:\AIOS\kernel\src\aios_kernel\context\long_term_memory.py:332: SADeprecationWarning: Type object <class 'sqlalchemy.sql.sqltypes.JSON'> does not include operator 'contains_op' in its operator classes.  Using built-in operators (not including custom or overridden operators) outside of a type's stated operator classes is deprecated and will raise InvalidRequestError in a future release
+    tag_conds.append(LongTermMemoryORM.tags.contains([t]))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/integration/test_crash_recovery.py::test_cr3_plan_revert_crash_leaves_consistent_state
+FAILED tests/integration/test_crash_recovery.py::test_cr4_verifier_call_mid_crash_atomic_evidence
+FAILED tests/integration/test_crash_recovery.py::test_cr6_evidence_write_mid_crash_atomic
+FAILED tests/integration/test_crash_recovery.py::test_cr7_five_consecutive_crashes_recover_to_completed
+FAILED tests/integration/test_crash_recovery.py::test_cr8_daemon_unaffected_by_kernel_crash
+FAILED tests/integration/test_crash_recovery.py::test_cr9_db_disconnect_then_restart_rebuilds_connection
+FAILED tests/integration/test_crash_recovery.py::test_cr10_workflow_run_id_preserved_across_restart
+FAILED tests/integration/test_long_term_memory.py::test_query_by_tag - Assert...
+FAILED tests/integration/test_long_term_memory.py::test_source_evidence_backlink
+================== 9 failed, 88 passed, 1 warning in 32.82s ===================

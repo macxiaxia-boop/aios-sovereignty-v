@@ -1,0 +1,52 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.14, pytest-9.1.1, pluggy-1.6.0 -- D:\AIOS\kernel\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: D:\AIOS\kernel
+configfile: pyproject.toml
+plugins: asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 35 items
+
+tests/unit/test_failure_pattern_merger.py::test_normalize_strips_windows_paths PASSED [  2%]
+tests/unit/test_failure_pattern_merger.py::test_normalize_strips_unc_paths PASSED [  5%]
+tests/unit/test_failure_pattern_merger.py::test_normalize_strips_ips PASSED [  8%]
+tests/unit/test_failure_pattern_merger.py::test_normalize_strips_numbers PASSED [ 11%]
+tests/unit/test_failure_pattern_merger.py::test_normalize_strips_uuids PASSED [ 14%]
+tests/unit/test_failure_pattern_merger.py::test_normalize_strips_timestamps PASSED [ 17%]
+tests/unit/test_failure_pattern_merger.py::test_same_message_same_hash PASSED [ 20%]
+tests/unit/test_failure_pattern_merger.py::test_different_message_different_hash PASSED [ 22%]
+tests/unit/test_failure_pattern_merger.py::test_empty_input_returns_empty PASSED [ 25%]
+tests/unit/test_failure_pattern_merger.py::test_single_failure_returns_one_cluster PASSED [ 28%]
+tests/unit/test_failure_pattern_merger.py::test_50_similar_failures_cluster_to_leq_10 PASSED [ 31%]
+tests/unit/test_failure_pattern_merger.py::test_50_dissimilar_failures_no_merge PASSED [ 34%]
+tests/unit/test_failure_pattern_merger.py::test_min_samples_keeps_singleton_but_marks_low_severity PASSED [ 37%]
+tests/unit/test_failure_pattern_merger.py::test_severity_increases_with_occurrence PASSED [ 40%]
+tests/unit/test_failure_pattern_merger.py::test_severity_capped_at_10 PASSED [ 42%]
+tests/unit/test_failure_pattern_merger.py::test_root_cause_permission_error PASSED [ 45%]
+tests/unit/test_failure_pattern_merger.py::test_root_cause_file_not_found PASSED [ 48%]
+tests/unit/test_failure_pattern_merger.py::test_root_cause_timeout PASSED [ 51%]
+tests/unit/test_failure_pattern_merger.py::test_root_cause_connection_error PASSED [ 54%]
+tests/unit/test_failure_pattern_merger.py::test_root_cause_validation_error PASSED [ 57%]
+tests/unit/test_failure_pattern_merger.py::test_root_cause_unknown_fallback PASSED [ 60%]
+tests/unit/test_failure_pattern_merger.py::test_clusters_sorted_by_severity_desc PASSED [ 62%]
+tests/unit/test_failure_pattern_merger.py::test_cluster_tracks_first_and_last_seen PASSED [ 65%]
+tests/unit/test_failure_pattern_merger.py::test_cluster_samples_at_most_five_messages PASSED [ 68%]
+tests/unit/test_failure_pattern_merger.py::test_context_impact_affects_severity PASSED [ 71%]
+tests/unit/test_failure_pattern_merger.py::test_invalid_eps_rejected PASSED [ 74%]
+tests/unit/test_failure_pattern_merger.py::test_invalid_min_samples_rejected PASSED [ 77%]
+tests/unit/test_failure_pattern_merger.py::test_non_failure_trace_rejected PASSED [ 80%]
+tests/unit/test_failure_pattern_merger.py::test_clusters_to_failure_modes_min_occurrence PASSED [ 82%]
+tests/unit/test_failure_pattern_merger.py::test_clusters_to_failure_modes_filters_singletons PASSED [ 85%]
+tests/unit/test_failure_pattern_merger.py::test_suggest_preserve_capabilities_returns_list PASSED [ 88%]
+tests/unit/test_failure_pattern_merger.py::test_merge_rate_50_to_5_is_90pct PASSED [ 91%]
+tests/unit/test_failure_pattern_merger.py::test_merge_rate_50_to_50_is_0pct PASSED [ 94%]
+tests/unit/test_failure_pattern_merger.py::test_merge_rate_empty_is_0 PASSED [ 97%]
+tests/unit/test_failure_pattern_merger.py::test_1000_failures_processed_under_1_second PASSED [100%]
+
+============================== warnings summary ===============================
+tests/unit/test_failure_pattern_merger.py::test_normalize_strips_windows_paths
+  D:\AIOS\kernel\.venv\Lib\site-packages\pytest_asyncio\plugin.py:916: PytestDeprecationWarning: Overriding the "event_loop_policy" fixture is deprecated and will be removed in a future version of pytest-asyncio. Use the "pytest_asyncio_loop_factories" hook to customize event loop creation.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 35 passed, 1 warning in 0.58s ========================

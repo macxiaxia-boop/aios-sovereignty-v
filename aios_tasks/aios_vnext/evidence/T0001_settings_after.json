@@ -1,0 +1,49 @@
+{
+  "env": {
+    "ANTHROPIC_BASE_URL": "https://api.minimaxi.com/anthropic",
+    "ANTHROPIC_AUTH_TOKEN": "sk-cp-mfkOcQH4RKNdoXIFELSKiy36jMGkxY945S7ffwoM_uIaTZuROMoWyKboJE4lwgimzBGWsKoKMn4o8eIwzc0G_gCmn4sWeZj176aclDgaKXSkr33tjlv2xJ8",
+    "CLAUDE_CODE_DISABLE_TELEMETRY": "1",
+    "MAX_THINKING_TOKENS": "32000",
+    "CLAUDE_MAX_CONTEXT_WINDOW": "100000",
+    "CLAUDE_MAX_OUTPUT_TOKENS": "8000",
+    "CLAUDE_AUTOCOMPACT_PCT": "25",
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+    "ANTHROPIC_MODEL": "MiniMax-M3",
+    "ANTHROPIC_DEFAULT_MODEL": "MiniMax-M3",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "MiniMax-M3",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "MiniMax-M3",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "MiniMax-M2.7",
+    "ANTHROPIC_SMALL_FAST_MODEL": "MiniMax-M2.7-highspeed",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "MiniMax-M2.7",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL_FALLBACK": "MiniMax-M3",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL_FALLBACK": "MiniMax-M2.7",
+    "_AGNES_II_MODELS_NOTE": "R155b user-added 2026-09-22: 用户原话\"直接把 agens 和 ollama 加入就好了\"。agnes-II (OpenAI 兼容) baseUrl=https://apihub.agnes-ai.com/v1 auth=AGNES_API_KEY_II (in ~/.openclaw/.env)。可选 model: agnes-2.5-pro-alpha (🔥最强), agnes-3.0-flash, agnes-2.0-flash。Claude Code CLI 默认走 MiniMax 不动,切换方式:cc-switch.exe / 自己手动改 ANTHROPIC_BASE_URL+ANTHROPIC_AUTH_TOKEN。",
+    "_OLLAMA_MODELS_NOTE": "R155b user-added 2026-09-22: Ollama 本地 baseUrl=http://localhost:11434/v1 (OpenAI 兼容, 无 auth)。可选 model: qwen3:14b (本地免费, 当前 GPU 装不下 CUDA0 buffer 8.83GB)。Claude Code CLI 默认走 MiniMax 不动, 切换方式:cc-switch.exe / 自己手动改 ANTHROPIC_BASE_URL+ANTHROPIC_AUTH_TOKEN。",
+    "_NOTES": "R262: 用户原话 'cc 是智障, 现在默认用的就是 minimax, 每次都忘'. 本 MCP 默认走 MiniMax API (https://api.minimaxi.com/anthropic), model name 在 settings.json env 里. CC 启动时自动认. 不要试图 fallback 到其他 model.",
+    "CLAUDE_CODE_DISABLE_UNKNOWN_MODEL_WINDOW_ENFORCEMENT": "1"
+  },
+  "enabledPlugins": {
+    "code-review@claude-plugins-official": true,
+    "commit-commands@claude-plugins-official": true,
+    "pr-review-toolkit@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true,
+    "hookify@claude-plugins-official": true
+  },
+  "_meta": {
+    "frozen_at": "2026-09-01T16:05:00",
+    "frozen_by": "user (修复 key: 占位符改为真实 token)",
+    "frozen_reason": "2026-09-01 16:05 修复: 实测证明 Claude Code 2.1.234 中 settings.json env 优先级高于进程环境变量且不展开 ${VAR} 占位符,占位符被当字面量覆盖了 PowerShell profile 注入的真实 key,导致任何 shell 启动均认证失败挂死。已将 ANTHROPIC_AUTH_TOKEN 改为真实 token(sk-cp-mf...,与 ~/.claude/.minimax-api-key 同源)。key 轮换时:覆盖 .minimax-api-key 文件 + 同步更新本文件该字段。回滚备份: backups/settings.json.backup.key-fix-20260901-160400。",
+    "do_not_modify_without_explicit_authorization": true,
+    "frozen_config_summary": {
+      "CLAUDE_MAX_CONTEXT_WINDOW": "100000",
+      "CLAUDE_AUTOCOMPACT_PCT": "25",
+      "MAX_THINKING_TOKENS": "32000",
+      "CLAUDE_MAX_OUTPUT_TOKENS": "8000",
+      "CLAUDE_CODE_MAX_CONTEXT_TOKENS": "(已删, 关键!)",
+      "ANTHROPIC_MODEL": "MiniMax-M3",
+      "ANTHROPIC_SMALL_FAST_MODEL": "MiniMax-M2.7",
+      "CLAUDE_CODE_SUBAGENT_MODEL": "MiniMax-M2.7"
+    },
+    "modify_protocol": "任何修改前必须先 ask_user 确认, watchdog / cc-switch / automation 也不得动这个文件"
+  }
+}

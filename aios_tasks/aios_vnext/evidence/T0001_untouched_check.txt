@@ -1,0 +1,41 @@
+# T0001 - Untouched Verification: aios-interop / playwright / MCP / GitHub token
+
+## Settings files
+- Source: C:\Users\xinzh\.claude\settings.json (frozen @ 2026-09-01)
+- Backup: D:\AIOS\_backups\task-t0001-claude-settings-20261008-105353.json
+- After:  C:\Users\xinzh\.claude\settings.json
+- settings.local.json: NOT TOUCHED (didn't need to, no model field present)
+- "aios-interop": before=False, after=False, unchanged=True
+- "playwright": before=False, after=False, unchanged=True
+- "aios_interop": before=False, after=False, unchanged=True
+- "mcp-bridge": before=False, after=False, unchanged=True
+- "MCP server": before=False, after=False, unchanged=True
+
+## enabledPlugins block (before)
+
+    "code-review@claude-plugins-official": true,
+    "commit-commands@claude-plugins-official": true,
+    "pr-review-toolkit@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true,
+    "hookify@claude-plugins-official": true
+  
+
+## enabledPlugins block (after)
+
+    "code-review@claude-plugins-official": true,
+    "commit-commands@claude-plugins-official": true,
+    "pr-review-toolkit@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true,
+    "hookify@claude-plugins-official": true
+  
+
+## enabledPlugins unchanged: True
+
+## env block changed lines (only additions, ≤ 1):
+
+## GitHub token file
+- Path: C:\Users\xinzh\.workbuddy\secrets\github-token
+- Exists: False
+- mtime: 
+- ACL: N/A
+

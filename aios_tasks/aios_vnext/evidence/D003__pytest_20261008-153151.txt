@@ -1,0 +1,17 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.14, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\xinzh\.workbuddy\binaries\python\versions\3.13.12\python.exe
+cachedir: .pytest_cache
+rootdir: D:\AIOS\kernel
+configfile: pyproject.toml
+plugins: anyio-4.15.1, asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 6 items
+
+tests/integration/test_experiment_engine.py::test_create_experiment PASSED [ 16%]
+tests/integration/test_experiment_engine.py::test_run_basic PASSED       [ 33%]
+tests/integration/test_experiment_engine.py::test_winner_detection PASSED [ 50%]
+tests/integration/test_experiment_engine.py::test_inconclusive_low_sample PASSED [ 66%]
+tests/integration/test_experiment_engine.py::test_audit_and_persistence PASSED [ 83%]
+tests/integration/test_experiment_engine.py::test_100_experiments_robustness PASSED [100%]
+
+============================== 6 passed in 0.20s ==============================

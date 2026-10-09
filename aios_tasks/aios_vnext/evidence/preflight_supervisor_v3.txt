@@ -1,0 +1,48 @@
+# Preflight Check Report v3
+
+**Timestamp**: 20261008-103956
+**Status**: DIRTY
+**Total Issues**: 37
+**Scope**: 仅查 'CC 未在白名单位置创建的 forbidden 新文件'
+**Whitelist**: cards/, evidence/, kernel/, aios_tasks/, aios_tools/, aios_venv/, _archived/, _backups/, 以及静态 SSOT/设计文件
+
+## aios_root_forbidden_top: 37 files
+- `D:/AIOS/_R209_install_files.py` (matched: `_r*.py`)
+- `D:/AIOS/_r209_step77.py` (matched: `_r*.py`)
+- `D:/AIOS/_r209_step77b.py` (matched: `_r*.py`)
+- `D:/AIOS/_r209_step77c.py` (matched: `_r*.py`)
+- `D:/AIOS/_r209_step78.py` (matched: `_r*.py`)
+- `D:/AIOS/_r209_step79.py` (matched: `_r*.py`)
+- `D:/AIOS/_r209_step80.py` (matched: `_r*.py`)
+- `D:/AIOS/_r209_step81.py` (matched: `_r*.py`)
+- `D:/AIOS/_r209_step82.py` (matched: `_r*.py`)
+- `D:/AIOS/_r210_step83.py` (matched: `_r*.py`)
+- `D:/AIOS/_r210_step84.py` (matched: `_r*.py`)
+- `D:/AIOS/_r211_audit_v2.py` (matched: `_r*.py`)
+- `D:/AIOS/_r211_full_audit.py` (matched: `_r*.py`)
+- `D:/AIOS/_r213_audit.py` (matched: `_r*.py`)
+- `D:/AIOS/_r214_7_6ai_audit.py` (matched: `_r*.py`)
+- `D:/AIOS/_r215_close_audit.py` (matched: `_r*.py`)
+- `D:/AIOS/_r274_audit_cmd_ps1.py` (matched: `_r*.py`)
+- `D:/AIOS/_r274_deep_lnk.py` (matched: `_r*.py`)
+- `D:/AIOS/_r274_enable_ms_pinyin.py` (matched: `_r*.py`)
+- `D:/AIOS/_r274_fix_and_redeploy.py` (matched: `_r*.py`)
+- `D:/AIOS/_r274_fix_remaining.py` (matched: `_r*.py`)
+- `D:/AIOS/_r274_full_audit.py` (matched: `_r*.py`)
+- `D:/AIOS/_r274_full_audit_v2.py` (matched: `_r*.py`)
+- `D:/AIOS/_r274_install_20260929.py` (matched: `_r*.py`)
+- `D:/AIOS/_r274_probe_lnk.py` (matched: `_r*.py`)
+- `D:/AIOS/_r274_register_supervisor_watchdog.py` (matched: `_r*.py`)
+- `D:/AIOS/_r274_register_system_task.py` (matched: `_r*.py`)
+- `D:/AIOS/_r274_rollback_to_v1.py` (matched: `_r*.py`)
+- `D:/AIOS/_r274_upgrade_to_v2.py` (matched: `_r*.py`)
+- `D:/AIOS/_r274_verify_alive.py` (matched: `_r*.py`)
+- `D:/AIOS/_r274_verify_all.py` (matched: `_r*.py`)
+- `D:/AIOS/_r274_wetype_scan.py` (matched: `_r*.py`)
+- `D:/AIOS/_r274_wetype_uninstall.py` (matched: `_r*.py`)
+- `D:/AIOS/_r983_write.py` (matched: `_r*.py`)
+- `D:/AIOS/_register_v2_run.py` (matched: `_r*.py`)
+- `D:/AIOS/_register_v2_run_v2.py` (matched: `_r*.py`)
+- `D:/AIOS/_role_channels.py` (matched: `_r*.py`)
+
+## aios_tasks_forbidden_top: 0 files
