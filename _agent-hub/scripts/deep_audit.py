@@ -95,22 +95,26 @@ try:
     from aios_kernel.domain.services.repository import InMemoryRepository
 
     repo = InMemoryRepository()
-    goal_repo = InMemoryRepository()
+    # Use SAME repo for both — production separates but for unit test the goal
+    # needs to be visible to _fetch_goal()
+    goal_repo = repo
 
     # Create a Goal with failure_modes = []
     from aios_kernel.domain.goal import Goal, GoalStatus, FailureMode
     g = Goal(
-        id='test-goal-001',
+        id='11111111-2222-3333-4444-555555555555',  # valid UUID
         title='Test goal',
         success_criteria='test passes',
         budget=0.0,
         owner='codex',
     )
-    repo.add(g)
-    repo.commit()
+    # InMemoryRepository methods are coroutines — must await
+    import asyncio as _aio_setup
+    _aio_setup.run(repo.add(g))
+    _aio_setup.run(repo.commit())
 
     # Run service
-    fb = FailureFeedbackService(repo, goal_repo)
+    fb = FailureFeedbackService(repo, repo)
 
     # Create clusters
     merger = FailurePatternMerger()
@@ -124,16 +128,26 @@ try:
 
     # Apply to goal
     import asyncio as _asyncio
-    updated_goal = _asyncio.run(fb.apply_clusters_to_goal('test-goal-001', clusters))
-    if len(updated_goal.failure_modes) > 0:
-        print(f'  applied {len(updated_goal.failure_modes)} failure modes to goal')
-    else:
+    # apply_clusters_to_goal returns (Goal, added_descriptions) tuple (per G002-FIX-UUID)
+    result = _asyncio.run(fb.apply_clusters_to_goal('11111111-2222-3333-4444-555555555555', clusters))
+    if result is None:
         issues.append({
             'id': 'DEEP-004', 'severity': 'HIGH',
-            'title': 'FailureFeedbackService.apply_clusters_to_goal added 0 modes',
-            'evidence': f'clusters={len(clusters)}, modes={len(updated_goal.failure_modes)}',
-            'fix': 'check FailureFeedbackService idempotent logic'
+            'title': 'FailureFeedbackService.apply_clusters_to_goal returned None',
+            'evidence': 'goal lookup failed',
+            'fix': 'check FailureFeedbackService UUID lookup'
         })
+    else:
+        updated_goal, added = result
+        if len(added) > 0:
+            print(f'  applied {len(added)} failure modes to goal')
+        else:
+            issues.append({
+                'id': 'DEEP-004', 'severity': 'HIGH',
+                'title': 'FailureFeedbackService.apply_clusters_to_goal added 0 modes',
+                'evidence': f'clusters={len(clusters)}, added={len(added)}',
+                'fix': 'check FailureFeedbackService idempotent logic'
+            })
 except Exception as e:
     issues.append({
         'id': 'DEEP-002-EXC', 'severity': 'HIGH',
