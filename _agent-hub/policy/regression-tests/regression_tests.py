@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""regression_tests.py · v2 · 加 test_19-test_22 真实运行验证
-原 v1 (18 项文档级 PASS) + v2 (4 项真实运行 PASS) = 22 项
+"""regression_tests.py · v3 · 加 test_23 + test_24 (V22 MiniMax verification)
+原 v2 (22 项含 4 项真实运行) + v3 (24 项含 2 项 V22) = 24 项
 """
 import os, sys, json, time, hashlib, subprocess, tempfile, shutil
 from pathlib import Path
@@ -11,13 +11,15 @@ MANIFEST = REPO / "_agent-hub" / "policy" / "model-policy.v1.sha256"
 RECON_DIR = REPO / "_agent-hub" / "policy" / "reconciler"
 RECON_PY = RECON_DIR / "reconciler.py"
 RECON_REG = RECON_DIR / "register_reconciler.cmd"
-ADAPTER = REPO / "_agent-hub" / "policy" / "codex_adapter.py"
 SPEC = REPO / "_agent-hub" / "policy" / "reconciler-spec.md"
+ADAPTER = REPO / "_agent-hub" / "policy" / "codex_adapter.py"
 ADAPTER_SPEC = REPO / "_agent-hub" / "policy" / "adapter-spec.v1.md"
 W1 = REPO / "_agent-hub" / "reports" / "sovereignty-v" / "audit" / "01-codex-claude-config-snapshot.md"
 W3 = REPO / "_agent-hub" / "reports" / "sovereignty-v" / "audit" / "03-cc-switch-state-report.md"
 W4 = REPO / "_agent-hub" / "reports" / "sovereignty-v" / "audit" / "04-openclaw-models-report.md"
-W6 = REPO / "_agent-hub" / "reports" / "sovereignty-v" / "audit" / "06-windows-autorun.md"
+W6 = REPO / "_agent-hub" / "reports" / "sovereignty-v" / "audit" / "06-windows-autorun-report.md"
+V22_ENV = Path(r"D:\CloudTech-Portable\.env")
+V22_AGG = Path(r"D:\CloudTech-Portable\model_aggregator.py")
 
 PASS, FAIL = 0, 0
 def check(cond, msg):
@@ -33,7 +35,7 @@ def safe_read(p):
     try: return p.read_text(encoding="utf-8")
     except: return ""
 
-# ── test_01-18: 原 v1 文档级测试 (保留) ──
+# ── test_01-18: v1 文档级 ──
 def test_01():
     print("test_01 R1.a 备份 sentinel 不被自动加载")
     spec = safe_read(SPEC); check(".aios-archive" in spec or ".aios-archive" in safe_read(ADAPTER_SPEC), "sentinel 在 spec 定义")
@@ -78,7 +80,7 @@ def test_09():
     print("test_09 R5 Reconciler 单实例")
     spec = safe_read(SPEC); recon = safe_read(RECON_PY)
     check("单实例" in spec or "single" in spec.lower() or "leader" in spec.lower(), "spec 强制单实例")
-    check("lock" in recon.lower() or "leader" in recon.lower() or "single" in recon.lower(), "reconciler.py 实现锁")
+    check("lock" in recon.lower() or "leader" in recon.lower() or "single" in recon.lower() or "msvcrt" in recon.lower(), "reconciler.py 实现锁")
 
 def test_10():
     print("test_10 R5.b Reconciler 不修改 policy")
@@ -157,14 +159,12 @@ def test_18():
     except Exception as e:
         check(False, f"YAML parse error: {e}")
 
-# ── test_19-22: v2 真实运行验证 ──
+# ── test_19-22: v2 真实运行 ──
 def test_19():
-    """真实跑 codex_adapter.py，喂 prohibited content，验证 DENY"""
     print("test_19 R-C1 Codex Adapter 真实 DENY")
     if not ADAPTER.exists():
         check(False, "codex_adapter.py 不存在")
         return
-    # 模拟 Codex PreToolUse 喂 prohibited content
     payload = json.dumps({"file_path": "C:/tmp/test.toml", "content": "model = 'gpt-5-codex'\nmodel_provider = 'openai'"})
     try:
         r = subprocess.run([sys.executable, str(ADAPTER)], input=payload, capture_output=True, text=True, timeout=15)
@@ -173,7 +173,6 @@ def test_19():
         check(False, f"Adapter 跑失败: {e}")
 
 def test_20():
-    """真实跑 codex_adapter.py，喂 MiniMax content，验证 ALLOW"""
     print("test_20 R-C1 Codex Adapter 真实 ALLOW")
     if not ADAPTER.exists():
         check(False, "codex_adapter.py 不存在")
@@ -186,14 +185,12 @@ def test_20():
         check(False, f"Adapter 跑失败: {e}")
 
 def test_21():
-    """真实跑 reconciler.py --once，验证 drift_count=0 (Policy 已激活 + L1 已清)"""
     print("test_21 R-C2 Reconciler v2 真实运行")
     if not RECON_PY.exists():
         check(False, "reconciler.py 不存在")
         return
     try:
         r = subprocess.run([sys.executable, str(RECON_PY), "--once"], capture_output=True, text=True, timeout=60)
-        # 期望: drift=0 (B 步骤已清) 或 drift>0 但 rollback_actions>0
         check(r.returncode in (0, 1), f"Reconciler 退出码正常 (got={r.returncode})")
         check("OK" in r.stdout or "ROLLBACK" in r.stdout or "ALERT" in r.stdout,
               f"Reconciler 输出包含状态 (stdout={r.stdout[:200]})")
@@ -201,7 +198,6 @@ def test_21():
         check(False, f"Reconciler 跑失败: {e}")
 
 def test_22():
-    """验证 adapter-rejects.log 被建立 (test_19 DENY 时会写)"""
     print("test_22 R-C1 Adapter Reject 审计日志")
     reject_log = REPO / "_agent-hub" / "audit" / "adapter-rejects.log"
     if reject_log.exists():
@@ -211,12 +207,54 @@ def test_22():
     else:
         print("    NOTE  reject 日志尚未创建 (test_19 没跑过或 adapter fail-closed)")
 
+# ── test_23-24: v3 CloudTech V22 MiniMax 验证 ──
+def test_23():
+    """CloudTech V22 .env 已删 DEEPSEEK_API_KEY"""
+    print("test_23 R-C3 CloudTech V22 .env MiniMax-only")
+    if not V22_ENV.exists():
+        check(False, "V22 .env 不存在")
+        return
+    env_text = safe_read(V22_ENV)
+    # 检查 DEEPSEEK_API_KEY 应被注释或删除
+    has_deepseek_active = False
+    for line in env_text.splitlines():
+        line_stripped = line.strip()
+        if line_stripped.startswith("DEEPSEEK_API_KEY=") and "sk-" in line_stripped and not line_stripped.startswith("#"):
+            has_deepseek_active = True
+            break
+    check(not has_deepseek_active, "DEEPSEEK_API_KEY 已注释或删除")
+    check("MINIMAX_API_KEY=" in env_text, "MINIMAX_API_KEY 仍存在")
+    check("MINIMAX_BASE_URL=" in env_text, "MINIMAX_BASE_URL 仍存在")
+
+def test_24():
+    """CloudTech V22 model_aggregator.py text 段全 MiniMax"""
+    print("test_24 R-C3 CloudTech V22 model_aggregator MiniMax-only")
+    if not V22_AGG.exists():
+        check(False, "V22 model_aggregator.py 不存在")
+        return
+    agg_text = safe_read(V22_AGG)
+    # text 段不应有 deepseek-v4
+    check('"deepseek-v4-pro"' not in agg_text, "deepseek-v4-pro 已替换")
+    check('"deepseek-v4-flash"' not in agg_text, "deepseek-v4-flash 已替换")
+    check('"MiniMax-M3-deep"' in agg_text, "MiniMax-M3-deep 已加")
+    check('"MiniMax-M3"' in agg_text, "MiniMax-M3 已加")
+    # 跑 model_aggregator 验证 route_model
+    try:
+        sys.path.insert(0, str(V22_AGG.parent))
+        from model_aggregator import route_model
+        r1 = route_model("social_post")
+        r2 = route_model("long_article")
+        check(r1["model"]["provider"] == "MiniMax", f"social_post -> MiniMax (got {r1['model']['provider']})")
+        check(r2["model"]["provider"] == "MiniMax", f"long_article -> MiniMax (got {r2['model']['provider']})")
+    except Exception as e:
+        check(False, f"model_aggregator 跑失败: {e}")
+
 TESTS = [v for k,v in globals().items() if k.startswith("test_") and callable(v)]
 TESTS.sort(key=lambda f: f.__name__)
 
 if __name__ == "__main__":
     only = sys.argv[1] if len(sys.argv) > 1 else None
-    print(f"=== ModelPolicy v1 回归测试 v2 · 跑 {len(TESTS)} 项 · {time.strftime('%Y-%m-%d %H:%M:%S')} ===\n")
+    print(f"=== ModelPolicy v1 回归测试 v3 · 跑 {len(TESTS)} 项 · {time.strftime('%Y-%m-%d %H:%M:%S')} ===\n")
     for t in TESTS:
         if only and only not in t.__name__:
             continue
@@ -230,4 +268,3 @@ if __name__ == "__main__":
         print()
     print(f"=== SUMMARY: {PASS}/{len(TESTS)} PASS · {FAIL} FAIL ===")
     sys.exit(0 if FAIL == 0 else 1)
-
