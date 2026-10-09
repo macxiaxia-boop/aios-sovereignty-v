@@ -17,7 +17,7 @@ ADAPTER_SPEC = REPO / "_agent-hub" / "policy" / "adapter-spec.v1.md"
 W1 = REPO / "_agent-hub" / "reports" / "sovereignty-v" / "audit" / "01-codex-claude-config-snapshot.md"
 W3 = REPO / "_agent-hub" / "reports" / "sovereignty-v" / "audit" / "03-cc-switch-state-report.md"
 W4 = REPO / "_agent-hub" / "reports" / "sovereignty-v" / "audit" / "04-openclaw-models-report.md"
-W6 = REPO / "_agent-hub" / "reports" / "sovereignty-v" / "audit" / "06-windows-autorun-report.md"
+W6 = REPO / "_agent-hub" / "reports" / "sovereignty-v" / "audit" / "06-windows-autorun.md"  # full version (10KB)
 V22_ENV = Path(r"D:\CloudTech-Portable\.env")
 V22_AGG = Path(r"D:\CloudTech-Portable\model_aggregator.py")
 
@@ -227,25 +227,28 @@ def test_23():
     check("MINIMAX_BASE_URL=" in env_text, "MINIMAX_BASE_URL 仍存在")
 
 def test_24():
-    """CloudTech V22 model_aggregator.py text 段全 MiniMax"""
+    """CloudTech V22 model_aggregator.py v3: 真实 MiniMax model id (M3 / M2.7 / M2.7-highspeed)"""
     print("test_24 R-C3 CloudTech V22 model_aggregator MiniMax-only")
     if not V22_AGG.exists():
         check(False, "V22 model_aggregator.py 不存在")
         return
     agg_text = safe_read(V22_AGG)
-    # text 段不应有 deepseek-v4
-    check('"deepseek-v4-pro"' not in agg_text, "deepseek-v4-pro 已替换")
-    check('"deepseek-v4-flash"' not in agg_text, "deepseek-v4-flash 已替换")
-    check('"MiniMax-M3-deep"' in agg_text, "MiniMax-M3-deep 已加")
-    check('"MiniMax-M3"' in agg_text, "MiniMax-M3 已加")
+    # 虚构 model id 必须已删
+    check('"deepseek-v4-pro"' not in agg_text, "虚构 deepseek-v4-pro 已删")
+    check('"deepseek-v4-flash"' not in agg_text, "虚构 deepseek-v4-flash 已删")
+    check('"MiniMax-M3-deep"' not in agg_text, "虚构 MiniMax-M3-deep 已删 (v3 修正)")
+    # 真实 model id 必须存在
+    check('"MiniMax-M3"' in agg_text, "真实 MiniMax-M3 已加")
+    check('"MiniMax-M2.7"' in agg_text, "真实 MiniMax-M2.7 已加")
+    check('"MiniMax-M2.7-highspeed"' in agg_text, "真实 MiniMax-M2.7-highspeed 已加")
     # 跑 model_aggregator 验证 route_model
     try:
         sys.path.insert(0, str(V22_AGG.parent))
         from model_aggregator import route_model
         r1 = route_model("social_post")
         r2 = route_model("long_article")
-        check(r1["model"]["provider"] == "MiniMax", f"social_post -> MiniMax (got {r1['model']['provider']})")
-        check(r2["model"]["provider"] == "MiniMax", f"long_article -> MiniMax (got {r2['model']['provider']})")
+        check(r1["model_id"] == "MiniMax-M2.7-highspeed", f"social_post -> MiniMax-M2.7-highspeed (got {r1['model_id']})")
+        check(r2["model_id"] == "MiniMax-M3", f"long_article -> MiniMax-M3 (got {r2['model_id']})")
     except Exception as e:
         check(False, f"model_aggregator 跑失败: {e}")
 
@@ -268,3 +271,4 @@ if __name__ == "__main__":
         print()
     print(f"=== SUMMARY: {PASS}/{len(TESTS)} PASS · {FAIL} FAIL ===")
     sys.exit(0 if FAIL == 0 else 1)
+

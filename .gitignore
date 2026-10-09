@@ -184,3 +184,25 @@ _backups_relinked_*/
 .aios_v2_consumer.lock
 _*.lock
 
+
+# ===== Codex/worker scratch (do not track) =====
+_test_*.py
+_p5_*.py
+_p8_*.py
+_fix_*.py
+_patch_*.py
+_gen_*.py
+_verify_*.py
+_burst_*.py
+_t07*.py
+_t16*.py
+_t08*.py
+**/__pycache__/
+
+# ===== Historical backup directories (retain on disk, ignore in Git) =====
+/_backups_2026-09-29/
+/_backups_relinked_1790674911/
+/_r274_install_backup/
+/_r348_model_swap_bak_20260930-092918/
+/_schtasks_bak_R344_20260930-001732/
+/_schtasks_bak_R344_action_20260930-001910/

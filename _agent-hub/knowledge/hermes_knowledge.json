@@ -1,10 +1,245 @@
 {
   "id": "0c015803-1d91-4526-82ad-7f5db7671d86",
   "created_at": "2026-10-09T01:41:21.449146+00:00",
-  "updated_at": "2026-10-09T01:41:21.449146+00:00",
+  "updated_at": "2026-10-09T02:10:30.664307+00:00",
   "schema_version": 1,
   "agent": "hermes",
-  "failure_clusters": [],
+  "failure_clusters": [
+    {
+      "cluster_id": "227b5e455b5cec86",
+      "root_cause": "unknown:IntegrityError",
+      "error_type": "IntegrityError",
+      "affected_trace_ids": [
+        "rt-4"
+      ],
+      "occurrence_count": 1,
+      "severity_score": 1.0,
+      "first_seen": "2026-10-09T02:09:04.020993+00:00",
+      "last_seen": "2026-10-09T02:09:04.020993+00:00",
+      "recommended_fix": "Investigate manually; add specific check",
+      "sample_error_messages": [
+        "sqlite3.IntegrityError FOREIGN KEY constraint failed decision_audit"
+      ]
+    },
+    {
+      "cluster_id": "37460ca31f326ddb",
+      "root_cause": "unknown:OperationalError",
+      "error_type": "OperationalError",
+      "affected_trace_ids": [
+        "rt-2"
+      ],
+      "occurrence_count": 1,
+      "severity_score": 1.0,
+      "first_seen": "2026-10-09T02:09:04.020986+00:00",
+      "last_seen": "2026-10-09T02:09:04.020986+00:00",
+      "recommended_fix": "Investigate manually; add specific check",
+      "sample_error_messages": [
+        "test_link_to_goal_fk_constraint PendingRollbackError teardown"
+      ]
+    },
+    {
+      "cluster_id": "5ddf3a8a151ce972",
+      "root_cause": "unknown:OperationalError",
+      "error_type": "OperationalError",
+      "affected_trace_ids": [
+        "rt-7"
+      ],
+      "occurrence_count": 1,
+      "severity_score": 1.0,
+      "first_seen": "2026-10-09T02:09:04.021002+00:00",
+      "last_seen": "2026-10-09T02:09:04.021002+00:00",
+      "recommended_fix": "Investigate manually; add specific check",
+      "sample_error_messages": [
+        "strategy_gate_policy_load_failed fail closed"
+      ]
+    },
+    {
+      "cluster_id": "665746b5c8d55efd",
+      "root_cause": "unknown:ImportError",
+      "error_type": "ImportError",
+      "affected_trace_ids": [
+        "rt-8"
+      ],
+      "occurrence_count": 1,
+      "severity_score": 1.0,
+      "first_seen": "2026-10-09T02:09:04.021005+00:00",
+      "last_seen": "2026-10-09T02:09:04.021005+00:00",
+      "recommended_fix": "Investigate manually; add specific check",
+      "sample_error_messages": [
+        "aiosqlite.core from queue Empty Queue SimpleQueue shadow stdlib"
+      ]
+    },
+    {
+      "cluster_id": "7d0226b22281841f",
+      "root_cause": "unknown:ModuleNotFoundError",
+      "error_type": "ModuleNotFoundError",
+      "affected_trace_ids": [
+        "rt-9"
+      ],
+      "occurrence_count": 1,
+      "severity_score": 1.0,
+      "first_seen": "2026-10-09T02:09:04.021008+00:00",
+      "last_seen": "2026-10-09T02:09:04.021008+00:00",
+      "recommended_fix": "Investigate manually; add specific check",
+      "sample_error_messages": [
+        "No module named src.message_queue"
+      ]
+    },
+    {
+      "cluster_id": "7daf661c9e30a00d",
+      "root_cause": "unknown:OperationalError",
+      "error_type": "OperationalError",
+      "affected_trace_ids": [
+        "rt-3"
+      ],
+      "occurrence_count": 1,
+      "severity_score": 1.0,
+      "first_seen": "2026-10-09T02:09:04.020990+00:00",
+      "last_seen": "2026-10-09T02:09:04.020990+00:00",
+      "recommended_fix": "Investigate manually; add specific check",
+      "sample_error_messages": [
+        "test_full_artifact_evidence_trace_chain signed_at.tzinfo is None"
+      ]
+    },
+    {
+      "cluster_id": "8b173854942ab2b4",
+      "root_cause": "permission_denied",
+      "error_type": "PermissionError",
+      "affected_trace_ids": [
+        "rt-5"
+      ],
+      "occurrence_count": 1,
+      "severity_score": 1.0,
+      "first_seen": "2026-10-09T02:09:04.020997+00:00",
+      "last_seen": "2026-10-09T02:09:04.020997+00:00",
+      "recommended_fix": "Check file/dir permissions; ensure process runs as required user",
+      "sample_error_messages": [
+        "PermissionError reading .aios_v2_consumer.lock file"
+      ]
+    },
+    {
+      "cluster_id": "aceae36117f54d59",
+      "root_cause": "unknown:ImportError",
+      "error_type": "ImportError",
+      "affected_trace_ids": [
+        "rt-6"
+      ],
+      "occurrence_count": 1,
+      "severity_score": 1.0,
+      "first_seen": "2026-10-09T02:09:04.021000+00:00",
+      "last_seen": "2026-10-09T02:09:04.021000+00:00",
+      "recommended_fix": "Investigate manually; add specific check",
+      "sample_error_messages": [
+        "ImportError attempted relative import with no known parent package"
+      ]
+    },
+    {
+      "cluster_id": "be38160f802b088f",
+      "root_cause": "unknown:OSError",
+      "error_type": "OSError",
+      "affected_trace_ids": [
+        "rt-10"
+      ],
+      "occurrence_count": 1,
+      "severity_score": 1.0,
+      "first_seen": "2026-10-09T02:09:04.021011+00:00",
+      "last_seen": "2026-10-09T02:09:04.021011+00:00",
+      "recommended_fix": "Investigate manually; add specific check",
+      "sample_error_messages": [
+        "error: short read while indexing NUL NUL: failed to insert into database"
+      ]
+    },
+    {
+      "cluster_id": "d09ab62010a7ee88",
+      "root_cause": "input_invalid",
+      "error_type": "ValidationError",
+      "affected_trace_ids": [
+        "rt-0"
+      ],
+      "occurrence_count": 1,
+      "severity_score": 1.0,
+      "first_seen": "2026-10-09T02:09:04.020967+00:00",
+      "last_seen": "2026-10-09T02:09:04.020967+00:00",
+      "recommended_fix": "Validate input schema; add pre-check",
+      "sample_error_messages": [
+        "PlanStep cannot depend on itself ValidationError"
+      ]
+    },
+    {
+      "cluster_id": "e866844a6b0899dd",
+      "root_cause": "input_invalid",
+      "error_type": "ValidationError",
+      "affected_trace_ids": [
+        "rt-1"
+      ],
+      "occurrence_count": 1,
+      "severity_score": 1.0,
+      "first_seen": "2026-10-09T02:09:04.020981+00:00",
+      "last_seen": "2026-10-09T02:09:04.020981+00:00",
+      "recommended_fix": "Validate input schema; add pre-check",
+      "sample_error_messages": [
+        "Dependency cannot have from_step_id == to_step_id"
+      ]
+    },
+    {
+      "cluster_id": "ecd83a55e84a7477",
+      "root_cause": "unknown:OSError",
+      "error_type": "OSError",
+      "affected_trace_ids": [
+        "rt-17"
+      ],
+      "occurrence_count": 1,
+      "severity_score": 1.0,
+      "first_seen": "2026-10-09T02:09:24.201284+00:00",
+      "last_seen": "2026-10-09T02:09:24.201284+00:00",
+      "recommended_fix": "Investigate manually; add specific check",
+      "sample_error_messages": [
+        "error: short read while indexing NUL failed to insert into database"
+      ]
+    },
+    {
+      "cluster_id": "a944c9fd86aabff2",
+      "root_cause": "unknown:OperationalError",
+      "error_type": "OperationalError",
+      "affected_trace_ids": [
+        "rt-13",
+        "rt-14",
+        "rt-15",
+        "rt-16",
+        "rt-17",
+        "rt-18",
+        "rt-19"
+      ],
+      "occurrence_count": 7,
+      "severity_score": 7.0,
+      "first_seen": "2026-10-09T02:10:30.639132+00:00",
+      "last_seen": "2026-10-09T02:10:30.639148+00:00",
+      "recommended_fix": "Investigate manually; add specific check",
+      "sample_error_messages": [
+        "OperationalError database transaction rolled back",
+        "OperationalError database transaction rolled back",
+        "OperationalError database transaction rolled back",
+        "OperationalError database transaction rolled back",
+        "OperationalError database transaction rolled back"
+      ]
+    },
+    {
+      "cluster_id": "c57e2e47213641c3",
+      "root_cause": "network_unavailable",
+      "error_type": "ConnectionError",
+      "affected_trace_ids": [
+        "rt-27"
+      ],
+      "occurrence_count": 1,
+      "severity_score": 1.0,
+      "first_seen": "2026-10-09T02:10:30.639168+00:00",
+      "last_seen": "2026-10-09T02:10:30.639168+00:00",
+      "recommended_fix": "Check connectivity; verify service is reachable",
+      "sample_error_messages": [
+        "asyncpg.exceptions.ConnectionDoesNotExistError connection refused"
+      ]
+    }
+  ],
   "capability_index": [
     {
       "skill_id": "hermes_core",
@@ -13,8 +248,32 @@
         "cross-agent knowledge reference (G003)"
       ],
       "confidence": 1.0
+    },
+    {
+      "skill_id": "hermes_inbound_failure_handler",
+      "use_cases": [
+        "resolve_phase_G_failure_patterns",
+        "handle_hermes_workspace"
+      ],
+      "confidence": 0.85
+    },
+    {
+      "skill_id": "hermes_goal_contract_parser",
+      "use_cases": [
+        "parse_user_input_to_GoalContract",
+        "validate_with_GoalGuard"
+      ],
+      "confidence": 0.92
+    },
+    {
+      "skill_id": "hermes_cross_session_persistence",
+      "use_cases": [
+        "persist_knowledge_to_disk",
+        "reload_across_sessions"
+      ],
+      "confidence": 0.98
     }
   ],
-  "failure_count_total": 0,
-  "last_updated": "2026-10-09T01:41:21.449146Z"
+  "failure_count_total": 20,
+  "last_updated": "2026-10-09T02:10:30.664309Z"
 }

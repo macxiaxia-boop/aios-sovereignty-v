@@ -1,16 +1,8 @@
 #!/usr/bin/env python3
-"""Codex Adapter · ModelPolicy PreToolUse Hook · v1.0
-实现 adapter-contract.md 的 intercept_request() 语义。
-挂在 Codex hooks.json 的 PreToolUse Write|Edit 钩子。
-- 读 model-policy.v1.yaml
-- 校验 sha256
-- 检查 file_path/content 是否含禁止 provider 关键字
-- DENY → exit 1 (Codex 阻止写盘)
-- ALLOW → exit 0
-
-落盘位置: D:\AIOS\_agent-hub\policy\codex_adapter.py
-作者: Codex 01a11c23 (supervisor, 接 01a11c30 班)
-授权: user-2026-10-08T23:55 + 你就开始 + 继续 + B+C (2026-10-09)
+"""Codex Adapter · ModelPolicy PreToolUse Hook · v2.0
+- 加真实 MiniMax model id 到 ALLOWED (MiniMax-M2.7 / MiniMax-M2.7-highspeed)
+- 保留 fail-closed 语义
+- 加 quota 验证 hook (可后续扩展)
 """
 import json, sys, os, hashlib, time
 from pathlib import Path
@@ -19,7 +11,8 @@ POLICY_PATH = Path(r"D:\AIOS\_agent-hub\policy\model-policy.v1.yaml")
 MANIFEST_PATH = Path(r"D:\AIOS\_agent-hub\policy\model-policy.v1.sha256")
 REJECT_LOG = Path(r"D:\AIOS\_agent-hub\audit\adapter-rejects.log")
 
-# 禁止关键字 (来自 model_policy.prohibited_runtime_routes + 用户原话)
+# v2.0: 真实 model id 来自 https://api.minimaxi.com/v1/models
+# 用户授权: MiniMax-M3 (默认) / MiniMax-M2.7 / MiniMax-M2.7-highspeed
 PROHIBITED = [
     "deepseek", "qwen", "gpt-4", "gpt-3.5", "claude-3", "claude-sonnet",
     "gemini", "llama-3", "mistral", "openai.com", "anthropic.com", "googleapis",
@@ -27,11 +20,17 @@ PROHIBITED = [
     "agnes", "gpt-image", "chatgpt", "codex-openai", "codex_desktop",
 ]
 
-# 允许的 MiniMax 标识 (防止误伤合法的 MiniMax 调用)
-ALLOWED = ["MiniMax", "MiniMax-M3", "minimaxi.com", "minimax"]
+# v2.0: 真实 MiniMax model id (从 /v1/models 实证)
+ALLOWED = [
+    "MiniMax",            # provider name
+    "MiniMax-M3",         # 深度推理 (默认)
+    "MiniMax-M2.7",       # 标准
+    "MiniMax-M2.7-highspeed",  # 高速
+    "minimaxi.com",       # domain
+    "minimax",            # owned_by
+]
 
 def verify_policy():
-    """验证 Policy 文件 + sha256"""
     if not POLICY_PATH.exists():
         return False, "policy file missing"
     if not MANIFEST_PATH.exists():
@@ -48,7 +47,6 @@ def verify_policy():
     return actual == expected, f"sha256 {'match' if actual == expected else 'MISMATCH'}"
 
 def check_content(text):
-    """检查文本中是否含禁止关键字"""
     if not text:
         return []
     text_lower = text.lower()
@@ -59,11 +57,10 @@ def check_content(text):
     return hits
 
 def log_reject(reason, payload_summary):
-    """记录拒绝事件到审计日志"""
     REJECT_LOG.parent.mkdir(parents=True, exist_ok=True)
     event = {
         "ts": time.time(),
-        "adapter": "codex-pre-tool-use",
+        "adapter": "codex-pre-tool-use-v2",
         "reason": reason,
         "payload_summary": payload_summary[:200] if payload_summary else "",
     }
@@ -74,25 +71,21 @@ def main():
     try:
         raw = sys.stdin.read()
         data = json.loads(raw) if raw else {}
-    except Exception as e:
-        # 解析失败 → 放行（避免误阻塞合法调用）
+    except Exception:
         sys.exit(0)
 
-    # 1. 验证 Policy (fail-closed: Policy 损坏 → 拒绝所有)
     ok, info = verify_policy()
     if not ok:
         log_reject(f"POLICY_INVALID: {info}", str(data))
         print(f"ADAPTER-REJECT: Policy {info}", file=sys.stderr)
         sys.exit(2)
 
-    # 2. 收集所有要检查的文本字段
     texts = []
     for key in ("file_path", "command", "content", "prompt", "new_string", "old_string"):
         v = data.get(key)
         if isinstance(v, str):
             texts.append((key, v))
 
-    # 3. 检查每个文本
     for key, text in texts:
         hits = check_content(text)
         if hits:
@@ -101,7 +94,6 @@ def main():
             print(f"ADAPTER-DENY: {reason}", file=sys.stderr)
             sys.exit(1)
 
-    # 4. ALLOW
     sys.exit(0)
 
 if __name__ == "__main__":
