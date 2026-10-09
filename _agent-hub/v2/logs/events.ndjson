@@ -5509,3 +5509,13 @@
 {"actor": "v2_consumer", "envelope_id": "69f920e9-46f5-4d34-8b96-e343c28e7cd1", "event": "terminal.swallowed", "message_type": "result", "ts": "2026-10-08T15:40:02Z"}
 {"actor": "v2_consumer", "envelope_id": "dd7e8a3a-c651-44c5-a6f7-f9c4d239d270", "event": "terminal.swallowed", "message_type": "ack", "ts": "2026-10-08T15:40:02Z"}
 {"actor": "v2_consumer", "envelope_id": "e82ad3a4-2d36-4e0a-9891-1862f19930e9", "error": "RuntimeError: simulated dispatcher crash", "event": "dispatch.failed", "ts": "2026-10-08T15:41:57Z"}
+{"actor": "claudecode", "assignee": "codex", "event": "task.submitted", "task_id": "3eee023f-6651-455e-a82c-2335c8a12b32", "title": "test", "ts": "2026-10-08T17:04:37Z"}
+{"actor": "claudecode", "assignee": "codex", "event": "task.submitted", "task_id": "99b0733b-4796-4a47-a56c-762647e58b19", "title": "Plan Q4 SaaS retention", "ts": "2026-10-08T17:05:01Z"}
+{"actor": "claudecode", "all_event_types": ["RETIRED_REQUIREMENT_REACTIVATED"], "event": "task.submit_rejected", "policy_gate_rejected": true, "reason": "strategy_gate_blocked", "title": "Implement R-001 reactivation", "ts": "2026-10-08T17:05:01Z", "underlying_event_type": "RETIRED_REQUIREMENT_REACTIVATED"}
+{"actor": "claudecode", "all_event_types": ["STRATEGY_DRIFT_DETECTED"], "event": "task.submit_rejected", "policy_gate_rejected": true, "reason": "strategy_gate_blocked", "title": "Initialize industry-zhuangxiu preset", "ts": "2026-10-08T17:05:01Z", "underlying_event_type": "STRATEGY_DRIFT_DETECTED"}
+{"actor": "claudecode", "assignee": "codex", "event": "task.submitted", "task_id": "13c2166f-368c-4621-b894-749c11306e14", "title": "cross-session probe", "ts": "2026-10-08T17:44:02Z"}
+{"actor": "v2_consumer", "duration_ms": 10268, "envelope_id": "ba8fcb71-c204-41f6-9cfd-0102157f204f", "event": "dispatch.ok", "message_type": "task", "recipient": "claudecode", "ts": "2026-10-09T01:10:54Z"}
+{"actor": "v2_consumer", "duration_ms": 8765, "envelope_id": "c2904809-3554-4f24-b7bc-ab93d16edaf3", "event": "dispatch.ok", "message_type": "task", "recipient": "claudecode", "ts": "2026-10-09T01:11:03Z"}
+{"actor": "v2_consumer", "duration_ms": 4555, "envelope_id": "cf66cc3e-859a-4789-bb63-30342690b504", "event": "dispatch.ok", "message_type": "task", "recipient": "claudecode", "ts": "2026-10-09T01:11:08Z"}
+{"actor": "v2_consumer", "duration_ms": 7949, "envelope_id": "d3ea5ee3-14cd-4a9c-928e-59cb8881bc14", "event": "dispatch.ok", "message_type": "task", "recipient": "claudecode", "ts": "2026-10-09T01:11:16Z"}
+{"actor": "v2_consumer", "duration_ms": 4486, "envelope_id": "dacb9378-c41c-46b2-80b7-0f0e4780e89d", "event": "dispatch.ok", "message_type": "task", "recipient": "claudecode", "ts": "2026-10-09T01:11:21Z"}
