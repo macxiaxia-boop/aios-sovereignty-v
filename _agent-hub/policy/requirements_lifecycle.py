@@ -27,6 +27,8 @@ Valid transitions
     REJECTED     → ARCHIVED
     RETIRED      → ARCHIVED          (terminal; cannot re-activate)
     ARCHIVED     → (terminal — no transitions out)
+    ACTIVE_FOR_VALIDATION -> ACTIVE_LIVE, ACTIVE, COMPLETED, SUPERSEDED, RETIRED
+    ACTIVE_LIVE -> COMPLETED, SUPERSEDED, RETIRED, ARCHIVED
 
 Any other transition is rejected with `InvalidTransition`.
 
@@ -57,6 +59,8 @@ class LifecycleState(str, Enum):
     RETIRED = "RETIRED"
     REJECTED = "REJECTED"
     ARCHIVED = "ARCHIVED"
+    ACTIVE_FOR_VALIDATION = "ACTIVE_FOR_VALIDATION"  # AIPM02 D4: maps task VALIDATED
+    ACTIVE_LIVE = "ACTIVE_LIVE"  # AIPM02 D4: maps task PRODUCTION_READY
 
 
 VALID_TRANSITIONS: dict[LifecycleState, frozenset[LifecycleState]] = {
