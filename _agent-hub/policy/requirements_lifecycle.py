@@ -95,6 +95,19 @@ VALID_TRANSITIONS: dict[LifecycleState, frozenset[LifecycleState]] = {
         LifecycleState.ARCHIVED,
     }),
     LifecycleState.ARCHIVED: frozenset(),  # terminal
+    LifecycleState.ACTIVE_FOR_VALIDATION: frozenset({
+        LifecycleState.ACTIVE_LIVE,
+        LifecycleState.ACTIVE,
+        LifecycleState.COMPLETED,
+        LifecycleState.SUPERSEDED,
+        LifecycleState.RETIRED,
+    }),
+    LifecycleState.ACTIVE_LIVE: frozenset({
+        LifecycleState.COMPLETED,
+        LifecycleState.SUPERSEDED,
+        LifecycleState.RETIRED,
+        LifecycleState.ARCHIVED,
+    }),
 }
 
 
