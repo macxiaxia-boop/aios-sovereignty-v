@@ -1,0 +1,17 @@
+{
+  "ts": "2026-10-10-round10-recheck",
+  "method": "reconciler.scan + check_compliance with NEW yaml",
+  "yaml_size": 8271,
+  "yaml_sha": "89CA730593FF150F7B409E285FBF27FD844610CFD9D724522027AAEEBC052D6C",
+  "yaml_parse": "OK",
+  "profile_count": 186,
+  "drift_count": 145,
+  "by_target": {
+    "user": 145
+  },
+  "ex_globs_count": 29,
+  "ex_envs": [
+    "OLLAMA_MODELS"
+  ],
+  "comparison_to_round8": "Round 8 was 74 (broken-yaml silently dropped EX). Round 10 latest was 172 (full re-measure). This recheck is post-yaml-fix-EXT-complete."
+}

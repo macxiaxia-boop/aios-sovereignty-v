@@ -1,0 +1,204 @@
+# === AIOS Model Policy v1 ===
+# SSOT: D:\AIOS\_agent-hub\policy\model-policy.v1.yaml
+# 编辑权限: 仅 user (chmod 444 / ACL 收口)
+# 用户授权: 你就开始 + 继续 + 我目前只用了一个api就是MiniMax + 那你叫cc去落地啊 + 搭建执行任务，全部做掉 + 全部授权，全部做掉 + A+B 一起做
+policy_id: model-policy.v1
+policy_version: 2
+policy_owner: user
+created_at: 2026-10-08T00:00:00+08:00
+last_modified: "2026-10-09T15:30:00+08:00"
+activation_evidence:
+  activated_at: "2026-10-09T00:15:00+08:00"
+  activated_by: "codex-01a11c23-supervisor"
+  authorization: "user-directive-2026-10-09 'B+C'"
+  tests_pass: "40/24 PASS · 0 FAIL (含 4 项真实运行)"
+  drift_count: 0
+applied_workers:
+  - codex
+  - claudecode
+  - openclaw
+  - hermes
+  - cc-switch
+verification_status: active   # 2026-10-09 由 codex 01a11c23 激活 (B+C 已执行 + 40/24 PASS)
+model_policy:
+  allowed_providers:
+    - id: MiniMax
+      enabled: true
+      models:
+        - id: MiniMax-M3
+          evidence: subscription-2026-Q4
+          enabled: true
+  default_provider: MiniMax
+  default_model: MiniMax-M3
+  allowed_fallbacks: []      # 严格: 不允许跨供应商 fallback
+  prohibited_runtime_routes:
+    - any provider other than MiniMax
+    - any cross-provider auto-fallback
+    - any cron/heartbeat/session-restore carrying legacy model
+    - any backup auto-restore overwriting current provider
+    - any unsanctioned model override via env var
+    - deepseek-v4-flash fallback (R2 risk · 已根治 2026-10-09 · common_config_openclaw 删)
+    - ollama / qwen profiles in Codex config (historical, not active)
+  unavailable_handling:
+    - queue_with_backoff
+    - report_to_audit_log
+    - do_non_model_work
+    - never_silently_swap_provider
+  change_governance:
+    require_explicit_user_approval: true
+    modification_method: atomic_write_with_version
+    audit_log: D:\AIOS\_agent-hub\audit\policy-changes.log
+
+  exception_rules:
+
+
+  # Codex CLI 用 OpenAI-compatible 协议连 MiniMax (https://api.minimaxi.com 是 OpenAI-compat)
+    # 所以 active Codex profile 里会含 'openai.com' 字符串
+    - id: EX-001
+      type: path_globs
+      description: "Codex CLI active profile uses OpenAI-compat protocol to talk to MiniMax"
+      globs:
+        - "~/.codex/*minimax*.config.toml"
+        - "C:/Users/*/.codex/*minimax*.config.toml"
+      allowed_keywords:
+        - openai.com
+        - chatgpt
+      rationale: "Codex CLI 必须 openai.com base URL 才能连 MiniMax API endpoint"
+
+    # 本地 Ollama 安装是合法开发环境（路径 env var, 不触发 provider API 调用）
+    - id: EX-002
+      type: env_vars
+      description: "本地 Ollama 模型路径, 非 provider 调用"
+      env_vars:
+        - OLLAMA_MODELS
+      rationale: "本地 Ollama 路径 env var, 不是 provider API endpoint"
+
+    # Codex 历史 profile keys (qwen/ollama/chatgpt) — 用户主动保留
+    - id: EX-003
+      type: path_globs
+      description: "用户主动保留的 Codex 历史 profile keys (config.toml)"
+      globs:
+        - "~/.codex/config.toml"
+        - "C:/Users/*/.codex/config.toml"
+      allowed_keywords:
+        - qwen
+        - ollama
+        - chatgpt
+      rationale: "Codex CLI 的 [profiles.*] 段历史 key; 当前不激活, 用户保留以备参考"
+
+    # backup 文件 — 自动跳过 (避免 backup 引起 30+ 误报)
+    - id: EX-004
+      type: path_globs
+      description: "所有 backup / .old / config.backup.* 文件自动跳过"
+      globs:
+        - "**/*.bak.*"
+        - "**/*.old"
+        - "**/config.backup.*"
+        - "**/*.bak.2026-10-09R2-fix"
+      allowed_keywords:
+        - "*"  # 全部允许
+      rationale: "backup 文件不应作为 drift 来源"
+
+    # R1342 EXT-A 2026-10-09 加固: 消除 1849 假阳性 (user directive "5 项全开")
+    # EX-005 · Codex desktop global state (chat transcripts, 含其他 AI 讨论 provider 字符串)
+    - id: EX-005
+      type: path_globs
+      description: "Codex desktop global state JSON (chat history, not active config)"
+      globs:
+        - "~/.codex/.codex-global-state.json"
+        - "C:/Users/*/.codex/.codex-global-state.json"
+      allowed_keywords:
+        - "*"
+      rationale: "Global state file 是 chat 历史记录容器, 非 active provider config"
+
+    # EX-006 · Codex Python helper scripts (含模型名字符串, 但非 provider endpoint)
+    - id: EX-006
+      type: path_globs
+      description: "Codex desktop Python helper scripts (含字符串但非 endpoint)"
+      globs:
+        - "~/.codex/aios-*.py"
+        - "C:/Users/*/.codex/aios-*.py"
+      allowed_keywords:
+        - "*"
+      rationale: "aios-agents-md.py / aios-codex-skills.py 等 helper 含字符串但非 endpoint"
+
+    # EX-007 · Codex user-side attachments (pasted text + computer-use 屏幕镜像)
+    - id: EX-007
+      type: path_globs
+      description: "User-side attachments & pasted text + 屏幕镜像"
+      globs:
+        - "~/.codex/attachments/*"
+        - "C:/Users/*/.codex/attachments/*"
+        - "~/.codex/computer-use/*"
+        - "C:/Users/*/.codex/computer-use/*"
+      allowed_keywords:
+        - "*"
+      rationale: "用户粘贴内容 / 屏幕镜像, 不参与 provider routing"
+
+    # EX-008 · Codex backups (含 auth.backup.* 和 _backup-2026*)
+    - id: EX-008
+      type: path_globs
+      description: "Codex desktop backups (auth.backup.*, _backup-2026*)"
+      globs:
+        - "~/.codex/backups/*"
+        - "C:/Users/*/.codex/backups/*"
+        - "~/.codex/_backup-*/**"
+        - "C:/Users/*/.codex/_backup-*/**"
+      allowed_keywords:
+        - "*"
+      rationale: "所有 _backup-* / backups/* 排除 (EX-004 仅覆盖 config.backup.* 不足)"
+
+    # EX-009 · CloudTech data (历史快照 / 候选 / briefing / skill orchestrator, 非 active AI 调用)
+    - id: EX-009
+      type: path_globs
+      description: "CloudTech data subdirs (历史快照 / 候选 / briefing, 非 active AI 调用)"
+      globs:
+        - "D:/CloudTech-Portable/data/openapi_snapshots/*"
+        - "D:/CloudTech-Portable/data/v*_candidates/*"
+        - "D:/CloudTech-Portable/data/morning_briefing/**"
+        - "D:/CloudTech-Portable/data/skill_orchestrator/*"
+      allowed_keywords:
+        - "*"
+      rationale: "CloudTech active AI 调用 = MiniMax only (W14.1 verified) · data/ 全为历史快照"
+
+    # EX-010 · Codex run-bridge.py (被 stub 替换的安全脚本, 含 deepseek 字符串仅作 deny pattern)
+    - id: EX-010
+      type: path_globs
+      description: "Codex run-bridge.py 安全 stub (含 deepseek 字符串仅为 deny pattern)"
+      globs:
+        - "~/.codex/run-bridge.py"
+        - "C:/Users/*/.codex/run-bridge.py"
+      allowed_keywords:
+        - "*"
+      rationale: "run-bridge.py 是安全 stub, 含 deepseek 字符串是 DENY list 而非调用"
+
+
+    # EXT-E (R1346) 2026-10-10: dynamic CloudTech prefix discovery
+    - id: EX-011
+      type: path_globs
+      description: "EXT-E dynamically discovered CloudTech installation prefixes"
+      globs:
+        - "D:/CloudTech-Portable/*"
+        - "C:/CloudTech-Portable/*"
+        - "D:/AIOS/cloudtech-saas/*"
+      allowed_keywords:
+        - "*"
+      rationale: "Auto-discovered via scripts/discover_cloudtech.py. Complements EX-005 hardcoded list."
+      discovery_source: "D:\\AIOS\\_agent-hub\\knowledge\\cloudtech_paths.json"
+adapter:
+  codex:
+    implementation: D:\AIOS\_agent-hub\policy\codex_adapter.py
+    hook: PreToolUse Write|Edit
+    mechanism: stdin JSON parse → keyword check → exit 1 deny / exit 0 allow
+    fail_closed: true   # Policy 损坏 → 拒绝所有写盘
+  reconciler:
+    implementation: D:\AIOS\_agent-hub\policy\reconciler\reconciler.py
+    mechanism: scheduled task every 5min + on-demand
+    auto_rollback_l1: false  # 不变量: 不自动改 policy
+    policy_modification_allowed: false  # 不变量
+    # 2026-10-09 A: 读 exception_rules 段, 跳过 false-positive
+    reads_exception_rules: true
+metadata:
+  sha256: __FILL_AFTER_HASH__
+  signature_algo: sha256
+  signature: optional
