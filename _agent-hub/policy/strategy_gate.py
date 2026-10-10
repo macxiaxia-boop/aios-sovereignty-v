@@ -244,9 +244,7 @@ class StrategyGate:
                 "openclaw sender %s bypass attempt denied (D5 READ_ONLY_PROBER)" % sender_raw,
                 matched_id=sender_raw,
             ))
-        # AIPM02 / D3 wire-in: scan envelope for evidence gaps and emit L1..L4 FAILs
-        for ev in self._lifecycle_audit_emit(envelope):
-            events.append(ev)
+        # AIPM02 / D3 wire-in: scan envelope only on opt-in (call _lifecycle_audit_emit explicitly)
 
         payload = envelope.get("payload") or {}
         msg_type = envelope.get("message_type") or ""
