@@ -49,6 +49,9 @@ model_policy:
     modification_method: atomic_write_with_version
     audit_log: D:\AIOS\_agent-hub\audit\policy-changes.log
 
+  exception_rules:
+
+
   # Codex CLI 用 OpenAI-compatible 协议连 MiniMax (https://api.minimaxi.com 是 OpenAI-compat)
     # 所以 active Codex profile 里会含 'openai.com' 字符串
     - id: EX-001
@@ -169,6 +172,19 @@ model_policy:
         - "*"
       rationale: "run-bridge.py 是安全 stub, 含 deepseek 字符串是 DENY list 而非调用"
 
+
+    # EXT-E (R1346) 2026-10-10: dynamic CloudTech prefix discovery
+    - id: EX-011
+      type: path_globs
+      description: "EXT-E dynamically discovered CloudTech installation prefixes"
+      globs:
+        - "D:/CloudTech-Portable/*"
+        - "C:/CloudTech-Portable/*"
+        - "D:/AIOS/cloudtech-saas/*"
+      allowed_keywords:
+        - "*"
+      rationale: "Auto-discovered via scripts/discover_cloudtech.py. Complements EX-005 hardcoded list."
+      discovery_source: "D:\\AIOS\\_agent-hub\\knowledge\\cloudtech_paths.json"
 adapter:
   codex:
     implementation: D:\AIOS\_agent-hub\policy\codex_adapter.py
@@ -186,4 +202,3 @@ metadata:
   sha256: __FILL_AFTER_HASH__
   signature_algo: sha256
   signature: optional
-

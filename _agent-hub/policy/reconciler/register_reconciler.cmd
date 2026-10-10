@@ -33,6 +33,13 @@ if errorlevel 1 (
   exit /b 2
 )
 
+REM Step 3b: EXT-D 4-adapter verify (gate before schtasks registration) - added 2026-10-10
+python D:\AIOS\_agent-hub\scripts\verify_ext_d.py
+if errorlevel 1 (
+  echo [FATAL] EXT-D adapter verify failed. Aborting registration.
+  exit /b 3
+)
+
 REM Step 4: register schtasks
 schtasks /Create /TN "%TASK%" /TR "python \"%RECON_DIR%\reconciler.py\" --policy \"%POLICY%\" --sha256-manifest \"%MANIFEST%\"" /SC MINUTE /MO 5 /F
 if errorlevel 1 (

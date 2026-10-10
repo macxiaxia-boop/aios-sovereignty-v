@@ -1,0 +1,22 @@
+{
+  "generated_at": 1791598699,
+  "schema": "r1346-cloudtech-prefix-list-v1",
+  "count": 3,
+  "prefixes": [
+    {
+      "prefix": "D:/CloudTech-Portable",
+      "kind": "install_root",
+      "source": "candidate_root"
+    },
+    {
+      "prefix": "C:/CloudTech-Portable",
+      "kind": "install_root",
+      "source": "candidate_root"
+    },
+    {
+      "prefix": "D:/AIOS/cloudtech-saas",
+      "kind": "internal_sibling",
+      "source": "aios_child_scan"
+    }
+  ]
+}

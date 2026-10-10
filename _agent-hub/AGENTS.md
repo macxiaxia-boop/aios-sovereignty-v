@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 # AIOS Current Shared Protocol Bootstrap
 
 > **SSOT**: `D:/AIOS/_agent-hub/AGENTS.md` — 中央共享协议唯一真实来源
@@ -12,12 +11,10 @@
 
 > **Read by**: codex, claudecode, Hermes, OpenClaw (all agents that support AGENTS.md convention)
 > **拓扑**: `D:\AIOS\AGENTS.md` 是本文件的同卷硬链接；各 Agent 原生入口通过 bootstrap 引用本中央 SSOT；不得声称全部是 junction
-=======
 # AGENTS.md - Shared Agent Instructions
 
 > **Read by**: codex (and any agent that supports AGENTS.md convention)
 > **Linked to**: `~/.codex/AGENTS.md` via junction
->>>>>>> Stashed changes
 
 ## Mission
 
@@ -58,7 +55,6 @@ Append to `D:\AIOS\_agent-hub\memory\YYYY-MM-DD.md` for substantive work. This f
 
 ---
 
-<<<<<<< Updated upstream
 _Only edit this SSOT (`D:\AIOS\_agent-hub\AGENTS.md`). Each agent reads the central SSOT via its native bootstrap/workspace hard-link entry point; a broken entry link must FAIL._
 
 ## Phase F — Cognitive Governance Plane (2026-10-08 Verified ✅)
@@ -130,9 +126,7 @@ self-audit 自动:
 5. 写 self-audit 段落到当天 memory log
 
 DEGRADED 时按 autonomous_scope 自动修；BROKEN 时写 risk report 等用户回来。
-=======
 _Edit here, all agents that read AGENTS.md see the change automatically via junction._
->>>>>>> Stashed changes
 
 ## Phase G — Learning Closure (2026-10-09 10:00 Verified ✅)
 
@@ -431,3 +425,34 @@ The earlier bootstrap spec referenced `B1-prompt-templates.md` in `D:\AIOS\_agen
 - The 5 STATUS markers from the source task remain true as of this writing:
   RESEARCH_COMPLETED, DESIGN_COMPLETED, SANDBOX_TESTED, INTEGRATION_PENDING, PRODUCTION_NOT_CHANGED.
 - All 16 deliverables in the pack have EVIDENCE_TRAIL sections.
+
+## Sandbox Network Constraints (2026-10-10 add-on)
+
+## Sandbox Network Constraints (实测, 2026-10-10)
+
+### 1. `git push` to github.com 永远 fail (L3 不退)
+- 实测: `fatal: unable to access 'https://github.com/macxiaxia-boop/aios-sovereignty-v.git/': Failed to connect to github.com port 443 after 21054 ms`
+- 实测: `fatal: unable to access 'https://...': Recv failure: Connection was reset`
+- 实测: `curl https://github.com` 8s 超时 (`curl: (28) Connection timed out after 8016 milliseconds`)
+- **结论**: sandbox 不通 github。 别指望 push 远端. 推远端必须走 desktop bundle / patch.
+
+### 2. PowerShell `Test-NetConnection github.com -Port 443` 15s 超时
+- 不要用 PS test-netconnection 测 github 是否通 — 15s 超时只是 timeout 信号, 不代表通不通
+
+### 3. 无默认 gateway proxy 配置
+- `curl` / `git` / `npm` 都没配 proxy 设置
+- 用户如需开 proxy, 必须自定义 HTTP_PROXY/HTTPS_PROXY env var
+
+### 4. 推远端替代方案 (按推荐度排序)
+- **A**: 用户手动 `git push` (desktop / native shell, 不在 sandbox)
+- **B**: patch bundle 写入, 用户在外部 pull
+- **C**: 写 commit 到本地 branch, 用户 git fetch + merge 外部
+
+### 5. 写代码避开长 polling
+- HTTP requests 限 10s 超时 (8s observed)
+- pytest 默认 timeout 8s on network ops
+- 任何 webhook/notify endpoint 加 5s short-circuit
+
+### 6. 推代码节奏
+- commit = local always
+- push = user-orchestrated (不在 sandbox)
