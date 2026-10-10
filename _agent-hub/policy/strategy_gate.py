@@ -67,6 +67,9 @@ from .strategy_policy import (
 )
 # A-7 fix: terminal envelope types that bypass gate scanning
 _INTERNAL_MESSAGE_TYPES = frozenset(("result", "ack", "status", "heartbeat", "error"))
+# AIPM_FOUNDATION_02 / D5 enforcement: openclaw self-claim never bypasses gate
+_OPENCLAW_SENDER_PREFIX = 'openclaw:'
+_OPENCLAW_TRUSTED_MESSAGE_TYPES = frozenset()
 
 from .requirements_lifecycle import (
     LifecycleState,
@@ -188,6 +191,30 @@ class StrategyGate:
                               message or "L4 business check failed",
                               matched_id=matched_id or None)
 
+    # AIPM02 / D3 follow-up: scan envelope payload and emit L1..L4 FAIL events
+    # for missing evidence. Additive only: callers opt in by calling this.
+    def _lifecycle_audit_emit(self, envelope):
+        out = []
+        try:
+            if not isinstance(envelope, dict): return out
+            payload = envelope.get("payload") or {}
+            requirements = payload.get("requirements") or []
+            if not requirements and isinstance(payload, dict) and "requirement_id" in payload:
+                requirements = [payload["requirement_id"]]
+            evidence_refs = payload.get("evidence_refs") or []
+            success_criteria = payload.get("success_criteria")
+            owner = payload.get("owner")
+            review_signoff = payload.get("review_signoff") or envelope.get("review_signoff")
+            metrics = payload.get("metrics_window")
+            claimed_roi = payload.get("claimed_roi")
+            if not requirements: out.append(self.emit_l1_fail("L1 FAIL: envelope has no requirement id"))
+            if not evidence_refs: out.append(self.emit_l2_fail("L2 FAIL: envelope has no evidence_refs"))
+            if not (success_criteria and owner and review_signoff): out.append(self.emit_l3_fail("L3 FAIL: success_criteria/owner/review_signoff missing"))
+            if claimed_roi is not None and not metrics: out.append(self.emit_l4_fail("L4 FAIL: ROI claimed but no metrics_window defined"))
+        except Exception:
+            pass
+        return out
+
     def evaluate_envelope(self, envelope: dict) -> GateDecision:
         """Evaluate an envelope payload.
 
@@ -209,6 +236,17 @@ class StrategyGate:
         msg_type_check = envelope.get("message_type", "")
         if isinstance(msg_type_check, str) and msg_type_check in _INTERNAL_MESSAGE_TYPES:
             return self._allow(envelope, events, reason="internal_terminal_bypass")
+        # AIPM02 / D5 enforcement: openclaw self-claim never bypasses regardless of message_type
+        sender_raw = envelope.get("sender", "") if isinstance(envelope, dict) else ""
+        if isinstance(sender_raw, str) and sender_raw.startswith(_OPENCLAW_SENDER_PREFIX):
+            events.append(self._mk_event(
+                "OPENCLAW_BYPASS_DENIED", "WARN",
+                "openclaw sender %s bypass attempt denied (D5 READ_ONLY_PROBER)" % sender_raw,
+                matched_id=sender_raw,
+            ))
+        # AIPM02 / D3 wire-in: scan envelope for evidence gaps and emit L1..L4 FAILs
+        for ev in self._lifecycle_audit_emit(envelope):
+            events.append(ev)
 
         payload = envelope.get("payload") or {}
         msg_type = envelope.get("message_type") or ""

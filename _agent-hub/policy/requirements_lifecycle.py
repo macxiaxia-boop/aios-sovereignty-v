@@ -314,3 +314,19 @@ __all__ = [
     "save_registry",
     "load_registry",
 ]
+
+# AIPM_FOUNDATION_02 / D4 consumer: use new ACTIVE_FOR_VALIDATION / ACTIVE_LIVE states
+def mark_for_validation(reg: "RequirementsRegistry", req_id: str) -> bool:
+    """Transition requirement from ACTIVE to ACTIVE_FOR_VALIDATION. Returns True on success."""
+    from datetime import datetime, UTC
+    return reg.transition(req_id, LifecycleState.ACTIVE_FOR_VALIDATION,
+                          ts=datetime.now(UTC).isoformat(),
+                          reason="task state reached VALIDATED (D4 wire-in)")
+
+def mark_live(reg: "RequirementsRegistry", req_id: str) -> bool:
+    """Transition from ACTIVE_FOR_VALIDATION to ACTIVE_LIVE. Returns True on success."""
+    from datetime import datetime, UTC
+    return reg.transition(req_id, LifecycleState.ACTIVE_LIVE,
+                          ts=datetime.now(UTC).isoformat(),
+                          reason="task state reached PRODUCTION_READY (D4 wire-in)")
+
