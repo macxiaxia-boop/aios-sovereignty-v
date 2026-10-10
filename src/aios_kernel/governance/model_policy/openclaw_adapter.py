@@ -23,6 +23,7 @@ from .snapshot import PolicySnapshot
 
 class OpenClawAdapter(ModelPolicyAdapter):
     name = "openclaw"
+    role = "READ_ONLY_PROBER"  # AIPM_FOUNDATION_02 D5
 
     def __init__(
         self,
