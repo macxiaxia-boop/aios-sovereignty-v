@@ -1,0 +1,17 @@
+
+## 03:00 Codex - ALL AIPM02 stages applied to main
+
+Branches resolved: working branch was codex/R1348-reconcile (not main); ran checkout main; 4 prior AIPM02 commits were on main (D3, N6 parent bump, D7, sidecar); cherry-replayed D5 kernel bump to main as f869965.
+
+Then continued on main (correct branch):
+- D4 enum extension (c4ad13b)
+- D4 transition dict addition (f616430)
+- D1 merge AGENTS.md supplement (9249ffe)
+
+Total commits this session (on main): 8
+Total AIPM02-related commits: 7 stages with validations
+Real pytest confirmation: N6 engine.py fix brings test_crash_recovery from 7/10 to 10/10
+
+Branch state: main is canonical landing; codex/R1348-reconcile may still have an extra commit (a63ee89) but same content; can be discarded.
+
+Total ~250 net additions on main. 0 deletions. 0 system guard changes.

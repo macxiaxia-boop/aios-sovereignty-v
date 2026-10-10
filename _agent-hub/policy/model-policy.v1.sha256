@@ -1,0 +1,15 @@
+# ModelPolicy v1 签名 manifest
+# v2.1: R1342 EXT-A 加 EX-005~010 消除 1849 假阳性 (2026-10-09 user directive 5 项全开)
+# 改动由 Codex (supervisor) 实施 · 仅 additive (EX-001~004 不动)
+# sign: codex-supervisor 2026-10-09T15:30+08:00
+sha256:89CA730593FF150F7B409E285FBF27FD844610CFD9D724522027AAEEBC052D6C
+file: D:\AIOS\_agent-hub\policy\model-policy.v1.yaml
+size_bytes: 8271
+signed_at: 2026-10-09T15:30:00+08:00
+signer: codex-supervisor
+algo: sha256
+change_governance: atomic_write_with_version
+# verify: Get-FileHash -Algorithm SHA256 D:\AIOS\_agent-hub\policy\model-policy.v1.yaml
+updated_at: 2026-10-10T10:30+08:00
+updated_reason: T1 yaml recover - exception_rules indent fix + EX-011 + sha sync
+verification_status: ACTIVE
