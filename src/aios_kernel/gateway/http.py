@@ -97,6 +97,11 @@ def create_app(scheduler: AIOSScheduler) -> FastAPI:
 
     add_observability_routes(app, scheduler=scheduler)
 
+    # R1505-2: auth + rate limit middlewares (gated by env vars)
+    from aios_kernel.gateway.auth_middleware import install_auth_middlewares
+
+    install_auth_middlewares(app)
+
     return app
 
 

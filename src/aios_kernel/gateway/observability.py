@@ -10,6 +10,7 @@ as a human-readable JSON for k8s/monitoring).
 """
 from __future__ import annotations
 
+import asyncio
 import logging
 from typing import Any
 
@@ -38,12 +39,63 @@ def add_observability_routes(
 
     @app.get("/readyz", include_in_schema=False)
     async def readyz() -> dict[str, Any]:
-        """K8s readiness probe — returns 200 if all subsystems are healthy."""
+        """K8s readiness probe — returns 200 if all subsystems are healthy.
+
+        R1505-2: also probes each registered WorkerAdapter's health (asyncio.gather
+        with a 1.0s timeout) plus checks for an attached database (best-effort).
+        """
         snap = scheduler.metrics()
-        # consider "ready" if dispatcher hasn't crashed and DLQ is bounded
         dlq = snap.get("dlq_size", 0)
-        ok = dlq < 1000  # configurable in SchedulerConfig.dlq_max_size
-        return {"status": "ready" if ok else "degraded", "dlq_size": dlq, **snap}
+        ok_dlq = dlq < 1000
+
+        # Probe adapter health (best effort, 1s timeout each).
+        adapter_results: dict[str, str] = {}
+        adapter_overall_ok = True
+        try:
+            # Discover via scheduler's adapter handles if accessible; we fallback
+            # to listing from a registry attached as an attribute (best-effort).
+            registry = getattr(scheduler, "_registry", None)
+            if registry is not None and hasattr(registry, "list_ids"):
+                ids = registry.list_ids()
+                async def _probe_one(adapter):
+                    try:
+                        rep = await asyncio.wait_for(adapter.health(), timeout=1.0)
+                        return rep.status.value
+                    except Exception as exc:  # noqa: BLE001
+                        return f"err:{type(exc).__name__}"
+                probes = await asyncio.gather(
+                    *(_probe_one(registry.get(i)) for i in ids),
+                    return_exceptions=True,
+                )
+                for i, st in zip(ids, probes, strict=True):
+                    s = "ok" if st == "healthy" else ("degraded" if st == "degraded" else "unhealthy")
+                    adapter_results[i] = s
+                    if s != "ok":
+                        adapter_overall_ok = False
+        except Exception:  # noqa: BLE001
+            pass  # adapter probe is best-effort
+
+        # Probe database (best-effort, async via asyncio.to_thread).
+        db_ok = True
+        db_msg = "ok"
+        try:
+            mem = getattr(scheduler, "_memory", None)
+            if mem is not None:
+                # touch ledger read as a liveness probe
+                loop = asyncio.get_event_loop()
+                await loop.run_in_executor(None, mem.read_ledger)
+        except Exception as exc:  # noqa: BLE001
+            db_ok = False
+            db_msg = f"err:{type(exc).__name__}"
+
+        ok = ok_dlq and adapter_overall_ok and db_ok
+        return {
+            "status": "ready" if ok else "degraded",
+            "dlq_size": dlq,
+            "adapters": adapter_results,
+            "db": db_msg,
+            **snap,
+        }
 
     @app.get("/metrics", include_in_schema=False)
     async def metrics() -> str:
