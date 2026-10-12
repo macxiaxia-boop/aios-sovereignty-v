@@ -2,7 +2,7 @@
 
 > **Wrap-not-rewrite** runtime for the AIOS VNext Phase A program.
 >
-> **R1503**: 4 modules, 12 tasks, 87 tests · see [R1503 Final Report](../R1503_FINAL_REPORT.md)
+> **R1503**: 4 modules, 12 tasks, 87 tests · **R1504**: +22 e2e (claude-code-adapter) · see [R1503 Final Report](../R1503_FINAL_REPORT.md)
 
 [![AIOS Kernel CI](https://github.com/macxiaxia-boop/aios-sovereignty-v/actions/workflows/aios-kernel-ci.yml/badge.svg)](https://github.com/macxiaxia-boop/aios-sovereignty-v/actions/workflows/aios-kernel-ci.yml)
 [![R1503 module coverage 81%](https://img.shields.io/badge/R1503_coverage-81%25-brightgreen.svg)](https://github.com/macxiaxia-boop/aios-sovereignty-v)
@@ -29,7 +29,7 @@ See `docs/architecture.md` for the architectural intent and
 ## Status
 
 - **Phase**: A — Scaffold complete + R1503 modules shipped
-- **Tests**: 87 PASS (78 unit + 9 integration) — `pytest tests/`
+- **Tests**: 109 PASS (R1503 CI subset: 78 unit + 9 e2e + 22 R1504 claude-code-adapter e2e) — `pytest tests/integration/test_e2e.py tests/integration/test_claude_code_adapter_e2e.py tests/unit/`
 - **CI**: `.github/workflows/aios-kernel-ci.yml` (pytest 3.11/3.12/3.13 + ruff + mypy)
 - **Coverage**: see CI artifact `coverage-xml`
 - **Owner**: Claude Code (executor + 4-Agent delegation)
@@ -53,8 +53,8 @@ src/aios_kernel/
   runtime/       (R1503-010+011+012)
 
 tests/
-  unit/          78 tests
-  integration/   9 e2e tests (4-module integration)
+  unit/          78 tests (R1503 CI subset; full suite: 591)
+  integration/   31 e2e tests (9 R1503 e2e + 22 R1504 claude-code-adapter e2e)
 
 docs/            architecture.md, acceptance_criteria.md
 scripts/         Operator scripts

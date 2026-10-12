@@ -43,7 +43,6 @@ from aios_kernel.workers import (
     WorkerRegistry,
 )
 
-
 # ---------------------------------------------------------------------------
 # Test fixtures
 # ---------------------------------------------------------------------------
@@ -420,6 +419,7 @@ async def test_e2e_scheduler_circuit_breaker_opens_on_repeated_failures():
         async def cancel(self, task_id): pass
         async def health(self):
             from datetime import UTC, datetime
+
             from aios_kernel.workers.base import HealthReport, HealthStatus
             return HealthReport(
                 worker_id="claude-code-adapter", status=HealthStatus.HEALTHY,
@@ -501,7 +501,7 @@ async def test_e2e_http_submit_routes_to_claude_code_adapter(fake_claude_binary)
             json={"goal_id": "g-http", "title": "http-claude-task", "priority": "P1"},
         )
         assert r.status_code == 202
-        run_id = r.json()["run_id"]
+        r.json()["run_id"]  # smoke-check the response body
 
         # poll metrics until at least 1 completed
         snap = await _wait_for_metrics(s, expected_completed=1, timeout_s=5.0)
@@ -531,7 +531,7 @@ async def test_e2e_http_metrics_endpoint_reflects_claude_code_dispatch(fake_clau
             )
             assert r.status_code == 202
         # wait
-        snap = await _wait_for_metrics(s, expected_completed=3, timeout_s=5.0)
+        await _wait_for_metrics(s, expected_completed=3, timeout_s=5.0)
         mr = client.get("/metrics")
         snap_http = mr.json()
         assert snap_http["submitted"] == 3
@@ -647,7 +647,7 @@ async def test_e2e_scheduler_dispatch_with_missing_binary(tmp_path: Path):
     await s.start()
     try:
         t = Task(goal_id="g-stub", title="stub-task", task_type=TaskType.MATH_CALC)
-        run_id = await s.submit(t, priority=Priority.P1)
+        await s.submit(t, priority=Priority.P1)
         snap = await _wait_for_metrics(s, expected_completed=1, timeout_s=5.0)
         # even with stub fallback, scheduler records it as completed
         assert snap["completed"] >= 1

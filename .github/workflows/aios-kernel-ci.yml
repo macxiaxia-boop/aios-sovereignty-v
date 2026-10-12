@@ -42,10 +42,11 @@ jobs:
 
       - name: Run integration tests
         run: |
-          # Only run R1503 integration test (test_e2e.py).
+          # R1503 e2e + R1504 claude-code-adapter e2e.
           # Other integration tests have pre-existing historical flake
           # (test_docker.py, test_crash_recovery.py) and are not in R1503.
           python -m pytest tests/integration/test_e2e.py \
+            tests/integration/test_claude_code_adapter_e2e.py \
             -v --tb=short --cov=aios_kernel --cov-append
 
       - name: Upload coverage
