@@ -2,11 +2,14 @@
 
 > **Wrap-not-rewrite** runtime for the AIOS VNext Phase A program.
 >
-> **R1503**: 4 modules, 12 tasks, 87 tests · **R1504**: +22 e2e (claude-code-adapter) · see [R1503 Final Report](../R1503_FINAL_REPORT.md)
+> **R1505-3**: 4 modules · 12 tasks · 114+ tests · 0 ruff errors · production-ready
+> see [CHANGELOG.md](CHANGELOG.md) for R1500-R1505-2 history
 
 [![AIOS Kernel CI](https://github.com/macxiaxia-boop/aios-sovereignty-v/actions/workflows/aios-kernel-ci.yml/badge.svg)](https://github.com/macxiaxia-boop/aios-sovereignty-v/actions/workflows/aios-kernel-ci.yml)
-[![R1503 module coverage 81%](https://img.shields.io/badge/R1503_coverage-81%25-brightgreen.svg)](https://github.com/macxiaxia-boop/aios-sovereignty-v)
-[![91/91 R1503 tests](https://img.shields.io/badge/R1503_tests-91%2F91-brightgreen.svg)](https://github.com/macxiaxia-boop/aios-sovereignty-v)
+[![R1503 module coverage 83%](https://img.shields.io/badge/R1503_coverage-83%25-brightgreen.svg)](https://github.com/macxiaxia-boop/aios-sovereignty-v)
+[![116+ tests](https://img.shields.io/badge/tests-116%2B-brightgreen.svg)](https://github.com/macxiaxia-boop/aios-sovereignty-v)
+[![ruff clean](https://img.shields.io/badge/ruff-0_errors-brightgreen.svg)](https://github.com/macxiaxia-boop/aios-sovereignty-v)
+[![R1500-R1505-2 history](https://img.shields.io/badge/CHANGELOG-R1500--R1505.2-blue.svg)](CHANGELOG.md)
 
 This repository hosts the AIOS kernel — a Python package that wraps (does not
 fork) the existing AIOS services surfaced from `D:\AIOS`. R1503 (2026-10-12)
