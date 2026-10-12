@@ -20,11 +20,10 @@ import pytest
 from aios_kernel.intent import (
     CONSTRAINT_PATTERNS,
     INTENT_CLASSIFIER,
+    TRADEOFF_PATTERNS,
     IntentParser,
     IntentType,
-    LLMAdapter,
     NullLLMAdapter,
-    TRADEOFF_PATTERNS,
 )
 from aios_kernel.intent.parser import (
     Constraint,
@@ -35,7 +34,6 @@ from aios_kernel.intent.parser import (
     PermissionScope,
     Tradeoff,
 )
-
 
 # ---------------------------------------------------------------------------
 # Helpers

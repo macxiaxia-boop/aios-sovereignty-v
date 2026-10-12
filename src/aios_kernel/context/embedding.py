@@ -22,8 +22,8 @@ Public surface:
 from __future__ import annotations
 
 import hashlib
-import math
-from typing import Iterable, Protocol, Sequence
+from collections.abc import Sequence
+from typing import Protocol
 
 import numpy as np
 

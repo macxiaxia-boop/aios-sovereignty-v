@@ -17,12 +17,11 @@ Co-Authored-By: Claude Code <noreply@anthropic.com>
 from __future__ import annotations
 
 import asyncio
-import json
 import logging
 import os
 import shlex
-from datetime import datetime, timezone
-from typing import Any, Callable, Protocol, runtime_checkable
+from datetime import UTC, datetime
+from typing import Any, Protocol, runtime_checkable
 
 from aios_kernel.domain.artifact import Artifact, ArtifactType
 from aios_kernel.workers.base import HealthReport, HealthStatus, WorkerAdapter
@@ -131,7 +130,7 @@ def cli_subprocess_adapter(
             return HealthReport(
                 worker_id=worker_id,
                 status=HealthStatus.HEALTHY,
-                last_check_at=datetime.now(timezone.utc),
+                last_check_at=datetime.now(UTC),
                 metadata={"kind": "cli", "binary": binary},
             )
 
@@ -214,7 +213,7 @@ def http_adapter(
             return HealthReport(
                 worker_id=worker_id,
                 status=HealthStatus.HEALTHY,
-                last_check_at=datetime.now(timezone.utc),
+                last_check_at=datetime.now(UTC),
                 metadata={"kind": "http", "base_url": base_url},
             )
 

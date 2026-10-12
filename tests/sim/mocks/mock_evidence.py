@@ -17,15 +17,16 @@ from __future__ import annotations
 
 import hashlib
 import threading
-from dataclasses import dataclass, field
-from typing import Any, Dict, Iterator, List, Optional
+from collections.abc import Iterator
+from dataclasses import dataclass
+from typing import Any
 
 
 @dataclass
 class EvidenceRecord:
     id: str
     task_id: str
-    artifact_id: Optional[str]
+    artifact_id: str | None
     payload: str
     verifier_id: str = "verifier-mock-001"
     signed_at: str = "1970-01-01T00:00:00Z"
@@ -53,9 +54,9 @@ class MockEvidenceStore:
     """Thread-safe in-memory evidence store."""
 
     def __init__(self) -> None:
-        self._records: Dict[str, EvidenceRecord] = {}
-        self._hashes: Dict[str, str] = {}     # id -> recorded hash (snapshot at put time)
-        self._tainted: Dict[str, _TaintedReason] = {}
+        self._records: dict[str, EvidenceRecord] = {}
+        self._hashes: dict[str, str] = {}     # id -> recorded hash (snapshot at put time)
+        self._tainted: dict[str, _TaintedReason] = {}
         self._lock = threading.Lock()
 
     # ---- write side -------------------------------------------------------
@@ -77,7 +78,7 @@ class MockEvidenceStore:
 
     # ---- read side --------------------------------------------------------
 
-    def get(self, evidence_id: str) -> Optional[EvidenceRecord]:
+    def get(self, evidence_id: str) -> EvidenceRecord | None:
         with self._lock:
             rec = self._records.get(evidence_id)
             if rec is None:
@@ -103,7 +104,7 @@ class MockEvidenceStore:
                 return False
             return rec.compute_hash() == self._hashes.get(evidence_id, "")
 
-    def all(self) -> List[EvidenceRecord]:
+    def all(self) -> list[EvidenceRecord]:
         with self._lock:
             return [self.get(k) for k in sorted(self._records)]  # type: ignore[misc]
 
@@ -119,9 +120,9 @@ class MockEvidenceStore:
 
 def verify_worker_evidence(
     store: MockEvidenceStore,
-    evidence_ids: List[str],
+    evidence_ids: list[str],
     require_non_empty: bool = True,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Simulated verifier verdict. PASS iff:
       - all IDs exist
       - require_non_empty → evidence_ids list not empty

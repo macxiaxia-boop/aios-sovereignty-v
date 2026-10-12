@@ -1,7 +1,10 @@
 """test_workers.py - 4 adapter + registry + routing tests."""
 from __future__ import annotations
+
 import pytest
 
+from aios_kernel.domain.envelope import utcnow
+from aios_kernel.domain.task import Task, TaskType
 from aios_kernel.workers import (
     ClaudeCodeAdapter,
     CodexAdapter,
@@ -13,8 +16,6 @@ from aios_kernel.workers import (
     WorkerAdapter,
     WorkerRegistry,
 )
-from aios_kernel.domain.task import Task, TaskType
-from aios_kernel.domain.envelope import utcnow
 
 
 def test_worker_adapter_protocol():

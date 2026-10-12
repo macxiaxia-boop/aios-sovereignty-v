@@ -1,24 +1,22 @@
 """test_gateway.py - Tests for gateway/http + mcp + auth (R1503-007/008/009)."""
 from __future__ import annotations
 
-import asyncio
 import time
 
 import pytest
 from fastapi.testclient import TestClient
 
 from aios_kernel.gateway.auth import (
+    InvalidToken,
     RateLimiter,
     sign_jwt,
     verify_jwt,
-    InvalidToken,
 )
 from aios_kernel.gateway.http import create_app
 from aios_kernel.gateway.mcp import MCPServer
-from aios_kernel.scheduler import AIOSScheduler, Priority
+from aios_kernel.scheduler import AIOSScheduler
 from aios_kernel.workers.base import HealthReport, HealthStatus, WorkerAdapter
 from aios_kernel.workers.registry import WorkerRegistry
-
 
 # ----- test helpers -------------------------------------------------------
 

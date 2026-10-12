@@ -1,6 +1,5 @@
 """test_business_kpi.py - D006 tests."""
 from __future__ import annotations
-from unittest.mock import MagicMock
 
 
 def test_track_kpi_basic():

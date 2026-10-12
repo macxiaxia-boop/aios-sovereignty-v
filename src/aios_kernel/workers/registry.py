@@ -1,6 +1,5 @@
 """registry.py - Worker Adapter registry + routing."""
 from __future__ import annotations
-from typing import Iterable
 
 from aios_kernel.workers.base import NotRegistered, WorkerAdapter
 

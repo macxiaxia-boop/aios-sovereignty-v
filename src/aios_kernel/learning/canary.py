@@ -52,7 +52,7 @@ from __future__ import annotations
 import logging
 from datetime import datetime
 from enum import Enum
-from typing import ClassVar, Optional
+from typing import ClassVar
 
 from pydantic import Field
 
@@ -296,7 +296,7 @@ class CanaryDeployer:
         )
         return dep
 
-    def get_deployment(self, deployment_id: str) -> Optional[CanaryDeployment]:
+    def get_deployment(self, deployment_id: str) -> CanaryDeployment | None:
         """Return the deployment by id, or None if not found."""
         return self._deployments.get(deployment_id)
 
@@ -389,7 +389,7 @@ class CanaryDeployer:
 
     def get_audit_log(
         self,
-        deployment_id: Optional[str] = None,
+        deployment_id: str | None = None,
     ) -> list[dict]:
         """Return the global audit log, optionally filtered to one deployment.
 
@@ -420,7 +420,7 @@ class CanaryDeployer:
         action: str,
         step: str,
         *,
-        reason: Optional[str] = None,
+        reason: str | None = None,
     ) -> None:
         entry = {
             "deployment_id": dep.id,

@@ -9,9 +9,9 @@ Design:
 from __future__ import annotations
 
 import random
-from dataclasses import dataclass, field
-from datetime import datetime, timedelta, timezone
-from typing import Any, List, Optional, Dict
+from dataclasses import dataclass
+from datetime import UTC, datetime, timedelta
+from typing import Any
 
 TASK_TYPES = ("file_summary", "string_format", "math_calc", "env_probe", "cross_worker")
 TASKS_PER_TYPE = 20
@@ -33,7 +33,7 @@ class MockTask:
     id: str
     type: str
     title: str
-    payload: Dict[str, Any]
+    payload: dict[str, Any]
     success_criteria: str
     budget: float
     deadline: datetime
@@ -41,7 +41,7 @@ class MockTask:
     created_at: datetime
     priority: int = 5
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "id": self.id,
             "type": self.type,
@@ -56,7 +56,7 @@ class MockTask:
         }
 
 
-def _build_payload(task_type: str, idx: int) -> Dict[str, Any]:
+def _build_payload(task_type: str, idx: int) -> dict[str, Any]:
     if task_type == "file_summary":
         return {
             "path": f"D:/ai_mock/file_{idx:03d}.txt",
@@ -90,7 +90,7 @@ def _success_criteria(task_type: str, idx: int) -> str:
     if task_type == "math_calc":
         return "result within 1e-9 of expected"
     if task_type == "env_probe":
-        return f"probe returns numeric value >=0 within 5s"
+        return "probe returns numeric value >=0 within 5s"
     return "all stages completed with verifier PASS"
 
 
@@ -111,9 +111,9 @@ def _priority(idx: int) -> int:
 
 def build_mock_tasks(
     seed: int = SEED,
-    base_time: Optional[datetime] = None,
+    base_time: datetime | None = None,
     deadline_window_seconds: int = 3600,
-) -> List[MockTask]:
+) -> list[MockTask]:
     """Build 100 deterministic mock tasks (5 types × 20).
 
     Args:
@@ -126,9 +126,9 @@ def build_mock_tasks(
     """
     rng = random.Random(seed)
     if base_time is None:
-        base_time = datetime(2026, 10, 8, 0, 0, 0, tzinfo=timezone.utc)
+        base_time = datetime(2026, 10, 8, 0, 0, 0, tzinfo=UTC)
 
-    tasks: List[MockTask] = []
+    tasks: list[MockTask] = []
     counter = 0
     for t_type in TASK_TYPES:
         for idx in range(TASKS_PER_TYPE):
@@ -153,9 +153,9 @@ def build_mock_tasks(
     return tasks
 
 
-def build_mock_tasks_by_type(seed: int = SEED) -> Dict[str, List[MockTask]]:
+def build_mock_tasks_by_type(seed: int = SEED) -> dict[str, list[MockTask]]:
     """Same as build_mock_tasks() but grouped by type."""
-    grouped: Dict[str, List[MockTask]] = {t: [] for t in TASK_TYPES}
+    grouped: dict[str, list[MockTask]] = {t: [] for t in TASK_TYPES}
     for t in build_mock_tasks(seed=seed):
         grouped[t.type].append(t)
     return grouped

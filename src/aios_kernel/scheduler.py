@@ -22,12 +22,11 @@ import logging
 import time
 from collections import defaultdict
 from dataclasses import dataclass, field
-from datetime import UTC, datetime
 from enum import Enum
-from typing import Any, Protocol, runtime_checkable
+from typing import Any
 
-from aios_kernel.domain.task import Task, TaskStatus
-from aios_kernel.workers.base import HealthStatus, WorkerAdapter
+from aios_kernel.domain.task import Task
+from aios_kernel.workers.base import HealthStatus
 from aios_kernel.workers.registry import WorkerRegistry
 
 log = logging.getLogger("aios_kernel.scheduler")
@@ -170,7 +169,7 @@ class AIOSScheduler:
         *,
         registry: WorkerRegistry,
         config: SchedulerConfig | None = None,
-        memory: "MemoryPersistence | None" = None,
+        memory: MemoryPersistence | None = None,
     ) -> None:
         self._registry = registry
         self._config = config or SchedulerConfig()

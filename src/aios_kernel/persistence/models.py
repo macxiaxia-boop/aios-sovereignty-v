@@ -296,6 +296,7 @@ def goal_to_orm(p):
     the Pydantic models from the same JSON.
     """
     import json as _json
+
     from aios_kernel.domain.goal import (
         Constraint,
         EnvSnapshot,
@@ -447,7 +448,8 @@ def plan_to_orm(p):
     # Pydantic.model_validate() may leave steps/dependencies as raw dicts
     # if the Plan field type is generic `list`. Re-hydrate via PlanStep/
     # Dependency so .model_dump() works on the revalidator side.
-    from aios_kernel.domain.plan import PlanStep as _PlanStep, Dependency as _Dep
+    from aios_kernel.domain.plan import Dependency as _Dep
+    from aios_kernel.domain.plan import PlanStep as _PlanStep
     def _coerce(items, model_cls):
         out = []
         for s in items or []:

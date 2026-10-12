@@ -31,8 +31,9 @@ import asyncio
 import math
 import re
 import time
+from collections.abc import Iterable
 from dataclasses import dataclass, field
-from typing import Iterable, Protocol, runtime_checkable
+from typing import Protocol, runtime_checkable
 
 from aios_kernel.context.models import (
     MAX_CONTEXT_TOKENS,

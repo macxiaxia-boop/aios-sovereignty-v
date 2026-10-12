@@ -15,8 +15,8 @@ Co-Authored-By: Claude Code (Agent 2 / Codex) via AIOS R1503
 """
 from __future__ import annotations
 
+from collections.abc import Iterable
 from dataclasses import dataclass, field
-from typing import Iterable
 
 
 @dataclass

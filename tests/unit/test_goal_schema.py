@@ -14,9 +14,8 @@ Covers:
 """
 from __future__ import annotations
 
-import json
 import re
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from uuid import UUID
 
 import pytest
@@ -50,7 +49,7 @@ def test_goal_required_fields():
 
 # 2. Optional fields
 def test_goal_optional_fields():
-    deadline = datetime(2026, 12, 31, 23, 59, 59, tzinfo=timezone.utc)
+    deadline = datetime(2026, 12, 31, 23, 59, 59, tzinfo=UTC)
     g = _make_goal(description="Long rationale", deadline=deadline, tags=["v1", "p0"])
     assert g.description == "Long rationale"
     assert g.deadline == deadline

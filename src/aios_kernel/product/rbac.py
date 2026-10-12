@@ -1,18 +1,17 @@
 """rbac.py - E004 Enterprise Permission (RBAC)."""
 from __future__ import annotations
-import uuid
+
 from datetime import UTC, datetime
-from typing import Optional
 
 from pydantic import Field
 
-from aios_kernel.domain.envelope import Envelope, utcnow
+from aios_kernel.domain.envelope import Envelope
 
 
 class RBACRole(Envelope):
     name: str
     permissions: list[str] = Field(default_factory=list)
-    tenant_id: Optional[str] = None
+    tenant_id: str | None = None
 
     def has_permission(self, resource: str, action: str) -> bool:
         return f"{resource}:{action}" in self.permissions or "*:*" in self.permissions
@@ -23,7 +22,7 @@ class RBACManager:
         self._roles: dict[str, RBACRole] = {}
         self._audit_log: list[dict] = []
 
-    def create_role(self, name: str, permissions: list[str], tenant_id: Optional[str] = None) -> RBACRole:
+    def create_role(self, name: str, permissions: list[str], tenant_id: str | None = None) -> RBACRole:
         r = RBACRole(name=name, permissions=permissions, tenant_id=tenant_id)
         self._roles[str(r.id)] = r
         return r

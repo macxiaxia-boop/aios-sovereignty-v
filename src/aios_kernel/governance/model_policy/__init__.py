@@ -19,9 +19,9 @@ Phase F reuse:
 """
 from __future__ import annotations
 
-from .snapshot import PolicySnapshot, load_policy, verify_signature, sign_yaml
-from .adapter_base import ModelPolicyAdapter, DriftReport
-from .reconciler import reconcile, main
+from .adapter_base import DriftReport, ModelPolicyAdapter
+from .reconciler import main, reconcile
+from .snapshot import PolicySnapshot, load_policy, sign_yaml, verify_signature
 
 __all__ = [
     "PolicySnapshot",

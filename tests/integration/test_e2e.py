@@ -11,15 +11,15 @@ Co-Authored-By: Claude Code (Agent 1+4) via AIOS R1503 FINAL
 from __future__ import annotations
 
 import asyncio
-import json
 import time
 from pathlib import Path
 
 import pytest
 from fastapi.testclient import TestClient
 
-from aios_kernel.agents.protocol import AgentMessage, AgentProtocol, MessageType
+from aios_kernel.agents.protocol import AgentProtocol, MessageType
 from aios_kernel.agents.registry import AgentRegistry
+from aios_kernel.domain.task import Task, TaskStatus, TaskType
 from aios_kernel.gateway.auth import RateLimiter, sign_jwt, verify_jwt
 from aios_kernel.gateway.http import create_app
 from aios_kernel.gateway.mcp import MCPServer
@@ -28,7 +28,6 @@ from aios_kernel.scheduler import AIOSScheduler, Priority, SchedulerConfig
 from aios_kernel.state_machine import task_fsm, workflow_fsm
 from aios_kernel.workers.base import HealthReport, HealthStatus, WorkerAdapter
 from aios_kernel.workers.registry import WorkerRegistry
-from aios_kernel.domain.task import Task, TaskStatus, TaskType
 from aios_kernel.workflows.workflow import WorkflowStatus
 
 

@@ -1,13 +1,14 @@
 """trace_miner.py - C002 Trace Mining layer."""
 from __future__ import annotations
+
 import uuid
-from collections import Counter, defaultdict
-from datetime import UTC, datetime
-from typing import Iterable, Optional
+from collections import defaultdict
+from collections.abc import Iterable
+from datetime import datetime
 
 from pydantic import Field
 
-from aios_kernel.domain.envelope import Envelope, utcnow
+from aios_kernel.domain.envelope import Envelope
 from aios_kernel.persistence.models import TraceORM
 
 
@@ -15,8 +16,8 @@ class TracePattern(Envelope):
     pattern_type: str  # "success" | "failure" | "anomaly"
     description: str
     frequency: int = 0
-    first_seen: Optional[datetime] = None
-    last_seen: Optional[datetime] = None
+    first_seen: datetime | None = None
+    last_seen: datetime | None = None
     example_trace_ids: list[str] = Field(default_factory=list)
 
 

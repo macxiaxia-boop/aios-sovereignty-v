@@ -19,9 +19,10 @@ import os
 import subprocess
 import sys
 import time
-from datetime import datetime, timezone
+from collections.abc import Callable
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any
 
 # Bootstrap sys.path so we can `import tests.sim.mocks.*`.
 # runner.py lives at <kernel>/tests/sim/runner.py -> parents[3] == <kernel>
@@ -34,7 +35,7 @@ from tests.sim.mocks.crash_injector import (  # noqa: E402
     CrashInjector,
     KernelHandle,
 )
-from tests.sim.mocks.mock_clock import MockClock, RealClock  # noqa: E402
+from tests.sim.mocks.mock_clock import MockClock  # noqa: E402
 from tests.sim.mocks.mock_evidence import (  # noqa: E402
     EvidenceRecord,
     MockEvidenceStore,
@@ -42,22 +43,13 @@ from tests.sim.mocks.mock_evidence import (  # noqa: E402
 )
 from tests.sim.mocks.mock_tasks import (  # noqa: E402
     SEED,
-    TASK_TYPES,
-    TASKS_PER_TYPE,
     TOTAL_TASKS,
-    MockTask,
     build_mock_tasks,
 )
 from tests.sim.mocks.mock_workers import (  # noqa: E402
-    CrashWorker,
     FakeDoneWorker,
-    PermanentFailWorker,
-    RetryableFailWorker,
     SuccessWorker,
-    TimeoutWorker,
-    WorkerCrashException,
     WorkerResult,
-    WorkerTimeoutException,
 )
 
 
@@ -68,8 +60,8 @@ def _result(
     expected: Any,
     observed: Any,
     duration_s: float,
-    details: Optional[Dict[str, Any]] = None,
-) -> Dict[str, Any]:
+    details: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     return {
         "id": cid,
         "title": title,
@@ -86,10 +78,10 @@ def _result(
 # ---------------------------------------------------------------------------
 
 
-def ac1_goal_persistence() -> Dict[str, Any]:
+def ac1_goal_persistence() -> dict[str, Any]:
     t0 = time.perf_counter()
     clock = MockClock()
-    store: Dict[str, Dict[str, Any]] = {}
+    store: dict[str, dict[str, Any]] = {}
     for i in range(100):
         gid = f"goal-{i:03d}"
         store[gid] = {
@@ -114,7 +106,7 @@ def ac1_goal_persistence() -> Dict[str, Any]:
     )
 
 
-def ac2_task_state_machine() -> Dict[str, Any]:
+def ac2_task_state_machine() -> dict[str, Any]:
     t0 = time.perf_counter()
     transitions = {
         "Pending": {"Running"},
@@ -150,7 +142,7 @@ def ac2_task_state_machine() -> Dict[str, Any]:
     )
 
 
-def ac3_plan_versioning() -> Dict[str, Any]:
+def ac3_plan_versioning() -> dict[str, Any]:
     t0 = time.perf_counter()
     clock = MockClock()
     plans = []
@@ -175,7 +167,7 @@ def ac3_plan_versioning() -> Dict[str, Any]:
     )
 
 
-def ac4_durable_execution() -> Dict[str, Any]:
+def ac4_durable_execution() -> dict[str, Any]:
     t0 = time.perf_counter()
     exec_counts = {"a1": 0, "a2": 0, "a3": 0}
     completed_before_crash = ["a1"]
@@ -194,12 +186,12 @@ def ac4_durable_execution() -> Dict[str, Any]:
     )
 
 
-def ac5_worker_swap() -> Dict[str, Any]:
+def ac5_worker_swap() -> dict[str, Any]:
     t0 = time.perf_counter()
     t1 = build_mock_tasks(seed=SEED)[:30]
     worker_a = SuccessWorker()
 
-    def worker_b(_task: Dict[str, Any]) -> WorkerResult:
+    def worker_b(_task: dict[str, Any]) -> WorkerResult:
         return WorkerResult(success=True, attempts=1)
 
     results_a = [worker_a.execute(t.to_dict()) for t in t1]
@@ -224,7 +216,7 @@ def ac5_worker_swap() -> Dict[str, Any]:
     )
 
 
-def ac6_crash_recovery() -> Dict[str, Any]:
+def ac6_crash_recovery() -> dict[str, Any]:
     t0 = time.perf_counter()
     inj = CrashInjector(clock=MockClock())
     h = inj.spawn(initial_pid=999, state={"tasks": 0})
@@ -247,7 +239,7 @@ def ac6_crash_recovery() -> Dict[str, Any]:
     )
 
 
-def ac7_100_task_closed_loop() -> Dict[str, Any]:
+def ac7_100_task_closed_loop() -> dict[str, Any]:
     t0 = time.perf_counter()
     tasks = build_mock_tasks(seed=SEED)
     evidence = MockEvidenceStore()
@@ -264,7 +256,7 @@ def ac7_100_task_closed_loop() -> Dict[str, Any]:
                 task_id=task.id,
                 artifact_id=result.artifact.id,
                 payload=result.artifact.payload,
-                signed_at=datetime.now(timezone.utc).isoformat(),
+                signed_at=datetime.now(UTC).isoformat(),
                 verdict="PENDING",
             ))
         verdict = verify_worker_evidence(evidence, result.artifact.evidence_ids)
@@ -283,7 +275,7 @@ def ac7_100_task_closed_loop() -> Dict[str, Any]:
     )
 
 
-def ac8_false_completion_rejected() -> Dict[str, Any]:
+def ac8_false_completion_rejected() -> dict[str, Any]:
     t0 = time.perf_counter()
     fake = FakeDoneWorker()
     evidence = MockEvidenceStore()
@@ -309,7 +301,7 @@ def ac8_false_completion_rejected() -> Dict[str, Any]:
     )
 
 
-def ac9_evidence_completeness() -> Dict[str, Any]:
+def ac9_evidence_completeness() -> dict[str, Any]:
     t0 = time.perf_counter()
     tasks = build_mock_tasks(seed=SEED)
     worker = SuccessWorker()
@@ -327,7 +319,7 @@ def ac9_evidence_completeness() -> Dict[str, Any]:
                 task_id=task.id,
                 artifact_id=result.artifact.id,
                 payload=result.artifact.payload,
-                signed_at=datetime.now(timezone.utc).isoformat(),
+                signed_at=datetime.now(UTC).isoformat(),
                 verdict="PASS",
             ))
         cost_records.append({"task_id": task.id, "cost": float(task.budget), "currency": "CNY"})
@@ -354,7 +346,7 @@ def ac9_evidence_completeness() -> Dict[str, Any]:
     )
 
 
-def ac10_verifier_independent() -> Dict[str, Any]:
+def ac10_verifier_independent() -> dict[str, Any]:
     t0 = time.perf_counter()
     worker_pid = os.getpid()
     proc = subprocess.run(
@@ -378,7 +370,7 @@ def ac10_verifier_independent() -> Dict[str, Any]:
     )
 
 
-CRITERIA: List[Callable[[], Dict[str, Any]]] = [
+CRITERIA: list[Callable[[], dict[str, Any]]] = [
     ac1_goal_persistence,
     ac2_task_state_machine,
     ac3_plan_versioning,
@@ -392,14 +384,14 @@ CRITERIA: List[Callable[[], Dict[str, Any]]] = [
 ]
 
 
-def run_all_acceptance_tests() -> Dict[str, Any]:
+def run_all_acceptance_tests() -> dict[str, Any]:
     wall_start = time.perf_counter()
     clock = MockClock()
     sim_before = clock.now().isoformat()
     sim_after_dt = clock.advance_days(7 * 3)  # 3 simulated weeks
     sim_after = sim_after_dt.isoformat()
 
-    results: List[Dict[str, Any]] = []
+    results: list[dict[str, Any]] = []
     for fn in CRITERIA:
         try:
             r = fn()
@@ -419,7 +411,7 @@ def run_all_acceptance_tests() -> Dict[str, Any]:
     summary = {
         "schema_version": "1.0",
         "title": "AIOS Phase A acceptance criteria (T0040 simulation harness)",
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": datetime.now(UTC).isoformat(),
         "wall_clock_seconds": round(wall_duration, 4),
         "criteria_total": len(results),
         "criteria_passed": sum(1 for r in results if r["passed"]),
@@ -437,7 +429,7 @@ def run_all_acceptance_tests() -> Dict[str, Any]:
     return summary
 
 
-def main(argv: Optional[List[str]] = None) -> int:
+def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser()
     p.add_argument("--output", help="JSON output path", default=None)
     args = p.parse_args(argv)

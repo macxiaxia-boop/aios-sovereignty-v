@@ -1,5 +1,6 @@
 from __future__ import annotations
-from .base import WorkerAdapter, _StubAdapterBase
+
+from .base import _StubAdapterBase
 
 
 class OpenClawAdapter(_StubAdapterBase):

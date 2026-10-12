@@ -17,7 +17,6 @@ from __future__ import annotations
 
 import os
 import shutil
-import subprocess
 import sys
 import tempfile
 import time
@@ -35,7 +34,6 @@ from tests.integration.crash_injector import (  # noqa: E402
     CrashInjector,
     KernelProcess,
 )
-
 
 # ===========================================================================
 # Fixtures

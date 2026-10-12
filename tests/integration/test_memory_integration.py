@@ -1,14 +1,19 @@
 """test_memory_integration.py — B010 Memory+Context integration smoke."""
 from __future__ import annotations
+
 import pytest
 
 
 @pytest.mark.asyncio
 async def test_working_memory_long_term_chain():
     """Working memory + Long-term memory chain — basic integration."""
-    from aios_kernel.context.working_memory import WorkingMemoryService
     from aios_kernel.context.long_term_memory import LongTermMemoryService
-    from aios_kernel.domain.services.repository import session_scope, make_session_factory, make_engine
+    from aios_kernel.context.working_memory import WorkingMemoryService
+    from aios_kernel.domain.services.repository import (
+        make_engine,
+        make_session_factory,
+        session_scope,
+    )
     from aios_kernel.persistence import create_all, drop_all
     eng = make_engine()
     await create_all(eng)
@@ -33,9 +38,13 @@ async def test_working_memory_long_term_chain():
 @pytest.mark.asyncio
 async def test_session_isolation_integration():
     """Working memory sessions isolated."""
-    from aios_kernel.context.working_memory import WorkingMemoryService
     from aios_kernel.context.long_term_memory import LongTermMemoryService
-    from aios_kernel.domain.services.repository import session_scope, make_session_factory, make_engine
+    from aios_kernel.context.working_memory import WorkingMemoryService
+    from aios_kernel.domain.services.repository import (
+        make_engine,
+        make_session_factory,
+        session_scope,
+    )
     from aios_kernel.persistence import create_all, drop_all
     eng = make_engine()
     await create_all(eng)

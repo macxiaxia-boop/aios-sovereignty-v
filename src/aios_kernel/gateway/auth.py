@@ -47,7 +47,6 @@ def _hmac_sha256(key: bytes, msg: bytes) -> str:
 
 def sign_jwt(payload: dict, secret: bytes, *, ttl_s: int = 3600) -> str:
     """Compact JWT (HS256)."""
-    import base64
     import json
 
     header = {"alg": "HS256", "typ": "JWT"}

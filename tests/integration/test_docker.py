@@ -1,6 +1,7 @@
 """test_docker.py - E006."""
-import yaml
 from pathlib import Path
+
+import yaml
 
 
 def test_dockerfile_exists():

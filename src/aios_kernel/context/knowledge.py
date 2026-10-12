@@ -6,10 +6,10 @@ Embeddings: dev 用 hash-based 1536-dim (deterministic, no API).
 Storage: sqlite + pgvector (prod). dev = sqlite JSON column.
 """
 from __future__ import annotations
+
 import hashlib
 import math
 import uuid
-from typing import Any
 
 from pydantic import Field
 

@@ -9,18 +9,11 @@ Covers:
 from __future__ import annotations
 
 import json
-import os
-import shutil
 import sqlite3
-import tempfile
-import subprocess
-from pathlib import Path
-from unittest.mock import patch
 
 import pytest
-import yaml
-from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
 
 @pytest.fixture
@@ -121,8 +114,8 @@ def test_e2e_dry_run_no_writes(tmp_path, sample_policy_yaml, monkeypatch):
     oc_before = md5(oc_db.read_bytes()).hexdigest() if oc_db.exists() else "NONE"
 
     # Run via Python module directly (avoid subprocess for simplicity)
-    from aios_kernel.governance.model_policy.snapshot import load_policy
     from aios_kernel.governance.model_policy.reconciler import reconcile
+    from aios_kernel.governance.model_policy.snapshot import load_policy
     policy = load_policy(yaml_path, pub_path)
     reports = reconcile(policy, dry_run=True)
 

@@ -1,11 +1,9 @@
 """business_kpi.py - D006 Business Outcome KPI dashboard."""
 from __future__ import annotations
+
 import hashlib
 import uuid
-from datetime import UTC, datetime
-from typing import Optional
-
-from pydantic import Field
+from datetime import datetime
 
 from aios_kernel.domain.envelope import Envelope, utcnow
 
@@ -16,7 +14,7 @@ class BusinessKPI(Envelope):
     target: float = 0.0
     trend: str = "stable"
     freshness: float = 1.0
-    last_updated: Optional[datetime] = None
+    last_updated: datetime | None = None
 
 
 class BusinessKPIDashboard:
@@ -61,7 +59,7 @@ class BusinessKPIDashboard:
                 self.track_kpi(name, value, target)
         return {name: kpi.value for name, kpi in self._kpis.items()}
 
-    def check_skill_promotion_trigger(self, campaign_roi: float) -> Optional[str]:
+    def check_skill_promotion_trigger(self, campaign_roi: float) -> str | None:
         if campaign_roi > 2.0:
             skill_id = f"campaign_roi_{hashlib.md5(str(campaign_roi).encode()).hexdigest()[:8]}"
             return skill_id

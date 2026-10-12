@@ -21,7 +21,6 @@ from __future__ import annotations
 
 import json
 import sys
-import tempfile
 from pathlib import Path
 
 import pytest
@@ -36,11 +35,11 @@ from aios_kernel.learning.clustering import (  # noqa: E402
     FailureTrace,
 )
 from aios_kernel.learning.cross_agent_knowledge import (  # noqa: E402
+    CROSS_AGENT_KNOWLEDGE_DIR,
     AgentName,
     CapabilityIndex,
     CrossAgentKnowledge,
     CrossAgentKnowledgeService,
-    CROSS_AGENT_KNOWLEDGE_DIR,
 )
 
 
@@ -368,7 +367,12 @@ def test_goalkeeper_guard_constructs_with_knowledge_service(tmp_path: Path) -> N
 def test_goalkeeper_guard_references_knowledge_without_crashing(tmp_path: Path) -> None:
     """GoalGuard.validate() with knowledge_service must not crash on PASS."""
     from aios_kernel.governance.goal_guard import (
-        EvidenceRequest, FailureMode, GoalContract, GoalGuard, OpType, PermissionScope,
+        EvidenceRequest,
+        FailureMode,
+        GoalContract,
+        GoalGuard,
+        OpType,
+        PermissionScope,
     )
     svc = CrossAgentKnowledgeService(root=tmp_path)
     # Add a cluster that matches the failure_modes name

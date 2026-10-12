@@ -10,7 +10,6 @@ import hashlib
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
-from typing import List, Optional, Dict
 
 import yaml
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
@@ -27,10 +26,10 @@ class PolicySnapshot:
     authorizer: str
     schema_version: str
     status: str
-    allowlist: List[str] = field(default_factory=list)
-    denylist: List[str] = field(default_factory=list)
-    optional: List[str] = field(default_factory=list)
-    providers: List[dict] = field(default_factory=list)
+    allowlist: list[str] = field(default_factory=list)
+    denylist: list[str] = field(default_factory=list)
+    optional: list[str] = field(default_factory=list)
+    providers: list[dict] = field(default_factory=list)
     enforcement: dict = field(default_factory=dict)
     credential_sync: dict = field(default_factory=dict)
     governance: dict = field(default_factory=dict)
@@ -82,7 +81,7 @@ def verify_signature(yaml_path: Path, pub_key_path: Path) -> bool:
         return False
 
 
-def load_policy(yaml_path: Path, pub_key_path: Optional[Path] = None) -> PolicySnapshot:
+def load_policy(yaml_path: Path, pub_key_path: Path | None = None) -> PolicySnapshot:
     """Load + verify policy from YAML file."""
     raw = Path(yaml_path).read_text(encoding="utf-8")
     parsed = yaml.safe_load(raw)
@@ -128,7 +127,7 @@ def _parse_dt(s: str) -> datetime:
         return datetime.fromtimestamp(0)
 
 
-def _flatten_models(providers: List[dict]) -> List[str]:
+def _flatten_models(providers: list[dict]) -> list[str]:
     """Flatten providers[].models[].id into a single allowlist."""
     out = []
     for p in providers:

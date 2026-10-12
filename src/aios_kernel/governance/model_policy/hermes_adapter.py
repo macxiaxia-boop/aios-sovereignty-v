@@ -11,7 +11,6 @@ Does NOT write:
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Optional
 
 import yaml
 
@@ -22,7 +21,7 @@ from .snapshot import PolicySnapshot
 class HermesAdapter(ModelPolicyAdapter):
     name = "hermes"
 
-    def __init__(self, cli_config_path: Optional[Path] = None):
+    def __init__(self, cli_config_path: Path | None = None):
         self.cli_config_path = cli_config_path or (Path.home() / ".hermes" / "cli-config.yaml")
 
     def current_state(self) -> dict:

@@ -1,5 +1,6 @@
 """test_failure_detector.py - C003 tests."""
 from __future__ import annotations
+
 from datetime import UTC, datetime
 from unittest.mock import MagicMock
 

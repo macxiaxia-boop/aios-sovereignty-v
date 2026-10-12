@@ -2,17 +2,15 @@
 from __future__ import annotations
 
 import asyncio
-import json
 import time
 from datetime import datetime
 from pathlib import Path
 
 import pytest
 
-from aios_kernel.runtime.cron import CronManager, CronJob, matches
+from aios_kernel.runtime.cron import CronManager, matches
 from aios_kernel.runtime.memory import MemoryPersistence
 from aios_kernel.runtime.process import ProcessManager, ProcessStatus
-
 
 # ----- process.py ----------------------------------------------------------
 

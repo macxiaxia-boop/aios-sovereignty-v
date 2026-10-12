@@ -29,9 +29,9 @@ import json
 import sys
 import time
 import traceback
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 
 # Bootstrap sys.path so we can `import tests.sim.mocks.*` from any cwd.
 _THIS = Path(__file__).resolve()
@@ -51,7 +51,6 @@ from tests.sim.mocks.mock_evidence import (  # noqa: E402
 )
 from tests.sim.mocks.mock_tasks import (  # noqa: E402
     SEED,
-    TASK_TYPES,
     TOTAL_TASKS,
     build_mock_tasks,
     build_mock_tasks_by_type,
@@ -64,7 +63,6 @@ from tests.sim.mocks.mock_workers import (  # noqa: E402
     SuccessWorker,
     TimeoutWorker,
     WorkerCrashException,
-    WorkerResult,
 )
 from tests.sim.runner import run_all_acceptance_tests  # noqa: E402
 
@@ -78,10 +76,10 @@ def _assert(cond: bool, msg: str) -> None:
         raise TestFailure(msg)
 
 
-def run_e2e() -> Dict[str, Any]:
+def run_e2e() -> dict[str, Any]:
     """Run the full e2e and return a result dict (also written to disk)."""
     wall_start = time.perf_counter()
-    checks: List[Dict[str, Any]] = []
+    checks: list[dict[str, Any]] = []
 
     # ---- 1. determinism -------------------------------------------------
     t_a = build_mock_tasks(seed=SEED)
@@ -144,7 +142,7 @@ def run_e2e() -> Dict[str, Any]:
             task_id=sample["id"],
             artifact_id=success.artifact.id,
             payload="success_payload",
-            signed_at=datetime.now(timezone.utc).isoformat(),
+            signed_at=datetime.now(UTC).isoformat(),
             verdict="PENDING",
         ))
     # also stash a tampered record for the corruption test
@@ -154,7 +152,7 @@ def run_e2e() -> Dict[str, Any]:
         task_id=sample["id"],
         artifact_id="art-x",
         payload="legit_at_put",
-        signed_at=datetime.now(timezone.utc).isoformat(),
+        signed_at=datetime.now(UTC).isoformat(),
         verdict="PENDING",
     ))
     _assert(store.verify(success.artifact.evidence_ids[0]),
@@ -214,7 +212,7 @@ def run_e2e() -> Dict[str, Any]:
     report = {
         "schema_version": "1.0",
         "title": "T0040 simulation harness e2e",
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": datetime.now(UTC).isoformat(),
         "wall_clock_seconds": round(wall, 4),
         "checks": checks,
         "all_passed": True,

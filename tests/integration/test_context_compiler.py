@@ -28,7 +28,6 @@ network — so the suite is hermetic and fast.
 """
 from __future__ import annotations
 
-import asyncio
 import time
 
 import pytest
@@ -37,14 +36,11 @@ from aios_kernel.context import (
     MAX_CONTEXT_TOKENS,
     CandidateChunk,
     CompiledContext,
-    CandidateChunk,
     ContextSource,
     DefaultContextCompiler,
     StubSourceProvider,
     TaskDescriptor,
-    WordTokenizer,
 )
-
 
 # ---------------------------------------------------------------------------
 # helpers

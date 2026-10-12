@@ -17,9 +17,9 @@ Co-Authored-By: Claude Code <noreply@anthropic.com>
 from __future__ import annotations
 
 import logging
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from enum import Enum
-from typing import Any, Callable, Generic, TypeVar
+from typing import Any, Generic, TypeVar
 
 log = logging.getLogger("aios_kernel.state_machine")
 
@@ -130,9 +130,8 @@ __all__ = [
 
 # ----- Concrete FSMs binding WorkflowStatus + TaskStatus --------------------
 
-from aios_kernel.domain.task import TaskStatus, TaskType  # noqa: E402
+from aios_kernel.domain.task import TaskStatus  # noqa: E402
 from aios_kernel.workflows.workflow import WorkflowStatus  # noqa: E402
-
 
 # Workflow FSM: PENDING → RUNNING → COMPLETED|FAILED|CANCELLED
 WORKFLOW_FSM_TRANSITIONS: list[Transition[WorkflowStatus, Any]] = [

@@ -15,14 +15,13 @@ from __future__ import annotations
 
 import hashlib
 import uuid
-from datetime import UTC, datetime
+from datetime import datetime
 from enum import Enum
-from typing import Any, Optional
+from typing import Any
 
 from pydantic import Field
 
 from aios_kernel.domain.envelope import Envelope, utcnow
-
 
 # ---------- Enums -------------------------------------------------------
 
@@ -86,7 +85,7 @@ class CRMEvent(Envelope):
     severity: Severity = Severity.MEDIUM
     product: str = ""
     action_recommended: bool = False
-    ingested_at: Optional[datetime] = None
+    ingested_at: datetime | None = None
 
 
 # ---------- Helpers -----------------------------------------------------
@@ -129,7 +128,7 @@ class CRMIngestor:
 
     REQUIRED_FIELDS = ("customer_id", "event_type")
 
-    def __init__(self, auditor: Optional[CRMAuditor] = None) -> None:
+    def __init__(self, auditor: CRMAuditor | None = None) -> None:
         self._events: list[CRMEvent] = []
         self._auditor = auditor if auditor is not None else CRMAuditor()
 
@@ -194,7 +193,7 @@ class CRMIngestor:
 
 # ---------- Categorization ----------------------------------------------
 
-def _keyword_to_category(keyword: str) -> Optional[str]:
+def _keyword_to_category(keyword: str) -> str | None:
     """Map a free-form keyword to one of the 5 categories (case-insensitive)."""
     k = keyword.lower().strip()
     for category, keywords in CATEGORY_EVENT_TYPES.items():

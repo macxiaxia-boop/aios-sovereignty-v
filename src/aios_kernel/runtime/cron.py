@@ -15,11 +15,10 @@ from __future__ import annotations
 
 import asyncio
 import logging
-import re
 import time
+from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Awaitable, Callable
 
 log = logging.getLogger("aios_kernel.runtime.cron")
 

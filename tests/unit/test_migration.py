@@ -109,8 +109,9 @@ def test_current_revision_is_003(sqlite_url):
 @pytest.mark.asyncio
 async def test_orm_can_read_migrated_schema(sqlite_url):
     _run_alembic(["upgrade", "head"], sqlite_url)
-    from aios_kernel.domain.services.repository import make_engine
     from sqlalchemy import text as sa_text
+
+    from aios_kernel.domain.services.repository import make_engine
     engine = make_engine(sqlite_url)
     async with engine.connect() as conn:
         for table in ("goals", "tasks", "plans", "artifacts", "evidences", "traces",

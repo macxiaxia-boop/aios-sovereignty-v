@@ -36,7 +36,6 @@ from datetime import UTC, datetime, timedelta
 
 import pytest
 
-
 # ---------------------------------------------------------------------------
 # 1. track_basic
 # ---------------------------------------------------------------------------
@@ -83,9 +82,9 @@ def test_roi_calc_correct_formula_and_zero_cost_undefined():
     Cost == 0 → roi is None (undefined; we do not fake a metric).
     """
     from aios_kernel.business import (
+        DEFAULT_VALUE_PER_CONVERSION,
         Channel,
         MarketingCampaign,
-        DEFAULT_VALUE_PER_CONVERSION,
     )
 
     # 1) Standard case: 50 conv * ¥100 - 20 cost  ->  ROI = (5000-20)/20 = 249.0
@@ -176,8 +175,8 @@ def test_skill_recommendation_high_roi_emits_recommendation():
     """ROI > threshold → SkillRecommendation emitted; skill_id, channel,
     roi, reason, audit_log all populated; idempotent on repeated calls."""
     from aios_kernel.business import (
-        Channel,
         DEFAULT_ROI_THRESHOLD,
+        Channel,
         MarketingCampaign,
         MarketingFeedbackService,
     )

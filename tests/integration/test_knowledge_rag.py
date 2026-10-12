@@ -1,5 +1,6 @@
 """test_knowledge_rag.py - B005 Knowledge RAG integration test."""
 from __future__ import annotations
+
 import random
 
 
@@ -22,7 +23,7 @@ def test_hash_embed_deterministic():
 
 
 def test_cosine_identical():
-    from aios_kernel.context.knowledge import hash_embed, cosine
+    from aios_kernel.context.knowledge import cosine, hash_embed
     a = hash_embed("hello")
     assert cosine(a, a) > 0.99
 

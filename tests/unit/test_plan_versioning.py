@@ -7,9 +7,8 @@ acceptance test for the spec.
 from __future__ import annotations
 
 import pytest
-from pydantic import ValidationError
 
-from aios_kernel.domain import Dependency, DependencyKind, Plan, PlanStep, StepType
+from aios_kernel.domain import Dependency, PlanStep, StepType
 from aios_kernel.domain.services import PlanService
 from aios_kernel.domain.services.repository import InMemoryRepository
 

@@ -27,7 +27,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from aios_kernel.domain.goal import FailureMode, Goal, GoalStatus
 from aios_kernel.domain.services.repository import InMemoryRepository
-from aios_kernel.learning.clustering import FailureCluster, FailurePatternMerger, FailureTrace
+from aios_kernel.learning.clustering import FailureCluster, FailureTrace
 from aios_kernel.learning.failure_feedback import (
     DEFAULT_MIN_OCCURRENCE_FOR_FEEDBACK,
     MAX_MODES_PER_APPLY,
@@ -38,10 +38,11 @@ from aios_kernel.learning.failure_feedback_runner import (
     JsonlFileTraceSource,
     _build_argparser,
     _summary,
-    main as runner_main,
     run_once,
 )
-
+from aios_kernel.learning.failure_feedback_runner import (
+    main as runner_main,
+)
 
 # ----- helpers --------------------------------------------------------------
 

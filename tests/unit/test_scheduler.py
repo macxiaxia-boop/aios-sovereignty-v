@@ -15,8 +15,8 @@ import uuid
 
 import pytest
 
-from aios_kernel.domain.task import Task, TaskStatus, TaskType
 from aios_kernel.domain.artifact import Artifact, ArtifactType
+from aios_kernel.domain.task import Task, TaskType
 from aios_kernel.scheduler import (
     AIOSScheduler,
     CircuitBreaker,
@@ -26,7 +26,6 @@ from aios_kernel.scheduler import (
 )
 from aios_kernel.workers.base import HealthReport, HealthStatus, WorkerAdapter
 from aios_kernel.workers.registry import WorkerRegistry
-
 
 # ----- Fake adapters --------------------------------------------------------
 

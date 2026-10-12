@@ -89,14 +89,14 @@ def _maybe_crash(hook, expected, marker_path=None):
 
 
 async def _goal_create(db_url, config, result_path):
+    from aios_kernel.domain.services.goal_service import GoalService
     from aios_kernel.domain.services.repository import (
         make_engine,
         make_session_factory,
         session_scope,
     )
-    from aios_kernel.domain.services.goal_service import GoalService
-    from aios_kernel.persistence.repository import SqlAlchemyRepository
     from aios_kernel.persistence import create_all
+    from aios_kernel.persistence.repository import SqlAlchemyRepository
 
     engine = make_engine(db_url)
     try:
@@ -146,12 +146,12 @@ async def _goal_create(db_url, config, result_path):
 
 async def _workflow_run(db_url, config, result_path):
     from aios_kernel.workflows import (
+        ActivityResult,
         PGCheckpointerEngine,
         RetryPolicy,
         StepMeta,
         Workflow,
         WorkflowStep,
-        ActivityResult,
         from_callable,
     )
 
@@ -251,7 +251,7 @@ async def _workflow_run(db_url, config, result_path):
 
 
 async def _plan_revert(db_url, config, result_path):
-    from aios_kernel.domain.plan import DependencyKind, PlanStep, StepType
+    from aios_kernel.domain.plan import PlanStep, StepType
     from aios_kernel.domain.services.goal_service import GoalService
     from aios_kernel.domain.services.plan_service import PlanService
     from aios_kernel.domain.services.repository import (
@@ -294,8 +294,9 @@ async def _plan_revert(db_url, config, result_path):
                 repo = SqlAlchemyRepository(session)
                 plan_svc2 = PlanService(repo)
                 from sqlalchemy import select
-                from aios_kernel.persistence.models import PlanORM
+
                 from aios_kernel.domain.plan import Plan as PydPlan
+                from aios_kernel.persistence.models import PlanORM
 
                 row = (
                     await session.execute(
@@ -318,8 +319,9 @@ async def _plan_revert(db_url, config, result_path):
             repo = SqlAlchemyRepository(session)
             plan_svc3 = PlanService(repo)
             from sqlalchemy import select
-            from aios_kernel.persistence.models import PlanORM
+
             from aios_kernel.domain.plan import Plan as PydPlan
+            from aios_kernel.persistence.models import PlanORM
 
             row = (
                 await session.execute(
@@ -456,8 +458,9 @@ async def _budget_check(db_url, config, result_path):
             async with factory() as session:
                 repo = SqlAlchemyRepository(session)
                 from sqlalchemy import select
-                from aios_kernel.persistence.models import GoalORM
+
                 from aios_kernel.domain.goal import Goal as PydGoal
+                from aios_kernel.persistence.models import GoalORM
 
                 row = (
                     await session.execute(
@@ -479,8 +482,9 @@ async def _budget_check(db_url, config, result_path):
         async with session_scope(factory) as session:
             repo = SqlAlchemyRepository(session)
             from sqlalchemy import select
-            from aios_kernel.persistence.models import GoalORM
+
             from aios_kernel.domain.goal import Goal as PydGoal
+            from aios_kernel.persistence.models import GoalORM
 
             row = (
                 await session.execute(
@@ -513,7 +517,7 @@ async def _evidence_write(db_url, config, result_path):
         make_session_factory,
         session_scope,
     )
-    from aios_kernel.domain.services.task_service import TaskService, TaskStatus
+    from aios_kernel.domain.services.task_service import TaskService
     from aios_kernel.persistence import create_all
     from aios_kernel.persistence.repository import SqlAlchemyRepository
 
@@ -643,22 +647,23 @@ async def _verifier_daemon(db_url, config, result_path):
 
 async def _verify_state(db_url, config, result_path):
     """Read state from DB and dump to result."""
+    from sqlalchemy import select
+
+    from aios_kernel.persistence.models import EvidenceORM, GoalORM, PlanORM
     from aios_kernel.workflows.persistence import (
-        WorkflowRunRow,
-        WorkflowCheckpointRow,
         ActivityHistoryRow,
+        WorkflowCheckpointRow,
+        WorkflowRunRow,
         make_engine,
         make_session_factory,
     )
-    from aios_kernel.persistence.models import GoalORM, PlanORM, EvidenceORM, TaskORM
-    from sqlalchemy import select, or_
 
     engine = make_engine(db_url)
     try:
         # R1347: ensure all tables exist (workflow + kernel persistence) so
         # verify_state works on fresh DB without prior worker run.
-        from aios_kernel.workflows import init_schema as _init_wf_schema
         from aios_kernel.persistence import create_all as _create_all_kernel
+        from aios_kernel.workflows import init_schema as _init_wf_schema
         await _init_wf_schema(engine)
         await _create_all_kernel(engine)
         factory = make_session_factory(engine)
@@ -810,12 +815,12 @@ async def _workflow_resume(db_url, config, result_path):
     """Resume a workflow run from latest checkpoint. Used after crash to
     verify the workflow completes."""
     from aios_kernel.workflows import (
+        ActivityResult,
         PGCheckpointerEngine,
         RetryPolicy,
         StepMeta,
         Workflow,
         WorkflowStep,
-        ActivityResult,
         from_callable,
     )
 

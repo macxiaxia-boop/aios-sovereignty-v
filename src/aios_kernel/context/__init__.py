@@ -1,15 +1,4 @@
 """__init__.py - aios_kernel.context (Phase B B002-B005)."""
-from aios_kernel.context.working_memory import (
-    DEFAULT_TTL,
-    WorkingMemoryEntry,
-    WorkingMemoryService,
-)
-from aios_kernel.context.long_term_memory import (
-    MIN_RETENTION_DAYS,
-    LongTermEntry,
-    LongTermMemoryService,
-    RetentionPolicyError,
-)
 from aios_kernel.context.compiler import (
     CandidateChunk,
     CompiledContext,
@@ -19,11 +8,6 @@ from aios_kernel.context.compiler import (
     StubSourceProvider,
     WordTokenizer,
 )
-from aios_kernel.context.models import (
-    ContextSource,
-    MAX_CONTEXT_TOKENS,
-    TaskDescriptor,
-)
 from aios_kernel.context.knowledge import (
     Document,
     DocumentChunk,
@@ -31,6 +15,22 @@ from aios_kernel.context.knowledge import (
     chunk_text,
     cosine,
     hash_embed,
+)
+from aios_kernel.context.long_term_memory import (
+    MIN_RETENTION_DAYS,
+    LongTermEntry,
+    LongTermMemoryService,
+    RetentionPolicyError,
+)
+from aios_kernel.context.models import (
+    MAX_CONTEXT_TOKENS,
+    ContextSource,
+    TaskDescriptor,
+)
+from aios_kernel.context.working_memory import (
+    DEFAULT_TTL,
+    WorkingMemoryEntry,
+    WorkingMemoryService,
 )
 
 __all__ = [

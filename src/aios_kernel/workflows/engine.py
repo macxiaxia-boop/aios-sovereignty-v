@@ -160,9 +160,9 @@ class PGCheckpointerEngine:
         can reach step A again. Safe: only fires on completed; other
         statuses left untouched."""
         from aios_kernel.workflows.persistence import (
-            WorkflowRunRow,
-            WorkflowCheckpointRow,
             ActivityHistoryRow,
+            WorkflowCheckpointRow,
+            WorkflowRunRow,
         )
         async with self._session_factory() as session:
             row = await session.get(WorkflowRunRow, run_id)

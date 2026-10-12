@@ -12,7 +12,6 @@ from aios_kernel.agents.protocol import (
 )
 from aios_kernel.agents.registry import AgentRegistry
 
-
 # ----- protocol -----------------------------------------------------------
 
 
