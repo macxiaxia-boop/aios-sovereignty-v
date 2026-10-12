@@ -130,7 +130,6 @@ class RateLimiter:
 
 
 __all__ = [
-    "JWTAuth",
     "InvalidToken",
     "RateLimiter",
     "sign_jwt",

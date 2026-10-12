@@ -66,15 +66,21 @@ jobs:
         run: |
           python -m pip install ruff mypy
           pip install -e ".[dev]"
-      - name: Ruff check (soft — existing imports auto-fixable; R1503-FINAL fix-up in progress)
+      - name: Ruff check R1503 modules (strict — must be clean)
+        run: |
+          # R1503 modules (scheduler/state_machine/agents/gateway/runtime/adapters) must be 0-error.
+          # Legacy modules are excluded via pyproject.toml [tool.ruff].extend-exclude.
+          ruff check \
+            src/aios_kernel/scheduler.py \
+            src/aios_kernel/state_machine.py \
+            src/aios_kernel/workers/adapters.py \
+            src/aios_kernel/agents/ \
+            src/aios_kernel/gateway/ \
+            src/aios_kernel/runtime/
+      - name: Ruff check legacy (advisory)
         run: |
           ruff check src/ tests/ || true
         continue-on-error: true
-      - name: Force lint job to succeed (for quality-gate)
-        if: always()
-        run: |
-          echo "Ruff check is informational only — 60 historical issues remain"
-          exit 0
       - name: Mypy check
         run: |
           mypy src/aios_kernel --ignore-missing-imports || true

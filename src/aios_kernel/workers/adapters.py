@@ -158,7 +158,7 @@ def _render_arg_template(template: str, payload: dict[str, Any]) -> str:
     try:
         return template.format(**payload)
     except KeyError as exc:
-        raise ValueError(f"arg_template missing key {exc.args[0]!r}")
+        raise ValueError(f"arg_template missing key {exc.args[0]!r}") from exc
 
 
 # ----- HTTP adapter template ----------------------------------------------

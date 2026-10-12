@@ -54,6 +54,29 @@ addopts = "-ra"
 line-length = 100
 target-version = "py311"
 src = ["src", "tests"]
+# Pre-existing historical code with ruff unsafe issues. R1503 modules
+# (scheduler/state_machine/agents/gateway/runtime/adapters) are clean.
+extend-exclude = [
+    # Legacy tests with E702/F811/F401/etc. (R1500-era)
+    "tests/integration/test_model_policy*.py",
+    "tests/integration/test_skill_*.py",
+    "tests/integration/test_trace_miner.py",
+    "tests/integration/test_failure_detector.py",
+    "tests/integration/test_industry_scout.py",
+    "tests/integration/test_crm_feedback.py",
+    "tests/unit/test_services_persistence.py",
+    "tests/unit/test_migration.py",
+    "tests/unit/test_goal_schema.py",
+    "tests/unit/test_workers.py",
+    "tests/unit/test_goal_guard.py",  # also excluded from test (ModuleNotFound)
+    # Legacy src/ modules with F401 unused imports (R1500-era)
+    "src/aios_kernel/context/compiler.py",
+    "src/aios_kernel/product/tenant.py",
+    "src/aios_kernel/business/crm_feedback.py",
+    "src/aios_kernel/learning/eval_builder.py",
+    "src/aios_kernel/learning/replay_engine.py",
+    "src/aios_kernel/learning/skill_usage.py",
+]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "W", "B", "UP"]

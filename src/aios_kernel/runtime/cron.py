@@ -50,8 +50,8 @@ def _parse_field(field: str, lo: int, hi: int) -> set[int]:
             try:
                 out.add(int(token))
                 continue
-            except ValueError:
-                raise ValueError(f"bad cron field: {field!r}")
+            except ValueError as exc:
+                raise ValueError(f"bad cron field: {field!r}") from exc
         out.update(range(start, end + 1, step))
     return {v for v in out if lo <= v <= hi}
 

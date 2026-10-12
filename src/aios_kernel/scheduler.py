@@ -164,6 +164,10 @@ class AIOSScheduler:
             await scheduler.stop()
     """
 
+    # Forward-reference type for memory sink (avoids circular import at module load)
+    if False:  # type: ignore[unreachable]
+        from aios_kernel.runtime.memory import MemoryPersistence  # noqa: F401
+
     def __init__(
         self,
         *,

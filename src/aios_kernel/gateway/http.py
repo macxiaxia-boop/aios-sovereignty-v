@@ -71,8 +71,10 @@ def create_app(scheduler: AIOSScheduler) -> FastAPI:
         from aios_kernel.scheduler import Priority
         try:
             priority = Priority(req.priority)
-        except ValueError:
-            raise HTTPException(status_code=400, detail=f"unknown priority {req.priority!r}")
+        except ValueError as exc:
+            raise HTTPException(
+                status_code=400, detail=f"unknown priority {req.priority!r}"
+            ) from exc
         task = Task(
             goal_id=req.goal_id,
             title=req.title,
