@@ -2,8 +2,8 @@
 from __future__ import annotations
 
 import json
+import urllib.error
 import urllib.request
-from pathlib import Path
 
 import pytest
 
@@ -59,7 +59,6 @@ def test_observability_healthz_always_alive_even_after_failed_submit():
         method="POST",
         headers={"Content-Type": "application/json"},
     )
-    import urllib.error
     with pytest.raises(urllib.error.HTTPError) as exc:
         urllib.request.urlopen(req, timeout=5)
     assert exc.value.code == 422
