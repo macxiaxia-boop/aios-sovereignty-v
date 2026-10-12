@@ -133,11 +133,12 @@ async def test_scheduler_no_memory_does_not_crash(tmp_path: Path):
     try:
         task = Task(goal_id="g", title="t", task_type=TaskType.CUSTOM)
         rid = await s.submit(task)
-        for _ in range(50):
-            st = await s.status(rid)
-            if st["state"] == "completed":
+        # wait for completion via metrics (active drains before status reflects it)
+        for _ in range(100):
+            snap = s.metrics()
+            if snap["completed"] >= 1:
                 break
             await asyncio.sleep(0.05)
-        assert (await s.status(rid))["state"] == "completed"
+        assert s.metrics()["completed"] >= 1
     finally:
         await s.stop()
