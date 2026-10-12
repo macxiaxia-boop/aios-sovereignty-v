@@ -108,7 +108,7 @@ def test_e2e_dry_run_no_writes(tmp_path, sample_policy_yaml, monkeypatch):
                                     setattr(self, "env_path", tmp_path / ".env"))
 
     # Take pre-hashes
-    cc_md5_before = hashlib(cc_db) if False else None
+    hashlib(cc_db) if False else None
     from hashlib import md5
     cc_before = md5(cc_db.read_bytes()).hexdigest() if cc_db.exists() else "NONE"
     oc_before = md5(oc_db.read_bytes()).hexdigest() if oc_db.exists() else "NONE"
@@ -156,7 +156,7 @@ def test_e2e_real_apply_writes_to_db(tmp_path, sample_policy_yaml, monkeypatch):
     drift = adapter.verify(policy)
     assert drift.severity == "fail_closed"
 
-    new_drift = adapter.apply(policy, dry_run=False)
+    adapter.apply(policy, dry_run=False)
 
     # Verify DB was updated
     db = sqlite3.connect(str(cc_db))

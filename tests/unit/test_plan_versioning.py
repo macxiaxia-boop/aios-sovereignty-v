@@ -99,4 +99,4 @@ async def test_version_monotonic():
         p = await ps.create_version(previous=p, steps=[_step(f"s{i}")])
         versions.append(p.version)
     assert versions == [1, 2, 3, 4, 5]
-    assert all(b > a for a, b in zip(versions, versions[1:]))
+    assert all(b > a for a, b in zip(versions, versions[1:], strict=False))

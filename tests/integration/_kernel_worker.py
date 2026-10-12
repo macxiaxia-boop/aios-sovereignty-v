@@ -292,7 +292,7 @@ async def _plan_revert(db_url, config, result_path):
         if crash_hook == "crash_after_old_inactive":
             async with factory() as session:
                 repo = SqlAlchemyRepository(session)
-                plan_svc2 = PlanService(repo)
+                PlanService(repo)
                 from sqlalchemy import select
 
                 from aios_kernel.domain.plan import Plan as PydPlan

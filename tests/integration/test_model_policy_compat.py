@@ -121,7 +121,7 @@ def test_compat_hermes_provider_acceptance(real_policy_paths):
     provider_first = policy.enforcement.get("hermes", {}).get(
         "cli_config_provider_first", []
     )
-    provider_deny = policy.enforcement.get("hermes", {}).get(
+    policy.enforcement.get("hermes", {}).get(
         "cli_config_provider_denylist", []
     )
 

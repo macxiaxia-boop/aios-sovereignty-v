@@ -20,7 +20,7 @@ async def test_put_and_get_roundtrip():
     await create_all(eng)
     try:
         factory = make_session_factory(eng)
-        async with session_scope(factory) as session:
+        async with session_scope(factory):
             svc = WorkingMemoryService(factory)
             await svc.put("session-A", "current_goal", {"goal_id": "g-1"})
             v = await svc.get("session-A", "current_goal")
@@ -42,7 +42,7 @@ async def test_session_isolation():
     await create_all(eng)
     try:
         factory = make_session_factory(eng)
-        async with session_scope(factory) as session:
+        async with session_scope(factory):
             svc = WorkingMemoryService(factory)
             await svc.put("session-A", "key1", {"v": "A"})
             await svc.put("session-B", "key1", {"v": "B"})
@@ -67,7 +67,7 @@ async def test_ttl_expires():
     await create_all(eng)
     try:
         factory = make_session_factory(eng)
-        async with session_scope(factory) as session:
+        async with session_scope(factory):
             svc = WorkingMemoryService(factory)
             await svc.put("session-X", "k", {"v": 1}, ttl=timedelta(seconds=-1))
             assert await svc.get("session-X", "k") is None
@@ -88,7 +88,7 @@ async def test_list_keys():
     await create_all(eng)
     try:
         factory = make_session_factory(eng)
-        async with session_scope(factory) as session:
+        async with session_scope(factory):
             svc = WorkingMemoryService(factory)
             await svc.put("session-Y", "a", {"a": 1})
             await svc.put("session-Y", "b", {"b": 2})
@@ -112,7 +112,7 @@ async def test_clear_session():
     await create_all(eng)
     try:
         factory = make_session_factory(eng)
-        async with session_scope(factory) as session:
+        async with session_scope(factory):
             svc = WorkingMemoryService(factory)
             await svc.put("session-Z", "x", {"x": 1})
             await svc.put("session-Z", "y", {"y": 2})

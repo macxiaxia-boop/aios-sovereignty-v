@@ -19,7 +19,7 @@ async def test_working_memory_long_term_chain():
     await create_all(eng)
     try:
         factory = make_session_factory(eng)
-        async with session_scope(factory) as session:
+        async with session_scope(factory):
             wm = WorkingMemoryService(factory)
             ltm = LongTermMemoryService(factory)
             # Working memory - session A
@@ -50,9 +50,9 @@ async def test_session_isolation_integration():
     await create_all(eng)
     try:
         factory = make_session_factory(eng)
-        async with session_scope(factory) as session:
+        async with session_scope(factory):
             wm = WorkingMemoryService(factory)
-            ltm = LongTermMemoryService(factory)
+            LongTermMemoryService(factory)
             await wm.put("session-X", "shared_key", {"who": "X"})
             await wm.put("session-Y", "shared_key", {"who": "Y"})
             assert (await wm.get("session-X", "shared_key"))["who"] == "X"

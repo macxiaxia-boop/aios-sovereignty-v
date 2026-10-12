@@ -234,7 +234,7 @@ def test_claude_code_adapter_common_config_reverts(sample_policy, tmp_path):
     assert drift.severity == "fail_closed"
     assert drift.recommended_action == "revert"
 
-    new_drift = adapter.apply(sample_policy, dry_run=False)
+    adapter.apply(sample_policy, dry_run=False)
     db = sqlite3.connect(str(cc_db))
     val = db.execute(
         "SELECT value FROM settings WHERE key='common_config_claude'"

@@ -121,7 +121,7 @@ class CrashWorker:
     def execute(self, task: dict[str, Any]) -> WorkerResult:
         if self.crash_after_artifact:
             # produce an artifact, then crash mid-execute
-            partial = Artifact(
+            Artifact(
                 id=f"art-{task['id']}-partial",
                 task_id=task["id"],
                 payload="partial payload",

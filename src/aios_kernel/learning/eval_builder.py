@@ -25,7 +25,7 @@ class EvalDatasetBuilder:
     async def from_real(self, traces: list[TraceORM], n: int = 100) -> list[EvalCase]:
         """Extract n cases from real traces."""
         cases = []
-        for i, t in enumerate(traces[:n]):
+        for _i, t in enumerate(traces[:n]):
             case = EvalCase(
                 id=str(uuid.uuid4()),
                 query=str(t.payload)[:200] if isinstance(t.payload, dict) else str(t.id),

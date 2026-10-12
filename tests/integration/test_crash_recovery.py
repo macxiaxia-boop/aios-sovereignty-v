@@ -209,7 +209,7 @@ async def test_cr2_workflow_resume_does_not_redo_step_a(
         include_goals=False,
         result_dir=result_dir,
     )
-    cps_after = state_after.get("checkpoints", [])
+    state_after.get("checkpoints", [])
     history_after = state_after.get("activity_history", [])
     a_hist = [h for h in history_after if h["step_id"] == "a"]
     # Each "completed" attempt = 1; no second run.
@@ -562,7 +562,7 @@ async def test_cr8_daemon_unaffected_by_kernel_crash(
         )
 
         # Wait for daemon to finish its loop.
-        rc = injector.wait_for_exit(daemon_kp, timeout_s=15.0)
+        injector.wait_for_exit(daemon_kp, timeout_s=15.0)
         daemon_payload = daemon_kp.read_result(timeout_s=2.0)
     finally:
         injector.cleanup(daemon_kp)
@@ -706,7 +706,7 @@ async def test_cr10_workflow_run_id_preserved_across_restart(
     assert pre_status in ("running", "failed"), (
         f"unexpected pre-resume status: {pre_status}"
     )
-    pre_current_step = run_pre["current_step"]
+    run_pre["current_step"]
 
     # Resume.
     cfg_resume = {"run_id": run_id, "workflow_mode": "kill_at_b"}

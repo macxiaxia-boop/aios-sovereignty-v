@@ -63,7 +63,7 @@ async def test_audit_records_task_completed(tmp_path: Path):
     await s.start()
     try:
         task = Task(goal_id="g", title="t", task_type=TaskType.CUSTOM)
-        rid = await s.submit(task)
+        await s.submit(task)
         # wait for completion
         for _ in range(100):
             if mp.read_ledger() and any(e.get("type") == "task_completed" for e in mp.read_ledger()):
@@ -131,7 +131,7 @@ async def test_scheduler_no_memory_does_not_crash(tmp_path: Path):
     await s.start()
     try:
         task = Task(goal_id="g", title="t", task_type=TaskType.CUSTOM)
-        rid = await s.submit(task)
+        await s.submit(task)
         # wait for completion via metrics (active drains before status reflects it)
         for _ in range(100):
             snap = s.metrics()

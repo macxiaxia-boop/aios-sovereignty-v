@@ -86,7 +86,7 @@ def run_e2e() -> dict[str, Any]:
     t_b = build_mock_tasks(seed=SEED)
     deterministic = (
         len(t_a) == len(t_b) == TOTAL_TASKS
-        and all(x.id == y.id and x.budget == y.budget for x, y in zip(t_a, t_b))
+        and all(x.id == y.id and x.budget == y.budget for x, y in zip(t_a, t_b, strict=False))
     )
     by_type = build_mock_tasks_by_type(seed=SEED)
     types_ok = all(len(v) == 20 for v in by_type.values())

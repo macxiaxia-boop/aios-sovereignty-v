@@ -312,7 +312,7 @@ def test_advanced_multiple_sign_verify_cycles(tmp_path):
     yaml_path, pub_path = _build_signed_policy(tmp_path)
     priv_path = tmp_path / "policy.key"
 
-    for i in range(5):
+    for _i in range(5):
         sign_yaml(yaml_path, priv_path)
         policy = load_policy(yaml_path, pub_path)
         # Each cycle must produce a fresh valid snapshot

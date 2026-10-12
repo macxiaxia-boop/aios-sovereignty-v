@@ -156,7 +156,7 @@ def test_openclaw_policy_allowlist_rewrite(sample_policy_yaml, tmp_path):
         env_path=env_path,
     )
 
-    drift = adapter.apply(policy, dry_run=False)
+    adapter.apply(policy, dry_run=False)
 
     db = sqlite3.connect(str(db_path))
     cur = db.cursor()

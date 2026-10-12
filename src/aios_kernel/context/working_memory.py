@@ -214,7 +214,7 @@ class WorkingMemoryService:
             count = result.rowcount if result.rowcount is not None else 0
             if count < 0:
                 # SQLite fallback: count before delete
-                count_stmt = select(WorkingMemoryORM.key).where(
+                select(WorkingMemoryORM.key).where(
                     WorkingMemoryORM.session_id == session_id
                 )
                 # (we already deleted, so count of remaining = 0;

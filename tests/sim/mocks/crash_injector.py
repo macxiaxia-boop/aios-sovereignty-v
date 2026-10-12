@@ -99,7 +99,7 @@ class CrashInjector:
         """Perform `count` kill+restart cycles, optionally mutating handle.state."""
         if count < 1:
             raise ValueError("count must be >= 1")
-        for i in range(count):
+        for _i in range(count):
             self.kill(handle)
             if between_sleep_s > 0:
                 time.sleep(between_sleep_s)

@@ -169,6 +169,6 @@ def test_goal_transitions_table_completeness():
     for s in GoalStatus:
         assert s in GOAL_TRANSITIONS
     # All sets contain only GoalStatus values
-    for src, dsts in GOAL_TRANSITIONS.items():
+    for _src, dsts in GOAL_TRANSITIONS.items():
         for d in dsts:
             assert isinstance(d, GoalStatus)

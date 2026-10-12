@@ -19,7 +19,7 @@ async def test_put_and_get_roundtrip():
     await create_all(eng)
     try:
         factory = make_session_factory(eng)
-        async with session_scope(factory) as session:
+        async with session_scope(factory):
             svc = LongTermMemoryService(factory)
             await svc.put(key="k1", value={"v": "x"}, retention_days=60, tags=["test"])
             v = await svc.get("k1")
@@ -42,7 +42,7 @@ async def test_retention_days_below_30_rejected():
     await create_all(eng)
     try:
         factory = make_session_factory(eng)
-        async with session_scope(factory) as session:
+        async with session_scope(factory):
             svc = LongTermMemoryService(factory)
             with pytest.raises(RetentionPolicyError):
                 await svc.put(key="k", value={"v": 1}, retention_days=10)
@@ -64,7 +64,7 @@ async def test_query_by_tag():
     await create_all(eng)
     try:
         factory = make_session_factory(eng)
-        async with session_scope(factory) as session:
+        async with session_scope(factory):
             svc = LongTermMemoryService(factory)
             await svc.put(key="a", value={"a": 1}, retention_days=30, tags=["alpha"])
             await svc.put(key="b", value={"b": 2}, retention_days=30, tags=["beta"])
@@ -91,7 +91,7 @@ async def test_source_evidence_backlink():
     await create_all(eng)
     try:
         factory = make_session_factory(eng)
-        async with session_scope(factory) as session:
+        async with session_scope(factory):
             svc = LongTermMemoryService(factory)
             ev_id = uuid4()
             await svc.put(key="k", value={"v": 1}, retention_days=30, source_evidence_id=ev_id)
@@ -115,7 +115,7 @@ async def test_delete_explicit_only():
     await create_all(eng)
     try:
         factory = make_session_factory(eng)
-        async with session_scope(factory) as session:
+        async with session_scope(factory):
             svc = LongTermMemoryService(factory)
             await svc.put(key="k", value={"v": 1}, retention_days=30)
             assert await svc.get("k") is not None

@@ -80,7 +80,7 @@ def _make_cluster(
 
 
 def _unique_cluster_id(i):
-    return ("%08x" % i) + "0" * 8
+    return (f"{i:08x}") + "0" * 8
 
 
 async def _seed_goal(repo, goal):

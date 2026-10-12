@@ -129,7 +129,7 @@ class WordTokenizer:
         if not words:
             return "", 0
         # Binary search for the largest prefix whose token count <= max_tokens.
-        lo, hi = 0, len(words)
+        _lo, _hi = 0, len(words)
         best = 0
         # Pre-compute? Simpler: linear scan from full, since text is bounded
         # by chunk size and we expect the truncation to converge quickly.

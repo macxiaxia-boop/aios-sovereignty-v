@@ -166,7 +166,7 @@ if __name__ == "__main__":
     t1 = build_mock_tasks(seed=42)
     t2 = build_mock_tasks(seed=42)
     assert len(t1) == 100 == len(t2)
-    assert all(a.id == b.id and a.budget == b.budget for a, b in zip(t1, t2))
+    assert all(a.id == b.id and a.budget == b.budget for a, b in zip(t1, t2, strict=False))
     by_type = build_mock_tasks_by_type(seed=42)
     assert all(len(v) == 20 for v in by_type.values()), {k: len(v) for k, v in by_type.items()}
     print(f"OK: {len(t1)} tasks, deterministic across runs, 5 types x 20")

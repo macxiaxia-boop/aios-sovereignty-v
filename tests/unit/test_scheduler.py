@@ -153,7 +153,7 @@ async def test_scheduler_dispatches_and_completes():
     await scheduler.start()
     try:
         task = _make_task(1)
-        run_id = await scheduler.submit(task, priority=Priority.P1)
+        await scheduler.submit(task, priority=Priority.P1)
         # wait for completion via metrics (active drains before status reflects it)
         for _ in range(100):
             snap = scheduler.metrics()
@@ -185,7 +185,7 @@ async def test_scheduler_retries_then_dlq():
     scheduler._breakers["w1"] = CircuitBreaker(failure_threshold=3)
     await scheduler.start()
     try:
-        run_id = await scheduler.submit(_make_task(1), priority=Priority.P2)
+        await scheduler.submit(_make_task(1), priority=Priority.P2)
         # wait for the retry chain to fully terminate: 1 initial + 2 retries -> DLQ.
         for _ in range(200):
             snap = scheduler.metrics()

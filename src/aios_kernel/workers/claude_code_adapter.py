@@ -4,10 +4,9 @@ Calls `claude` binary via subprocess. Falls back to stub if binary missing.
 """
 from __future__ import annotations
 
-import asyncio
 import logging
 import shutil
-from datetime import datetime, UTC
+from datetime import UTC, datetime
 
 from aios_kernel.domain.artifact import Artifact, ArtifactType
 from aios_kernel.workers.adapters import SubprocessRunner

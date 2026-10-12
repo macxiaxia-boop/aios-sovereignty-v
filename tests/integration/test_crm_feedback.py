@@ -115,7 +115,7 @@ def test_audit():
     assert len(events) == 25
     log = auditor.log
     assert len(log) == 25
-    for entry, ev in zip(log, events):
+    for entry, ev in zip(log, events, strict=False):
         assert entry["event_id"] == ev.id
         assert entry["customer_id_hash"] == ev.customer_id_hash
         assert entry["event_type"] == "purchase"
