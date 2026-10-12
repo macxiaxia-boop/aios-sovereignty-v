@@ -1,55 +1,119 @@
+# ──────────────────────────────────────────────────
+# AIOS Sovereignty - Root .gitignore (R1501)
+# ──────────────────────────────────────────────────
+
 # Python
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-
-# Virtualenv
 .venv/
 venv/
+env/
 ENV/
 
-# Test / coverage
+# Node
+.npm/
+node_modules/
+package-lock.json
+yarn.lock
+
+# Test/Coverage
 .pytest_cache/
+.ruff_cache/
 .coverage
 .coverage.*
 htmlcov/
 .tox/
-.nox/
-coverage.xml
+.cache/
 
-# Mypy / Ruff
-.mypy_cache/
-.ruff_cache/
-
-# IDE
-.idea/
-.vscode/
-*.swp
+# OS / Editor
 .DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
 
-# Alembic
-scripts/persistence/migrations/versions/__pycache__/
+# Build artifacts
+*.egg-info/
+build/
+dist/
+*.whl
 
-# Local env
-.env
-.env.local
+# Logs (Claude Code)
+logs/
+*.log
+*.log.*
+*.jsonl
 
+# AIOS 历史命令残留 (R77/R82/R93/R209 等)
+*.bak
+*.disabled_real
+_*.cmd.disabled
+_*.cmd.bak
+_*.cmd.disabled_real
+_*.ps1.disabled
+_*.ps1.bak
+_*.ps1.disabled_real
+_R77_*.cmd
+_R77_*.ps1
+_R82_*.cmd
+_R82_*.ps1
+_R93_*.cmd
+_R93_*.ps1
+_R209_*.cmd
+_R209_*.ps1
+_AIOSWatchdog*
+_AIOSPopupCure*
+_AIOSStageWatchdog*
+_AIOS_Cron_*.ps1
 NUL
 
+# OpenClaw 子模块 (避免污染)
+_relinked/openclaw/
+_relinked/codex/
+_relinked/.aios/
+_relinked/.claude/
+_relinked/.codex/
+_relinked/.hermes/
+_relinked/.lingma/
+_relinked/.openclaw/
+_relinked/.rustup/
+_relinked/.workbuddy/
+_relinked/.cache/
+_relinked/cache/
+
+# 环境变量 (敏感)
+.env
+.env.local
+.env.*.local
+*.jwt_secret
+*.pem
+*.key
+
+# ──────────────────────────────────────────────────
+# R1501 additions - _agent-hub/audit 历史残留
+# ──────────────────────────────────────────────────
+_agent-hub/audit/_*.py
+_agent-hub/audit/_*.txt
+_agent-hub/audit/_*.ps1
+_agent-hub/audit/_*.cmd
+_agent-hub/audit/*-*.md
+_agent-hub/audit/*DONE.md
+_agent-hub/audit/*PUSH-*.md
+_agent-hub/audit/*POST-*.md
+_agent-hub/audit/*PR-MERGE.md
+_agent-hub/audit/*CLOSE*.md
+_agent-hub/audit/*FINAL*.md
+_agent-hub/audit/*AUDIT*.md
+_agent-hub/audit/*SOLVE*.md
+_agent-hub/audit/*DELIVERY*.md
+_agent-hub/audit/*verify*.py
+_agent-hub/audit/backup-archive/
+
+# 其它历史的 R\d+ scripts
+R[0-9][0-9][0-9]_*.py
+R[0-9][0-9][0-9]_*.cmd
+R[0-9][0-9][0-9]_*.ps1
