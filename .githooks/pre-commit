@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# AIOS Kernel pre-commit hook (R1503-FINAL gap-fill).
+#
+# Install with:
+#   git config core.hooksPath .githooks
+#
+# Runs:
+#   - ruff (lint)
+#   - pytest (unit + integration tests, fast subset)
+#
+# Set SKIP_AIOS_HOOKS=1 to bypass in emergencies.
+
+set -euo pipefail
+
+if [[ "${SKIP_AIOS_HOOKS:-0}" == "1" ]]; then
+    exit 0
+fi
+
+cd "$(git rev-parse --show-toplevel)"
+
+echo "[aios-kernel pre-commit] ruff check..."
+if command -v ruff >/dev/null 2>&1; then
+    ruff check src/ tests/ || {
+        echo "  ruff failed; aborting commit."
+        echo "  To bypass: SKIP_AIOS_HOOKS=1 git commit ..."
+        exit 1
+    }
+else
+    echo "  ruff not installed; skipping lint"
+fi
+
+echo "[aios-kernel pre-commit] pytest (unit)..."
+PYTHON="${PYTHON:-python}"
+if [[ -d ".venv" ]]; then
+    PYTHON=".venv/bin/python"
+fi
+
+$PYTHON -m pytest tests/unit/ -x -q --no-header -p no:cacheprovider 2>&1 | tail -5 || {
+    echo "  unit tests failed; aborting commit."
+    echo "  To bypass: SKIP_AIOS_HOOKS=1 git commit ..."
+    exit 1
+}
+
+echo "[aios-kernel pre-commit] ✅ passed"
+exit 0

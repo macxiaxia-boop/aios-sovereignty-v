@@ -170,9 +170,12 @@ class AIOSScheduler:
         *,
         registry: WorkerRegistry,
         config: SchedulerConfig | None = None,
+        memory: "MemoryPersistence | None" = None,
     ) -> None:
         self._registry = registry
         self._config = config or SchedulerConfig()
+        # optional audit ledger (R1503-FINAL gap-fill)
+        self._memory = memory
         # priority → asyncio queue
         self._queues: dict[Priority, asyncio.Queue] = {
             p: asyncio.Queue() for p in Priority
@@ -186,6 +189,15 @@ class AIOSScheduler:
         self._stopped = False
         self._dispatcher_task: asyncio.Task | None = None
         self._health_task: asyncio.Task | None = None
+
+    def _audit(self, event_type: str, payload: dict[str, Any]) -> None:
+        """Append an event to the audit ledger (R1503-FINAL gap-fill)."""
+        if self._memory is None:
+            return
+        try:
+            self._memory.append_ledger({"type": event_type, **payload})
+        except Exception as exc:  # noqa: BLE001
+            log.warning("audit ledger append failed: %s", exc)
 
     # ----- lifecycle --------------------------------------------------------
 
@@ -240,6 +252,12 @@ class AIOSScheduler:
             "run_id": f"run-{task.id}-{int(time.time() * 1000)}",
         }
         await self._queues[priority].put(envelope)
+        self._audit("task_submitted", {
+            "task_id": str(task.id),
+            "run_id": envelope["run_id"],
+            "priority": priority.value,
+            "title": task.title,
+        })
         log.info(
             "scheduler.submit: task_id=%s priority=%s run_id=%s queue_depth=%d",
             task.id, priority.value, envelope["run_id"],
@@ -338,6 +356,12 @@ class AIOSScheduler:
         self._metrics.completed += 1
         self._metrics.dispatch_latency_s_total += time.time() - start_ts
         self._metrics.dispatch_count += 1
+        self._audit("task_completed", {
+            "run_id": run_id,
+            "task_id": str(task.id),
+            "worker": adapter.worker_id,
+            "latency_s": time.time() - start_ts,
+        })
         log.info(
             "execute ok worker=%s task=%s artifact_id=%s latency_s=%.3f",
             adapter.worker_id, task.id, getattr(artifact, "id", "?"),
@@ -351,6 +375,12 @@ class AIOSScheduler:
             log.error("DLQ full, dropping envelope run_id=%s", envelope["run_id"])
             return
         self._metrics.dlq_size += 1
+        self._audit("task_dlq", {
+            "run_id": envelope["run_id"],
+            "task_id": str(envelope["task"].id),
+            "error": str(exc),
+            "dlq_size": self._metrics.dlq_size,
+        })
         log.error(
             "scheduler.dlq: run_id=%s err=%s dlq_size=%d",
             envelope["run_id"], exc, self._metrics.dlq_size,
