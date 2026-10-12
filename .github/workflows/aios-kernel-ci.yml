@@ -68,7 +68,7 @@ jobs:
           pip install -e ".[dev]"
       - name: Ruff check (soft — existing imports auto-fixable; R1503-FINAL fix-up in progress)
         run: |
-          ruff check src/ tests/ || echo "ruff issues non-blocking (60 remaining; auto-fix up to 690 done in R1503)"
+          ruff check src/ tests/ || true
         continue-on-error: true
       - name: Force lint job to succeed (for quality-gate)
         if: always()
