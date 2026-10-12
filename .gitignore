@@ -117,3 +117,8 @@ _agent-hub/audit/backup-archive/
 R[0-9][0-9][0-9]_*.py
 R[0-9][0-9][0-9]_*.cmd
 R[0-9][0-9][0-9]_*.ps1
+
+# _agent-hub/knowledge 历史 round 总结
+_agent-hub/knowledge/r*.md
+_agent-hub/knowledge/r*_*.md
+_agent-hub/knowledge/*backup*.md
