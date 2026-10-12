@@ -57,7 +57,7 @@ async def test_scheduler_retry_eventually_dlq(tmp_path):
     )
     await sched.start()
     try:
-        rid = await sched.submit(Task(id=str(uuid.uuid4()), goal_id="g", title="t",
+        await sched.submit(Task(id=str(uuid.uuid4()), goal_id="g", title="t",
                                        task_type=TaskType.CUSTOM))
         for _ in range(200):
             snap = sched.metrics()

@@ -204,7 +204,7 @@ def run_e2e() -> dict[str, Any]:
     _assert(runner_report["criteria_passed"] == 10,
             f"all 10 must pass, got {runner_report['criteria_passed']}")
     checks.append({"check": "runner_10/10_pass", "passed": True,
-                   "passed": runner_report["criteria_passed"],
+                   "actual": runner_report["criteria_passed"],
                    "total": runner_report["criteria_total"]})
 
     # ---- 7. write JSON report + budget assertion -----------------------
