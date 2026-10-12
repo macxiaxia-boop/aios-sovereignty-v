@@ -23,7 +23,8 @@ class CodexAdapter(WorkerAdapter):
         self._runner = SubprocessRunner()
 
     async def execute(self, task):
-        prompt = f"{task.title or task.id}: {task.description or ''}"
+        # defensive getattr: tests use MockTask without description
+        prompt = f"{task.title or task.id}: {getattr(task, 'description', '') or ''}"
         cmd = [self._binary, "exec", prompt, "--quiet"]
         try:
             stdout, stderr, code = await self._runner.run(cmd, env={})
