@@ -92,6 +92,11 @@ def create_app(scheduler: AIOSScheduler) -> FastAPI:
             state=st["state"],
         )
 
+    # R1505-1: production observability (healthz/readyz/metrics)
+    from aios_kernel.gateway.observability import add_observability_routes
+
+    add_observability_routes(app, scheduler=scheduler)
+
     return app
 
 
