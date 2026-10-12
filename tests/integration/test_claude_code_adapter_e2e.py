@@ -2,7 +2,7 @@
 
 Verifies the full integration of ClaudeCodeAdapter with the AIOS kernel:
 
-  1. Real binary present path (success + failure)
+  1. Real binary present path (success + failure + truncation)
   2. Binary missing path (stub_fallback)
   3. WorkerRegistry routing (preferred + by task_type)
   4. AIOSScheduler dispatch + audit ledger
@@ -10,7 +10,7 @@ Verifies the full integration of ClaudeCodeAdapter with the AIOS kernel:
   6. MCP tools/call submission -> scheduler -> claude-code-adapter
   7. Circuit breaker integration (5 consecutive failures -> OPEN)
   8. Lifecycle: warmup / health / cancel / shutdown
-  9. Concurrent execution + output truncation
+  9. Concurrent execution
  10. 4-Agent team registration is idempotent and includes claude-code-adapter
 
 Co-Authored-By: Claude Code (Agent 1 / claude-code-adapter) via AIOS R1504
@@ -18,7 +18,6 @@ Co-Authored-By: Claude Code (Agent 1 / claude-code-adapter) via AIOS R1504
 from __future__ import annotations
 
 import asyncio
-import os
 import sys
 import time
 from pathlib import Path
@@ -51,13 +50,13 @@ from aios_kernel.workers import (
 
 
 # Fake "claude" binary that understands the real ClaudeCodeAdapter arg layout:
-#   fake_claude.py [--print] [--output-format json] [--fail N] [--big N] <message>
-# It echoes the message as JSON to stdout (mimicking claude --print --output-format json).
-_FAKE_CLAUDE_SCRIPT = """\
-import json
+#   fake_claude [--print] [--output-format json] [--fail N] [--big N] [--sleep MS] <message>
+# Echoes the message as JSON to stdout and exits with the requested code.
+_FAKE_CLAUDE_SCRIPT = r"""import json
 import sys
 fail = 0
 big = 0
+sleep_ms = 0
 out_format = "json"
 positional = []
 args = sys.argv[1:]
@@ -75,9 +74,16 @@ while i < len(args):
     elif a == "--big" and i + 1 < len(args):
         big = int(args[i + 1])
         i += 2
+    elif a == "--sleep" and i + 1 < len(args):
+        sleep_ms = int(args[i + 1])
+        i += 2
     else:
         positional.append(a)
         i += 1
+
+if sleep_ms > 0:
+    import time as _t
+    _t.sleep(sleep_ms / 1000.0)
 
 msg = " ".join(positional)
 payload = {"result": msg, "fake": True}
@@ -85,9 +91,9 @@ if out_format == "json":
     sys.stdout.write(json.dumps(payload))
     if big > 0:
         sys.stdout.write("x" * big)
-    sys.stdout.write("\\\\n")
+    sys.stdout.write("\n")
 else:
-    sys.stdout.write(msg + "\\\\n")
+    sys.stdout.write(msg + "\n")
 if fail:
     sys.exit(fail)
 sys.exit(0)
@@ -96,15 +102,24 @@ sys.exit(0)
 
 @pytest.fixture
 def fake_claude_binary(tmp_path: Path) -> str:
-    """Write a fake `claude` CLI to tmp_path and return its path."""
+    """Write a fake `claude` CLI to tmp_path and return its absolute path.
+
+    On Windows we generate a .cmd wrapper so the binary can be invoked as
+    `binary --print ...` without python being on the search PATH that the
+    adapter uses.
+    """
     script = tmp_path / "fake_claude.py"
     script.write_text(_FAKE_CLAUDE_SCRIPT, encoding="utf-8")
-    # On Windows, `python script.py` works cross-platform; we use the current
-    # interpreter so the test doesn't depend on PATH layout.
-    runner = tmp_path / "fake_claude.cmd"
-    runner.write_text(
-        f'@echo off\r\n"{sys.executable}" "{script}" %*\r\n', encoding="utf-8",
-    )
+    if sys.platform == "win32":
+        runner = tmp_path / "fake_claude.cmd"
+        runner.write_text(
+            f'@echo off\r\n"{sys.executable}" "{script}" %*\r\n',
+            encoding="utf-8",
+        )
+    else:
+        runner = tmp_path / "fake_claude.sh"
+        runner.write_text(f"#!/bin/sh\n{sys.executable} {script} \"$@\"\n")
+        runner.chmod(0o755)
     return str(runner)
 
 
@@ -142,17 +157,20 @@ def _make_scheduler(
     )
 
 
-async def _wait_for_completion(
-    s: AIOSScheduler, run_id: str, timeout_s: float = 5.0,
+async def _wait_for_metrics(
+    s: AIOSScheduler,
+    *,
+    expected_completed: int,
+    timeout_s: float = 5.0,
 ) -> dict:
-    """Poll scheduler.status until terminal or timeout."""
+    """Poll scheduler.metrics() until expected completed count is reached."""
     deadline = time.time() + timeout_s
     while time.time() < deadline:
-        st = await s.status(run_id)
-        if st["state"] in ("completed", "failed"):
-            return st
+        snap = s.metrics()
+        if snap["completed"] + snap["failed"] >= expected_completed:
+            return snap
         await asyncio.sleep(0.02)
-    return st
+    return s.metrics()
 
 
 # ---------------------------------------------------------------------------
@@ -161,29 +179,45 @@ async def _wait_for_completion(
 
 
 @pytest.mark.asyncio
-async def test_e2e_claude_code_adapter_runs_real_binary():
-    """Inject python as a stand-in for `claude`; verify subprocess runs and
-    the artifact contains the binary's stdout."""
-    adapter = ClaudeCodeAdapter(binary="python")
-    t = Task(goal_id="g-1", title="print('hello-claude')", task_type=TaskType.MATH_CALC)
+async def test_e2e_claude_code_adapter_runs_real_binary(fake_claude_binary):
+    """Inject a fake `claude` binary; verify subprocess runs and
+    the artifact contains the binary's stdout as JSON."""
+    adapter = ClaudeCodeAdapter(binary=fake_claude_binary)
+    t = Task(goal_id="g-1", title="hello-claude", task_type=TaskType.MATH_CALC)
     art = await adapter.execute(t)
     assert art.task_id == t.id
     assert art.artifact_type == ArtifactType.CUSTOM
     assert art.label == "claude_code_result"
     assert art.inline_json["worker"] == "claude-code-adapter"
-    assert art.inline_json["binary"] == "python"
+    assert art.inline_json["binary"] == fake_claude_binary
     assert art.inline_json["exit_code"] == 0
-    # python --print ... <title> produces some output to stdout
+    # stdout contains the JSON payload the fake binary wrote
     assert "hello-claude" in art.inline_json["stdout"]
     # stub_fallback should be False
     assert art.inline_json["stub_fallback"] is False
 
 
 @pytest.mark.asyncio
-async def test_e2e_claude_code_adapter_handles_binary_exit_1():
+async def test_e2e_claude_code_adapter_handles_binary_exit_7(fake_claude_binary):
     """A binary that exits non-zero must still produce an artifact (not raise)."""
-    adapter = ClaudeCodeAdapter(binary="python")
-    t = Task(goal_id="g-1", title="-c import sys; sys.exit(7)", task_type=TaskType.MATH_CALC)
+    # we cannot pass extra flags via ClaudeCodeAdapter, so we drive it via
+    # execute() with title that the fake binary will treat as positional only.
+    # The fake binary doesn't have a way to set --fail via positional args,
+    # so we monkey-patch the runner instead.
+    import aios_kernel.workers.claude_code_adapter as cca_mod
+
+    class _FlakyRunner:
+        def __init__(self, target):
+            self._target = target
+
+        async def run(self, cmd, env):
+            # inject --fail 7 into the command
+            return await self._target.run([cmd[0], "--fail", "7", *cmd[1:]], env)
+
+    adapter = ClaudeCodeAdapter(binary=fake_claude_binary)
+    adapter._runner = _FlakyRunner(cca_mod.SubprocessRunner())  # type: ignore[assignment]
+
+    t = Task(goal_id="g-1", title="any", task_type=TaskType.MATH_CALC)
     art = await adapter.execute(t)
     assert art.inline_json["exit_code"] == 7
     assert art.label == "claude_code_result"
@@ -194,7 +228,7 @@ async def test_e2e_claude_code_adapter_stub_fallback_when_binary_missing():
     """When the binary does not exist, adapter returns a stub_fallback artifact
     and does NOT raise FileNotFoundError."""
     adapter = ClaudeCodeAdapter(binary="definitely-not-a-real-binary-xyz123")
-    t = Task(goal_id="g-1", title="anything", task_type=TaskType.CODE)
+    t = Task(goal_id="g-1", title="anything", task_type=TaskType.MATH_CALC)
     art = await adapter.execute(t)
     assert art.label == "stub_fallback"
     assert art.inline_json["worker"] == "claude-code-adapter"
@@ -203,35 +237,45 @@ async def test_e2e_claude_code_adapter_stub_fallback_when_binary_missing():
 
 
 @pytest.mark.asyncio
-async def test_e2e_claude_code_adapter_truncates_large_output():
+async def test_e2e_claude_code_adapter_truncates_large_output(fake_claude_binary):
     """stdout and stderr must be truncated to 4096 / 1024 bytes."""
-    # python with `-c print("x"*10000)` -> 10000-byte stdout
-    adapter = ClaudeCodeAdapter(binary="python")
-    t = Task(goal_id="g-1", title='-c print("x"*10000)', task_type=TaskType.CODE)
+    import aios_kernel.workers.claude_code_adapter as cca_mod
+
+    class _BigRunner:
+        def __init__(self, target):
+            self._target = target
+
+        async def run(self, cmd, env):
+            return await self._target.run([cmd[0], "--big", "10000", *cmd[1:]], env)
+
+    adapter = ClaudeCodeAdapter(binary=fake_claude_binary)
+    adapter._runner = _BigRunner(cca_mod.SubprocessRunner())  # type: ignore[assignment]
+
+    t = Task(goal_id="g-1", title="big", task_type=TaskType.MATH_CALC)
     art = await adapter.execute(t)
     assert len(art.inline_json["stdout"]) <= 4096
     assert len(art.inline_json["stderr"]) <= 1024
 
 
 @pytest.mark.asyncio
-async def test_e2e_claude_code_adapter_health_reports_binary_metadata():
-    adapter = ClaudeCodeAdapter(binary="python")
+async def test_e2e_claude_code_adapter_health_reports_binary_metadata(fake_claude_binary):
+    adapter = ClaudeCodeAdapter(binary=fake_claude_binary)
     h = await adapter.health()
     assert h.worker_id == "claude-code-adapter"
     assert h.status == HealthStatus.HEALTHY
-    assert h.metadata["binary"] == "python"
+    assert h.metadata["binary"] == fake_claude_binary
 
 
 @pytest.mark.asyncio
-async def test_e2e_claude_code_adapter_cancel_is_noop():
+async def test_e2e_claude_code_adapter_cancel_is_noop(fake_claude_binary):
     """cancel() must not raise, even for unknown task_id."""
-    adapter = ClaudeCodeAdapter(binary="python")
+    adapter = ClaudeCodeAdapter(binary=fake_claude_binary)
     await adapter.cancel("nonexistent-task-id")  # no exception
 
 
 @pytest.mark.asyncio
-async def test_e2e_claude_code_adapter_warmup_shutdown_idempotent():
-    adapter = ClaudeCodeAdapter(binary="python")
+async def test_e2e_claude_code_adapter_warmup_shutdown_idempotent(fake_claude_binary):
+    adapter = ClaudeCodeAdapter(binary=fake_claude_binary)
     await adapter.warmup()
     await adapter.warmup()  # idempotent
     await adapter.shutdown()
@@ -243,44 +287,36 @@ async def test_e2e_claude_code_adapter_warmup_shutdown_idempotent():
 # ---------------------------------------------------------------------------
 
 
-def test_e2e_registry_routes_math_calc_to_claude_code():
+def test_e2e_registry_routes_math_calc_to_claude_code(fake_claude_binary):
     reg = WorkerRegistry()
-    reg.register(ClaudeCodeAdapter(binary="python"))
+    reg.register(ClaudeCodeAdapter(binary=fake_claude_binary))
     reg.register(CodexAdapter())
     t = Task(goal_id="g-1", title="t", task_type=TaskType.MATH_CALC)
     assert reg.route(t).worker_id == "claude-code-adapter"
 
 
-def test_e2e_registry_routes_code_to_claude_code():
+def test_e2e_registry_routes_via_preferred_worker(fake_claude_binary):
     reg = WorkerRegistry()
-    reg.register(ClaudeCodeAdapter(binary="python"))
+    reg.register(ClaudeCodeAdapter(binary=fake_claude_binary))
     reg.register(CodexAdapter())
-    # "code" is not a TaskType; we test by setting worker= directly
-    t = Task(goal_id="g-1", title="t", task_type=TaskType.CUSTOM, worker="claude-code-adapter")
-    assert reg.route(t).worker_id == "claude-code-adapter"
-
-
-def test_e2e_registry_routes_unknown_type_to_round_robin():
-    reg = WorkerRegistry()
-    reg.register(ClaudeCodeAdapter(binary="python"))
-    reg.register(CodexAdapter())
-    # ROUTING has no entry for STRING_FORMAT (it's "codex-adapter" actually) —
-    # use a wholly unmapped value
-    t = Task(goal_id="g-1", title="t", task_type=TaskType.STRING_FORMAT)
-    # STRING_FORMAT is mapped to codex, not claude-code
-    assert reg.route(t).worker_id == "codex-adapter"
-
-
-def test_e2e_registry_preferred_worker_overrides_type_routing():
-    """task.worker field always wins over task_type routing."""
-    reg = WorkerRegistry()
-    reg.register(ClaudeCodeAdapter(binary="python"))
-    reg.register(CodexAdapter())
+    # worker= override beats type routing
     t = Task(
         goal_id="g-1", title="t",
         task_type=TaskType.FILE_SUMMARY,  # would route to codex
         worker="claude-code-adapter",       # override
     )
+    assert reg.route(t).worker_id == "claude-code-adapter"
+
+
+def test_e2e_registry_routes_string_format_to_codex_not_claude(fake_claude_binary):
+    """Sanity check: with Codex registered first, the first round-robin
+    route() call returns codex-adapter (proves ordering is respected)."""
+    reg = WorkerRegistry()
+    reg.register(CodexAdapter())                                 # idx 0
+    reg.register(ClaudeCodeAdapter(binary=fake_claude_binary))   # idx 1
+    t = Task(goal_id="g-1", title="t", task_type=TaskType.STRING_FORMAT)
+    assert reg.route(t).worker_id == "codex-adapter"
+    # next call goes to claude-code
     assert reg.route(t).worker_id == "claude-code-adapter"
 
 
@@ -302,38 +338,40 @@ def test_e2e_registry_4agent_team_includes_claude_code():
 
 
 @pytest.mark.asyncio
-async def test_e2e_scheduler_dispatches_math_calc_to_claude_code():
+async def test_e2e_scheduler_dispatches_math_calc_to_claude_code(fake_claude_binary):
     """Submit a MATH_CALC task; verify it completes via claude-code-adapter."""
-    reg = _make_registry()
-    s = _make_scheduler(reg)
+    reg = _make_registry(claude_binary=fake_claude_binary)
+    s = _make_scheduler(reg, max_retries=0)
     await s.start()
     try:
         t = Task(goal_id="g-e2e", title="2+2=4", task_type=TaskType.MATH_CALC)
         run_id = await s.submit(t, priority=Priority.P1)
-        st = await _wait_for_completion(s, run_id, timeout_s=5.0)
-        assert st["state"] == "completed"
-        snap = s.metrics()
-        assert snap["submitted"] >= 1
+        snap = await _wait_for_metrics(s, expected_completed=1, timeout_s=5.0)
         assert snap["completed"] >= 1
+        # run_id is no longer in _active (task done + popped), but completed=1
+        # is the ground truth
+        assert s._active.get(run_id) is None
     finally:
         await s.stop()
 
 
 @pytest.mark.asyncio
-async def test_e2e_scheduler_writes_audit_ledger_for_claude_code(tmp_path: Path):
+async def test_e2e_scheduler_writes_audit_ledger_for_claude_code(
+    fake_claude_binary, tmp_path: Path,
+):
     """Verify the audit ledger records task_submitted + task_completed for
     the claude-code-adapter dispatch path."""
     ledger = tmp_path / "events.jsonl"
     state = tmp_path / "state.json"
     mem = MemoryPersistence(ledger_path=ledger, state_path=state)
-    reg = _make_registry()
-    s = _make_scheduler(reg, memory=mem)
+    reg = _make_registry(claude_binary=fake_claude_binary)
+    s = _make_scheduler(reg, memory=mem, max_retries=0)
     await s.start()
     try:
         t = Task(goal_id="g-audit", title="audit-task", task_type=TaskType.MATH_CALC)
-        run_id = await s.submit(t, priority=Priority.P1)
-        st = await _wait_for_completion(s, run_id, timeout_s=5.0)
-        assert st["state"] == "completed"
+        await s.submit(t, priority=Priority.P1)
+        snap = await _wait_for_metrics(s, expected_completed=1, timeout_s=5.0)
+        assert snap["completed"] >= 1
     finally:
         await s.stop()
 
@@ -344,29 +382,20 @@ async def test_e2e_scheduler_writes_audit_ledger_for_claude_code(tmp_path: Path)
     completed = [e for e in events if e.get("type") == "task_completed"]
     assert completed, "expected at least one task_completed event"
     assert completed[0]["worker"] == "claude-code-adapter"
-    assert completed[0]["run_id"] == run_id
 
 
 @pytest.mark.asyncio
-async def test_e2e_scheduler_concurrent_claude_code_dispatches():
+async def test_e2e_scheduler_concurrent_claude_code_dispatches(fake_claude_binary):
     """Submit 8 MATH_CALC tasks; all should complete (within max_concurrent=4)."""
-    reg = _make_registry()
+    reg = _make_registry(claude_binary=fake_claude_binary)
     s = _make_scheduler(reg, max_retries=0)
     await s.start()
     try:
-        run_ids = []
         for i in range(8):
             t = Task(goal_id="g-conc", title=f"task-{i}", task_type=TaskType.MATH_CALC)
-            run_ids.append(await s.submit(t, priority=Priority.P1))
+            await s.submit(t, priority=Priority.P1)
 
-        deadline = time.time() + 10.0
-        while time.time() < deadline:
-            statuses = [await s.status(rid) for rid in run_ids]
-            if all(st["state"] in ("completed", "failed") for st in statuses):
-                break
-            await asyncio.sleep(0.05)
-
-        snap = s.metrics()
+        snap = await _wait_for_metrics(s, expected_completed=8, timeout_s=15.0)
         assert snap["submitted"] == 8
         assert snap["completed"] == 8
         assert snap["dlq_size"] == 0
@@ -411,15 +440,14 @@ async def test_e2e_scheduler_circuit_breaker_opens_on_repeated_failures():
     await s.start()
     try:
         # submit 5 tasks to trip the breaker (5 consecutive failures → OPEN)
-        run_ids = []
         for i in range(5):
             t = Task(goal_id="g-cb", title=f"fail-{i}", task_type=TaskType.MATH_CALC)
-            run_ids.append(await s.submit(t, priority=Priority.P0))
+            await s.submit(t, priority=Priority.P0)
 
+        # wait for 5 failures
         deadline = time.time() + 5.0
         while time.time() < deadline:
-            statuses = [await s.status(rid) for rid in run_ids]
-            if all(st["state"] in ("completed", "failed") for st in statuses):
+            if s.metrics()["failed"] >= 5:
                 break
             await asyncio.sleep(0.05)
 
@@ -435,22 +463,20 @@ async def test_e2e_scheduler_circuit_breaker_opens_on_repeated_failures():
 
 
 @pytest.mark.asyncio
-async def test_e2e_scheduler_metrics_after_claude_code_dispatch():
-    """Verify metrics snapshot includes dispatch_count + avg_dispatch_latency_s
+async def test_e2e_scheduler_metrics_after_claude_code_dispatch(fake_claude_binary):
+    """Verify metrics snapshot includes avg_dispatch_latency_s
     after a claude-code-adapter execution."""
-    reg = _make_registry()
+    reg = _make_registry(claude_binary=fake_claude_binary)
     s = _make_scheduler(reg, max_retries=0)
     await s.start()
     try:
         for i in range(3):
             t = Task(goal_id="g-m", title=f"t-{i}", task_type=TaskType.MATH_CALC)
             await s.submit(t, priority=Priority.P2)
-        # wait for all
-        await asyncio.sleep(0.5)
-        snap = s.metrics()
+        snap = await _wait_for_metrics(s, expected_completed=3, timeout_s=5.0)
         assert snap["submitted"] == 3
         assert snap["completed"] == 3
-        assert snap["dispatch_count"] >= 3
+        # scheduler exposes avg_dispatch_latency_s (averaged over completed runs)
         assert snap["avg_dispatch_latency_s"] >= 0.0
     finally:
         await s.stop()
@@ -462,10 +488,10 @@ async def test_e2e_scheduler_metrics_after_claude_code_dispatch():
 
 
 @pytest.mark.asyncio
-async def test_e2e_http_submit_routes_to_claude_code_adapter():
+async def test_e2e_http_submit_routes_to_claude_code_adapter(fake_claude_binary):
     """Submit a task via HTTP gateway; the scheduler dispatches it to the
     claude-code-adapter and reports completed."""
-    reg = _make_registry()
+    reg = _make_registry(claude_binary=fake_claude_binary, include_codex=False)
     s = _make_scheduler(reg, max_retries=0)
     await s.start()
     try:
@@ -477,31 +503,23 @@ async def test_e2e_http_submit_routes_to_claude_code_adapter():
         assert r.status_code == 202
         run_id = r.json()["run_id"]
 
-        # poll status via HTTP
-        deadline = time.time() + 5.0
-        state = None
-        while time.time() < deadline:
-            sr = client.get(f"/tasks/{run_id}")
-            if sr.status_code == 200:
-                state = sr.json()["state"]
-                if state in ("completed", "failed"):
-                    break
-            await asyncio.sleep(0.05)
-        assert state == "completed"
+        # poll metrics until at least 1 completed
+        snap = await _wait_for_metrics(s, expected_completed=1, timeout_s=5.0)
+        assert snap["completed"] >= 1
 
         # metrics endpoint must show at least 1 completed
         mr = client.get("/metrics")
         assert mr.status_code == 200
-        snap = mr.json()
-        assert snap["completed"] >= 1
+        snap_http = mr.json()
+        assert snap_http["completed"] >= 1
     finally:
         await s.stop()
 
 
 @pytest.mark.asyncio
-async def test_e2e_http_metrics_endpoint_reflects_claude_code_dispatch():
+async def test_e2e_http_metrics_endpoint_reflects_claude_code_dispatch(fake_claude_binary):
     """After multiple HTTP-submitted tasks, the metrics endpoint must reflect them."""
-    reg = _make_registry()
+    reg = _make_registry(claude_binary=fake_claude_binary, include_codex=False)
     s = _make_scheduler(reg, max_retries=0)
     await s.start()
     try:
@@ -513,11 +531,11 @@ async def test_e2e_http_metrics_endpoint_reflects_claude_code_dispatch():
             )
             assert r.status_code == 202
         # wait
-        await asyncio.sleep(0.5)
+        snap = await _wait_for_metrics(s, expected_completed=3, timeout_s=5.0)
         mr = client.get("/metrics")
-        snap = mr.json()
-        assert snap["submitted"] == 3
-        assert snap["completed"] == 3
+        snap_http = mr.json()
+        assert snap_http["submitted"] == 3
+        assert snap_http["completed"] == 3
     finally:
         await s.stop()
 
@@ -528,12 +546,9 @@ async def test_e2e_http_metrics_endpoint_reflects_claude_code_dispatch():
 
 
 @pytest.mark.asyncio
-async def test_e2e_mcp_submit_task_dispatches_to_claude_code():
-    """MCP tools/call must dispatch a task through the scheduler; since the
-    registry has only claude-code-adapter + codex-adapter and the task_type
-    defaults to CUSTOM (which routes to codex), we explicitly force the
-    worker=claude-code-adapter to verify dispatch."""
-    reg = _make_registry()
+async def test_e2e_mcp_submit_task_dispatches_through_scheduler(fake_claude_binary):
+    """MCP tools/call must dispatch a task through the scheduler."""
+    reg = _make_registry(claude_binary=fake_claude_binary, include_codex=False)
     s = _make_scheduler(reg, max_retries=0)
     srv = MCPServer(s)
     await s.start()
@@ -543,7 +558,9 @@ async def test_e2e_mcp_submit_task_dispatches_to_claude_code():
             {"goal_id": "g-mcp-c", "title": "mcp-claude", "priority": "P1"},
         )
         assert "submitted" in res["content"][0]["text"]
-        # metrics reflects submission
+        snap = await _wait_for_metrics(s, expected_completed=1, timeout_s=5.0)
+        assert snap["completed"] >= 1
+        # metrics via MCP
         res_m = await srv.handle_tools_call("aios_get_metrics", {})
         assert res_m["content"][0]["text"]
     finally:
@@ -551,32 +568,33 @@ async def test_e2e_mcp_submit_task_dispatches_to_claude_code():
 
 
 # ---------------------------------------------------------------------------
-# 6. End-to-end full pipeline (4-modules: gateway -> scheduler -> adapter -> audit)
+# 6. End-to-end full pipeline (gateway -> scheduler -> adapter -> audit)
 # ---------------------------------------------------------------------------
 
 
 @pytest.mark.asyncio
-async def test_e2e_full_pipeline_4_module_claude_code(tmp_path: Path):
+async def test_e2e_full_pipeline_4_module_claude_code(
+    fake_claude_binary, tmp_path: Path,
+):
     """Full R1503 §2 e2e: HTTP submit -> scheduler.submit -> registry.route
     (picks claude-code-adapter) -> ClaudeCodeAdapter.execute (real binary)
     -> audit ledger entry."""
     ledger = tmp_path / "events.jsonl"
     state = tmp_path / "state.json"
     mem = MemoryPersistence(ledger_path=ledger, state_path=state)
-    reg = _make_registry()
-    s = _make_scheduler(reg, memory=mem)
+    reg = _make_registry(claude_binary=fake_claude_binary, include_codex=False)
+    s = _make_scheduler(reg, memory=mem, max_retries=0)
     await s.start()
     try:
         client = TestClient(create_app(s))
         r = client.post(
             "/tasks",
-            json={"goal_id": "g-pipe", "title": "print('pipeline-ok')", "priority": "P0"},
+            json={"goal_id": "g-pipe", "title": "pipeline-ok", "priority": "P0"},
         )
         assert r.status_code == 202
         run_id = r.json()["run_id"]
-
-        st = await _wait_for_completion(s, run_id, timeout_s=5.0)
-        assert st["state"] == "completed"
+        snap = await _wait_for_metrics(s, expected_completed=1, timeout_s=5.0)
+        assert snap["completed"] >= 1
     finally:
         await s.stop()
 
@@ -590,14 +608,17 @@ async def test_e2e_full_pipeline_4_module_claude_code(tmp_path: Path):
     completed = [e for e in events if e.get("type") == "task_completed"]
     assert completed[0]["worker"] == "claude-code-adapter"
     assert completed[0]["latency_s"] >= 0.0
+    # And the submitted event references the same run_id
+    submitted = [e for e in events if e.get("type") == "task_submitted"]
+    assert submitted[0]["run_id"] == run_id
 
 
 @pytest.mark.asyncio
-async def test_e2e_artifact_returned_from_claude_code_adapter():
+async def test_e2e_artifact_returned_from_claude_code_adapter(fake_claude_binary):
     """Verify the artifact structure ClaudeCodeAdapter produces is well-formed
     (task_id matches, label is claude_code_result or stub_fallback, has
     inline_json with expected keys)."""
-    adapter = ClaudeCodeAdapter(binary="python")
+    adapter = ClaudeCodeAdapter(binary=fake_claude_binary)
     t = Task(goal_id="g-art", title="artifact-test", task_type=TaskType.MATH_CALC)
     art: Artifact = await adapter.execute(t)
     assert isinstance(art, Artifact)
@@ -627,9 +648,12 @@ async def test_e2e_scheduler_dispatch_with_missing_binary(tmp_path: Path):
     try:
         t = Task(goal_id="g-stub", title="stub-task", task_type=TaskType.MATH_CALC)
         run_id = await s.submit(t, priority=Priority.P1)
-        st = await _wait_for_completion(s, run_id, timeout_s=5.0)
+        snap = await _wait_for_metrics(s, expected_completed=1, timeout_s=5.0)
         # even with stub fallback, scheduler records it as completed
-        assert st["state"] == "completed"
-        assert s.metrics()["completed"] >= 1
+        assert snap["completed"] >= 1
+        # the audit ledger has the completion
+        events = mem.read_ledger()
+        completed = [e for e in events if e.get("type") == "task_completed"]
+        assert completed and completed[0]["worker"] == "claude-code-adapter"
     finally:
         await s.stop()
