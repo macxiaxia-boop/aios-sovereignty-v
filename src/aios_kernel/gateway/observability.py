@@ -23,8 +23,12 @@ def add_observability_routes(
     app: FastAPI,
     *,
     scheduler: Any,
+    instance_id: str = "aios-kernel-1",
 ) -> None:
-    """Attach /healthz, /readyz, /metrics to an existing FastAPI app."""
+    """Attach /healthz, /readyz, /metrics to an existing FastAPI app.
+
+    R1505-4: metrics include {instance=...} label for multi-instance scraping.
+    """
     started_at: float = 0.0
     try:
         import time as _t
@@ -35,7 +39,7 @@ def add_observability_routes(
     @app.get("/healthz", include_in_schema=False)
     async def healthz() -> dict[str, Any]:
         """K8s liveness probe — returns 200 if process is alive."""
-        return {"status": "alive", "ts": started_at}
+        return {"status": "alive", "instance": instance_id, "ts": started_at}
 
     @app.get("/readyz", include_in_schema=False)
     async def readyz() -> dict[str, Any]:
@@ -99,23 +103,39 @@ def add_observability_routes(
 
     @app.get("/metrics", include_in_schema=False)
     async def metrics() -> str:
-        """Prometheus exposition format (text/plain v0.0.4)."""
+        """Prometheus exposition format (text/plain v0.0.4).
+
+        R1505-4: every metric carries {instance=...} label.
+        """
         snap = scheduler.metrics()
-        lines = []
-        # HELP/TYPE comments omitted for brevity in Phase A
-        lines.append(f"aios_kernel_submitted_total {snap.get('submitted', 0)}")
-        lines.append(f"aios_kernel_completed_total {snap.get('completed', 0)}")
-        lines.append(f"aios_kernel_failed_total {snap.get('failed', 0)}")
-        lines.append(f"aios_kernel_retried_total {snap.get('retried', 0)}")
-        lines.append(f"aios_kernel_dlq_size {snap.get('dlq_size', 0)}")
-        lines.append(
-            f"aios_kernel_avg_dispatch_latency_seconds {snap.get('avg_dispatch_latency_s', 0.0)}"
-        )
-        lines.append(
-            f"aios_kernel_circuit_opened_total {snap.get('circuit_opened', 0)}"
-        )
+        labels = f'instance="{instance_id}"'
+        lines = [
+            "# HELP aios_kernel_submitted_total Total tasks submitted since process start.",
+            "# TYPE aios_kernel_submitted_total counter",
+            f"aios_kernel_submitted_total{{{labels}}} {snap.get('submitted', 0)}",
+            "# HELP aios_kernel_completed_total Total tasks completed.",
+            "# TYPE aios_kernel_completed_total counter",
+            f"aios_kernel_completed_total{{{labels}}} {snap.get('completed', 0)}",
+            "# HELP aios_kernel_failed_total Total tasks failed (incl. retries).",
+            "# TYPE aios_kernel_failed_total counter",
+            f"aios_kernel_failed_total{{{labels}}} {snap.get('failed', 0)}",
+            "# HELP aios_kernel_retried_total Total task retry attempts.",
+            "# TYPE aios_kernel_retried_total counter",
+            f"aios_kernel_retried_total{{{labels}}} {snap.get('retried', 0)}",
+            "# HELP aios_kernel_dlq_size Dead-letter queue depth.",
+            "# TYPE aios_kernel_dlq_size gauge",
+            f"aios_kernel_dlq_size{{{labels}}} {snap.get('dlq_size', 0)}",
+            "# HELP aios_kernel_avg_dispatch_latency_seconds Avg task dispatch latency.",
+            "# TYPE aios_kernel_avg_dispatch_latency_seconds gauge",
+            f"aios_kernel_avg_dispatch_latency_seconds{{{labels}}} {snap.get('avg_dispatch_latency_s', 0.0)}",
+            "# HELP aios_kernel_circuit_opened_total Total circuit-breaker openings.",
+            "# TYPE aios_kernel_circuit_opened_total counter",
+            f"aios_kernel_circuit_opened_total{{{labels}}} {snap.get('circuit_opened', 0)}",
+            "# HELP aios_kernel_queue_depth Per-priority queue depth.",
+            "# TYPE aios_kernel_queue_depth gauge",
+        ]
         for prio, depth in (snap.get("queue_depth_by_priority") or {}).items():
-            lines.append(f'aios_kernel_queue_depth{{priority="{prio}"}} {depth}')
+            lines.append(f'aios_kernel_queue_depth{{{labels},priority="{prio}"}} {depth}')
         return "\n".join(lines) + "\n"
 
 
