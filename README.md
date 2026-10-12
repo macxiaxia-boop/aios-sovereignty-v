@@ -5,6 +5,8 @@
 > **R1503**: 4 modules, 12 tasks, 87 tests · see [R1503 Final Report](../R1503_FINAL_REPORT.md)
 
 [![AIOS Kernel CI](https://github.com/macxiaxia-boop/aios-sovereignty-v/actions/workflows/aios-kernel-ci.yml/badge.svg)](https://github.com/macxiaxia-boop/aios-sovereignty-v/actions/workflows/aios-kernel-ci.yml)
+[![R1503 module coverage 81%](https://img.shields.io/badge/R1503_coverage-81%25-brightgreen.svg)](https://github.com/macxiaxia-boop/aios-sovereignty-v)
+[![91/91 R1503 tests](https://img.shields.io/badge/R1503_tests-91%2F91-brightgreen.svg)](https://github.com/macxiaxia-boop/aios-sovereignty-v)
 
 This repository hosts the AIOS kernel — a Python package that wraps (does not
 fork) the existing AIOS services surfaced from `D:\AIOS`. R1503 (2026-10-12)
