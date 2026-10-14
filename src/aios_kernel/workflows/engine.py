@@ -126,24 +126,24 @@ class PGCheckpointerEngine:
         input: dict[str, Any] | None = None,
         run_id: str | None = None,
     ) -> WorkflowRun:
-        """Start a new run, then synchronously drive it to completion.
+        """Create and run once. A repeated explicit run_id never replays effects.
 
-        `run_id`: optional explicit run id (default = uuid4 hex). Useful for
-        tests that want to predict the id.
-
-        R1348B (N6 / AIPM_FOUNDATION_02 Stage B-1): if `run_id` already exists
-        in DB and its status is `completed`, we delete the prior row plus
-        its checkpoints and activity history, then insert a fresh run row.
-        This makes engine.start() idempotent across crash/recovery loops
-        (test_cr7 cycles 1..N reach the new step A as expected).
-        Other statuses (pending / crashed / failed / running) keep the
-        existing INSERT-OR-IGNORE behavior.
+        Re-execution is a separate operation and must use a new run ID. A
+        matching prior request returns its persisted snapshot; conflicting
+        workflow identity or input is rejected.
         """
         rid = run_id or new_run_id()
         in_payload = input or {}
-        if rid is not None and run_id is not None:
-            await self._reset_completed_run_for_replay(rid)
         async with self._session_factory() as session:
+            existing = await session.get(WorkflowRunRow, rid)
+            if existing is not None:
+                if existing.workflow_id != workflow.id:
+                    raise ValueError("run_id belongs to a different workflow")
+                prior = dict(safe_json_loads(existing.input_json))
+                prior.pop("signals", None)  # signals are stored in legacy input_json
+                if prior != in_payload:
+                    raise ValueError("run_id reused with a different input payload")
+                return _row_to_run(existing)
             await insert_run(
                 session,
                 run_id=rid,
@@ -151,38 +151,7 @@ class PGCheckpointerEngine:
                 input_json=in_payload,
             )
             await session.commit()
-        # drive
         return await self._drive(workflow, rid, resume_from=None)
-
-    async def _reset_completed_run_for_replay(self, run_id: str) -> None:
-        """N6: if the given run_id already exists with status='completed',
-        delete its row + checkpoints + activity history so a fresh start
-        can reach step A again. Safe: only fires on completed; other
-        statuses left untouched."""
-        from aios_kernel.workflows.persistence import (
-            ActivityHistoryRow,
-            WorkflowCheckpointRow,
-            WorkflowRunRow,
-        )
-        async with self._session_factory() as session:
-            row = await session.get(WorkflowRunRow, run_id)
-            if row is None:
-                return
-            if row.status != "completed":
-                return
-            # delete child rows first (checkpoints + history)
-            await session.execute(
-                __import__("sqlalchemy").delete(WorkflowCheckpointRow).where(
-                    WorkflowCheckpointRow.run_id == run_id
-                )
-            )
-            await session.execute(
-                __import__("sqlalchemy").delete(ActivityHistoryRow).where(
-                    ActivityHistoryRow.run_id == run_id
-                )
-            )
-            await session.delete(row)
-            await session.commit()
 
     async def resume(self, workflow: Workflow, run_id: str) -> WorkflowRun:
         """Resume a run that was started but not finished. The engine looks up
@@ -295,7 +264,10 @@ class PGCheckpointerEngine:
         async with self._session_factory() as session:
             pending_rows = await list_runs_by_status(session, "pending")
             running_rows = await list_runs_by_status(session, "running")
-            candidates = [r.run_id for r in pending_rows] + [r.run_id for r in running_rows]
+            candidates = [
+                r.run_id for r in pending_rows + running_rows
+                if r.workflow_id == workflow.id
+            ]
         out: list[WorkflowRun] = []
         for rid in candidates:
             try:
@@ -322,6 +294,13 @@ class PGCheckpointerEngine:
                     (resume() path)
         """
         order = workflow.topological_order()
+        async with self._session_factory() as session:
+            identity = await session.get(WorkflowRunRow, run_id)
+            if identity is None:
+                raise KeyError(f"no run {run_id!r}")
+            if identity.workflow_id != workflow.id:
+                raise ValueError("workflow identity does not match persisted run")
+            workflow_input = safe_json_loads(identity.input_json)
         # Determine resume cursor
         if resume_from == "auto":
             async with self._session_factory() as session:
@@ -330,7 +309,7 @@ class PGCheckpointerEngine:
                 # already-ran step states from history -> mark complete
                 async with self._session_factory() as session:
                     cps = await list_checkpoints(session, run_id)
-                done_ids = {c.step_id for c in cps}
+                done_ids = {c.step_id for c in cps if c.status == "completed"}
             else:
                 done_ids = set()
         else:
@@ -379,7 +358,8 @@ class PGCheckpointerEngine:
                     return _row_to_run(row)
             dep_outputs = {dep: completed_outputs.get(dep, {}) for dep in step.depends_on}
             status, output, last_error = await self._execute_step(
-                workflow, run_id, step, idx, order, dep_outputs
+                workflow, run_id, step, idx, order, dep_outputs,
+                workflow_input=workflow_input,
             )
             if status == "completed":
                 async with self._session_factory() as session:
@@ -430,6 +410,7 @@ class PGCheckpointerEngine:
                 run_id=run_id,
                 status="completed",
                 current_step=order[-1].id if order else None,
+                output_json={"steps": completed_outputs},
                 completed_at=datetime.now(UTC),
             )
             await session.commit()
@@ -444,6 +425,7 @@ class PGCheckpointerEngine:
         step_index: int,
         order: list[WorkflowStep],
         dep_outputs = None,
+        workflow_input: dict[str, Any] | None = None,
     ) -> tuple[str, dict[str, Any] | None, str | None]:
         """Run a single step with retry + timeout. Return (status, output, error).
 
@@ -464,7 +446,7 @@ class PGCheckpointerEngine:
                 run_id=run_id,
                 step_id=step.id,
                 attempt=attempt,
-                input={"workflow_input": {"workflow_id": workflow.id}, "deps": dep_outputs},
+                input={"workflow_input": workflow_input or {}, "deps": dep_outputs},
                 output=last_output or {},
                 metadata={
                     "workflow_id": workflow.id,
