@@ -162,6 +162,7 @@ async def test_two_real_services_persist_artifact_across_gateway_restart(tmp_pat
     ct_env = dict(os.environ)
     ct_env["PYTHONPATH"] = str(cloudtech)
     ct_env["V4_ENV"] = "development"
+    ct_env["CLOUDTECH_V4_SQLITE_PATH"] = str(tmp_path / "cloudtech-v4.db")
     ct_env.pop("V4_JWT_SECRET", None)
     aios_env = dict(os.environ)
     aios_env["PYTHONPATH"] = str(aios_root / "src")
@@ -239,6 +240,38 @@ async def test_two_real_services_persist_artifact_across_gateway_restart(tmp_pat
             assert restored.status_code == 200
             assert restored.json()["state"] == "completed"
             assert restored.json()["artifact"] == data["artifact"]
+
+            # Restart CloudTech too: the original V4 Run, nodes and tenant
+            # idempotency must survive in CloudTech's own opt-in database.
+            cloudtech_run = data["artifact"]["inline_json"]["data"]["created_run"]["run_id"]
+            _stop_process(ct_proc)
+            ct_proc = _start_uvicorn(
+                "api.v4.asgi:app", ct_port, cwd=cloudtech, env=ct_env,
+            )
+            await _health_url(client, ct_url + "/v4/workpaths/capabilities", ct_proc)
+            original = await client.get(
+                ct_url + f"/v4/workpaths/runs/{cloudtech_run}",
+                params={"tenant_id": tenant},
+            )
+            assert original.status_code == 200, original.text
+            doc = original.json()
+            assert doc["run_id"] == cloudtech_run
+            assert doc["status"] == "PARTIAL"
+            assert doc["nodes"][0]["node_id"] == "url_normalize"
+            assert doc["nodes"][0]["status"] == "COMPLETED"
+
+            reissued = await client.post(
+                ct_url + "/v4/workpaths/runs",
+                params={"tenant_id": tenant},
+                json={
+                    "path_id": "WP-BLOGGER-RESEARCH",
+                    "revision": 1,
+                    "input_bindings": task["input_payload"]["input_bindings"],
+                    "idempotency_key": data["artifact"]["task_id"],
+                },
+            )
+            assert reissued.status_code == 200, reissued.text
+            assert reissued.json()["run_id"] == cloudtech_run
     finally:
         if aios_proc is not None:
             _stop_process(aios_proc)
