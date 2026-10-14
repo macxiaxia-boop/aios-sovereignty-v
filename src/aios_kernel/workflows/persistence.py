@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import json
 from collections.abc import Sequence
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from typing import Any
 
 from sqlalchemy import (
@@ -23,6 +23,7 @@ from sqlalchemy import (
     String,
     Text,
     select,
+    update,
 )
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
@@ -95,7 +96,19 @@ class ActivityHistoryRow(Base):
     finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
 
+class WorkflowLeaseRow(Base):
+    """Independent additive table; init_schema(create_all) preserves old runs."""
+
+    __tablename__ = "workflow_leases"
+
+    run_id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    owner_id: Mapped[str] = mapped_column(String(64), nullable=False, default="")
+    fencing_token: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+
 # ---------- Engine factory --------------------------------------------------
+
 
 
 def make_engine(database_url: str) -> AsyncEngine:
@@ -122,6 +135,101 @@ async def drop_schema(engine: AsyncEngine) -> None:
     """Drop all tables. Test-only helper."""
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
+
+
+
+# ---------- Workflow lease / fencing ---------------------------------------
+
+
+def _insert_for_dialect(session: AsyncSession):
+    dialect = session.get_bind().dialect.name
+    if dialect == "sqlite":
+        from sqlalchemy.dialects.sqlite import insert as dialect_insert
+    elif dialect == "postgresql":
+        from sqlalchemy.dialects.postgresql import insert as dialect_insert
+    else:
+        raise ValueError(f"unsupported workflow persistence dialect: {dialect}")
+    return dialect_insert
+
+
+async def acquire_workflow_lease(
+    session: AsyncSession,
+    *,
+    run_id: str,
+    owner_id: str,
+    ttl_s: float = 120.0,
+) -> int | None:
+    """Acquire via DB atomic UPDATE; return new monotonically increasing fence.
+
+    None means another unexpired owner holds the run. Both SQLite and
+    PostgreSQL serialize the conditional UPDATE. Do not put an external
+    network call inside this transaction.
+    """
+    if ttl_s <= 0:
+        raise ValueError("workflow lease TTL must be positive")
+    now = _now()
+    dialect_insert = _insert_for_dialect(session)
+    await session.execute(
+        dialect_insert(WorkflowLeaseRow)
+        .values(run_id=run_id, owner_id="", fencing_token=0, expires_at=now)
+        .on_conflict_do_nothing(index_elements=["run_id"])
+    )
+    stmt = (
+        update(WorkflowLeaseRow)
+        .where(WorkflowLeaseRow.run_id == run_id)
+        .where(WorkflowLeaseRow.expires_at <= now)
+        .values(
+            owner_id=owner_id,
+            fencing_token=WorkflowLeaseRow.fencing_token + 1,
+            expires_at=now + timedelta(seconds=ttl_s),
+        )
+        .returning(WorkflowLeaseRow.fencing_token)
+    )
+    result = await session.execute(stmt)
+    return result.scalar_one_or_none()
+
+
+async def renew_workflow_lease(
+    session: AsyncSession,
+    *,
+    run_id: str,
+    owner_id: str,
+    fencing_token: int,
+    ttl_s: float = 120.0,
+) -> bool:
+    """CAS fence check and refresh. Must run in the SAME transaction as checkpoint."""
+    if ttl_s <= 0:
+        raise ValueError("workflow lease TTL must be positive")
+    now = _now()
+    stmt = (
+        update(WorkflowLeaseRow)
+        .where(WorkflowLeaseRow.run_id == run_id)
+        .where(WorkflowLeaseRow.owner_id == owner_id)
+        .where(WorkflowLeaseRow.fencing_token == fencing_token)
+        .where(WorkflowLeaseRow.expires_at > now)
+        .values(expires_at=now + timedelta(seconds=ttl_s))
+    )
+    result = await session.execute(stmt)
+    return result.rowcount == 1
+
+
+async def release_workflow_lease(
+    session: AsyncSession,
+    *,
+    run_id: str,
+    owner_id: str,
+    fencing_token: int,
+) -> bool:
+    """Old owner cannot release a successor's lease."""
+    stmt = (
+        update(WorkflowLeaseRow)
+        .where(WorkflowLeaseRow.run_id == run_id)
+        .where(WorkflowLeaseRow.owner_id == owner_id)
+        .where(WorkflowLeaseRow.fencing_token == fencing_token)
+        .values(owner_id="", expires_at=_now())
+    )
+    result = await session.execute(stmt)
+    return result.rowcount == 1
 
 
 # ---------- Data access helpers --------------------------------------------
