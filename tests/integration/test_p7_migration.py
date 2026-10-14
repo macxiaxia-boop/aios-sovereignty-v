@@ -55,7 +55,35 @@ def test_p7_migration_is_additive_and_repeat_safe(tmp_path):
         engine.dispose()
 
 
-def test_p7_rollback_refuses_to_discard_execution_evidence():
+def test_p7_rollback_refuses_to_discard_execution_evidence(tmp_path):
     migration = _load_migration()
-    with pytest.raises(RuntimeError, match="automatic table deletion"):
-        migration.downgrade()
+    engine = sa.create_engine(f"sqlite:///{(tmp_path / 'preserve.db').as_posix()}")
+    try:
+        with engine.begin() as conn:
+            migration.op = Operations(MigrationContext.configure(conn))
+            migration.upgrade()
+            conn.execute(sa.text(
+                "INSERT INTO workflow_effects "
+                "(effect_key, run_id, step_id, request_hash, status, receipt_json) "
+                "VALUES ('sent-key','r','s','h','sent','{}')"
+            ))
+            with pytest.raises(RuntimeError, match="automatic table deletion"):
+                migration.downgrade()
+            assert "workflow_effects" in sa.inspect(conn).get_table_names()
+    finally:
+        engine.dispose()
+
+
+def test_p7_empty_tables_allow_reversible_migration(tmp_path):
+    migration = _load_migration()
+    engine = sa.create_engine(f"sqlite:///{(tmp_path / 'empty.db').as_posix()}")
+    try:
+        with engine.begin() as conn:
+            migration.op = Operations(MigrationContext.configure(conn))
+            migration.upgrade()
+            migration.downgrade()
+            tables = set(sa.inspect(conn).get_table_names())
+            assert "workflow_effects" not in tables
+            assert "workflow_leases" not in tables
+    finally:
+        engine.dispose()
