@@ -679,20 +679,24 @@ class PGCheckpointerEngine:
                 raise WorkflowEffectUncertain(
                     f"external effect {effect_key} lacks a remote resource receipt"
                 )
+            # A shaped provider receipt is NOT independent verification.
+            # Preserve its payload for a read-only remote confirmation step.
             if not await transition_external_effect(
                 session, effect_key=effect_key, from_status="sent",
-                to_status="confirmed", receipt=result.output,
+                to_status="unverified", receipt=result.output,
             ):
                 raise WorkflowEffectUncertain(
-                    f"external effect {effect_key} state changed before confirmation"
+                    f"external effect {effect_key} changed before receipt capture"
                 )
             await record_activity(
                 session, run_id=run_id, activity_id=step.activity.name,
-                step_id=step.id, attempt=1, status="completed",
+                step_id=step.id, attempt=1, status="receipt_observed",
                 finished_at=datetime.now(UTC),
             )
             await session.commit()
-        return ("completed", result.output, None)
+        raise WorkflowEffectUncertain(
+            f"external effect {effect_key} has a receipt but awaits independent verification"
+        )
 
     async def confirm_external_effect(
         self,
@@ -720,7 +724,7 @@ class PGCheckpointerEngine:
             row = await session.get(WorkflowEffectRow, effect_key)
             if row is None or row.run_id != run_id or row.step_id != step_id:
                 raise KeyError("external effect journal not found")
-            if row.status not in ("sent", "uncertain"):
+            if row.status not in ("sent", "uncertain", "unverified"):
                 raise ValueError(f"effect not awaiting reconciliation: {row.status}")
             if not await transition_external_effect(
                 session, effect_key=effect_key, from_status=row.status,
