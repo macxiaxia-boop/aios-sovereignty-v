@@ -7,6 +7,7 @@ Local explicit start:
 """
 from __future__ import annotations
 
+import os
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -18,7 +19,10 @@ from aios_kernel.scheduler import AIOSScheduler
 
 def create_hosted_app() -> FastAPI:
     """Reuse the existing app factory, worker registry and scheduler."""
-    scheduler = AIOSScheduler(registry=build_default_registry())
+    scheduler = AIOSScheduler(
+        registry=build_default_registry(),
+        durable_db_path=os.environ.get("AIOS_SCHEDULER_SQLITE_PATH") or None,
+    )
 
     @asynccontextmanager
     async def lifespan(_app: FastAPI):
