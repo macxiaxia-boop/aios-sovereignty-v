@@ -98,11 +98,11 @@ def test_upgrade_downgrade_upgrade_roundtrip(sqlite_url):
 
 
 # 5. current revision is 003 (head)
-def test_current_revision_is_003(sqlite_url):
+def test_current_revision_is_004(sqlite_url):
     _run_alembic(["upgrade", "head"], sqlite_url)
     result = _run_alembic(["current"], sqlite_url)
     assert result.returncode == 0
-    assert "003" in result.stdout
+    assert "004" in result.stdout
 
 
 # 6. ORM can read alembic-created schema
