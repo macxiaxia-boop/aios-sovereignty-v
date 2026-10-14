@@ -179,7 +179,13 @@ class DurableDispatchStore:
             row = db.execute(
                 "SELECT * FROM dispatch_runs WHERE run_id=?", (run_id,)
             ).fetchone()
-        if row is None or (row["tenant_id"] and row["tenant_id"] != tenant_id):
+        if row is None:
+            return None
+        # Internal callers may omit the tenant to inspect a legacy run, but
+        # authenticated tenant-scoped HTTP must never read a tenantless row.
+        if tenant_id is not None and row["tenant_id"] != tenant_id:
+            return None
+        if tenant_id is None and row["tenant_id"] is not None:
             return None
         return {
             "run_id": row["run_id"],
