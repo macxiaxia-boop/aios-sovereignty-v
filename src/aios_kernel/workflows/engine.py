@@ -588,7 +588,7 @@ class PGCheckpointerEngine:
                     "prev_outputs": dep_outputs,
                     "fencing_token": fencing_token,
                     "idempotency_key": hashlib.sha256(
-                        f"{run_id}:{step.id}".encode("utf-8")
+                        f"{run_id}:{step.id}".encode()
                     ).hexdigest(),
                 },
             )
