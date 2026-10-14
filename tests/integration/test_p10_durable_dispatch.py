@@ -137,3 +137,35 @@ async def test_scheduler_submission_is_durable_before_dispatch(tmp_path):
         assert (await restarted.status(rid))["state"] == "completed"
     finally:
         await restarted.stop()
+
+
+
+class _TimedOutWorker(_StubAdapterBase):
+    async def execute(self, task):
+        # A failed response is NOT proof the remote side effect did not occur.
+        raise TimeoutError("remote response was lost")
+
+
+@pytest.mark.asyncio
+async def test_failed_nonreadonly_worker_quarantined_without_auto_retry(tmp_path):
+    registry = WorkerRegistry()
+    registry.register(_TimedOutWorker("cloudtech-v4-adapter"))
+    dbpath = tmp_path / "no-blind-retry.db"
+    scheduler = AIOSScheduler(
+        registry=registry,
+        config=SchedulerConfig(max_concurrent=1, max_retries=3),
+        durable_db_path=str(dbpath),
+    )
+    await scheduler.start()
+    try:
+        rid = await scheduler.submit(_task("create_and_execute_local"))
+        for _ in range(150):
+            state = (await scheduler.status(rid))["state"]
+            if state == "blocked_uncertain":
+                break
+            await asyncio.sleep(.01)
+        assert (await scheduler.status(rid))["state"] == "blocked_uncertain"
+        # A dangerous failed operation must not re-enter queue automatically.
+        assert DurableDispatchStore(dbpath).claim("other-worker") is None
+    finally:
+        await scheduler.stop()
