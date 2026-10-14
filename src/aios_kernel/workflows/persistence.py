@@ -137,7 +137,9 @@ async def insert_run(
     run_id: str,
     workflow_id: str,
     input_json: dict[str, Any],
-) -> None:
+) -> bool:
+    # True only when this request created the run. Required to avoid concurrent
+    # first-submit attempts both executing external side effects.
     # Dialect-specific INSERT: SQLite Insert must not be compiled as PostgreSQL.
     # This operation never replays a completed run (see WorkflowEngine.start).
     dialect = session.get_bind().dialect.name
@@ -157,9 +159,11 @@ async def insert_run(
         started_at=None,
         completed_at=None,
     ).on_conflict_do_nothing(index_elements=["run_id"])
-    await session.execute(stmt)
+    result = await session.execute(stmt)
     await session.flush()
-    return
+    # Both supported backends return 1 for insert and 0 for conflict.
+    # The default covers simple test doubles that return no cursor result.
+    return getattr(result, "rowcount", 1) == 1
 
 
 async def update_run(
