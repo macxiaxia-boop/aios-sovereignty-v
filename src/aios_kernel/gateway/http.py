@@ -17,6 +17,7 @@ Co-Authored-By: Claude Code (Agent 3 / OpenClaw) via AIOS R1503
 from __future__ import annotations
 
 import logging
+import os
 from typing import Any
 
 from fastapi import FastAPI, HTTPException
@@ -35,6 +36,8 @@ class SubmitTaskRequest(BaseModel):
     title: str = Field(..., min_length=1, max_length=200)
     description: str | None = Field(default=None, max_length=4000)
     priority: str = Field(default="P2", pattern=r"^P[012]$")
+    worker: str | None = Field(default=None, description="Only allowlisted specialized workers")
+    input_payload: dict[str, Any] = Field(default_factory=dict)
 
 
 class SubmitTaskResponse(BaseModel):
@@ -75,11 +78,28 @@ def create_app(scheduler: AIOSScheduler) -> FastAPI:
             raise HTTPException(
                 status_code=400, detail=f"unknown priority {req.priority!r}"
             ) from exc
+        if req.worker is not None:
+            if req.worker != "cloudtech-v4-adapter":
+                raise HTTPException(400, "Gateway cannot route arbitrary worker identities")
+            if os.environ.get("CLOUDTECH_V4_GATEWAY_ENABLED", "0").lower() not in {
+                "1", "true", "yes",
+            }:
+                raise HTTPException(403, "CloudTech Gateway worker is not enabled")
+            if req.input_payload.get("action") not in {
+                "preflight", "create_and_execute_local",
+            }:
+                raise HTTPException(400, "CloudTech Gateway does not allow this action")
+            if not req.input_payload.get("path_id") or not req.input_payload.get("tenant_id"):
+                raise HTTPException(422, "CloudTech path_id and tenant_id are required")
+        elif req.input_payload:
+            raise HTTPException(400, "Unbound worker cannot accept arbitrary input_payload")
         task = Task(
             goal_id=req.goal_id,
             title=req.title,
             description=req.description,
             task_type=TaskType.CUSTOM,
+            worker=req.worker,
+            input_payload=req.input_payload,
         )
         run_id = await scheduler.submit(task, priority=priority)
         return SubmitTaskResponse(run_id=run_id, task_id=task.id)
