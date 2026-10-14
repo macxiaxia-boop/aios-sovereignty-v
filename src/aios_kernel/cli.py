@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import asyncio
 import logging
+import os
 
 from aios_kernel import __version__
 from aios_kernel.scheduler import AIOSScheduler, SchedulerConfig
@@ -29,6 +30,12 @@ def build_default_registry() -> WorkerRegistry:
     registry.register(CodexAdapter())
     registry.register(OpenClawAdapter())
     registry.register(HermesAdapter())
+    # The existing specialized CloudTech bridge is deliberately opt-in:
+    # without an explicit service URL there must be no mock/silent fallback.
+    if os.environ.get("CLOUDTECH_V4_BASE_URL"):
+        from aios_kernel.workers.cloudtech_v4_adapter import CloudTechV4Adapter
+
+        registry.register(CloudTechV4Adapter())
     return registry
 
 
