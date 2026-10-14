@@ -192,6 +192,8 @@ class AIOSScheduler:
         # When a MemoryPersistence sink is supplied, statuses also survive
         # process restart. This does NOT persist/recover the execution queue.
         self._run_states: dict[str, str] = {}
+        self._run_results: dict[str, dict[str, Any]] = {}
+        self._run_tenants: dict[str, str | None] = {}
         self._metrics = SchedulerMetrics()
         self._stopped = False
         self._dispatcher_task: asyncio.Task | None = None
@@ -270,6 +272,10 @@ class AIOSScheduler:
             "ts": time.time(),
             "run_id": f"run-{task.id}-{int(time.time() * 1000)}",
         }
+        tenant = getattr(task, "input_payload", {}).get("tenant_id")
+        self._run_tenants[envelope["run_id"]] = (
+            str(tenant) if isinstance(tenant, str) and tenant else None
+        )
         await self._queues[priority].put(envelope)
         self._record_state(envelope["run_id"], "queued")
         self._audit("task_submitted", {
@@ -294,6 +300,32 @@ class AIOSScheduler:
         if state is None and self._memory is not None:
             state = self._memory.state_get(f"scheduler-run:{run_id}")
         return {"run_id": run_id, "state": state or "unknown"}
+
+    async def result(
+        self, run_id: str, *, tenant_id: str | None = None,
+    ) -> dict[str, Any]:
+        """Return actual worker Artifact (never business-validated by default)."""
+        owner = self._run_tenants.get(run_id)
+        if owner is None and self._memory is not None:
+            owner = self._memory.state_get(f"scheduler-tenant:{run_id}")
+        if owner is not None and owner != tenant_id:
+            # Do not leak the existence or content of another tenant's work.
+            return {"run_id": run_id, "state": "unknown", "available": False}
+        status = await self.status(run_id)
+        artifact = self._run_results.get(run_id)
+        if artifact is None and self._memory is not None:
+            artifact = self._memory.state_get(f"scheduler-result:{run_id}")
+        return {
+            "run_id": run_id,
+            "state": status["state"],
+            "available": bool(artifact),
+            "artifact": artifact,
+            "business_validated": False,
+            "durability": (
+                "OPTIONAL_MEMORY_PERSISTENCE" if self._memory is not None
+                else "IN_PROCESS_ONLY"
+            ),
+        }
 
     def metrics(self) -> dict[str, Any]:
         return self._metrics.snapshot()
@@ -375,6 +407,23 @@ class AIOSScheduler:
                 await self._dlq_put(envelope, exc)
             return
 
+        # Preserve the real worker artifact; "completed" means worker return,
+        # not provider receipt reconciliation or business acceptance.
+        if hasattr(artifact, "model_dump"):
+            artifact_doc = artifact.model_dump(mode="json")
+        elif isinstance(artifact, dict):
+            artifact_doc = artifact
+        else:
+            raise TypeError("worker must return Artifact or JSON dict")
+        self._run_results[run_id] = artifact_doc
+        if self._memory is not None:
+            try:
+                self._memory.state_set(f"scheduler-result:{run_id}", artifact_doc)
+                tenant = self._run_tenants.get(run_id)
+                if tenant is not None:
+                    self._memory.state_set(f"scheduler-tenant:{run_id}", tenant)
+            except Exception as exc:  # noqa: BLE001
+                log.error("scheduler artifact persistence failed: %s", exc)
         breaker.record_success()
         self._record_state(run_id, "completed")
         self._metrics.completed += 1
