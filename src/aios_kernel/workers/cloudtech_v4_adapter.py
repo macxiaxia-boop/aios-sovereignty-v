@@ -9,6 +9,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 from datetime import UTC, datetime
 from urllib.parse import urlsplit
 
@@ -62,6 +63,14 @@ class CloudTechV4Adapter:
             raise ValueError("CloudTech worker only allows read-only/local actions")
         if not path_id or not tenant_id:
             raise ValueError("CloudTech worker needs path_id and tenant_id")
+        if not isinstance(path_id, str) or not re.fullmatch(
+            r"WP-[A-Z0-9]+(?:-[A-Z0-9]+)*", path_id
+        ):
+            raise ValueError("invalid CloudTech workpath ID")
+        if not isinstance(tenant_id, str) or not re.fullmatch(
+            r"[A-Za-z0-9_-]{1,64}", tenant_id
+        ):
+            raise ValueError("invalid CloudTech tenant ID")
 
         preflight = await self._call(
             "GET", f"/v4/workpaths/{path_id}/preflight",
