@@ -138,12 +138,16 @@ async def insert_run(
     workflow_id: str,
     input_json: dict[str, Any],
 ) -> None:
-    # Phase B CR7 idempotency: use ON CONFLICT DO NOTHING
-    # (Postgres) / INSERT OR IGNORE (SQLite). Multi-cycle crash/recovery
-    # re-calls start() with the same run_id; the first call creates the
-    # row, subsequent calls are no-ops.
-    from sqlalchemy.dialects.sqlite import insert as sqlite_insert
-    stmt = sqlite_insert(WorkflowRunRow).values(
+    # Dialect-specific INSERT: SQLite Insert must not be compiled as PostgreSQL.
+    # This operation never replays a completed run (see WorkflowEngine.start).
+    dialect = session.get_bind().dialect.name
+    if dialect == "sqlite":
+        from sqlalchemy.dialects.sqlite import insert as dialect_insert
+    elif dialect == "postgresql":
+        from sqlalchemy.dialects.postgresql import insert as dialect_insert
+    else:
+        raise ValueError(f"unsupported workflow persistence dialect: {dialect}")
+    stmt = dialect_insert(WorkflowRunRow).values(
         run_id=run_id,
         workflow_id=workflow_id,
         status="pending",
