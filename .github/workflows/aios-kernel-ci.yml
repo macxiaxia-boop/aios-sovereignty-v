@@ -69,6 +69,30 @@ jobs:
           name: coverage-xml
           path: coverage.xml
 
+  cloudtech-cross-repo-http:
+    name: Real AIOS↔CloudTech loopback HTTP
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: macxiaxia-boop/cloudtech-spa-v2
+          ref: fix/cloudtech-pipeline-truth-p5-20261014
+          path: cloudtech-checkout
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install integration deps
+        run: |
+          python -m pip install -e .
+          python -m pip install pytest pytest-asyncio httpx streamlit
+      - name: Real localhost server and real HTTP client
+        env:
+          CLOUDTECH_V4_CHECKOUT: ${{ github.workspace }}/cloudtech-checkout
+        run: |
+          python -m pytest tests/integration/test_p10_cross_repo_http.py -v --tb=short -rs
+
   lint:
     runs-on: ubuntu-latest
     steps:
