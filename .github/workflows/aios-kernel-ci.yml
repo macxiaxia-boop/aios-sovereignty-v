@@ -53,6 +53,7 @@ jobs:
             tests/integration/test_p6_atomic_claim.py \
             tests/integration/test_p7_workflow_leases.py \
             tests/integration/test_p7_effect_context.py \
+            tests/integration/test_p7_external_effects.py \
             -v --tb=short --cov=aios_kernel --cov-append
 
       - name: Upload coverage
