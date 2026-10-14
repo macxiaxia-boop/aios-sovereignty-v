@@ -259,22 +259,25 @@ class CloudTechV4Adapter:
                     # HTML and recomputes both outputs before ACK. A completed
                     # run alone is not a catalogued deliverable.
                     indexed = None
+                    catalog = None
                     for _ in range(70):
-                        catalog = await self._call(
-                            "GET", "/v4/workpaths/local-outputs",
-                            tenant_id=tenant_id, params={"tenant_id": tenant_id},
-                        )
-                        items = catalog.get("items")
-                        if not isinstance(items, list):
-                            raise ValueError("local output catalog is invalid")
-                        matching = [
-                            item for item in items
-                            if isinstance(item, dict) and item.get("run_id") == run_id
-                        ]
-                        if matching:
-                            indexed = matching[0]
-                            break
-                        await asyncio.sleep(0.2)
+                        # Query the exact authenticated tenant+run output.
+                        # A latest-50 catalog scan loses genuine results under
+                        # concurrency and can falsely time out.
+                        try:
+                            catalog = await self._call(
+                                "GET", f"/v4/workpaths/local-outputs/{run_id}",
+                                tenant_id=tenant_id, params={"tenant_id": tenant_id},
+                            )
+                        except httpx.HTTPStatusError as exc:
+                            if exc.response.status_code != 404:
+                                raise
+                            await asyncio.sleep(0.2)
+                            continue
+                        indexed = catalog.get("item")
+                        if not isinstance(indexed, dict):
+                            raise ValueError("exact-run output catalog payload invalid")
+                        break
                     if not (
                         isinstance(indexed, dict)
                         and indexed.get("path_id") == path_id
