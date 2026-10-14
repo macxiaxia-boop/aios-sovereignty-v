@@ -57,9 +57,22 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    # These rows are audit/effect histories and a rollback would delete
-    # evidence that may be needed to prevent duplicate remote side effects.
-    raise RuntimeError(
-        "P7 workflow ledger downgrade requires a separately approved, "
-        "backed-up data migration; automatic table deletion is prohibited"
-    )
+    # Production state rows must never be silently removed. Empty newly
+    # created tables may be rolled back during migration tests/development.
+    bind = op.get_bind()
+    tables = set(sa.inspect(bind).get_table_names())
+    for name in ("workflow_effects", "workflow_leases"):
+        if name in tables:
+            exists = bind.execute(sa.text(f"SELECT 1 FROM {name} LIMIT 1")).first()
+            if exists is not None:
+                raise RuntimeError(
+                    f"automatic table deletion prohibited: {name} contains "
+                    "workflow execution evidence; back up and reconcile first"
+                )
+    if "workflow_effects" in tables:
+        indexes = {idx["name"] for idx in sa.inspect(bind).get_indexes("workflow_effects")}
+        if "ix_workflow_effects_run_id" in indexes:
+            op.drop_index("ix_workflow_effects_run_id", table_name="workflow_effects")
+        op.drop_table("workflow_effects")
+    if "workflow_leases" in tables:
+        op.drop_table("workflow_leases")
