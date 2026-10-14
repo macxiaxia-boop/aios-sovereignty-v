@@ -204,6 +204,9 @@ class WorkflowStep:
     depends_on: list[str] = field(default_factory=list)
     retry_policy: RetryPolicy | None = None
     timeout_s: float | None = None
+    # Mark network actions with irreversible effects (publishing, orders, etc.).
+    # Such steps must never use blind retry after a request was dispatched.
+    external_effect: bool = False
 
     def __post_init__(self) -> None:
         if not self.meta.id:
