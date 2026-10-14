@@ -69,7 +69,7 @@ def create_app(scheduler: AIOSScheduler) -> FastAPI:
         return scheduler.metrics()
 
     @app.post("/tasks", response_model=SubmitTaskResponse, status_code=202)
-    async def submit_task(req: SubmitTaskRequest) -> SubmitTaskResponse:
+    async def submit_task(req: SubmitTaskRequest, request: Request) -> SubmitTaskResponse:
         from aios_kernel.domain.task import Task, TaskType
         from aios_kernel.scheduler import Priority
         try:
@@ -79,6 +79,21 @@ def create_app(scheduler: AIOSScheduler) -> FastAPI:
                 status_code=400, detail=f"unknown priority {req.priority!r}"
             ) from exc
         if req.worker is not None:
+            from aios_kernel.gateway.auth_middleware import _env_enabled
+
+            # Never accept a tenant claimed by an unauthenticated caller.
+            if not _env_enabled("AIOS_KERNEL_AUTH_REQUIRED"):
+                raise HTTPException(403, "CloudTech work requires signed tenant auth")
+            claims = getattr(request.state, "user", None)
+            caller_tenant = claims.get("tenant_id") if isinstance(claims, dict) else None
+            requested_tenant = req.input_payload.get("tenant_id")
+            if (
+                not isinstance(caller_tenant, str)
+                or not caller_tenant
+                or not isinstance(requested_tenant, str)
+                or requested_tenant != caller_tenant
+            ):
+                raise HTTPException(403, "signed tenant claim does not match work tenant")
             if req.worker != "cloudtech-v4-adapter":
                 raise HTTPException(400, "Gateway cannot route arbitrary worker identities")
             if os.environ.get("CLOUDTECH_V4_GATEWAY_ENABLED", "0").lower() not in {
