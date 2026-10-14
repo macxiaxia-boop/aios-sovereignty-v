@@ -8,8 +8,8 @@ from __future__ import annotations
 import pytest
 from fastapi.testclient import TestClient
 
-from aios_kernel.gateway.http import create_app
 from aios_kernel.gateway.auth import sign_jwt
+from aios_kernel.gateway.http import create_app
 
 _TEST_SECRET = b'cross-tenant-gateway-test-secret-1234567890'
 
