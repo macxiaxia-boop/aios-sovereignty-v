@@ -6,6 +6,7 @@ The result is a verifiable JSON Artifact, NOT a business validation verdict.
 """
 from __future__ import annotations
 
+import asyncio
 import base64
 import hashlib
 import hmac
@@ -100,7 +101,9 @@ class CloudTechV4Adapter:
         action = payload.get("action")
         path_id = payload.get("path_id")
         tenant_id = payload.get("tenant_id")
-        if action not in {"preflight", "create_and_execute_local"}:
+        if action not in {
+            "preflight", "create_and_execute_local", "create_enqueue_and_collect_subtitles",
+        }:
             raise ValueError("CloudTech worker only allows read-only/local actions")
         if not path_id or not tenant_id:
             raise ValueError("CloudTech worker needs path_id and tenant_id")
@@ -122,8 +125,10 @@ class CloudTechV4Adapter:
         ):
             raise ValueError("CloudTech capability preflight identity mismatch")
 
+        if action == "create_enqueue_and_collect_subtitles" and path_id != "WP-LOCAL-SUBTITLE-EXPORT":
+            raise ValueError("subtitle enqueue action only supports WP-LOCAL-SUBTITLE-EXPORT")
         remote: dict = {"preflight": preflight}
-        if action == "create_and_execute_local":
+        if action in {"create_and_execute_local", "create_enqueue_and_collect_subtitles"}:
             inputs = payload.get("input_bindings", {})
             if not isinstance(inputs, dict):
                 raise ValueError("input_bindings must be a dictionary")
@@ -141,54 +146,147 @@ class CloudTechV4Adapter:
             run_id = created.get("run_id")
             if not isinstance(run_id, str) or not run_id.startswith("wpr_"):
                 raise ValueError("CloudTech create_run did not return a valid run id")
-            executed = await self._call(
-                "POST", f"/v4/workpaths/runs/{run_id}/execute-local",
-                tenant_id=tenant_id,
-                params={"tenant_id": tenant_id},
-            )
-            if path_id == "WP-LOCAL-ARTICLE-EXTRACT":
-                # Newer CloudTech V4 uses a durable, genuine user-supplied
-                # HTML parser rather than the earlier URL-only prefix.
-                # Do not accept a shaped SUCCESS without source provenance.
-                source = inputs.get("html")
-                expected_hash = (
-                    hashlib.sha256(source.encode()).hexdigest()
-                    if isinstance(source, str) else None
+            if action == "create_enqueue_and_collect_subtitles":
+                # CloudTech's original durable local worker must run separately.
+                # Enqueue is NOT completion; wait for actual persisted receipt.
+                queue = await self._call(
+                    "POST", f"/v4/workpaths/runs/{run_id}/enqueue-local",
+                    tenant_id=tenant_id, params={"tenant_id": tenant_id},
                 )
-                nodes = executed.get("nodes")
-                node = nodes[0] if isinstance(nodes, list) and len(nodes) == 1 else {}
-                result_ref = node.get("output_ref") if isinstance(node, dict) else None
-                if not (
-                    executed.get("run_id") == run_id
-                    and executed.get("status") == "COMPLETED"
-                    and executed.get("worker_type") == "SYNCHRONOUS_LOCAL_ONLY"
-                    and executed.get("provider_called") is False
-                    and executed.get("cost_cents") == 0
-                    and node.get("node_id") == "html_parse"
-                    and node.get("operation") == "article.html_parse"
-                    and node.get("status") == "COMPLETED"
-                    and node.get("input_hash") == expected_hash
-                    and node.get("cost_cents") == 0
-                    and isinstance(result_ref, dict)
-                    and result_ref.get("mock") is False
-                    and result_ref.get("retrieval_policy") == "supplied_html_only"
-                    and result_ref.get("content_sha256") == expected_hash
+                if (
+                    queue.get("run_id") != run_id
+                    or queue.get("storage") != "SQLITE_LOCAL_DURABLE"
+                    or queue.get("provider_called") is not False
                 ):
-                    raise ValueError("CloudTech HTML extraction lacks verifiable source provenance")
+                    raise ValueError("CloudTech local queue attestation invalid")
+                remote["enqueue"] = queue
+                completed = None
+                for _ in range(70):
+                    snapshot = await self._call(
+                        "GET", f"/v4/workpaths/runs/{run_id}",
+                        tenant_id=tenant_id, params={"tenant_id": tenant_id},
+                    )
+                    if snapshot.get("run_id") != run_id:
+                        raise ValueError("CloudTech readback run identity mismatch")
+                    if snapshot.get("status") == "COMPLETED":
+                        completed = snapshot
+                        break
+                    if snapshot.get("status") in {"FAILED", "CANCELED"}:
+                        raise ValueError("CloudTech local subtitle worker failed")
+                    await asyncio.sleep(0.2)
+                if completed is None:
+                    raise TimeoutError(
+                        "CloudTech subtitle run not completed; stored run remains available"
+                    )
+                segments = inputs.get("segments")
+                if not isinstance(segments, list) or not segments:
+                    raise ValueError("supplied subtitle segments are missing")
+                clean = []
+                last_end = 0
+                for i, segment in enumerate(segments):
+                    if not isinstance(segment, dict):
+                        raise ValueError(f"invalid segment {i}")
+                    start = segment.get("start_ms")
+                    end = segment.get("end_ms")
+                    value = segment.get("text")
+                    if (
+                        not isinstance(start, int) or isinstance(start, bool)
+                        or not isinstance(end, int) or isinstance(end, bool)
+                        or start < last_end or end <= start or end > 86_400_000
+                        or not isinstance(value, str)
+                    ):
+                        raise ValueError(f"invalid subtitle timing {i}")
+                    normalized = " ".join(
+                        "".join(
+                            ch if ch >= " " and ch != "\x7f" else " "
+                            for ch in value
+                        ).split()
+                    )
+                    if not normalized:
+                        raise ValueError(f"empty subtitle segment {i}")
+                    clean.append({
+                        "start_ms": start, "end_ms": end, "text": normalized,
+                    })
+                    last_end = end
+                canonical = json.dumps(
+                    clean, sort_keys=True, ensure_ascii=False, separators=(",", ":"),
+                )
+                source_hash = hashlib.sha256(canonical.encode()).hexdigest()
+                nodes = completed.get("nodes")
+                node = nodes[0] if isinstance(nodes, list) and len(nodes) == 1 else {}
+                output = node.get("output_ref") if isinstance(node, dict) else None
+                if not (
+                    node.get("node_id") == "subtitle_export"
+                    and node.get("operation") == "subtitle.format_supplied"
+                    and node.get("status") == "COMPLETED"
+                    and node.get("cost_cents") == 0
+                    and node.get("input_hash") == source_hash
+                    and isinstance(output, dict)
+                    and output.get("source_sha256") == source_hash
+                    and output.get("mock") is False
+                    and output.get("asr_performed") is False
+                    and output.get("model_called") is False
+                    and output.get("source") == "user_supplied_timestamped_transcript"
+                    and output.get("segment_count") == len(clean)
+                    and isinstance(output.get("srt"), str) and output["srt"]
+                    and isinstance(output.get("vtt"), str) and output["vtt"]
+                ):
+                    raise ValueError("CloudTech subtitle receipt lacks verified source")
+                remote["local_execution"] = completed
                 remote["source_verified_locally"] = True
                 remote["output_sha256"] = hashlib.sha256(
-                    json.dumps(result_ref, sort_keys=True, ensure_ascii=False).encode()
+                    json.dumps(output, sort_keys=True, ensure_ascii=False).encode()
                 ).hexdigest()
-                remote["storage"] = executed.get("storage", "UNVERIFIED")
-            elif (
-                executed.get("run_id") != run_id
-                or executed.get("external_calls") != 0
-                or executed.get("charged_cents") != 0
-                or executed.get("durability") != "IN_PROCESS_ONLY_NOT_PRODUCTION_DURABLE"
-            ):
-                raise ValueError("CloudTech local execution violated zero-side-effect contract")
+            else:
+                executed = await self._call(
+                    "POST", f"/v4/workpaths/runs/{run_id}/execute-local",
+                    tenant_id=tenant_id,
+                    params={"tenant_id": tenant_id},
+                )
+                if path_id == "WP-LOCAL-ARTICLE-EXTRACT":
+                    # Newer CloudTech V4 uses a durable, genuine user-supplied
+                    # HTML parser rather than the earlier URL-only prefix.
+                    # Do not accept a shaped SUCCESS without source provenance.
+                    source = inputs.get("html")
+                    expected_hash = (
+                        hashlib.sha256(source.encode()).hexdigest()
+                        if isinstance(source, str) else None
+                    )
+                    nodes = executed.get("nodes")
+                    node = nodes[0] if isinstance(nodes, list) and len(nodes) == 1 else {}
+                    result_ref = node.get("output_ref") if isinstance(node, dict) else None
+                    if not (
+                        executed.get("run_id") == run_id
+                        and executed.get("status") == "COMPLETED"
+                        and executed.get("worker_type") == "SYNCHRONOUS_LOCAL_ONLY"
+                        and executed.get("provider_called") is False
+                        and executed.get("cost_cents") == 0
+                        and node.get("node_id") == "html_parse"
+                        and node.get("operation") == "article.html_parse"
+                        and node.get("status") == "COMPLETED"
+                        and node.get("input_hash") == expected_hash
+                        and node.get("cost_cents") == 0
+                        and isinstance(result_ref, dict)
+                        and result_ref.get("mock") is False
+                        and result_ref.get("retrieval_policy") == "supplied_html_only"
+                        and result_ref.get("content_sha256") == expected_hash
+                    ):
+                        raise ValueError("CloudTech HTML extraction lacks verifiable source provenance")
+                    remote["source_verified_locally"] = True
+                    remote["output_sha256"] = hashlib.sha256(
+                        json.dumps(result_ref, sort_keys=True, ensure_ascii=False).encode()
+                    ).hexdigest()
+                    remote["storage"] = executed.get("storage", "UNVERIFIED")
+                elif (
+                    executed.get("run_id") != run_id
+                    or executed.get("external_calls") != 0
+                    or executed.get("charged_cents") != 0
+                    or executed.get("durability") != "IN_PROCESS_ONLY_NOT_PRODUCTION_DURABLE"
+                ):
+                    raise ValueError("CloudTech local execution violated zero-side-effect contract")
             remote["created_run"] = created
-            remote["local_execution"] = executed
+            if action == "create_and_execute_local":
+                remote["local_execution"] = executed
 
         out = {
             "platform": "cloudtech-v4",
