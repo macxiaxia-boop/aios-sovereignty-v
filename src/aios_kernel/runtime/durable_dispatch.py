@@ -159,6 +159,14 @@ class DurableDispatchStore:
             db.commit()
         return {"requeued_readonly": recovered, "blocked_uncertain": quarantined}
 
+    def status(self, run_id: str) -> str:
+        """State-only query, without leaking the private task or artifact."""
+        with self._connect() as db:
+            row = db.execute(
+                "SELECT status FROM dispatch_runs WHERE run_id=?", (run_id,)
+            ).fetchone()
+        return row["status"] if row else "unknown"
+
     def get(self, run_id: str, *, tenant_id: str | None = None) -> dict[str, Any] | None:
         with self._connect() as db:
             row = db.execute(
