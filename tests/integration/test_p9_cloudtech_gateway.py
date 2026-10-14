@@ -9,6 +9,18 @@ import pytest
 from fastapi.testclient import TestClient
 
 from aios_kernel.gateway.http import create_app
+from aios_kernel.gateway.auth import sign_jwt
+
+_TEST_SECRET = b'cross-tenant-gateway-test-secret-1234567890'
+
+
+def _signed():
+    token = sign_jwt({'sub': 'tenant-worker', 'tenant_id': 'tenant-a'}, _TEST_SECRET)
+    return {'Authorization': f'Bearer {token}'}
+
+
+def _post(client, payload):
+    return client.post('/tasks', json=payload, headers=_signed())
 
 
 class _Scheduler:
@@ -28,7 +40,8 @@ class _Scheduler:
 
 @pytest.fixture
 def setup(monkeypatch):
-    monkeypatch.setenv("AIOS_KERNEL_AUTH_REQUIRED", "0")
+    monkeypatch.setenv("AIOS_KERNEL_AUTH_REQUIRED", "1")
+    monkeypatch.setenv("AIOS_KERNEL_JWT_SECRET", _TEST_SECRET.decode())
     monkeypatch.setenv("AIOS_KERNEL_RATELIMIT_ENABLED", "0")
     monkeypatch.setenv("CLOUDTECH_V4_GATEWAY_ENABLED", "1")
     monkeypatch.setenv("CLOUDTECH_V4_BASE_URL", "https://cloudtech.example")
@@ -51,7 +64,7 @@ def _request(action="preflight", *, worker="cloudtech-v4-adapter"):
 
 def test_gateway_binds_explicit_cloudtech_worker_and_input(setup):
     client, scheduler = setup
-    result = client.post("/tasks", json=_request())
+    result = _post(client, _request())
     assert result.status_code == 202, result.text
     assert result.json()["run_id"] == "p9-scheduler-run"
     assert scheduler.task.worker == "cloudtech-v4-adapter"
@@ -60,8 +73,8 @@ def test_gateway_binds_explicit_cloudtech_worker_and_input(setup):
 
 def test_gateway_forbids_arbitrary_worker_and_publish(setup):
     client, scheduler = setup
-    assert client.post("/tasks", json=_request(worker="openclaw-adapter")).status_code == 400
-    assert client.post("/tasks", json=_request(action="publish_to_douyin")).status_code == 400
+    assert _post(client, _request(worker="openclaw-adapter")).status_code == 400
+    assert _post(client, _request(action="publish_to_douyin")).status_code == 400
     assert scheduler.task is None
 
 
@@ -78,5 +91,25 @@ def test_gateway_requires_service_and_opt_in(setup, monkeypatch):
 def test_gateway_rejects_unbound_payload_instead_of_executing_random_actions(setup):
     client, scheduler = setup
     request = _request(worker=None)
-    assert client.post("/tasks", json=request).status_code == 400
+    assert _post(client, request).status_code == 400
     assert scheduler.task is None
+
+
+def test_gateway_refuses_cross_tenant_and_unsigned_submission(setup):
+    client, scheduler = setup
+    unsigned = client.post("/tasks", json=_request())
+    assert unsigned.status_code == 401
+    wrong = _request()
+    wrong["input_payload"]["tenant_id"] = "tenant-b"
+    assert _post(client, wrong).status_code == 403
+    assert scheduler.task is None
+
+
+def test_gateway_rejects_cloudtech_if_jwt_auth_is_disabled(monkeypatch):
+    monkeypatch.setenv("AIOS_KERNEL_AUTH_REQUIRED", "0")
+    monkeypatch.setenv("AIOS_KERNEL_RATELIMIT_ENABLED", "0")
+    monkeypatch.setenv("CLOUDTECH_V4_GATEWAY_ENABLED", "1")
+    monkeypatch.setenv("CLOUDTECH_V4_BASE_URL", "https://cloudtech.example")
+    client = TestClient(create_app(_Scheduler()))
+    response = client.post("/tasks", json=_request())
+    assert response.status_code == 403
