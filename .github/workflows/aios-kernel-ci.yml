@@ -62,6 +62,7 @@ jobs:
             tests/integration/test_p10_durable_dispatch.py \
             tests/integration/test_p11_cloudtech_tenant_jwt.py \
             tests/integration/test_p12_html_article_adapter.py \
+            tests/integration/test_p13_subtitle_adapter.py \
             -v --tb=short --cov=aios_kernel --cov-append
 
       - name: Upload coverage
