@@ -144,13 +144,26 @@ class PGCheckpointerEngine:
                 if prior != in_payload:
                     raise ValueError("run_id reused with a different input payload")
                 return _row_to_run(existing)
-            await insert_run(
+            inserted = await insert_run(
                 session,
                 run_id=rid,
                 workflow_id=workflow.id,
                 input_json=in_payload,
             )
             await session.commit()
+            if not inserted:
+                # The initial read was empty, but a concurrent submit won the
+                # unique-key INSERT race. It alone may execute the workflow.
+                winner = await session.get(WorkflowRunRow, rid)
+                if winner is None:
+                    raise RuntimeError("run_id conflict without a committed winner")
+                if winner.workflow_id != workflow.id:
+                    raise ValueError("run_id belongs to a different workflow")
+                winner_input = dict(safe_json_loads(winner.input_json))
+                winner_input.pop("signals", None)
+                if winner_input != in_payload:
+                    raise ValueError("run_id reused with a different input payload")
+                return _row_to_run(winner)
         return await self._drive(workflow, rid, resume_from=None)
 
     async def resume(self, workflow: Workflow, run_id: str) -> WorkflowRun:
