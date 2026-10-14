@@ -195,6 +195,22 @@ async def test_two_services_worker_outbox_and_restart_preserve_real_article(tmp_
             assert len(entries) == 1
             assert entries[0]["output_sha256"] == proof["output_sha256"]
             assert catalog.json()["raw_customer_content_in_response"] is False
+            by_id = await client.get(
+                ct_url + f"/v4/workpaths/local-outputs/{proof['run_id']}",
+                params={"tenant_id": tenant}, headers=remote_headers,
+            )
+            assert by_id.status_code == 200, by_id.text
+            assert by_id.json()["item"]["output_sha256"] == proof["output_sha256"]
+            assert by_id.json()["raw_customer_content_in_response"] is False
+            cross_tenant_jwt = sign_jwt(
+                {"user_id": "attacker", "tenant_id": "other-tenant"}, ct_secret
+            )
+            denied_output = await client.get(
+                ct_url + f"/v4/workpaths/local-outputs/{proof['run_id']}",
+                params={"tenant_id": "other-tenant"},
+                headers={"Authorization": "Bearer " + cross_tenant_jwt},
+            )
+            assert denied_output.status_code in {403, 404}
     finally:
         _stop(worker)
         _stop(ai_proc)
