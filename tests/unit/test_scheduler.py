@@ -125,6 +125,34 @@ def test_circuit_breaker_recovery_timeout():
     assert cb.allow()  # HALF_OPEN probe
 
 
+def test_half_open_admits_only_one_inflight_probe():
+    """Do not fan out a recovered worker into many concurrent AI tasks."""
+    cb = CircuitBreaker(failure_threshold=2, recovery_timeout_s=0.01)
+    cb.record_failure()
+    cb.record_failure()
+    assert cb.state == CircuitState.OPEN
+    cb.opened_at = time.time() - 1  # deterministic elapsed timeout
+    assert cb.allow() is True   # exactly one recovery probe
+    assert cb.state == CircuitState.HALF_OPEN
+    assert cb.allow() is False  # overlapping worker request must be rejected
+    assert cb.allow() is False
+    cb.record_success()
+    assert cb.state == CircuitState.CLOSED
+    assert cb.allow() is True   # recovered worker can resume normal traffic
+
+
+def test_half_open_failed_probe_opens_and_requires_new_timeout():
+    cb = CircuitBreaker(failure_threshold=3, recovery_timeout_s=30)
+    for _ in range(3):
+        cb.record_failure()
+    cb.opened_at = time.time() - 31
+    assert cb.allow()
+    assert cb.state == CircuitState.HALF_OPEN
+    cb.record_failure()
+    assert cb.state == CircuitState.OPEN
+    assert cb.allow() is False
+
+
 def test_circuit_breaker_closes_on_half_open_success():
     cb = CircuitBreaker(failure_threshold=2, recovery_timeout_s=0.01)
     cb.record_failure()
