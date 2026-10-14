@@ -101,7 +101,7 @@ jobs:
           CLOUDTECH_V4_CHECKOUT: ${{ github.workspace }}/cloudtech-checkout
           CLOUDTECH_V4_PR2_CHECKOUT: ${{ github.workspace }}/cloudtech-pr2-checkout
         run: |
-          python -m pytest tests/integration/test_p10_cross_repo_http.py tests/integration/test_p12_real_article_http.py tests/integration/test_p13_real_subtitle_http.py -v --tb=short -rs
+          python -m pytest tests/integration/test_p10_cross_repo_http.py tests/integration/test_p12_real_article_http.py tests/integration/test_p13_real_subtitle_http.py tests/integration/test_p14_real_article_analysis_http.py -v --tb=short -rs
 
   lint:
     runs-on: ubuntu-latest
