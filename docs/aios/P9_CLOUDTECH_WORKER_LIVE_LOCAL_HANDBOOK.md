@@ -20,7 +20,10 @@ PowerShell 窗口 CloudTech：
 
 ```powershell
 cd <CloudTech既有仓库目录>
-$env:V4_ENV = "development"
+$env:V4_ENV = "production"
+# V4_JWT_SECRET 从本机受保护凭据存储读出：32+ 字节。
+# 不得在命令行、配置仓库或日志中写入真实明文密钥。
+# CLOUDTECH_V4_SQLITE_PATH 指向本机隔离、可持久化且已备份的目录。
 python -m uvicorn api.v4.asgi:app --host 127.0.0.1 --port 5089
 ```
 
@@ -30,13 +33,17 @@ python -m uvicorn api.v4.asgi:app --host 127.0.0.1 --port 5089
 cd <AIOS既有仓库目录>
 $env:CLOUDTECH_V4_BASE_URL = "http://127.0.0.1:5089"
 $env:CLOUDTECH_V4_GATEWAY_ENABLED = "1"
+$env:CLOUDTECH_V4_REQUIRE_TENANT_JWT = "1"
+# CLOUDTECH_V4_JWT_SECRET 从凭据存储读取，必须与 CloudTech 服务的
+# V4_JWT_SECRET 对应。每次写调用由 AIOS 产生租户专用、120 秒签名。
+# AIOS_SCHEDULER_SQLITE_PATH 指向本机隔离的持久任务数据库目录。
 $env:AIOS_KERNEL_AUTH_REQUIRED = "1"
 # JWT 密钥请由本机安全配置注入 32+ 字节；不要写入仓库或日志
 # 由已有签发服务发一个具有 sub 和 tenant_id 的短期 Bearer JWT
 python -m uvicorn aios_kernel.gateway.serve:app --host 127.0.0.1 --port 5090
 ```
 
-**仅供隔离本机联调**：如果没有现成的 JWT 签发流程，请用系统既有 `sign_jwt` 生成本地测试身份；严禁将关鉴权的开发模式暴露在公网。CloudTech V4 目前仍是内存态开发服务，不可用此结果代替生产租户隔离。
+**仅供隔离本机联调**：AIOS 入口 JWT 和 CloudTech V4 跨服务 JWT 是两层不同签名，不能共用用户令牌代替服务令牌。CloudTech 服务严格验证 `V4_JWT_SECRET`，AIOS worker 通过 `CLOUDTECH_V4_JWT_SECRET` 为每个租户单独签发；两端均使用安全存储中的 32+ 字节密钥。如果没有现成的用户 JWT 签发流程，仅能使用系统既有 `sign_jwt` 做隔离测试。所有接口只绑定回环地址，严禁在公网暴露调试服务。启用 `CLOUDTECH_V4_SQLITE_PATH` 后可持久化原有 V4 run/节点记录，但仍不代表已通过生产环境租户与运维验收。
 
 ### 本机受限任务示例（需传 AIOS 签发的 JWT）
 
@@ -64,7 +71,7 @@ python -m uvicorn aios_kernel.gateway.serve:app --host 127.0.0.1 --port 5090
 
 - CloudTech 已有六条 `WP-*` 路径与 50 个源码定义节点；P9 在 V4 上做静态完整性和实际零副作用节点执行，没有新建第二套业务系统。
 - CloudTech V4 标为 `MOCK_ONLY`、`ADAPTER_UNMAPPED` 的节点不得执行或算完成；所有真实 Provider 必须走预算、账号授权、外部操作幂等/对账。
-- AIOS `Gateway → Scheduler → Worker` 这条路径现在有代码、隔离测试；`Scheduler` 任务队列仍主要是内存 `asyncio.Queue`，不能声称具备重启自动续跑。
+- AIOS `Gateway → Scheduler → Worker` 已有跨两真实 ASGI 进程 HTTP 测试；P10 可通过 `AIOS_SCHEDULER_SQLITE_PATH` 显式启用 SQLite 持久队列、原子认领/fencing、只读预检安全恢复和不确定效果隔离。**未设置该环境变量时，原有 Scheduler 仍为内存队列**；P10 机制仍需 Windows 本机故障注入验收。
 - AIOS P7 `WorkflowEngine` 的租约、fencing、外部副作用 journal **尚未自动覆盖 Scheduler 上的 CloudTech 任务**；跨两条引擎的真正 Durable Queue 串联仍需专项实现。
 - CloudTech 前端 `App.tsx` 的 `pages/lynxce/index`（包含多页面）源文件在当前仓库和现有分支均未找到，必须按原有设计资产修复，不能添加空白 UI 虚报已完成。
 - Windows 本机实际部署/真实 PostgreSQL 并发恢复/有权 Provider 远端资源核验仍未执行，状态只能是 PENDING/BLOCKED，不可填写 Validated 或 Production Ready。
