@@ -42,7 +42,7 @@ def upgrade() -> None:
             sa.Column("request_hash", sa.String(length=64), nullable=False),
             sa.Column("status", sa.String(length=16), nullable=False,
                       server_default="prepared"),
-            sa.Column("receipt_json", sa.JSON(), nullable=True),
+            sa.Column("receipt_json", sa.JSON(), nullable=False, server_default="{}"),
             sa.Column("reconciliation_evidence", sa.Text(), nullable=True),
         )
 
