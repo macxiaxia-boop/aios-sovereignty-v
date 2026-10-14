@@ -91,6 +91,8 @@ def create_app(scheduler: AIOSScheduler) -> FastAPI:
                 raise HTTPException(400, "CloudTech Gateway does not allow this action")
             if not req.input_payload.get("path_id") or not req.input_payload.get("tenant_id"):
                 raise HTTPException(422, "CloudTech path_id and tenant_id are required")
+            if not os.environ.get("CLOUDTECH_V4_BASE_URL"):
+                raise HTTPException(503, "CloudTech V4 service URL not configured")
         elif req.input_payload:
             raise HTTPException(400, "Unbound worker cannot accept arbitrary input_payload")
         task = Task(
