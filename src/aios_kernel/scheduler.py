@@ -91,8 +91,10 @@ class CircuitBreaker:
                 self.state = CircuitState.HALF_OPEN
                 return True
             return False
-        # HALF_OPEN: allow one probe
-        return True
+        # One probe was already admitted on OPEN -> HALF_OPEN. While it is
+        # unresolved, reject concurrent probes; only its success or failure
+        # can transition the circuit back to CLOSED or OPEN.
+        return False
 
 
 @dataclass
