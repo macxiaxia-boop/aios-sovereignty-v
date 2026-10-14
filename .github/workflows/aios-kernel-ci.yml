@@ -47,6 +47,7 @@ jobs:
           # (test_docker.py, test_crash_recovery.py) and are not in R1503.
           python -m pytest tests/integration/test_e2e.py \
             tests/integration/test_claude_code_adapter_e2e.py \
+            tests/integration/test_p5_workflow_integrity.py \
             -v --tb=short --cov=aios_kernel --cov-append
 
       - name: Upload coverage
