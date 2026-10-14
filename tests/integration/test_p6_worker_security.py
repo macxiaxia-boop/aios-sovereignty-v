@@ -7,7 +7,9 @@ from types import SimpleNamespace
 import pytest
 
 from aios_kernel.gateway.auth_middleware import (
-    JWTAuthMiddleware, RateLimitMiddleware, _env_enabled,
+    JWTAuthMiddleware,
+    RateLimitMiddleware,
+    _env_enabled,
 )
 from aios_kernel.workers.base import NotRegistered, _StubAdapterBase
 from aios_kernel.workers.registry import WorkerRegistry
