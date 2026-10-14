@@ -59,14 +59,26 @@ class DurableDispatchStore:
         tenant_id = task.input_payload.get("tenant_id")
         if tenant_id is not None and not isinstance(tenant_id, str):
             raise ValueError("tenant_id must be a string")
+        encoded_task = task.model_dump_json()
         with self._connect() as db:
             db.execute("BEGIN IMMEDIATE")
             result = db.execute(
                 """INSERT OR IGNORE INTO dispatch_runs
                 (run_id, task_json, tenant_id, priority, status, updated_at)
                 VALUES (?, ?, ?, ?, 'queued', ?)""",
-                (run_id, task.model_dump_json(), tenant_id, priority, time.time()),
+                (run_id, encoded_task, tenant_id, priority, time.time()),
             )
+            if result.rowcount == 0:
+                existing = db.execute(
+                    "SELECT task_json, tenant_id, priority FROM dispatch_runs WHERE run_id=?",
+                    (run_id,),
+                ).fetchone()
+                if (existing is None or existing["task_json"] != encoded_task
+                        or existing["tenant_id"] != tenant_id
+                        or existing["priority"] != priority):
+                    raise ValueError(
+                        "conflicting durable dispatch run_id request; original preserved"
+                    )
             db.commit()
             return result.rowcount == 1
 
