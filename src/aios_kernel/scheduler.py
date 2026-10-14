@@ -286,7 +286,10 @@ class AIOSScheduler:
             "priority": priority,
             "retries": 0,
             "ts": time.time(),
-            "run_id": f"run-{task.id}-{int(time.time() * 1000)}",
+            # Millisecond timestamps collide when the same Task is submitted
+            # twice in the same event-loop tick. The run identifier is an
+            # independent execution identity, never a Task de-duplication key.
+            "run_id": f"run-{task.id}-{uuid.uuid4().hex}",
         }
         tenant = getattr(task, "input_payload", {}).get("tenant_id")
         self._run_tenants[envelope["run_id"]] = (
