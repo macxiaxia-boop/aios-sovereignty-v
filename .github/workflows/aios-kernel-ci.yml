@@ -59,6 +59,7 @@ jobs:
             tests/integration/test_p9_cloudtech_gateway.py \
             tests/integration/test_p9_hosted_gateway.py \
             tests/integration/test_p9_artifact_evidence.py \
+            tests/integration/test_p10_durable_dispatch.py \
             -v --tb=short --cov=aios_kernel --cov-append
 
       - name: Upload coverage
