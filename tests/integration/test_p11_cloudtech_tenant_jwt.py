@@ -17,7 +17,6 @@ import pytest
 from aios_kernel.domain.task import Task
 from aios_kernel.workers.cloudtech_v4_adapter import CloudTechV4Adapter
 
-
 _TEST_SECRET = "this-is-an-ephemeral-test-only-shared-secret-2026"
 
 
