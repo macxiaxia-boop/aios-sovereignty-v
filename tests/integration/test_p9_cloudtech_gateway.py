@@ -81,10 +81,10 @@ def test_gateway_forbids_arbitrary_worker_and_publish(setup):
 def test_gateway_requires_service_and_opt_in(setup, monkeypatch):
     client, scheduler = setup
     monkeypatch.delenv("CLOUDTECH_V4_BASE_URL")
-    assert client.post("/tasks", json=_request()).status_code == 503
+    assert _post(client, _request()).status_code == 503
     monkeypatch.setenv("CLOUDTECH_V4_BASE_URL", "https://cloudtech.example")
     monkeypatch.setenv("CLOUDTECH_V4_GATEWAY_ENABLED", "0")
-    assert client.post("/tasks", json=_request()).status_code == 403
+    assert _post(client, _request()).status_code == 403
     assert scheduler.task is None
 
 
