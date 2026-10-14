@@ -116,6 +116,14 @@ class CloudTechV4Adapter:
         ):
             raise ValueError("invalid CloudTech tenant ID")
 
+        # Reject wrong binding before any remote call, including GET preflight.
+        if (
+            action == "create_enqueue_and_collect_subtitles"
+            and path_id != "WP-LOCAL-SUBTITLE-EXPORT"
+        ):
+            raise ValueError(
+                "subtitle enqueue action only supports WP-LOCAL-SUBTITLE-EXPORT"
+            )
         preflight = await self._call(
             "GET", f"/v4/workpaths/{path_id}/preflight",
         )
@@ -125,8 +133,6 @@ class CloudTechV4Adapter:
         ):
             raise ValueError("CloudTech capability preflight identity mismatch")
 
-        if action == "create_enqueue_and_collect_subtitles" and path_id != "WP-LOCAL-SUBTITLE-EXPORT":
-            raise ValueError("subtitle enqueue action only supports WP-LOCAL-SUBTITLE-EXPORT")
         remote: dict = {"preflight": preflight}
         if action in {"create_and_execute_local", "create_enqueue_and_collect_subtitles"}:
             inputs = payload.get("input_bindings", {})
