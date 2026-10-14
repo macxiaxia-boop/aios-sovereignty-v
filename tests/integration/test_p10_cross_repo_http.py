@@ -23,7 +23,7 @@ from aios_kernel.workers.cloudtech_v4_adapter import CloudTechV4Adapter
 
 
 @pytest.mark.asyncio
-async def test_real_http_to_cloudtech_v4_backend():
+async def test_real_http_to_cloudtech_v4_backend(monkeypatch):
     checkout = os.environ.get("CLOUDTECH_V4_CHECKOUT")
     if not checkout:
         pytest.skip("external repository checkout required for cross-repo test")
@@ -37,8 +37,12 @@ async def test_real_http_to_cloudtech_v4_backend():
     base_url = f"http://127.0.0.1:{port}"
     env = dict(os.environ)
     env["PYTHONPATH"] = str(root)
-    env["V4_ENV"] = "development"  # loopback test only; never internet exposed
-    env.pop("V4_JWT_SECRET", None)
+    # Exercise signed tenancy on the actual CloudTech server, not dev bypass.
+    ct_secret = "isolated-ci-signing-secret-for-cloudtech-v4-2026"
+    env["V4_ENV"] = "production"
+    env["V4_JWT_SECRET"] = ct_secret
+    monkeypatch.setenv("CLOUDTECH_V4_JWT_SECRET", ct_secret)
+    monkeypatch.setenv("CLOUDTECH_V4_REQUIRE_TENANT_JWT", "1")
     proc = subprocess.Popen(
         [
             sys.executable, "-m", "uvicorn", "api.v4.asgi:app",
@@ -161,9 +165,10 @@ async def test_two_real_services_persist_artifact_across_gateway_restart(tmp_pat
 
     ct_env = dict(os.environ)
     ct_env["PYTHONPATH"] = str(cloudtech)
-    ct_env["V4_ENV"] = "development"
+    ct_secret = b"isolated-ci-cloudtech-service-signing-2026-tenant"
+    ct_env["V4_ENV"] = "production"
+    ct_env["V4_JWT_SECRET"] = ct_secret.decode()
     ct_env["CLOUDTECH_V4_SQLITE_PATH"] = str(tmp_path / "cloudtech-v4.db")
-    ct_env.pop("V4_JWT_SECRET", None)
     aios_env = dict(os.environ)
     aios_env["PYTHONPATH"] = str(aios_root / "src")
     aios_env.update({
@@ -172,6 +177,8 @@ async def test_two_real_services_persist_artifact_across_gateway_restart(tmp_pat
         "AIOS_KERNEL_RATELIMIT_ENABLED": "0",
         "CLOUDTECH_V4_BASE_URL": ct_url,
         "CLOUDTECH_V4_GATEWAY_ENABLED": "1",
+        "CLOUDTECH_V4_JWT_SECRET": ct_secret.decode(),
+        "CLOUDTECH_V4_REQUIRE_TENANT_JWT": "1",
         "AIOS_SCHEDULER_SQLITE_PATH": str(tmp_path / "durable.db"),
     })
     ct_proc = _start_uvicorn("api.v4.asgi:app", ct_port, cwd=cloudtech, env=ct_env)
@@ -249,9 +256,18 @@ async def test_two_real_services_persist_artifact_across_gateway_restart(tmp_pat
                 "api.v4.asgi:app", ct_port, cwd=cloudtech, env=ct_env,
             )
             await _health_url(client, ct_url + "/v4/workpaths/capabilities", ct_proc)
-            original = await client.get(
+            cloudtech_signed = sign_jwt(
+                {"tenant_id": tenant, "user_id": "test-only-inspector"}, ct_secret,
+            )
+            ct_headers = {"Authorization": f"Bearer {cloudtech_signed}"}
+            unauthorized_ct = await client.get(
                 ct_url + f"/v4/workpaths/runs/{cloudtech_run}",
                 params={"tenant_id": tenant},
+            )
+            assert unauthorized_ct.status_code == 401
+            original = await client.get(
+                ct_url + f"/v4/workpaths/runs/{cloudtech_run}",
+                params={"tenant_id": tenant}, headers=ct_headers,
             )
             assert original.status_code == 200, original.text
             doc = original.json()
@@ -262,7 +278,7 @@ async def test_two_real_services_persist_artifact_across_gateway_restart(tmp_pat
 
             reissued = await client.post(
                 ct_url + "/v4/workpaths/runs",
-                params={"tenant_id": tenant},
+                params={"tenant_id": tenant}, headers=ct_headers,
                 json={
                     "path_id": "WP-BLOGGER-RESEARCH",
                     "revision": 1,
