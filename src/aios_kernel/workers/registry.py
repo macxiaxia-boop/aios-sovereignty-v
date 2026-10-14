@@ -26,7 +26,11 @@ class WorkerRegistry:
     def route(self, task) -> WorkerAdapter:
         # 1. preferred worker
         preferred = getattr(task, "worker", None)
-        if preferred and preferred in self._adapters:
+        if preferred:
+            if preferred not in self._adapters:
+                raise NotRegistered(
+                    f"explicitly requested worker {preferred!r} is not registered; refusing fallback"
+                )
             return self._adapters[preferred]
         # 2. by task type
         TYPE_ROUTING = {
