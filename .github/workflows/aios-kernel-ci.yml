@@ -51,6 +51,7 @@ jobs:
             tests/integration/test_p6_worker_security.py \
             tests/integration/test_p6_scheduler_state.py \
             tests/integration/test_p6_atomic_claim.py \
+            tests/integration/test_p7_workflow_leases.py \
             -v --tb=short --cov=aios_kernel --cov-append
 
       - name: Upload coverage
