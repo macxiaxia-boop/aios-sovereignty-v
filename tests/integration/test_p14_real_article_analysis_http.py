@@ -107,6 +107,17 @@ async def test_two_services_worker_outbox_and_restart_preserve_real_article(tmp_
                 },
             }
             assert (await client.post(ai_url + "/tasks", json=request)).status_code == 401
+            # Enforce the exact allowlisted workpath before remote execution.
+            wrong_path = {
+                **request,
+                "input_payload": {
+                    **request["input_payload"], "path_id": "WP-LOCAL-SUBTITLE-EXPORT",
+                },
+            }
+            rejected_path = await client.post(
+                ai_url + "/tasks", json=wrong_path, headers=headers,
+            )
+            assert rejected_path.status_code == 400
             submitted = await client.post(
                 ai_url + "/tasks", json=request, headers=headers,
             )
@@ -134,6 +145,8 @@ async def test_two_services_worker_outbox_and_restart_preserve_real_article(tmp_
             assert "保留原结构" in original["text"]
             assert len(original["images"]) == 1
             assert original["images"][0]["url"] == "https://example.org/rooms/before.jpg"
+            assert original["images"][0]["license"] == "unknown_need_user_confirm"
+            assert analysis["media_reference_counts"]["images"] == 1
             assert analysis["source_html_sha256"] == expected_sha
             assert analysis["text_sha256"] == hashlib.sha256(
                 original["text"].encode("utf-8")
