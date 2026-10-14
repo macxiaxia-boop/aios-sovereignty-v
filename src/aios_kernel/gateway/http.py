@@ -102,8 +102,14 @@ def create_app(scheduler: AIOSScheduler) -> FastAPI:
                 raise HTTPException(403, "CloudTech Gateway worker is not enabled")
             if req.input_payload.get("action") not in {
                 "preflight", "create_and_execute_local",
+                "create_enqueue_and_collect_subtitles",
             }:
                 raise HTTPException(400, "CloudTech Gateway does not allow this action")
+            if (
+                req.input_payload.get("action") == "create_enqueue_and_collect_subtitles"
+                and req.input_payload.get("path_id") != "WP-LOCAL-SUBTITLE-EXPORT"
+            ):
+                raise HTTPException(400, "subtitle Worker action only supports supplied segments")
             if not req.input_payload.get("path_id") or not req.input_payload.get("tenant_id"):
                 raise HTTPException(422, "CloudTech path_id and tenant_id are required")
             if not os.environ.get("CLOUDTECH_V4_BASE_URL"):
