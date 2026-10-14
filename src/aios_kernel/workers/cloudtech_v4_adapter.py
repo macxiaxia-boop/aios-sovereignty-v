@@ -6,10 +6,13 @@ The result is a verifiable JSON Artifact, NOT a business validation verdict.
 """
 from __future__ import annotations
 
+import base64
 import hashlib
+import hmac
 import json
 import os
 import re
+import time
 from datetime import UTC, datetime
 from urllib.parse import urlsplit
 
@@ -35,18 +38,56 @@ class CloudTechV4Adapter:
             raise ValueError("CLOUDTECH_V4_BASE_URL must be explicitly configured")
         self._base_url = uri.rstrip("/")
         self._bearer_token = bearer_token or os.environ.get("CLOUDTECH_V4_BEARER_TOKEN")
+        # An environment-scoped service signer MUST bind each request to its
+        # own tenant. A shared static Bearer token cannot authorize 2 tenants.
+        self._tenant_secret = os.environ.get("CLOUDTECH_V4_JWT_SECRET")
+        self._require_signed = (
+            os.environ.get("CLOUDTECH_V4_REQUIRE_TENANT_JWT", "0")
+            .strip().lower() in {"1", "true", "yes"}
+        )
+        if self._tenant_secret is not None and len(self._tenant_secret.encode()) < 32:
+            raise ValueError("CLOUDTECH_V4_JWT_SECRET needs at least 32 bytes")
+        if self._require_signed and not self._tenant_secret:
+            raise ValueError("CLOUDTECH_V4_REQUIRE_TENANT_JWT requires a signing secret")
         self._client_owned = client is None
         self._client = client or httpx.AsyncClient(
             base_url=self._base_url, timeout=25.0, follow_redirects=False,
         )
 
-    def _headers(self) -> dict[str, str]:
-        return ({"Authorization": f"Bearer {self._bearer_token}"}
-                if self._bearer_token else {})
+    def _headers(self, tenant_id: str | None = None) -> dict[str, str]:
+        if tenant_id and self._tenant_secret:
+            def segment(value: dict) -> str:
+                return base64.urlsafe_b64encode(
+                    json.dumps(value, separators=(",", ":"), sort_keys=True).encode()
+                ).rstrip(b"=").decode()
 
-    async def _call(self, method: str, path: str, **kwargs) -> dict:
+            issued = int(time.time())
+            header = segment({"alg": "HS256", "typ": "JWT"})
+            payload = segment({
+                "tenant_id": tenant_id,
+                "user_id": "aios-v4-service-worker",
+                "permissions": ["v4:local-only"],
+                "iat": issued,
+                "exp": issued + 120,
+            })
+            body = f"{header}.{payload}"
+            signature = base64.urlsafe_b64encode(
+                hmac.new(self._tenant_secret.encode(), body.encode(), hashlib.sha256).digest()
+            ).rstrip(b"=").decode()
+            return {"Authorization": f"Bearer {body}.{signature}"}
+        if self._require_signed and tenant_id:
+            raise ValueError("signed tenant credentials required")
+        if self._bearer_token:
+            return {"Authorization": f"Bearer {self._bearer_token}"}
+        return {}
+
+    async def _call(
+        self, method: str, path: str, *,
+        tenant_id: str | None = None, **kwargs,
+    ) -> dict:
         response = await self._client.request(
-            method, self._base_url + path, headers=self._headers(), **kwargs,
+            method, self._base_url + path,
+            headers=self._headers(tenant_id=tenant_id), **kwargs,
         )
         response.raise_for_status()
         data = response.json()
@@ -88,6 +129,7 @@ class CloudTechV4Adapter:
                 raise ValueError("input_bindings must be a dictionary")
             created = await self._call(
                 "POST", "/v4/workpaths/runs",
+                tenant_id=tenant_id,
                 params={"tenant_id": tenant_id},
                 json={
                     "path_id": path_id,
@@ -101,6 +143,7 @@ class CloudTechV4Adapter:
                 raise ValueError("CloudTech create_run did not return a valid run id")
             executed = await self._call(
                 "POST", f"/v4/workpaths/runs/{run_id}/execute-local",
+                tenant_id=tenant_id,
                 params={"tenant_id": tenant_id},
             )
             if (
