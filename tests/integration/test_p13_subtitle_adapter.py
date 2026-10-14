@@ -14,7 +14,6 @@ import pytest
 from aios_kernel.domain.task import Task
 from aios_kernel.workers.cloudtech_v4_adapter import CloudTechV4Adapter
 
-
 SEGMENTS = [
     {"start_ms": 0, "end_ms": 1500, "text": "改造前空间狭小"},
     {"start_ms": 1800, "end_ms": 3000, "text": "改造后更通透"},
