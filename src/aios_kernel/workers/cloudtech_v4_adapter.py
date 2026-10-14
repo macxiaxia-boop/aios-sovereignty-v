@@ -146,7 +146,41 @@ class CloudTechV4Adapter:
                 tenant_id=tenant_id,
                 params={"tenant_id": tenant_id},
             )
-            if (
+            if path_id == "WP-LOCAL-ARTICLE-EXTRACT":
+                # Newer CloudTech V4 uses a durable, genuine user-supplied
+                # HTML parser rather than the earlier URL-only prefix.
+                # Do not accept a shaped SUCCESS without source provenance.
+                source = inputs.get("html")
+                expected_hash = (
+                    hashlib.sha256(source.encode()).hexdigest()
+                    if isinstance(source, str) else None
+                )
+                nodes = executed.get("nodes")
+                node = nodes[0] if isinstance(nodes, list) and len(nodes) == 1 else {}
+                result_ref = node.get("output_ref") if isinstance(node, dict) else None
+                if not (
+                    executed.get("run_id") == run_id
+                    and executed.get("status") == "COMPLETED"
+                    and executed.get("worker_type") == "SYNCHRONOUS_LOCAL_ONLY"
+                    and executed.get("provider_called") is False
+                    and executed.get("cost_cents") == 0
+                    and node.get("node_id") == "html_parse"
+                    and node.get("operation") == "article.html_parse"
+                    and node.get("status") == "COMPLETED"
+                    and node.get("input_hash") == expected_hash
+                    and node.get("cost_cents") == 0
+                    and isinstance(result_ref, dict)
+                    and result_ref.get("mock") is False
+                    and result_ref.get("retrieval_policy") == "supplied_html_only"
+                    and result_ref.get("content_sha256") == expected_hash
+                ):
+                    raise ValueError("CloudTech HTML extraction lacks verifiable source provenance")
+                remote["source_verified_locally"] = True
+                remote["output_sha256"] = hashlib.sha256(
+                    json.dumps(result_ref, sort_keys=True, ensure_ascii=False).encode()
+                ).hexdigest()
+                remote["storage"] = executed.get("storage", "UNVERIFIED")
+            elif (
                 executed.get("run_id") != run_id
                 or executed.get("external_calls") != 0
                 or executed.get("charged_cents") != 0
