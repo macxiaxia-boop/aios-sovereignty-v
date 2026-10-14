@@ -21,6 +21,7 @@ Restart algorithm:
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import logging
 import uuid
 from contextlib import suppress
@@ -299,6 +300,9 @@ class PGCheckpointerEngine:
         for rid in candidates:
             try:
                 run = await self.resume(workflow, rid)
+            except WorkflowLeaseBusy:
+                log.info("recovery skipped actively leased run %s", rid)
+                continue
             except Exception:  # noqa: BLE001
                 log.exception("recover failed for run %s", rid)
                 continue
@@ -480,6 +484,7 @@ class PGCheckpointerEngine:
             status, output, last_error = await self._execute_step(
                 workflow, run_id, step, idx, order, dep_outputs,
                 workflow_input=workflow_input,
+                fencing_token=fencing_token,
             )
             if status == "completed":
                 async with self._session_factory() as session:
@@ -525,9 +530,14 @@ class PGCheckpointerEngine:
                 row = await session.get(WorkflowRunRow, run_id)
                 return _row_to_run(row)
 
-        # all steps completed -> mark run completed
+        # A cancellation may arrive while the final activity is in flight.
+        # Never overwrite its terminal status with "completed".
         async with self._session_factory() as session:
             await self._require_lease(session, run_id, owner_id, fencing_token, ttl_s)
+            prior = await session.get(WorkflowRunRow, run_id)
+            if prior is not None and prior.status == "cancelled":
+                await session.commit()
+                return _row_to_run(prior)
             await update_run(
                 session,
                 run_id=run_id,
@@ -549,6 +559,7 @@ class PGCheckpointerEngine:
         order: list[WorkflowStep],
         dep_outputs = None,
         workflow_input: dict[str, Any] | None = None,
+        fencing_token: int | None = None,
     ) -> tuple[str, dict[str, Any] | None, str | None]:
         """Run a single step with retry + timeout. Return (status, output, error).
 
@@ -575,6 +586,10 @@ class PGCheckpointerEngine:
                     "workflow_id": workflow.id,
                     "step_index": step_index,
                     "prev_outputs": dep_outputs,
+                    "fencing_token": fencing_token,
+                    "idempotency_key": hashlib.sha256(
+                        f"{run_id}:{step.id}".encode("utf-8")
+                    ).hexdigest(),
                 },
             )
             # record started
