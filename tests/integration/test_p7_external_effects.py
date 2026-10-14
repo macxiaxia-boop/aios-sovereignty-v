@@ -117,12 +117,22 @@ async def test_valid_remote_receipt_completes_once(eng):
 
     wf = _external(publish)
     first = await eng.start(wf, run_id="one-remote-effect")
-    assert first.status == WorkflowStatus.COMPLETED
+    assert first.status == WorkflowStatus.BLOCKED
     repeated = await eng.start(wf, run_id="one-remote-effect")
-    assert repeated.status == WorkflowStatus.COMPLETED
+    assert repeated.status == WorkflowStatus.BLOCKED
     assert len(keys) == 1
     assert len(keys[0][0]) == 64
     assert keys[0][1] == 1
+    await eng.confirm_external_effect(
+        run_id="one-remote-effect", step_id="publish",
+        remote_output={
+            "remote_receipt": {"provider": "mock", "resource_id": "post1"},
+        },
+        verification_evidence="test-only separate remote lookup",
+    )
+    confirmed = await eng.resume(wf, "one-remote-effect")
+    assert confirmed.status == WorkflowStatus.COMPLETED
+    assert len(keys) == 1
 
 
 @pytest.mark.asyncio
