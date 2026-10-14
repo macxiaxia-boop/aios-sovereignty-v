@@ -37,6 +37,40 @@ def test_committed_envelope_and_tenant_isolation_survive_store_recreation(tmp_pa
     assert fresh.get("run-1", tenant_id="tenant-a")["priority"] == "P0"
 
 
+def test_conflicting_duplicate_dispatch_is_rejected_without_overwrite(tmp_path):
+    store = DurableDispatchStore(tmp_path / "idempotency.sqlite3")
+    original = _task()
+    assert store.enqueue("run-fixed", original, "P0") is True
+    assert store.enqueue("run-fixed", original, "P0") is False
+
+    other_tenant = original.model_copy(update={
+        "input_payload": {
+            **original.input_payload, "tenant_id": "tenant-b",
+        }
+    })
+    other_action = original.model_copy(update={
+        "input_payload": {
+            **original.input_payload, "action": "create_and_execute_local",
+        }
+    })
+    for changed, priority in (
+        (other_tenant, "P0"),
+        (other_action, "P0"),
+        (original, "P2"),
+    ):
+        with pytest.raises(ValueError, match="conflicting durable dispatch"):
+            store.enqueue("run-fixed", changed, priority)
+        saved = store.get("run-fixed", tenant_id="tenant-a")
+        assert saved is not None and saved["priority"] == "P0"
+        assert store.get("run-fixed", tenant_id="tenant-b") is None
+
+    claimed = store.claim("independent-worker")
+    assert claimed is not None
+    assert claimed["task"].id == original.id
+    assert claimed["task"].input_payload["tenant_id"] == "tenant-a"
+    assert claimed["priority"] == "P0"
+
+
 def test_two_competing_connections_only_one_claims_same_run(tmp_path):
     store_a = DurableDispatchStore(tmp_path / "shared.sqlite3")
     store_b = DurableDispatchStore(tmp_path / "shared.sqlite3")
