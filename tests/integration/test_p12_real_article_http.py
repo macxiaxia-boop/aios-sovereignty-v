@@ -36,7 +36,7 @@ def _launch(module: str, path: Path, port: int, env: dict) -> subprocess.Popen:
     )
 
 
-def _stop(process: subprocess.Popen) -> None:
+def _stop_process(process: subprocess.Popen) -> None:
     process.terminate()
     try:
         process.communicate(timeout=7)
@@ -90,8 +90,8 @@ async def test_two_real_hosts_process_and_restore_supplied_html(tmp_path):
     ct_env = dict(os.environ)
     ct_env.update({
         "PYTHONPATH": str(cloudtech),
-        "CLOUDTECH_ENV": "production",
-        "V4_ENV": "production",
+        "CLOUDTECH_ENV": "staging",  # only staging permits this local SQLite store
+        "V4_ENV": "staging",
         "V4_JWT_SECRET": ct_secret.decode(),
         "CLOUDTECH_SAAS_DB_PATH": str(member_db),
         "CLOUDTECH_V4_SQLITE_RUN_STORE": str(tmp_path / "cloudtech-runs.sqlite3"),
