@@ -6,6 +6,7 @@ runs it unconditionally with this environment variable.
 """
 from __future__ import annotations
 
+import asyncio
 import os
 import socket
 import subprocess
@@ -17,6 +18,7 @@ import httpx
 import pytest
 
 from aios_kernel.domain.task import Task
+from aios_kernel.gateway.auth import sign_jwt
 from aios_kernel.workers.cloudtech_v4_adapter import CloudTechV4Adapter
 
 
@@ -95,3 +97,149 @@ async def test_real_http_to_cloudtech_v4_backend():
         except subprocess.TimeoutExpired:
             proc.kill()
             proc.communicate(timeout=5)
+
+
+
+def _port() -> int:
+    with socket.socket() as sock:
+        sock.bind(("127.0.0.1", 0))
+        return sock.getsockname()[1]
+
+
+def _start_uvicorn(target: str, port: int, *, cwd: Path, env: dict):
+    return subprocess.Popen(
+        [
+            sys.executable, "-m", "uvicorn", target,
+            "--host", "127.0.0.1", "--port", str(port),
+        ],
+        cwd=str(cwd), env=env,
+        stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True,
+    )
+
+
+async def _health_url(client, url: str, process) -> None:
+    for _ in range(150):
+        if process.poll() is not None:
+            err = process.stderr.read() if process.stderr else ""
+            pytest.fail(f"server stopped before ready: {err[-2500:]}")
+        try:
+            response = await client.get(url)
+            if response.status_code == 200:
+                return
+        except (httpx.ConnectError, httpx.ReadTimeout):
+            pass
+        await asyncio.sleep(.08)
+    pytest.fail(f"server was not ready at {url}")
+
+
+def _stop_process(proc) -> None:
+    proc.terminate()
+    try:
+        proc.communicate(timeout=5)
+    except subprocess.TimeoutExpired:
+        proc.kill()
+        proc.communicate(timeout=5)
+
+
+@pytest.mark.asyncio
+async def test_two_real_services_persist_artifact_across_gateway_restart(tmp_path):
+    checkout = os.environ.get("CLOUDTECH_V4_CHECKOUT")
+    if not checkout:
+        pytest.skip("cross repository checkout required")
+    cloudtech = Path(checkout).resolve()
+    if not (cloudtech / "api/v4/asgi.py").is_file():
+        pytest.fail("real CloudTech ASGI entry missing")
+    aios_root = Path(__file__).resolve().parents[2]
+    ct_port, aios_port = _port(), _port()
+    ct_url, aios_url = (
+        f"http://127.0.0.1:{ct_port}", f"http://127.0.0.1:{aios_port}"
+    )
+    secret = b"p10-localhost-only-dual-service-secret-12345678"
+    tenant = "dual-service-ci"
+    bearer = sign_jwt({"sub": "operator", "tenant_id": tenant}, secret)
+    headers = {"Authorization": f"Bearer {bearer}"}
+
+    ct_env = dict(os.environ)
+    ct_env["PYTHONPATH"] = str(cloudtech)
+    ct_env["V4_ENV"] = "development"
+    ct_env.pop("V4_JWT_SECRET", None)
+    aios_env = dict(os.environ)
+    aios_env["PYTHONPATH"] = str(aios_root / "src")
+    aios_env.update({
+        "AIOS_KERNEL_AUTH_REQUIRED": "1",
+        "AIOS_KERNEL_JWT_SECRET": secret.decode(),
+        "AIOS_KERNEL_RATELIMIT_ENABLED": "0",
+        "CLOUDTECH_V4_BASE_URL": ct_url,
+        "CLOUDTECH_V4_GATEWAY_ENABLED": "1",
+        "AIOS_SCHEDULER_SQLITE_PATH": str(tmp_path / "durable.db"),
+    })
+    ct_proc = _start_uvicorn("api.v4.asgi:app", ct_port, cwd=cloudtech, env=ct_env)
+    aios_proc = None
+    try:
+        async with httpx.AsyncClient(timeout=5) as client:
+            await _health_url(client, ct_url + "/v4/workpaths/capabilities", ct_proc)
+            aios_proc = _start_uvicorn(
+                "aios_kernel.gateway.serve:app", aios_port,
+                cwd=aios_root, env=aios_env,
+            )
+            await _health_url(client, aios_url + "/health", aios_proc)
+            task = {
+                "goal_id": "cross-repo-end-to-end",
+                "title": "CloudTech authorized local-prefix execution",
+                "worker": "cloudtech-v4-adapter",
+                "input_payload": {
+                    "tenant_id": tenant,
+                    "path_id": "WP-BLOGGER-RESEARCH",
+                    "action": "create_and_execute_local",
+                    "input_bindings": {
+                        "homepage_url": "https://example.com/creator?q=1",
+                        "target_industry": "装修",
+                    },
+                },
+            }
+            submitted = await client.post(aios_url + "/tasks", json=task, headers=headers)
+            assert submitted.status_code == 202, submitted.text
+            run_id = submitted.json()["run_id"]
+            response = None
+            for _ in range(180):
+                response = await client.get(
+                    aios_url + f"/tasks/{run_id}/result", headers=headers,
+                )
+                if response.status_code == 200 and response.json()["available"]:
+                    break
+                await asyncio.sleep(.08)
+            assert response is not None and response.status_code == 200
+            data = response.json()
+            assert data["state"] == "completed", data
+            assert data["business_validated"] is False
+            inner = data["artifact"]["inline_json"]["data"]["local_execution"]
+            assert inner["executed_nodes"] == ["url_normalize"]
+            assert inner["blocked_at"]["reason"] == "MOCK_ONLY"
+            assert inner["external_calls"] == 0
+            assert inner["charged_cents"] == 0
+            forged = sign_jwt(
+                {"sub": "other", "tenant_id": "different-tenant"}, secret,
+            )
+            wrong = await client.get(
+                aios_url + f"/tasks/{run_id}/result",
+                headers={"Authorization": f"Bearer {forged}"},
+            )
+            assert wrong.status_code == 404
+
+            # Restart only AIOS. The completed worker Artifact must survive.
+            _stop_process(aios_proc)
+            aios_proc = _start_uvicorn(
+                "aios_kernel.gateway.serve:app", aios_port,
+                cwd=aios_root, env=aios_env,
+            )
+            await _health_url(client, aios_url + "/health", aios_proc)
+            restored = await client.get(
+                aios_url + f"/tasks/{run_id}/result", headers=headers,
+            )
+            assert restored.status_code == 200
+            assert restored.json()["state"] == "completed"
+            assert restored.json()["artifact"] == data["artifact"]
+    finally:
+        if aios_proc is not None:
+            _stop_process(aios_proc)
+        _stop_process(ct_proc)
