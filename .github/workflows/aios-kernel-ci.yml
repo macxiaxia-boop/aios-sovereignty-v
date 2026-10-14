@@ -82,6 +82,12 @@ jobs:
           ref: fix/cloudtech-pipeline-truth-p5-20261014
           path: cloudtech-checkout
           persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: macxiaxia-boop/cloudtech-spa-v2
+          ref: fix/cloudtech-v4-p0-security-20261014
+          path: cloudtech-pr2-checkout
+          persist-credentials: false
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
@@ -92,8 +98,9 @@ jobs:
       - name: Real localhost server and real HTTP client
         env:
           CLOUDTECH_V4_CHECKOUT: ${{ github.workspace }}/cloudtech-checkout
+          CLOUDTECH_V4_PR2_CHECKOUT: ${{ github.workspace }}/cloudtech-pr2-checkout
         run: |
-          python -m pytest tests/integration/test_p10_cross_repo_http.py -v --tb=short -rs
+          python -m pytest tests/integration/test_p10_cross_repo_http.py tests/integration/test_p12_real_article_http.py -v --tb=short -rs
 
   lint:
     runs-on: ubuntu-latest
