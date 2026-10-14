@@ -439,8 +439,12 @@ class AIOSScheduler:
                     artifact=artifact,
                 )
             elif state == "failed":
+                # Failure after an outbound request might be an ambiguous
+                # remote success. Only read-only preflight is retry-safe.
+                safe = self._durable_store._safe_to_replay(envelope["task"])
                 self._durable_store.finish(
-                    run_id, owner, fence, status="failed",
+                    run_id, owner, fence,
+                    status="failed" if safe else "blocked_uncertain",
                 )
             else:
                 self._durable_store.finish(
