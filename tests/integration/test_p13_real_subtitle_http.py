@@ -6,7 +6,6 @@ The input is user-supplied timed text. NO audio ASR/provider is asserted.
 from __future__ import annotations
 
 import asyncio
-import json
 import os
 import socket
 import sqlite3
