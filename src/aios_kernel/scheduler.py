@@ -188,6 +188,10 @@ class AIOSScheduler:
         self._breakers: dict[str, CircuitBreaker] = defaultdict(CircuitBreaker)
         # active tasks (run_id → asyncio.Task)
         self._active: dict[str, asyncio.Task] = {}
+        # Terminal outcomes are kept even after _active tasks are pruned.
+        # When a MemoryPersistence sink is supplied, statuses also survive
+        # process restart. This does NOT persist/recover the execution queue.
+        self._run_states: dict[str, str] = {}
         self._metrics = SchedulerMetrics()
         self._stopped = False
         self._dispatcher_task: asyncio.Task | None = None
@@ -201,6 +205,15 @@ class AIOSScheduler:
             self._memory.append_ledger({"type": event_type, **payload})
         except Exception as exc:  # noqa: BLE001
             log.warning("audit ledger append failed: %s", exc)
+
+    def _record_state(self, run_id: str, state: str) -> None:
+        """Record observed worker-dispatch status (not business verification)."""
+        self._run_states[run_id] = state
+        if self._memory is not None:
+            try:
+                self._memory.state_set(f"scheduler-run:{run_id}", state)
+            except Exception as exc:  # noqa: BLE001
+                log.error("persistent scheduler state write failed: %s", exc)
 
     # ----- lifecycle --------------------------------------------------------
 
@@ -220,6 +233,9 @@ class AIOSScheduler:
         if self._stopped:
             return
         self._stopped = True
+        for run_id, task in list(self._active.items()):
+            if not task.done():
+                self._record_state(run_id, "interrupted")
         for task in list(self._active.values()):
             task.cancel()
         if self._dispatcher_task:
@@ -255,6 +271,7 @@ class AIOSScheduler:
             "run_id": f"run-{task.id}-{int(time.time() * 1000)}",
         }
         await self._queues[priority].put(envelope)
+        self._record_state(envelope["run_id"], "queued")
         self._audit("task_submitted", {
             "task_id": str(task.id),
             "run_id": envelope["run_id"],
@@ -269,13 +286,14 @@ class AIOSScheduler:
         return envelope["run_id"]
 
     async def status(self, run_id: str) -> dict[str, Any]:
-        task = self._active.get(run_id)
-        if task is None:
-            return {"run_id": run_id, "state": "unknown"}
-        if task.done():
-            exc = task.exception()
-            return {"run_id": run_id, "state": "failed" if exc else "completed"}
-        return {"run_id": run_id, "state": "running"}
+        """Read the last observed dispatch outcome; not a verifier verdict."""
+        active = self._active.get(run_id)
+        if active is not None and not active.done():
+            return {"run_id": run_id, "state": "running"}
+        state = self._run_states.get(run_id)
+        if state is None and self._memory is not None:
+            state = self._memory.state_get(f"scheduler-run:{run_id}")
+        return {"run_id": run_id, "state": state or "unknown"}
 
     def metrics(self) -> dict[str, Any]:
         return self._metrics.snapshot()
@@ -301,6 +319,7 @@ class AIOSScheduler:
             # dispatch
             run_id = envelope["run_id"]
             coro = self._execute(envelope)
+            self._record_state(run_id, "running")
             self._active[run_id] = asyncio.create_task(
                 coro, name=f"scheduler-run-{run_id}"
             )
@@ -349,6 +368,7 @@ class AIOSScheduler:
                 )
                 await asyncio.sleep(delay)
                 await self._queues[priority].put(envelope)
+                self._record_state(run_id, "queued")
                 self._metrics.queue_depth_by_priority[priority.value] += 1
             else:
                 self._metrics.failed += 1
@@ -356,6 +376,7 @@ class AIOSScheduler:
             return
 
         breaker.record_success()
+        self._record_state(run_id, "completed")
         self._metrics.completed += 1
         self._metrics.dispatch_latency_s_total += time.time() - start_ts
         self._metrics.dispatch_count += 1
@@ -372,6 +393,7 @@ class AIOSScheduler:
         )
 
     async def _dlq_put(self, envelope: dict[str, Any], exc: Exception) -> None:
+        self._record_state(envelope["run_id"], "failed")
         try:
             self._dlq.put_nowait(envelope)
         except asyncio.QueueFull:
