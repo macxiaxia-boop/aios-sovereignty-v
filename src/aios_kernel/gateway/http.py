@@ -138,8 +138,20 @@ def create_app(scheduler: AIOSScheduler) -> FastAPI:
         return result
 
     @app.get("/tasks/{run_id}", response_model=TaskStatusResponse)
-    async def task_status(run_id: str) -> TaskStatusResponse:
-        st = await scheduler.status(run_id)
+    async def task_status(run_id: str, request: Request) -> TaskStatusResponse:
+        from aios_kernel.gateway.auth_middleware import _env_enabled
+
+        if _env_enabled("AIOS_KERNEL_AUTH_REQUIRED"):
+            user = getattr(request.state, "user", None)
+            tenant_id = user.get("tenant_id") if isinstance(user, dict) else None
+            if not isinstance(tenant_id, str) or not tenant_id:
+                raise HTTPException(403, "signed tenant claim required")
+            # Same tenant gate as artifact route, including queued/running work.
+            st = await scheduler.result(run_id, tenant_id=tenant_id)
+            if st["state"] == "unknown":
+                raise HTTPException(404, "run not found")
+        else:
+            st = await scheduler.status(run_id)
         return TaskStatusResponse(
             run_id=st["run_id"],
             state=st["state"],
