@@ -79,9 +79,20 @@ def test_gateway_requires_signed_tenant_claim_for_artifact_read(monkeypatch):
         )
         assert valid.status_code == 200
         assert valid.json()["business_validated"] is False
+        status_ok = client.get(
+            "/tasks/example",
+            headers={"Authorization": f"Bearer {owner}"},
+        )
+        assert status_ok.status_code == 200
+        assert status_ok.json()["state"] == "completed"
         outsider = sign_jwt({"sub": "other", "tenant_id": "outsider"}, secret)
         invalid = client.get(
             "/tasks/example/result",
             headers={"Authorization": f"Bearer {outsider}"},
         )
         assert invalid.status_code == 404
+        other_status = client.get(
+            "/tasks/example",
+            headers={"Authorization": f"Bearer {outsider}"},
+        )
+        assert other_status.status_code == 404
