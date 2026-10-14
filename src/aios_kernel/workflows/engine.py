@@ -22,6 +22,8 @@ from __future__ import annotations
 
 import asyncio
 import logging
+import uuid
+from contextlib import suppress
 from datetime import UTC, datetime
 from typing import Any, Protocol, runtime_checkable
 
@@ -29,6 +31,7 @@ from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker
 
 from .persistence import (
     WorkflowRunRow,
+    acquire_workflow_lease,
     init_schema,
     insert_run,
     latest_checkpoint,
@@ -37,6 +40,8 @@ from .persistence import (
     make_engine,
     make_session_factory,
     record_activity,
+    release_workflow_lease,
+    renew_workflow_lease,
     safe_json_loads,
     update_run,
     write_checkpoint,
@@ -55,6 +60,15 @@ from .workflow import (
 )
 
 log = logging.getLogger("aios_kernel.workflows.engine")
+
+
+class WorkflowLeaseBusy(RuntimeError):
+    """Another live executor owns the run; no activity was executed."""
+
+
+class WorkflowLeaseLost(RuntimeError):
+    """This invocation no longer owns the run; checkpoint writes are forbidden."""
+
 
 
 # ---------- Engine protocol -------------------------------------------------
@@ -293,11 +307,97 @@ class PGCheckpointerEngine:
 
     # -- internal: drive the workflow ---------------------------------------
 
+    async def _lease_heartbeat(
+        self, run_id: str, owner_id: str, fencing_token: int,
+        *, ttl_s: float,
+    ) -> None:
+        """Renew long-running activity leases; cancel the driver if ownership is lost."""
+        while True:
+            await asyncio.sleep(ttl_s / 3)
+            async with self._session_factory() as session:
+                ok = await renew_workflow_lease(
+                    session, run_id=run_id, owner_id=owner_id,
+                    fencing_token=fencing_token, ttl_s=ttl_s,
+                )
+                if not ok:
+                    raise WorkflowLeaseLost(f"lease lost during activity: {run_id}")
+                await session.commit()
+
+    async def _require_lease(
+        self, session: AsyncSession, run_id: str,
+        owner_id: str, fencing_token: int, ttl_s: float,
+    ) -> None:
+        if not await renew_workflow_lease(
+            session, run_id=run_id, owner_id=owner_id,
+            fencing_token=fencing_token, ttl_s=ttl_s,
+        ):
+            raise WorkflowLeaseLost(f"lost fenced workflow ownership: {run_id}")
+
     async def _drive(
+        self, workflow: Workflow, run_id: str, resume_from: str | None,
+    ) -> WorkflowRun:
+        """Exclusive DB-backed run ownership around the existing checkpoint engine.
+
+        No claim of exactly-once external effects: providers must use
+        idempotency keys / reconciliation when an API response is uncertain.
+        """
+        owner_id = uuid.uuid4().hex
+        ttl_s = 120.0
+        async with self._session_factory() as session:
+            token = await acquire_workflow_lease(
+                session, run_id=run_id, owner_id=owner_id, ttl_s=ttl_s,
+            )
+            await session.commit()
+        if token is None:
+            raise WorkflowLeaseBusy(f"workflow already leased: {run_id}")
+
+        heartbeat = asyncio.create_task(
+            self._lease_heartbeat(run_id, owner_id, token, ttl_s=ttl_s),
+            name=f"wf-lease-heartbeat-{run_id}",
+        )
+        driver = asyncio.create_task(
+            self._drive_owned(
+                workflow, run_id, resume_from,
+                owner_id=owner_id, fencing_token=token, ttl_s=ttl_s,
+            ),
+            name=f"wf-driver-{run_id}",
+        )
+        try:
+            done, _pending = await asyncio.wait(
+                {driver, heartbeat}, return_when=asyncio.FIRST_COMPLETED,
+            )
+            if heartbeat in done:
+                driver.cancel()
+                with suppress(asyncio.CancelledError):
+                    await driver
+                # Propagate heartbeat failure rather than presenting success.
+                heartbeat.result()
+                raise WorkflowLeaseLost(f"unexpected heartbeat stop: {run_id}")
+            return await driver
+        finally:
+            heartbeat.cancel()
+            if not driver.done():
+                driver.cancel()
+            with suppress(asyncio.CancelledError):
+                await heartbeat
+            with suppress(asyncio.CancelledError):
+                await driver
+            async with self._session_factory() as session:
+                await release_workflow_lease(
+                    session, run_id=run_id, owner_id=owner_id,
+                    fencing_token=token,
+                )
+                await session.commit()
+
+    async def _drive_owned(
         self,
         workflow: Workflow,
         run_id: str,
         resume_from: str | None,
+        *,
+        owner_id: str,
+        fencing_token: int,
+        ttl_s: float,
     ) -> WorkflowRun:
         """Execute steps in topological order, with checkpoint + retry.
 
@@ -333,6 +433,7 @@ class PGCheckpointerEngine:
             row = await session.get(WorkflowRunRow, run_id)
             if row is None:
                 raise KeyError(f"no run {run_id!r}")
+            await self._require_lease(session, run_id, owner_id, fencing_token, ttl_s)
             if row.status in ("pending",):
                 await update_run(
                     session,
@@ -358,6 +459,9 @@ class PGCheckpointerEngine:
                 continue
             if self._cancel_flags.get(run_id):
                 async with self._session_factory() as session:
+                    await self._require_lease(
+                        session, run_id, owner_id, fencing_token, ttl_s,
+                    )
                     await update_run(
                         session,
                         run_id=run_id,
@@ -369,6 +473,9 @@ class PGCheckpointerEngine:
                 async with self._session_factory() as session:
                     row = await session.get(WorkflowRunRow, run_id)
                     return _row_to_run(row)
+            async with self._session_factory() as session:
+                await self._require_lease(session, run_id, owner_id, fencing_token, ttl_s)
+                await session.commit()
             dep_outputs = {dep: completed_outputs.get(dep, {}) for dep in step.depends_on}
             status, output, last_error = await self._execute_step(
                 workflow, run_id, step, idx, order, dep_outputs,
@@ -376,6 +483,7 @@ class PGCheckpointerEngine:
             )
             if status == "completed":
                 async with self._session_factory() as session:
+                    await self._require_lease(session, run_id, owner_id, fencing_token, ttl_s)
                     await update_run(
                         session, run_id=run_id, current_step=step.id
                     )
@@ -393,6 +501,7 @@ class PGCheckpointerEngine:
                 continue
             # failure -> mark run as failed
             async with self._session_factory() as session:
+                await self._require_lease(session, run_id, owner_id, fencing_token, ttl_s)
                 await update_run(
                     session,
                     run_id=run_id,
@@ -418,6 +527,7 @@ class PGCheckpointerEngine:
 
         # all steps completed -> mark run completed
         async with self._session_factory() as session:
+            await self._require_lease(session, run_id, owner_id, fencing_token, ttl_s)
             await update_run(
                 session,
                 run_id=run_id,
