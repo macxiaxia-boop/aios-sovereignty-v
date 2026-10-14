@@ -272,6 +272,7 @@ async def test_scheduler_metrics_snapshot_fields():
 async def test_same_task_repeated_submit_uses_distinct_run_ids(monkeypatch):
     """One millisecond must not alias two executions of one immutable Task."""
     from types import SimpleNamespace
+
     import aios_kernel.scheduler as scheduler_module
 
     monkeypatch.setattr(scheduler_module, "time",
@@ -291,6 +292,7 @@ async def test_same_task_repeated_submit_uses_distinct_run_ids(monkeypatch):
 @pytest.mark.asyncio
 async def test_concurrent_submit_same_task_has_no_id_collision(monkeypatch):
     from types import SimpleNamespace
+
     import aios_kernel.scheduler as scheduler_module
 
     monkeypatch.setattr(scheduler_module, "time",
