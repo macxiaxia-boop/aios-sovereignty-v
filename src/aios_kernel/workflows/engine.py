@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import asyncio
 import hashlib
+import json
 import logging
 import uuid
 from contextlib import suppress
@@ -31,6 +32,7 @@ from typing import Any, Protocol, runtime_checkable
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker
 
 from .persistence import (
+    WorkflowEffectRow,
     WorkflowRunRow,
     acquire_workflow_lease,
     init_schema,
@@ -40,10 +42,12 @@ from .persistence import (
     list_runs_by_status,
     make_engine,
     make_session_factory,
+    prepare_external_effect,
     record_activity,
     release_workflow_lease,
     renew_workflow_lease,
     safe_json_loads,
+    transition_external_effect,
     update_run,
     write_checkpoint,
 )
@@ -69,6 +73,10 @@ class WorkflowLeaseBusy(RuntimeError):
 
 class WorkflowLeaseLost(RuntimeError):
     """This invocation no longer owns the run; checkpoint writes are forbidden."""
+
+
+class WorkflowEffectUncertain(RuntimeError):
+    """Remote action may have occurred: block automatic retry pending reconciliation."""
 
 
 
@@ -481,11 +489,30 @@ class PGCheckpointerEngine:
                 await self._require_lease(session, run_id, owner_id, fencing_token, ttl_s)
                 await session.commit()
             dep_outputs = {dep: completed_outputs.get(dep, {}) for dep in step.depends_on}
-            status, output, last_error = await self._execute_step(
-                workflow, run_id, step, idx, order, dep_outputs,
-                workflow_input=workflow_input,
-                fencing_token=fencing_token,
-            )
+            try:
+                if step.external_effect:
+                    status, output, last_error = await self._execute_external_step(
+                        workflow, run_id, step, idx, dep_outputs, workflow_input,
+                        owner_id=owner_id, fencing_token=fencing_token, ttl_s=ttl_s,
+                    )
+                else:
+                    status, output, last_error = await self._execute_step(
+                        workflow, run_id, step, idx, order, dep_outputs,
+                        workflow_input=workflow_input,
+                        fencing_token=fencing_token,
+                    )
+            except WorkflowEffectUncertain as exc:
+                async with self._session_factory() as session:
+                    await self._require_lease(
+                        session, run_id, owner_id, fencing_token, ttl_s,
+                    )
+                    await update_run(
+                        session, run_id=run_id, status="blocked",
+                        current_step=step.id, error=str(exc),
+                    )
+                    await session.commit()
+                    row = await session.get(WorkflowRunRow, run_id)
+                    return _row_to_run(row)
             if status == "completed":
                 async with self._session_factory() as session:
                     await self._require_lease(session, run_id, owner_id, fencing_token, ttl_s)
@@ -549,6 +576,159 @@ class PGCheckpointerEngine:
             await session.commit()
             row = await session.get(WorkflowRunRow, run_id)
             return _row_to_run(row)
+
+    async def _execute_external_step(
+        self,
+        workflow: Workflow,
+        run_id: str,
+        step: WorkflowStep,
+        step_index: int,
+        dep_outputs: dict[str, Any],
+        workflow_input: dict[str, Any],
+        *,
+        owner_id: str,
+        fencing_token: int,
+        ttl_s: float,
+    ) -> tuple[str, dict[str, Any] | None, str | None]:
+        """Never blind-retry an external call if a dispatch may have happened."""
+        effect_key = hashlib.sha256(f"{run_id}:{step.id}".encode()).hexdigest()
+        canonical = json.dumps(
+            {"input": workflow_input, "deps": dep_outputs},
+            sort_keys=True, ensure_ascii=False, default=str,
+        )
+        request_hash = hashlib.sha256(canonical.encode()).hexdigest()
+
+        async with self._session_factory() as session:
+            await self._require_lease(session, run_id, owner_id, fencing_token, ttl_s)
+            journal = await prepare_external_effect(
+                session, effect_key=effect_key, run_id=run_id,
+                step_id=step.id, request_hash=request_hash,
+            )
+            status = journal.status
+            cached_output = safe_json_loads(journal.receipt_json)
+            if status == "confirmed":
+                await session.commit()
+                return ("completed", cached_output, None)
+            if status != "prepared":
+                await session.commit()
+                raise WorkflowEffectUncertain(
+                    f"external effect {effect_key} is {status}; verify remote resource"
+                )
+            if not await transition_external_effect(
+                session, effect_key=effect_key, from_status="prepared",
+                to_status="sent",
+            ):
+                raise WorkflowEffectUncertain(
+                    f"external effect {effect_key} was concurrently dispatched"
+                )
+            await record_activity(
+                session, run_id=run_id, activity_id=step.activity.name,
+                step_id=step.id, attempt=1, status="started",
+                started_at=datetime.now(UTC),
+            )
+            await session.commit()
+
+        ctx = ActivityContext(
+            run_id=run_id, step_id=step.id, attempt=1,
+            input={"workflow_input": workflow_input, "deps": dep_outputs},
+            metadata={
+                "workflow_id": workflow.id,
+                "step_index": step_index,
+                "prev_outputs": dep_outputs,
+                "idempotency_key": effect_key,
+                "fencing_token": fencing_token,
+                "external_effect": True,
+            },
+        )
+        try:
+            if step.timeout_s is None:
+                result = await step.activity.execute(ctx)
+            else:
+                result = await asyncio.wait_for(
+                    step.activity.execute(ctx), timeout=step.timeout_s,
+                )
+        except Exception as exc:
+            # Timeout / disconnect has no reliable negative acknowledgement.
+            async with self._session_factory() as session:
+                await self._require_lease(
+                    session, run_id, owner_id, fencing_token, ttl_s,
+                )
+                await transition_external_effect(
+                    session, effect_key=effect_key, from_status="sent",
+                    to_status="uncertain",
+                )
+                await session.commit()
+            raise WorkflowEffectUncertain(
+                f"external effect {effect_key} has unknown outcome: {type(exc).__name__}"
+            ) from exc
+
+        receipt = result.output.get("remote_receipt") if result.success else None
+        is_verified_shape = (
+            isinstance(receipt, dict)
+            and bool(receipt.get("provider"))
+            and bool(receipt.get("resource_id"))
+        )
+        async with self._session_factory() as session:
+            await self._require_lease(session, run_id, owner_id, fencing_token, ttl_s)
+            if not is_verified_shape:
+                await transition_external_effect(
+                    session, effect_key=effect_key, from_status="sent",
+                    to_status="uncertain",
+                )
+                await session.commit()
+                raise WorkflowEffectUncertain(
+                    f"external effect {effect_key} lacks a remote resource receipt"
+                )
+            if not await transition_external_effect(
+                session, effect_key=effect_key, from_status="sent",
+                to_status="confirmed", receipt=result.output,
+            ):
+                raise WorkflowEffectUncertain(
+                    f"external effect {effect_key} state changed before confirmation"
+                )
+            await record_activity(
+                session, run_id=run_id, activity_id=step.activity.name,
+                step_id=step.id, attempt=1, status="completed",
+                finished_at=datetime.now(UTC),
+            )
+            await session.commit()
+        return ("completed", result.output, None)
+
+    async def confirm_external_effect(
+        self,
+        *,
+        run_id: str,
+        step_id: str,
+        remote_output: dict[str, Any],
+        verification_evidence: str,
+    ) -> None:
+        """Accept independently checked remote proof, then permit resume.
+
+        Caller is responsible for RBAC and read-only remote reconciliation.
+        This method does NOT verify the external provider by itself.
+        """
+        receipt = remote_output.get("remote_receipt")
+        if (
+            not verification_evidence.strip()
+            or not isinstance(receipt, dict)
+            or not receipt.get("provider")
+            or not receipt.get("resource_id")
+        ):
+            raise ValueError("verified external receipt and evidence are required")
+        effect_key = hashlib.sha256(f"{run_id}:{step_id}".encode()).hexdigest()
+        async with self._session_factory() as session:
+            row = await session.get(WorkflowEffectRow, effect_key)
+            if row is None or row.run_id != run_id or row.step_id != step_id:
+                raise KeyError("external effect journal not found")
+            if row.status not in ("sent", "uncertain"):
+                raise ValueError(f"effect not awaiting reconciliation: {row.status}")
+            if not await transition_external_effect(
+                session, effect_key=effect_key, from_status=row.status,
+                to_status="confirmed", receipt=remote_output,
+                reconciliation_evidence=verification_evidence,
+            ):
+                raise RuntimeError("effect reconciliation lost compare-and-swap")
+            await session.commit()
 
     async def _execute_step(
         self,
