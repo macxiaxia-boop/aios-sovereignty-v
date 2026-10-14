@@ -107,6 +107,21 @@ class WorkflowLeaseRow(Base):
     expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
 
 
+
+class WorkflowEffectRow(Base):
+    """Persist side effect dispatch before calling remote provider."""
+
+    __tablename__ = "workflow_effects"
+
+    effect_key: Mapped[str] = mapped_column(String(64), primary_key=True)
+    run_id: Mapped[str] = mapped_column(String(64), index=True, nullable=False)
+    step_id: Mapped[str] = mapped_column(String(128), nullable=False)
+    request_hash: Mapped[str] = mapped_column(String(64), nullable=False)
+    status: Mapped[str] = mapped_column(String(16), nullable=False, default="prepared")
+    receipt_json: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+    reconciliation_evidence: Mapped[str | None] = mapped_column(Text, nullable=True)
+
+
 # ---------- Engine factory --------------------------------------------------
 
 
@@ -136,6 +151,61 @@ async def drop_schema(engine: AsyncEngine) -> None:
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
 
+
+
+
+# ---------- External side-effect journal ------------------------------------
+
+
+async def prepare_external_effect(
+    session: AsyncSession,
+    *,
+    effect_key: str,
+    run_id: str,
+    step_id: str,
+    request_hash: str,
+) -> WorkflowEffectRow:
+    """Persistent stable request identity; conflict with changed payload is fatal."""
+    dialect_insert = _insert_for_dialect(session)
+    await session.execute(
+        dialect_insert(WorkflowEffectRow)
+        .values(
+            effect_key=effect_key, run_id=run_id, step_id=step_id,
+            request_hash=request_hash, status="prepared",
+            receipt_json={},
+        )
+        .on_conflict_do_nothing(index_elements=["effect_key"])
+    )
+    row = await session.get(WorkflowEffectRow, effect_key)
+    if row is None:
+        raise RuntimeError("effect not visible after journal insert")
+    if (row.run_id, row.step_id, row.request_hash) != (run_id, step_id, request_hash):
+        raise ValueError("external effect key reused with conflicting operation")
+    return row
+
+
+async def transition_external_effect(
+    session: AsyncSession,
+    *,
+    effect_key: str,
+    from_status: str,
+    to_status: str,
+    receipt: dict[str, Any] | None = None,
+    reconciliation_evidence: str | None = None,
+) -> bool:
+    """Single-writer CAS; do not revive sent/unknown operations for blind retry."""
+    values: dict[str, Any] = {"status": to_status}
+    if receipt is not None:
+        values["receipt_json"] = receipt
+    if reconciliation_evidence is not None:
+        values["reconciliation_evidence"] = reconciliation_evidence
+    result = await session.execute(
+        update(WorkflowEffectRow)
+        .where(WorkflowEffectRow.effect_key == effect_key)
+        .where(WorkflowEffectRow.status == from_status)
+        .values(**values)
+    )
+    return result.rowcount == 1
 
 
 # ---------- Workflow lease / fencing ---------------------------------------
