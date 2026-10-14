@@ -137,3 +137,25 @@ def test_cloudtech_worker_requires_explicit_service_url(monkeypatch):
     monkeypatch.delenv("CLOUDTECH_V4_BASE_URL", raising=False)
     with pytest.raises(ValueError, match="explicitly configured"):
         CloudTechV4Adapter()
+
+
+
+@pytest.mark.asyncio
+async def test_workpath_traversal_and_invalid_tenant_never_reach_network():
+    def deny_network(request):
+        raise AssertionError("untrusted IDs must not be sent to service")
+
+    async with httpx.AsyncClient(
+        transport=httpx.MockTransport(deny_network)
+    ) as client:
+        worker = CloudTechV4Adapter(
+            base_url="https://cloudtech.example", client=client,
+        )
+        malicious = _task("preflight")
+        malicious.input_payload["path_id"] = "../../admin"
+        with pytest.raises(ValueError, match="workpath ID"):
+            await worker.execute(malicious)
+        bad_tenant = _task("preflight")
+        bad_tenant.input_payload["tenant_id"] = "../tenant"
+        with pytest.raises(ValueError, match="tenant ID"):
+            await worker.execute(bad_tenant)
