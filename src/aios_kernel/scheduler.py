@@ -340,7 +340,9 @@ class AIOSScheduler:
         owner = self._run_tenants.get(run_id)
         if owner is None and self._memory is not None:
             owner = self._memory.state_get(f"scheduler-tenant:{run_id}")
-        if owner is not None and owner != tenant_id:
+        if (tenant_id is not None and owner != tenant_id) or (
+            tenant_id is None and owner is not None
+        ):
             # Do not leak the existence or content of another tenant's work.
             return {"run_id": run_id, "state": "unknown", "available": False}
         status = await self.status(run_id)
