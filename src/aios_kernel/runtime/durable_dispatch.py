@@ -9,6 +9,7 @@ from __future__ import annotations
 import json
 import sqlite3
 import time
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Any
 
@@ -41,12 +42,18 @@ class DurableDispatchStore:
                 ON dispatch_runs(status, priority, updated_at)
             """)
 
-    def _connect(self) -> sqlite3.Connection:
+    @contextmanager
+    def _connect(self):
+        # The sqlite3.Connection context manager alone does not close handles.
+        # Release the Windows file lock promptly after every short operation.
         db = sqlite3.connect(self.path, timeout=15, isolation_level=None)
-        db.row_factory = sqlite3.Row
-        db.execute("PRAGMA busy_timeout=15000")
-        db.execute("PRAGMA journal_mode=WAL")
-        return db
+        try:
+            db.row_factory = sqlite3.Row
+            db.execute("PRAGMA busy_timeout=15000")
+            db.execute("PRAGMA journal_mode=WAL")
+            yield db
+        finally:
+            db.close()
 
     def enqueue(self, run_id: str, task: Task, priority: str) -> bool:
         tenant_id = task.input_payload.get("tenant_id")
