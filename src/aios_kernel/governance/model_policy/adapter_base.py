@@ -20,7 +20,6 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional
 
 from .snapshot import PolicySnapshot
 
@@ -30,9 +29,9 @@ class DriftReport:
     adapter_name: str
     drift_kind: str = "none"            # "fallback_injection" | "profile_drift" | "provider_drift" | "missing_policy_table" | "none"
     severity: str = "ok"                 # "fail_closed" | "warn" | "ok"
-    affected_paths: List[str] = field(default_factory=list)
+    affected_paths: list[str] = field(default_factory=list)
     recommended_action: str = "ignore"   # "revert" | "warn" | "ignore"
-    details: Dict = field(default_factory=dict)
+    details: dict = field(default_factory=dict)
 
 
 class ModelPolicyAdapter(ABC):

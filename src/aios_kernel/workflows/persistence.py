@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import json
 from collections.abc import Sequence
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from typing import Any
 
 from sqlalchemy import (
@@ -23,6 +23,7 @@ from sqlalchemy import (
     String,
     Text,
     select,
+    update,
 )
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
@@ -95,7 +96,34 @@ class ActivityHistoryRow(Base):
     finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
 
+class WorkflowLeaseRow(Base):
+    """Independent additive table; init_schema(create_all) preserves old runs."""
+
+    __tablename__ = "workflow_leases"
+
+    run_id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    owner_id: Mapped[str] = mapped_column(String(64), nullable=False, default="")
+    fencing_token: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+
+
+class WorkflowEffectRow(Base):
+    """Persist side effect dispatch before calling remote provider."""
+
+    __tablename__ = "workflow_effects"
+
+    effect_key: Mapped[str] = mapped_column(String(64), primary_key=True)
+    run_id: Mapped[str] = mapped_column(String(64), index=True, nullable=False)
+    step_id: Mapped[str] = mapped_column(String(128), nullable=False)
+    request_hash: Mapped[str] = mapped_column(String(64), nullable=False)
+    status: Mapped[str] = mapped_column(String(16), nullable=False, default="prepared")
+    receipt_json: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+    reconciliation_evidence: Mapped[str | None] = mapped_column(Text, nullable=True)
+
+
 # ---------- Engine factory --------------------------------------------------
+
 
 
 def make_engine(database_url: str) -> AsyncEngine:
@@ -124,6 +152,156 @@ async def drop_schema(engine: AsyncEngine) -> None:
         await conn.run_sync(Base.metadata.drop_all)
 
 
+
+
+# ---------- External side-effect journal ------------------------------------
+
+
+async def prepare_external_effect(
+    session: AsyncSession,
+    *,
+    effect_key: str,
+    run_id: str,
+    step_id: str,
+    request_hash: str,
+) -> WorkflowEffectRow:
+    """Persistent stable request identity; conflict with changed payload is fatal."""
+    dialect_insert = _insert_for_dialect(session)
+    await session.execute(
+        dialect_insert(WorkflowEffectRow)
+        .values(
+            effect_key=effect_key, run_id=run_id, step_id=step_id,
+            request_hash=request_hash, status="prepared",
+            receipt_json={},
+        )
+        .on_conflict_do_nothing(index_elements=["effect_key"])
+    )
+    row = await session.get(WorkflowEffectRow, effect_key)
+    if row is None:
+        raise RuntimeError("effect not visible after journal insert")
+    if (row.run_id, row.step_id, row.request_hash) != (run_id, step_id, request_hash):
+        raise ValueError("external effect key reused with conflicting operation")
+    return row
+
+
+async def transition_external_effect(
+    session: AsyncSession,
+    *,
+    effect_key: str,
+    from_status: str,
+    to_status: str,
+    receipt: dict[str, Any] | None = None,
+    reconciliation_evidence: str | None = None,
+) -> bool:
+    """Single-writer CAS; do not revive sent/unknown operations for blind retry."""
+    values: dict[str, Any] = {"status": to_status}
+    if receipt is not None:
+        values["receipt_json"] = receipt
+    if reconciliation_evidence is not None:
+        values["reconciliation_evidence"] = reconciliation_evidence
+    result = await session.execute(
+        update(WorkflowEffectRow)
+        .where(WorkflowEffectRow.effect_key == effect_key)
+        .where(WorkflowEffectRow.status == from_status)
+        .values(**values)
+    )
+    return result.rowcount == 1
+
+
+# ---------- Workflow lease / fencing ---------------------------------------
+
+
+def _insert_for_dialect(session: AsyncSession):
+    dialect = session.get_bind().dialect.name
+    if dialect == "sqlite":
+        from sqlalchemy.dialects.sqlite import insert as dialect_insert
+    elif dialect == "postgresql":
+        from sqlalchemy.dialects.postgresql import insert as dialect_insert
+    else:
+        raise ValueError(f"unsupported workflow persistence dialect: {dialect}")
+    return dialect_insert
+
+
+async def acquire_workflow_lease(
+    session: AsyncSession,
+    *,
+    run_id: str,
+    owner_id: str,
+    ttl_s: float = 120.0,
+) -> int | None:
+    """Acquire via DB atomic UPDATE; return new monotonically increasing fence.
+
+    None means another unexpired owner holds the run. Both SQLite and
+    PostgreSQL serialize the conditional UPDATE. Do not put an external
+    network call inside this transaction.
+    """
+    if ttl_s <= 0:
+        raise ValueError("workflow lease TTL must be positive")
+    now = _now()
+    dialect_insert = _insert_for_dialect(session)
+    await session.execute(
+        dialect_insert(WorkflowLeaseRow)
+        .values(run_id=run_id, owner_id="", fencing_token=0, expires_at=now)
+        .on_conflict_do_nothing(index_elements=["run_id"])
+    )
+    stmt = (
+        update(WorkflowLeaseRow)
+        .where(WorkflowLeaseRow.run_id == run_id)
+        .where(WorkflowLeaseRow.expires_at <= now)
+        .values(
+            owner_id=owner_id,
+            fencing_token=WorkflowLeaseRow.fencing_token + 1,
+            expires_at=now + timedelta(seconds=ttl_s),
+        )
+        .returning(WorkflowLeaseRow.fencing_token)
+    )
+    result = await session.execute(stmt)
+    return result.scalar_one_or_none()
+
+
+async def renew_workflow_lease(
+    session: AsyncSession,
+    *,
+    run_id: str,
+    owner_id: str,
+    fencing_token: int,
+    ttl_s: float = 120.0,
+) -> bool:
+    """CAS fence check and refresh. Must run in the SAME transaction as checkpoint."""
+    if ttl_s <= 0:
+        raise ValueError("workflow lease TTL must be positive")
+    now = _now()
+    stmt = (
+        update(WorkflowLeaseRow)
+        .where(WorkflowLeaseRow.run_id == run_id)
+        .where(WorkflowLeaseRow.owner_id == owner_id)
+        .where(WorkflowLeaseRow.fencing_token == fencing_token)
+        .where(WorkflowLeaseRow.expires_at > now)
+        .values(expires_at=now + timedelta(seconds=ttl_s))
+    )
+    result = await session.execute(stmt)
+    return result.rowcount == 1
+
+
+async def release_workflow_lease(
+    session: AsyncSession,
+    *,
+    run_id: str,
+    owner_id: str,
+    fencing_token: int,
+) -> bool:
+    """Old owner cannot release a successor's lease."""
+    stmt = (
+        update(WorkflowLeaseRow)
+        .where(WorkflowLeaseRow.run_id == run_id)
+        .where(WorkflowLeaseRow.owner_id == owner_id)
+        .where(WorkflowLeaseRow.fencing_token == fencing_token)
+        .values(owner_id="", expires_at=_now())
+    )
+    result = await session.execute(stmt)
+    return result.rowcount == 1
+
+
 # ---------- Data access helpers --------------------------------------------
 
 
@@ -137,13 +315,19 @@ async def insert_run(
     run_id: str,
     workflow_id: str,
     input_json: dict[str, Any],
-) -> None:
-    # Phase B CR7 idempotency: use ON CONFLICT DO NOTHING
-    # (Postgres) / INSERT OR IGNORE (SQLite). Multi-cycle crash/recovery
-    # re-calls start() with the same run_id; the first call creates the
-    # row, subsequent calls are no-ops.
-    from sqlalchemy.dialects.sqlite import insert as sqlite_insert
-    stmt = sqlite_insert(WorkflowRunRow).values(
+) -> bool:
+    # True only when this request created the run. Required to avoid concurrent
+    # first-submit attempts both executing external side effects.
+    # Dialect-specific INSERT: SQLite Insert must not be compiled as PostgreSQL.
+    # This operation never replays a completed run (see WorkflowEngine.start).
+    dialect = session.get_bind().dialect.name
+    if dialect == "sqlite":
+        from sqlalchemy.dialects.sqlite import insert as dialect_insert
+    elif dialect == "postgresql":
+        from sqlalchemy.dialects.postgresql import insert as dialect_insert
+    else:
+        raise ValueError(f"unsupported workflow persistence dialect: {dialect}")
+    stmt = dialect_insert(WorkflowRunRow).values(
         run_id=run_id,
         workflow_id=workflow_id,
         status="pending",
@@ -153,9 +337,11 @@ async def insert_run(
         started_at=None,
         completed_at=None,
     ).on_conflict_do_nothing(index_elements=["run_id"])
-    await session.execute(stmt)
+    result = await session.execute(stmt)
     await session.flush()
-    return
+    # Both supported backends return 1 for insert and 0 for conflict.
+    # The default covers simple test doubles that return no cursor result.
+    return getattr(result, "rowcount", 1) == 1
 
 
 async def update_run(

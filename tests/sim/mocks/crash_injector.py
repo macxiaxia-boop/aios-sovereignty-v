@@ -13,10 +13,10 @@ The wrapper is also wired to advance a MockClock so the simulation can advance
 from __future__ import annotations
 
 import json
-import threading
 import time
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any
 
 # Support running both as a package (sim.tests.mocks.crash_injector) and as a
 # loose file via `python crash_injector.py` (no parent package).
@@ -40,7 +40,7 @@ class KernelHandle:
 
     pid: int
     started_at: float  # wall-clock seconds since epoch
-    state: Dict[str, Any] = field(default_factory=dict)
+    state: dict[str, Any] = field(default_factory=dict)
     alive: bool = True
     exec_count: int = 0
 
@@ -52,7 +52,7 @@ class KernelHandle:
         self.alive = True
         self.started_at = time.time()
 
-    def run(self, work_fn: Callable[["KernelHandle"], None]) -> None:
+    def run(self, work_fn: Callable[[KernelHandle], None]) -> None:
         if not self.alive:
             raise CrashRecoveryError("kernel not alive")
         self.exec_count += 1
@@ -68,11 +68,11 @@ class CrashInjector:
         inj.kill_and_restart(handle, count=5, between_sleep_s=0.01)
     """
 
-    def __init__(self, clock: Optional[Clock] = None) -> None:
+    def __init__(self, clock: Clock | None = None) -> None:
         self.clock: Clock = clock if clock is not None else RealClock()
-        self.history: List[Dict[str, Any]] = []
+        self.history: list[dict[str, Any]] = []
 
-    def spawn(self, initial_pid: int = 1000, state: Optional[Dict[str, Any]] = None) -> KernelHandle:
+    def spawn(self, initial_pid: int = 1000, state: dict[str, Any] | None = None) -> KernelHandle:
         h = KernelHandle(pid=initial_pid, started_at=time.time(), state=dict(state or {}))
         self.history.append({"event": "spawn", "pid": h.pid, "ts": time.time()})
         return h
@@ -81,7 +81,7 @@ class CrashInjector:
         handle.kill()
         self.history.append({"event": "kill", "pid": handle.pid, "ts": time.time()})
 
-    def restart(self, handle: KernelHandle, new_pid: Optional[int] = None) -> KernelHandle:
+    def restart(self, handle: KernelHandle, new_pid: int | None = None) -> KernelHandle:
         if new_pid is None:
             new_pid = handle.pid + 1
         handle.pid = new_pid
@@ -94,12 +94,12 @@ class CrashInjector:
         handle: KernelHandle,
         count: int = 5,
         between_sleep_s: float = 0.0,
-        recover_fn: Optional[Callable[[KernelHandle], None]] = None,
-    ) -> List[Dict[str, Any]]:
+        recover_fn: Callable[[KernelHandle], None] | None = None,
+    ) -> list[dict[str, Any]]:
         """Perform `count` kill+restart cycles, optionally mutating handle.state."""
         if count < 1:
             raise ValueError("count must be >= 1")
-        for i in range(count):
+        for _i in range(count):
             self.kill(handle)
             if between_sleep_s > 0:
                 time.sleep(between_sleep_s)
@@ -112,7 +112,7 @@ class CrashInjector:
                     raise
         return list(self.history)
 
-    def summary(self) -> Dict[str, Any]:
+    def summary(self) -> dict[str, Any]:
         kills = sum(1 for e in self.history if e["event"] == "kill")
         restarts = sum(1 for e in self.history if e["event"] == "restart")
         return {
@@ -123,7 +123,7 @@ class CrashInjector:
         }
 
 
-def fast_simulated_week_3x(clock: MockClock, weeks: int = 3) -> Dict[str, Any]:
+def fast_simulated_week_3x(clock: MockClock, weeks: int = 3) -> dict[str, Any]:
     """Advance `weeks` * 7 days through the supplied MockClock and return the new `now()`."""
     if not isinstance(clock, MockClock):
         raise TypeError("fast_simulated_week_3x requires MockClock")

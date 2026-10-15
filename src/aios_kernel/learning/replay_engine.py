@@ -1,8 +1,8 @@
 """replay_engine.py - C005 Replay Engine."""
 from __future__ import annotations
+
 import uuid
 from datetime import UTC, datetime
-from typing import Any, Optional
 
 from pydantic import Field
 

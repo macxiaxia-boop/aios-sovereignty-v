@@ -1,5 +1,6 @@
 """test_eval_builder.py - C004 tests."""
 from __future__ import annotations
+
 import asyncio
 import uuid
 from unittest.mock import MagicMock
@@ -30,8 +31,7 @@ def test_synthetic():
 
 
 def test_merge_dedup():
-    from aios_kernel.learning.eval_builder import EvalDatasetBuilder
-    from aios_kernel.learning.eval_builder import EvalCase
+    from aios_kernel.learning.eval_builder import EvalCase, EvalDatasetBuilder
     b = EvalDatasetBuilder()
     c1 = EvalCase(id=str(uuid.uuid4()), query="q1", expected_output="a", source="real")
     c2 = EvalCase(id=str(uuid.uuid4()), query="q1", expected_output="a", source="synth")  # dup

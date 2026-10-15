@@ -1,7 +1,7 @@
 """test_replay_engine.py - C005 tests."""
 from __future__ import annotations
+
 import asyncio
-from unittest.mock import MagicMock
 
 
 def test_replay_success():

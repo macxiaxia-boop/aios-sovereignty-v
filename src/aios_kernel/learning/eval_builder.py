@@ -1,12 +1,9 @@
 """eval_builder.py - C004 Eval Dataset Builder."""
 from __future__ import annotations
+
 import uuid
-from datetime import UTC, datetime
-from typing import Optional
 
-from pydantic import Field
-
-from aios_kernel.domain.envelope import Envelope, utcnow
+from aios_kernel.domain.envelope import Envelope
 from aios_kernel.persistence.models import TraceORM
 
 
@@ -16,7 +13,7 @@ class EvalCase(Envelope):
     expected_output: str = ""
     source: str = "synthetic"  # "synthetic" | "real"
     difficulty: str = "medium"  # "easy" | "medium" | "hard"
-    evidence_id: Optional[str] = None  # back-link to real
+    evidence_id: str | None = None  # back-link to real
 
 
 class EvalDatasetBuilder:
@@ -28,7 +25,7 @@ class EvalDatasetBuilder:
     async def from_real(self, traces: list[TraceORM], n: int = 100) -> list[EvalCase]:
         """Extract n cases from real traces."""
         cases = []
-        for i, t in enumerate(traces[:n]):
+        for _i, t in enumerate(traces[:n]):
             case = EvalCase(
                 id=str(uuid.uuid4()),
                 query=str(t.payload)[:200] if isinstance(t.payload, dict) else str(t.id),

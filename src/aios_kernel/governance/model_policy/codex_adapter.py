@@ -16,7 +16,6 @@ import json
 import sqlite3
 import tomllib
 from pathlib import Path
-from typing import Optional
 
 from .adapter_base import DriftReport, ModelPolicyAdapter
 from .snapshot import PolicySnapshot
@@ -27,9 +26,9 @@ class CodexAdapter(ModelPolicyAdapter):
 
     def __init__(
         self,
-        config_toml_path: Optional[Path] = None,
-        cc_switch_db_path: Optional[Path] = None,
-        auth_json_path: Optional[Path] = None,
+        config_toml_path: Path | None = None,
+        cc_switch_db_path: Path | None = None,
+        auth_json_path: Path | None = None,
     ):
         self.config_toml_path = config_toml_path or (Path.home() / ".codex" / "config.toml")
         self.cc_switch_db_path = cc_switch_db_path or (Path.home() / ".cc-switch" / "cc-switch.db")

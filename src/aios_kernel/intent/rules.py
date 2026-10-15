@@ -28,7 +28,6 @@ from typing import Any
 
 from aios_kernel.intent.classifier import IntentType
 
-
 # ---------------------------------------------------------------------------
 # Constraint patterns (card §Scope 1)
 # ---------------------------------------------------------------------------

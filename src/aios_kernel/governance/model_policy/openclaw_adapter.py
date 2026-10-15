@@ -15,7 +15,6 @@ import json
 import os
 import sqlite3
 from pathlib import Path
-from typing import Optional
 
 from .adapter_base import DriftReport, ModelPolicyAdapter
 from .snapshot import PolicySnapshot
@@ -23,12 +22,13 @@ from .snapshot import PolicySnapshot
 
 class OpenClawAdapter(ModelPolicyAdapter):
     name = "openclaw"
+    role = "READ_ONLY_PROBER"  # AIPM_FOUNDATION_02 D5
 
     def __init__(
         self,
-        openclaw_db_path: Optional[Path] = None,
-        policy_yaml_path: Optional[Path] = None,
-        env_path: Optional[Path] = None,
+        openclaw_db_path: Path | None = None,
+        policy_yaml_path: Path | None = None,
+        env_path: Path | None = None,
     ):
         self.openclaw_db_path = openclaw_db_path or (Path.home() / ".openclaw" / "state" / "openclaw.sqlite")
         self.policy_yaml_path = policy_yaml_path or (Path.home() / ".openclaw" / "etc" / "policy.yaml")

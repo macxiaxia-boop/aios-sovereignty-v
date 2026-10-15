@@ -1,5 +1,6 @@
 """test_knowledge_rag.py - B005 Knowledge RAG integration test."""
 from __future__ import annotations
+
 import random
 
 
@@ -22,7 +23,7 @@ def test_hash_embed_deterministic():
 
 
 def test_cosine_identical():
-    from aios_kernel.context.knowledge import hash_embed, cosine
+    from aios_kernel.context.knowledge import cosine, hash_embed
     a = hash_embed("hello")
     assert cosine(a, a) > 0.99
 
@@ -61,7 +62,7 @@ def test_100_synthetic_query_recall():
     # 100 queries - each is "kw<i>_a kw<i>_b" (chunks with doc i should rank high)
     queries = []
     expected_doc_ids = []
-    for q_idx in range(100):
+    for _q_idx in range(100):
         target_doc_idx = rng.randint(0, 49)
         target_kws = docs[target_doc_idx][1]
         query = " ".join([target_kws[0], target_kws[1]])
@@ -70,7 +71,7 @@ def test_100_synthetic_query_recall():
 
     # Run queries
     hits = 0
-    for query, expected_id in zip(queries, expected_doc_ids):
+    for query, expected_id in zip(queries, expected_doc_ids, strict=False):
         results = k.retrieve(query, top_k=5)
         retrieved_doc_ids = {chunk.doc_id for chunk, _ in results}
         if expected_id in retrieved_doc_ids:

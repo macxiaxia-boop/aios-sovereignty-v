@@ -1,5 +1,5 @@
 """test_multi_tenant.py - E002 (using tenant.py API)."""
-from aios_kernel.product.tenant import TenantRegistry, Tenant, TenantAuditor
+from aios_kernel.product.tenant import TenantAuditor, TenantRegistry
 
 
 def test_create_tenant():

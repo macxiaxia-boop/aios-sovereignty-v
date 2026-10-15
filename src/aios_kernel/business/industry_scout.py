@@ -157,14 +157,14 @@ class IndustrySignal(Envelope):
     content_hash: str = Field(default="", min_length=0, max_length=64)
 
     @model_validator(mode="after")
-    def _ensure_category_and_hash(self) -> "IndustrySignal":
+    def _ensure_category_and_hash(self) -> IndustrySignal:
         # Pydantic enum validation already rejects non-5-category
         # values; here we (1) ensure content_hash is populated and
         # (2) keep the public API easy to use when callers build a
         # signal by hand (skipping _raw_to_signal).
         if not self.content_hash:
             self.content_hash = hashlib.sha256(
-                f"{self.title}\n{self.content}".encode("utf-8")
+                f"{self.title}\n{self.content}".encode()
             ).hexdigest()
         return self
 
@@ -208,7 +208,7 @@ def _raw_to_signal(raw: dict[str, Any], source_name: str) -> IndustrySignal:
 
     # Compute the content hash BEFORE picking the category, so the
     # hash is stable regardless of when classification happened.
-    h = hashlib.sha256(f"{title}\n{content}".encode("utf-8")).hexdigest()
+    h = hashlib.sha256(f"{title}\n{content}".encode()).hexdigest()
 
     # If the caller already supplied a category, validate it.
     # Otherwise leave it as MARKET and let the caller re-classify.

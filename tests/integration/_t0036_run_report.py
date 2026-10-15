@@ -16,12 +16,11 @@ from __future__ import annotations
 import asyncio
 import json
 import os
-import subprocess
 import sys
 import tempfile
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 
 _THIS = Path(__file__).resolve()
 _KERNEL_ROOT = _THIS.parents[2]
@@ -31,33 +30,31 @@ for p in (str(_KERNEL_ROOT), str(_KERNEL_SRC)):
     if p not in sys.path:
         sys.path.insert(0, p)
 
-from aios_kernel.workers import (  # noqa: E402
-    ClaudeCodeAdapter, CodexAdapter, OpenClawAdapter, WorkerRegistry,
-)
-from tests.sim.mocks.mock_evidence import (  # noqa: E402
-    EvidenceRecord, MockEvidenceStore, verify_worker_evidence,
-)
 from tests.sim.mocks.mock_workers import FakeDoneWorker  # noqa: E402
 
 # Re-use the same factories as the test modules
 sys.path.insert(0, str(_THIS.parent))
 from test_100_task_closed_loop import (  # noqa: E402
-    CODEX_QUOTA, CLAUDE_QUOTA, OPENCLAW_QUOTA, T0036_TOTAL, T0036_TYPE_DIST,
-    build_t0036_tasks, assign_workers_70_20_10,
-    _execute_all_tasks, run_verifier_subprocess,
+    CLAUDE_QUOTA,
+    CODEX_QUOTA,
+    OPENCLAW_QUOTA,
+    T0036_TOTAL,
+    _execute_all_tasks,
+    assign_workers_70_20_10,
+    build_t0036_tasks,
+    run_verifier_subprocess,
 )
-
 
 REPORT_DIR = Path("D:/AIOS/_agent-hub/reports")
 REPORT_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def _now_ts() -> str:
-    return datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S")
+    return datetime.now(UTC).strftime("%Y%m%d-%H%M%S")
 
 
 def _ts_iso() -> str:
-    return datetime.now(timezone.utc).isoformat()
+    return datetime.now(UTC).isoformat()
 
 
 # ---------------------------------------------------------------------------
@@ -65,7 +62,7 @@ def _ts_iso() -> str:
 # ---------------------------------------------------------------------------
 
 
-async def run_part_a() -> Dict[str, Any]:
+async def run_part_a() -> dict[str, Any]:
     worker_pid = os.getpid()
     tasks = build_t0036_tasks()
     assert len(tasks) == T0036_TOTAL
@@ -89,7 +86,7 @@ async def run_part_a() -> Dict[str, Any]:
     pass_count = sum(1 for v in verdicts.values() if v.get("verdict") == "PASS")
 
     # Per-type breakdown
-    type_breakdown: Dict[str, Dict[str, int]] = {}
+    type_breakdown: dict[str, dict[str, int]] = {}
     for r in task_records:
         t = r["type"]
         type_breakdown.setdefault(t, {"total": 0, "pass": 0, "fail": 0})
@@ -119,10 +116,10 @@ async def run_part_a() -> Dict[str, Any]:
 # ---------------------------------------------------------------------------
 
 
-def run_part_b() -> Dict[str, Any]:
+def run_part_b() -> dict[str, Any]:
     worker_pid = os.getpid()
     worker = FakeDoneWorker()
-    dump: List[Dict[str, Any]] = []
+    dump: list[dict[str, Any]] = []
     for i in range(5):
         td = {"id": f"fake-done-task-{i:03d}", "type": "math_calc"}
         result = worker.execute(td)
@@ -168,7 +165,7 @@ def run_part_b() -> Dict[str, Any]:
 # ---------------------------------------------------------------------------
 
 
-def write_report(part_a: Dict[str, Any], part_b: Dict[str, Any]) -> Path:
+def write_report(part_a: dict[str, Any], part_b: dict[str, Any]) -> Path:
     ts = _now_ts()
     out = REPORT_DIR / f"t0036_phase_a_100task_closed_loop_{ts}.md"
 
@@ -251,7 +248,7 @@ def write_report(part_a: Dict[str, Any], part_b: Dict[str, Any]) -> Path:
     )
 
     # ---- section 4: cross-tab --------------------------------------------
-    cross: Dict[str, Dict[str, int]] = {}
+    cross: dict[str, dict[str, int]] = {}
     for r in part_a["task_records"]:
         t = r["type"]
         w = r["worker"].replace("-adapter", "")

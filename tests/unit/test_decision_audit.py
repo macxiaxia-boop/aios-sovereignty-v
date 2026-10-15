@@ -22,16 +22,11 @@ from aios_kernel.domain.decision import (
 from aios_kernel.domain.services import DecisionService
 from aios_kernel.domain.services.repository import (
     InMemoryRepository,
-    make_engine,
     make_session_factory,
     session_scope,
 )
 from aios_kernel.persistence import (
     DecisionAuditORM,
-    SqlAlchemyRepository,
-    create_all,
-    decision_to_orm,
-    drop_all,
 )
 
 KERNEL_ROOT = Path(__file__).resolve().parents[2]
@@ -355,6 +350,7 @@ def test_alembic_downgrade_002_drops_decision_audit_table(tmp_path):
     url = f"sqlite+aiosqlite:///{db_path}"
     r1 = _run_alembic(["upgrade", "head"], url)
     assert r1.returncode == 0
+    _run_alembic(["downgrade", "-1"], url)  # 004 -> 003
     _run_alembic(["downgrade", "-1"], url)  # 003 -> 002
     r2 = _run_alembic(["downgrade", "-1"], url)  # 002 -> 001
     assert r2.returncode == 0, f"downgrade failed: {r2.stderr}"

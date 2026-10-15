@@ -5,18 +5,13 @@ End-to-end: service -> SqlAlchemyRepository -> SQLite, then read back.
 from __future__ import annotations
 
 import pytest
-from sqlalchemy import select
 
 from aios_kernel.domain import (
     Artifact,
     ArtifactType,
     Evidence,
-    Goal,
     GoalStatus,
-    Plan,
     PlanStep,
-    Task,
-    TaskStatus,
     TaskType,
     Trace,
     TraceSpan,
@@ -27,13 +22,8 @@ from aios_kernel.persistence import (
     ArtifactORM,
     EvidenceORM,
     GoalORM,
-    PlanORM,
-    TaskORM,
     TraceORM,
-    VerifierRunORM,
-    WorkerRunORM,
 )
-
 
 # ---------- GoalService + DB roundtrip --------------------------------------
 
@@ -48,7 +38,7 @@ async def test_goal_service_persists_to_db(db_repo, async_engine):
         owner="codex",
     )
     # Force a separate session to read it back
-    from aios_kernel.domain.services.repository import session_scope, make_session_factory
+    from aios_kernel.domain.services.repository import make_session_factory, session_scope
     factory = make_session_factory(async_engine)
     async with session_scope(factory) as session:
         orm = await session.get(GoalORM, g.id)
@@ -68,8 +58,6 @@ async def test_goal_service_activate_and_complete(db_repo):
     await gs.complete(g)
     assert g.is_terminal
     # Should also be persisted as Completed
-    from aios_kernel.domain.services.repository import session_scope, make_session_factory
-    from aios_kernel.domain.services.repository import make_engine
     # Re-fetch via a separate transaction: we already have the session;
     # the in-memory test orm has it. Just check the events list.
     kinds = [e[0] for e in db_repo.events]
@@ -146,7 +134,7 @@ async def test_full_artifact_evidence_trace_chain(db_repo, async_engine):
     await db_repo.commit()
 
     # Read back from a fresh session
-    from aios_kernel.domain.services.repository import session_scope, make_session_factory
+    from aios_kernel.domain.services.repository import make_session_factory, session_scope
     factory = make_session_factory(async_engine)
     async with session_scope(factory) as session:
         a_orm = await session.get(ArtifactORM, a.id)
@@ -170,9 +158,11 @@ async def test_full_artifact_evidence_trace_chain(db_repo, async_engine):
 @pytest.mark.asyncio
 async def test_naive_datetime_rejected_in_orm(db_repo, async_engine):
     """Pydantic v2 Evidence rejects naive datetime on signed_at field."""
-    from datetime import datetime, timezone
-    from aios_kernel.domain.evidence import Evidence
+    from datetime import datetime
+
     import pytest
+
+    from aios_kernel.domain.evidence import Evidence
 
     # Pydantic must raise for naive datetime on signed_at
     with pytest.raises(ValueError, match="tz-aware"):
@@ -202,7 +192,7 @@ async def test_goal_service_persists_to_db(db_repo, async_engine):
         owner="codex",
     )
     # Force a separate session to read it back
-    from aios_kernel.domain.services.repository import session_scope, make_session_factory
+    from aios_kernel.domain.services.repository import make_session_factory, session_scope
     factory = make_session_factory(async_engine)
     async with session_scope(factory) as session:
         orm = await session.get(GoalORM, g.id)
@@ -222,8 +212,6 @@ async def test_goal_service_activate_and_complete(db_repo):
     await gs.complete(g)
     assert g.is_terminal
     # Should also be persisted as Completed
-    from aios_kernel.domain.services.repository import session_scope, make_session_factory
-    from aios_kernel.domain.services.repository import make_engine
     # Re-fetch via a separate transaction: we already have the session;
     # the in-memory test orm has it. Just check the events list.
     kinds = [e[0] for e in db_repo.events]
@@ -300,7 +288,7 @@ async def test_full_artifact_evidence_trace_chain(db_repo, async_engine):
     await db_repo.commit()
 
     # Read back from a fresh session
-    from aios_kernel.domain.services.repository import session_scope, make_session_factory
+    from aios_kernel.domain.services.repository import make_session_factory, session_scope
     factory = make_session_factory(async_engine)
     async with session_scope(factory) as session:
         a_orm = await session.get(ArtifactORM, a.id)

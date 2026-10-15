@@ -7,9 +7,8 @@ acceptance test for the spec.
 from __future__ import annotations
 
 import pytest
-from pydantic import ValidationError
 
-from aios_kernel.domain import Dependency, DependencyKind, Plan, PlanStep, StepType
+from aios_kernel.domain import Dependency, PlanStep, StepType
 from aios_kernel.domain.services import PlanService
 from aios_kernel.domain.services.repository import InMemoryRepository
 
@@ -100,4 +99,4 @@ async def test_version_monotonic():
         p = await ps.create_version(previous=p, steps=[_step(f"s{i}")])
         versions.append(p.version)
     assert versions == [1, 2, 3, 4, 5]
-    assert all(b > a for a, b in zip(versions, versions[1:]))
+    assert all(b > a for a, b in zip(versions, versions[1:], strict=False))

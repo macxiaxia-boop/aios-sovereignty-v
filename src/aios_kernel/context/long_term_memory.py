@@ -40,7 +40,6 @@ from uuid import UUID
 
 from pydantic import Field, field_validator
 from sqlalchemy import and_, delete, or_, select
-from sqlalchemy.exc import IntegrityError
 
 from aios_kernel.domain.envelope import Envelope, utcnow
 

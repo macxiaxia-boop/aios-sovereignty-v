@@ -1,12 +1,10 @@
 """billing.py - E003 Billing & Credits tracking."""
 from __future__ import annotations
+
 import uuid
-from datetime import UTC, datetime
-from typing import Literal, Optional
+from typing import Literal
 
-from pydantic import Field
-
-from aios_kernel.domain.envelope import Envelope, utcnow
+from aios_kernel.domain.envelope import Envelope
 
 
 class BillingEvent(Envelope):
@@ -15,7 +13,7 @@ class BillingEvent(Envelope):
     quantity: float = 1.0
     cost_usd: float = 0.0
     credits_used: float = 0.0
-    stripe_charge_id: Optional[str] = None
+    stripe_charge_id: str | None = None
 
 
 class BillingTracker:

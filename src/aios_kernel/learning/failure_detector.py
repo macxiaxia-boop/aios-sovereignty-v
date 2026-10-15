@@ -1,10 +1,10 @@
 """failure_detector.py - C003 Failure Pattern Detector."""
 from __future__ import annotations
+
 import hashlib
 import uuid
 from collections import defaultdict
-from datetime import datetime
-from typing import Iterable
+from collections.abc import Iterable
 
 from pydantic import Field
 

@@ -1,5 +1,6 @@
 """test_trace_miner.py - C002 tests."""
 from __future__ import annotations
+
 from datetime import UTC, datetime
 from unittest.mock import MagicMock
 

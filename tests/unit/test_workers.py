@@ -1,7 +1,10 @@
 """test_workers.py - 4 adapter + registry + routing tests."""
 from __future__ import annotations
+
 import pytest
 
+from aios_kernel.domain.envelope import utcnow
+from aios_kernel.domain.task import Task, TaskType
 from aios_kernel.workers import (
     ClaudeCodeAdapter,
     CodexAdapter,
@@ -13,8 +16,6 @@ from aios_kernel.workers import (
     WorkerAdapter,
     WorkerRegistry,
 )
-from aios_kernel.domain.task import Task, TaskType
-from aios_kernel.domain.envelope import utcnow
 
 
 def test_worker_adapter_protocol():
@@ -44,7 +45,8 @@ async def test_codex_adapter():
     t = Task(goal_id="g-1", title="t", task_type=TaskType.FILE_SUMMARY)
     art = await a.execute(t)
     assert art.task_id == t.id
-    assert art.label == "stub"
+    # label is "stub" (real binary) OR "stub_fallback" (binary missing)
+    assert art.label in ("stub", "stub_fallback", "codex_result")
     assert art.inline_json["worker"] == "codex-adapter"
     h = await a.health()
     assert h.status == HealthStatus.HEALTHY

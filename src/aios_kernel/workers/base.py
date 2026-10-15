@@ -1,6 +1,7 @@
 from __future__ import annotations
+
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import Enum
 from typing import Protocol, runtime_checkable
 
@@ -54,7 +55,7 @@ class _StubAdapterBase:
         return HealthReport(
             worker_id=self.worker_id,
             status=HealthStatus.HEALTHY,
-            last_check_at=datetime.now(timezone.utc),
+            last_check_at=datetime.now(UTC),
             metadata={"stub": True},
         )
 

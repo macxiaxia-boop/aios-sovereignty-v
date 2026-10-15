@@ -1,0 +1,70 @@
+name: coverage-badge
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: "pip"
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+          pip install pytest-cov pytest-asyncio
+      - name: Run with coverage
+        run: |
+          python -m pytest tests/unit/test_scheduler.py \
+            tests/unit/test_state_machine.py \
+            tests/unit/test_adapters.py \
+            tests/unit/test_agents.py \
+            tests/unit/test_gateway.py \
+            tests/unit/test_runtime.py \
+            tests/unit/test_scheduler_audit.py \
+            tests/integration/test_e2e.py \
+            tests/integration/test_r1504_coverage.py \
+            tests/integration/test_openclaw_integration_e2e.py \
+            tests/integration/test_observability_e2e.py \
+            tests/integration/test_auth_readyz_e2e.py \
+            --cov=aios_kernel.scheduler \
+            --cov=aios_kernel.state_machine \
+            --cov=aios_kernel.workers.adapters \
+            --cov=aios_kernel.agents \
+            --cov=aios_kernel.gateway \
+            --cov=aios_kernel.runtime \
+            --cov-report=term-missing \
+            --cov-report=xml
+      - name: Update README badge
+        run: |
+          # extract R1503 modules coverage (gate --cov flags) from xml
+          COV=$(python -c "
+          import re, xml.etree.ElementTree as ET
+          # Combine the per-file rates (just print a stable R1503 ratio).
+          tree = ET.parse('coverage.xml')
+          root = tree.getroot()
+          # Compute R1503 module coverage: sum of covered/total statements
+          files = {}
+          for cls in root.iter('class'):
+              fn = cls.get('filename', '')
+              if 'aios_kernel/' in fn and 'src/aios_kernel/' in fn:
+                  for ln in cls.iter('line'):
+                      hits = ln.get('hits', '0')
+                      files.setdefault(fn, [0, 0])
+                      files[fn][1] += 1
+                      if int(hits) > 0:
+                          files[fn][0] += 1
+          cov_total = sum(v[0] for v in files.values())
+          tot_total = sum(v[1] for v in files.values()) or 1
+          print(f'{int(round(100 * cov_total / tot_total))}')
+          ")
+          echo "  R1503 modules coverage: ${COV}%"
+          # don't auto-commit badge (avoids unintended churn); README carries
+          # the last measured number (83%)
+          echo "${COV}" > .coverage-pct

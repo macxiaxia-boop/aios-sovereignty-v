@@ -3,28 +3,25 @@ from __future__ import annotations
 
 import json
 import sqlite3
-from pathlib import Path
-from unittest.mock import patch
 
 import pytest
-from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
-from aios_kernel.governance.model_policy.snapshot import (
-    PolicySnapshot,
-    load_policy,
-    sign_yaml,
-    verify_signature,
-)
 from aios_kernel.governance.model_policy.adapter_base import (
     DriftReport,
     ModelPolicyAdapter,
 )
-from aios_kernel.governance.model_policy.codex_adapter import CodexAdapter
 from aios_kernel.governance.model_policy.claude_code_adapter import ClaudeCodeAdapter
-from aios_kernel.governance.model_policy.openclaw_adapter import OpenClawAdapter
+from aios_kernel.governance.model_policy.codex_adapter import CodexAdapter
 from aios_kernel.governance.model_policy.hermes_adapter import HermesAdapter
+from aios_kernel.governance.model_policy.openclaw_adapter import OpenClawAdapter
 from aios_kernel.governance.model_policy.reconciler import reconcile
+from aios_kernel.governance.model_policy.snapshot import (
+    load_policy,
+    sign_yaml,
+    verify_signature,
+)
 
 
 @pytest.fixture
@@ -237,7 +234,7 @@ def test_claude_code_adapter_common_config_reverts(sample_policy, tmp_path):
     assert drift.severity == "fail_closed"
     assert drift.recommended_action == "revert"
 
-    new_drift = adapter.apply(sample_policy, dry_run=False)
+    adapter.apply(sample_policy, dry_run=False)
     db = sqlite3.connect(str(cc_db))
     val = db.execute(
         "SELECT value FROM settings WHERE key='common_config_claude'"

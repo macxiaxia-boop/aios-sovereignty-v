@@ -1,0 +1,57 @@
+# docker-compose.dev.yml — Development override (R1505-4).
+#
+# Adds:
+#   - volume mount for live reload (uvicorn --reload)
+#   - debug port 5678 for pydevd attach
+#   - relaxed env (no auth, no rate limit)
+#
+# Usage:
+#   docker compose -f docker-compose.dev.yml up
+#
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: aios_vnext
+      POSTGRES_USER: aios
+      POSTGRES_PASSWORD: ${AIOS_DB_PASSWORD:?db password required}
+    volumes:
+      - aios_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready
+      interval: 10s
+    networks: [airgap]
+
+  kernel:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["python", "-m", "uvicorn", "--reload", "--host", "0.0.0.0", "--port", "9000", "--log-level", "info", "aios_kernel.gateway.http:create_app_with_scheduler"]
+    environment:
+      AIOS_KERNEL_DATABASE_URL: postgresql+psycopg://aios:${AIOS_DB_PASSWORD}@postgres/aios_vnext
+      AIOS_KERNEL_OFFLINE: "1"
+      AIOS_LOG_LEVEL: DEBUG
+      AIOS_KERNEL_AUTH_REQUIRED: "0"
+      AIOS_KERNEL_RATELIMIT_ENABLED: "0"
+      AIOS_INSTANCE_ID: aios-kernel-dev
+    networks: [airgap]
+    ports:
+      - "9000:9000"
+      - "5678:5678"  # pydevd attach
+    volumes:
+      - ./src:/app/src:ro  # for live reload
+      - ./tests:/app/tests:ro
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:9000/healthz').read()"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+networks:
+  airgap:
+    driver: bridge
+    internal: true
+
+volumes:
+  aios_pg_data:

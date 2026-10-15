@@ -1,8 +1,8 @@
 """skill_deprecation.py - C007 Skill Deprecation."""
 from __future__ import annotations
+
 import uuid
-from datetime import UTC, datetime, timedelta
-from typing import Optional
+from datetime import datetime, timedelta
 
 from pydantic import Field
 
@@ -14,9 +14,9 @@ class Deprecation(Envelope):
     """Record of a skill being marked for deprecation."""
     skill_id: str
     unused_days: int = 0
-    last_used_at: Optional[datetime] = None
+    last_used_at: datetime | None = None
     reason: str = ""
-    deprecated_at: Optional[datetime] = None
+    deprecated_at: datetime | None = None
     audit_log: list[str] = Field(default_factory=list)
 
 

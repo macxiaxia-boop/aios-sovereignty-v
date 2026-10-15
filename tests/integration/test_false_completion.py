@@ -18,9 +18,8 @@ import os
 import subprocess
 import sys
 import tempfile
-import time
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 
 import pytest
 
@@ -31,16 +30,13 @@ if str(_KERNEL_ROOT) not in sys.path:
     sys.path.insert(0, str(_KERNEL_ROOT))
 
 from tests.sim.mocks.mock_evidence import (  # noqa: E402
-    EvidenceRecord,
     MockEvidenceStore,
     verify_worker_evidence,
 )
 from tests.sim.mocks.mock_workers import (  # noqa: E402
     FakeDoneWorker,
-    WorkerFakeDoneException,
     WorkerResult,
 )
-
 
 # ---------------------------------------------------------------------------
 # T0036 Part B constants
@@ -93,7 +89,7 @@ def _build_verifier_code(evidence_path: str, kernel_root: str) -> str:
     )
 
 
-def run_verifier_subprocess(evidence_path: str, timeout: int = 30) -> Dict[str, Any]:
+def run_verifier_subprocess(evidence_path: str, timeout: int = 30) -> dict[str, Any]:
     """Spawn a Python subprocess that re-runs the verifier independently."""
     kernel_root = str(_KERNEL_ROOT).replace("\\", "/")
     code = _build_verifier_code(evidence_path, kernel_root)
@@ -119,7 +115,7 @@ def run_verifier_subprocess(evidence_path: str, timeout: int = 30) -> Dict[str, 
 # ---------------------------------------------------------------------------
 
 
-def _run_fake_done_workers(n: int = FAKE_DONE_COUNT) -> List[Dict[str, Any]]:
+def _run_fake_done_workers(n: int = FAKE_DONE_COUNT) -> list[dict[str, Any]]:
     """Run n FakeDoneWorker executions and build per-task evidence records.
 
     Each call to FakeDoneWorker.execute() returns success=True with an
@@ -128,7 +124,7 @@ def _run_fake_done_workers(n: int = FAKE_DONE_COUNT) -> List[Dict[str, Any]]:
     state the worker reported.
     """
     worker = FakeDoneWorker()
-    dump: List[Dict[str, Any]] = []
+    dump: list[dict[str, Any]] = []
     for i in range(n):
         task_dict = {
             "id": f"fake-done-task-{i:03d}",
@@ -158,7 +154,7 @@ def _run_fake_done_workers(n: int = FAKE_DONE_COUNT) -> List[Dict[str, Any]]:
 
 
 @pytest.fixture(scope="module")
-def false_completion_result() -> Dict[str, Any]:
+def false_completion_result() -> dict[str, Any]:
     """Inject 5 FakeDone tasks, then spawn an independent verifier."""
     worker_pid = os.getpid()
 
@@ -197,14 +193,14 @@ def false_completion_result() -> Dict[str, Any]:
 # ---------------------------------------------------------------------------
 
 
-def test_fake_done_5_of_5_rejected(false_completion_result: Dict[str, Any]) -> None:
+def test_fake_done_5_of_5_rejected(false_completion_result: dict[str, Any]) -> None:
     """5/5 injected fake-done tasks MUST be rejected by the verifier."""
     verdicts = false_completion_result["verdicts"]
     assert len(verdicts) == FAKE_DONE_COUNT, (
         f"verifier returned {len(verdicts)} verdicts, expected {FAKE_DONE_COUNT}"
     )
-    rejections: List[Dict[str, Any]] = []
-    false_passes: List[str] = []
+    rejections: list[dict[str, Any]] = []
+    false_passes: list[str] = []
     for tid, v in verdicts.items():
         if v.get("verdict") == "PASS":
             false_passes.append(tid)
@@ -221,7 +217,7 @@ def test_fake_done_5_of_5_rejected(false_completion_result: Dict[str, Any]) -> N
 
 
 def test_rejection_verdict_is_fail_or_blocked(
-    false_completion_result: Dict[str, Any],
+    false_completion_result: dict[str, Any],
 ) -> None:
     """Each rejection's verdict must be exactly FAIL or BLOCKED (never PASS)."""
     verdicts = false_completion_result["verdicts"]
@@ -235,7 +231,7 @@ def test_rejection_verdict_is_fail_or_blocked(
 
 
 def test_rejection_reason_mentions_evidence_missing(
-    false_completion_result: Dict[str, Any],
+    false_completion_result: dict[str, Any],
 ) -> None:
     """Every rejection's reason must mention 'evidence 缺失' or equivalent."""
     verdicts = false_completion_result["verdicts"]
@@ -262,7 +258,7 @@ def test_fake_done_worker_contract() -> None:
 
 
 def test_verifier_pid_independent_of_worker(
-    false_completion_result: Dict[str, Any],
+    false_completion_result: dict[str, Any],
 ) -> None:
     """Verifier subprocess PID must differ from the worker (test) process PID."""
     worker_pid = false_completion_result["worker_pid"]
@@ -276,7 +272,7 @@ def test_verifier_pid_independent_of_worker(
 
 
 def test_no_false_pass_in_evidence_dump(
-    false_completion_result: Dict[str, Any],
+    false_completion_result: dict[str, Any],
 ) -> None:
     """Cross-check: even an in-process verifier must reject every fake record."""
     verdicts = false_completion_result["verdicts"]

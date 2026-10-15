@@ -19,9 +19,10 @@ import json
 import logging
 import os
 import sys
-from datetime import datetime, timezone
+from collections.abc import Iterable
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Iterable, Protocol, runtime_checkable
+from typing import Protocol, runtime_checkable
 
 from aios_kernel.learning.clustering import FailureCluster, FailurePatternMerger, FailureTrace
 from aios_kernel.learning.failure_feedback import (
@@ -98,7 +99,7 @@ def _default_trace_path() -> Path:
     if override:
         return Path(override)
     # 默认: kernel/state/failures/YYYY-MM-DD.jsonl (相对当前 cwd)
-    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    today = datetime.now(UTC).strftime("%Y-%m-%d")
     return Path.cwd() / "state" / "failures" / f"{today}.jsonl"
 
 

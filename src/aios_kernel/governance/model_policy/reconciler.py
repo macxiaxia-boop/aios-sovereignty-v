@@ -15,11 +15,9 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import sys
 import time
 from pathlib import Path
-from typing import List
 
 from .adapter_base import DriftReport
 from .claude_code_adapter import ClaudeCodeAdapter
@@ -27,7 +25,6 @@ from .codex_adapter import CodexAdapter
 from .hermes_adapter import HermesAdapter
 from .openclaw_adapter import OpenClawAdapter
 from .snapshot import PolicySnapshot, load_policy
-
 
 DEFAULT_POLICY_PATH = Path(r"D:\AIOS\kernel\etc\sovereignty\model-policy.v1.yaml")
 DEFAULT_PUB_KEY_PATH = Path(r"D:\AIOS\kernel\etc\sovereignty\codex_supervisor.ed25519.pub")
@@ -43,7 +40,7 @@ def build_default_adapters() -> list:
     ]
 
 
-def reconcile(policy: PolicySnapshot, adapters: list = None, dry_run: bool = False) -> List[DriftReport]:
+def reconcile(policy: PolicySnapshot, adapters: list = None, dry_run: bool = False) -> list[DriftReport]:
     """Run all adapters' verify+apply. Returns list of DriftReport."""
     if adapters is None:
         adapters = build_default_adapters()
@@ -64,7 +61,7 @@ def reconcile(policy: PolicySnapshot, adapters: list = None, dry_run: bool = Fal
     return reports
 
 
-def aggregate_severity_of(reports: List[DriftReport]) -> str:
+def aggregate_severity_of(reports: list[DriftReport]) -> str:
     agg = "ok"
     for r in reports:
         if r.severity == "fail_closed":
@@ -74,7 +71,7 @@ def aggregate_severity_of(reports: List[DriftReport]) -> str:
     return agg
 
 
-def emit_json(policy: PolicySnapshot, mode: str, dry_run: bool, reports: List[DriftReport]) -> None:
+def emit_json(policy: PolicySnapshot, mode: str, dry_run: bool, reports: list[DriftReport]) -> None:
     agg = aggregate_severity_of(reports)
     out = {
         "policy_id": policy.policy_id,
@@ -95,7 +92,7 @@ def emit_json(policy: PolicySnapshot, mode: str, dry_run: bool, reports: List[Dr
     print(json.dumps(out, indent=2))
 
 
-def emit_text(reports: List[DriftReport]) -> None:
+def emit_text(reports: list[DriftReport]) -> None:
     for r in reports:
         print(
             f"[{r.adapter_name}] drift={r.drift_kind} "

@@ -15,7 +15,6 @@ from __future__ import annotations
 import json
 import sqlite3
 from pathlib import Path
-from typing import Optional
 
 from .adapter_base import DriftReport, ModelPolicyAdapter
 from .snapshot import PolicySnapshot
@@ -26,8 +25,8 @@ class ClaudeCodeAdapter(ModelPolicyAdapter):
 
     def __init__(
         self,
-        settings_json_path: Optional[Path] = None,
-        cc_switch_db_path: Optional[Path] = None,
+        settings_json_path: Path | None = None,
+        cc_switch_db_path: Path | None = None,
     ):
         self.settings_json_path = settings_json_path or (Path.home() / ".claude" / "settings.json")
         self.cc_switch_db_path = cc_switch_db_path or (Path.home() / ".cc-switch" / "cc-switch.db")

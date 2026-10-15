@@ -36,7 +36,6 @@ from datetime import UTC, datetime, timedelta
 
 import pytest
 
-
 # ---------------------------------------------------------------------------
 # 1. track_basic
 # ---------------------------------------------------------------------------
@@ -83,9 +82,9 @@ def test_roi_calc_correct_formula_and_zero_cost_undefined():
     Cost == 0 → roi is None (undefined; we do not fake a metric).
     """
     from aios_kernel.business import (
+        DEFAULT_VALUE_PER_CONVERSION,
         Channel,
         MarketingCampaign,
-        DEFAULT_VALUE_PER_CONVERSION,
     )
 
     # 1) Standard case: 50 conv * ¥100 - 20 cost  ->  ROI = (5000-20)/20 = 249.0
@@ -176,8 +175,8 @@ def test_skill_recommendation_high_roi_emits_recommendation():
     """ROI > threshold → SkillRecommendation emitted; skill_id, channel,
     roi, reason, audit_log all populated; idempotent on repeated calls."""
     from aios_kernel.business import (
-        Channel,
         DEFAULT_ROI_THRESHOLD,
+        Channel,
         MarketingCampaign,
         MarketingFeedbackService,
     )
@@ -208,7 +207,7 @@ def test_skill_recommendation_high_roi_emits_recommendation():
     assert any("roi=" in line for line in rec1.audit_log)
     assert any("threshold=" in line for line in rec1.audit_log)
     # Audit timestamps must be tz-aware UTC.
-    ts_line = next(l for l in rec1.audit_log if l.startswith("recommended_at="))
+    ts_line = next(line for lineine in rec1.audit_log if line.startswith("recommended_at="))
     ts_iso = ts_line.split("=", 1)[1]
     parsed = datetime.fromisoformat(ts_iso)
     assert parsed.tzinfo is not None
@@ -381,7 +380,7 @@ def test_audit_and_100_campaigns(caplog):
     # All recommendations have a tz-aware timestamp in their audit log.
     for rec in svc.get_recommendations():
         ts_line = next(
-            (l for l in rec.audit_log if l.startswith("recommended_at=")), None
+            (line for line in rec.audit_log if line.startswith("recommended_at=")), None
         )
         assert ts_line is not None
         ts = datetime.fromisoformat(ts_line.split("=", 1)[1])

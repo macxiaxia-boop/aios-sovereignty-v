@@ -1,0 +1,53 @@
+# R1504 production rollout: systemd unit for AIOS kernel
+#
+# Install:
+#   sudo cp deploy/aios-kernel.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now aios-kernel
+#
+# Check status:
+#   sudo systemctl status aios-kernel
+#   journalctl -u aios-kernel -f
+
+[Unit]
+Description=AIOS Kernel scheduler (R1504 production rollout)
+Documentation=https://github.com/macxiaxia-boop/aios-sovereignty-v
+After=network-online.target
+Wants=network-online.target
+# If using PostgreSQL backend:
+# After=postgresql.service
+# Requires=postgresql.service
+
+[Service]
+Type=simple
+User=aios
+Group=aios
+WorkingDirectory=/opt/aios-kernel
+Environment="PATH=/opt/aios-kernel/.venv/bin:/usr/local/bin:/usr/bin:/bin"
+Environment="AIOS_KERNEL_OFFLINE=1"
+Environment="AIOS_LOG_LEVEL=INFO"
+Environment="PYTHONUNBUFFERED=1"
+ExecStart=/opt/aios-kernel/.venv/bin/python -m aios_kernel.cli scheduler run
+ExecStop=/bin/kill -TERM $MAINPID
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=mixed
+KillSignal=SIGTERM
+TimeoutStopSec=30
+Restart=on-failure
+RestartSec=5
+StartLimitBurst=10
+StartLimitIntervalSec=60
+# Hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/log/aios-kernel
+# Resource control (override for production)
+# LimitNOFILE=65536
+# LimitNPROC=4096
+# MemoryMax=4G
+# CPUQuota=200%
+
+[Install]
+WantedBy=multi-user.target

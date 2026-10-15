@@ -4,7 +4,6 @@ from __future__ import annotations
 import asyncio
 import os
 import tempfile
-from typing import AsyncIterator, Iterator
 
 import pytest
 import pytest_asyncio
@@ -17,7 +16,6 @@ os.environ.setdefault("AIOS_KERNEL_DATABASE_URL", f"sqlite+aiosqlite:///{_test_d
 @pytest.fixture(scope="session")
 def event_loop_policy():
     # Use the default policy (works on Windows + Linux).
-    import asyncio
     return asyncio.DefaultEventLoopPolicy()
 
 
@@ -49,8 +47,8 @@ async def session_factory(async_engine):
 
 @pytest_asyncio.fixture
 async def db_repo(session_factory):
-    from aios_kernel.persistence import SqlAlchemyRepository
     from aios_kernel.domain.services.repository import session_scope
+    from aios_kernel.persistence import SqlAlchemyRepository
     async with session_scope(session_factory) as session:
         yield SqlAlchemyRepository(session)
 

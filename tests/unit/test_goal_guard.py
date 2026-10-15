@@ -21,8 +21,6 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-import pytest
-
 # Make sure src/ is on path for direct pytest runs
 ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(ROOT / "src"))
@@ -142,7 +140,6 @@ def test_validate_dict_complete_goal_returns_pass():
 
 def test_validate_object_duck_type_passes():
     """Duck-typed object: any class with the 10 attrs works."""
-    from types import SimpleNamespace
 
     class FakeGoal:
         title = "x"

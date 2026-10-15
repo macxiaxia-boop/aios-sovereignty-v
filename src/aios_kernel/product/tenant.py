@@ -22,12 +22,11 @@ from __future__ import annotations
 
 import uuid
 from enum import Enum
-from typing import Any, Optional
+from typing import Any
 
 from pydantic import Field, field_validator
 
 from aios_kernel.domain.envelope import Envelope, utcnow
-
 
 # ---------- Enums --------------------------------------------------------
 
@@ -207,8 +206,8 @@ class TenantRegistry:
         self,
         name: str,
         tier: Tier = Tier.FREE,
-        metadata: Optional[dict[str, Any]] = None,
-        admin_user_ids: Optional[list[str]] = None,
+        metadata: dict[str, Any] | None = None,
+        admin_user_ids: list[str] | None = None,
     ) -> Tenant:
         # Reject duplicate name (case-insensitive) among non-deleted tenants.
         key = (name or "").strip().lower()
@@ -228,7 +227,7 @@ class TenantRegistry:
         self._tenants[t.id] = t
         return t
 
-    def get(self, tenant_id: str) -> Optional[Tenant]:
+    def get(self, tenant_id: str) -> Tenant | None:
         return self._tenants.get(tenant_id)
 
     def get_or_raise(self, tenant_id: str) -> Tenant:
@@ -239,8 +238,8 @@ class TenantRegistry:
 
     def list(
         self,
-        status: Optional[TenantStatus] = None,
-        tier: Optional[Tier] = None,
+        status: TenantStatus | None = None,
+        tier: Tier | None = None,
     ) -> list[Tenant]:
         result = list(self._tenants.values())
         if status is not None:
@@ -289,7 +288,7 @@ class TenantScopedRepository:
     E002 acceptance test asserts the contract, not the SQL implementation.
     """
 
-    def __init__(self, resource_cls, auditor: Optional["TenantAuditor"] = None) -> None:
+    def __init__(self, resource_cls, auditor: TenantAuditor | None = None) -> None:
         if not (isinstance(resource_cls, type) and issubclass(resource_cls, TenantResource)):
             raise TypeError(
                 f"resource_cls must be a TenantResource subclass, got {resource_cls!r}"
@@ -316,7 +315,7 @@ class TenantScopedRepository:
         self._bucket(resource.tenant_id)[resource.id] = resource
         return resource
 
-    def get(self, tenant_id: str, resource_id: str) -> Optional[TenantResource]:
+    def get(self, tenant_id: str, resource_id: str) -> TenantResource | None:
         if not tenant_id:
             raise ValueError("tenant_id is required")
         return self._bucket(tenant_id).get(resource_id)

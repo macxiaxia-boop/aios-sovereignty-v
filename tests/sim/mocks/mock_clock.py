@@ -11,9 +11,7 @@ Design:
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
-from datetime import datetime, timedelta, timezone
-from typing import Optional, Union
+from datetime import UTC, datetime, timedelta
 
 # Default: 1 wall-clock second of `advance()` == 1 simulated day (86400s).
 DEFAULT_TIME_COMPRESSION: int = 86400
@@ -25,7 +23,7 @@ class Clock:
     def now(self) -> datetime:
         raise NotImplementedError
 
-    def advance(self, seconds: Union[int, float]) -> datetime:
+    def advance(self, seconds: int | float) -> datetime:
         raise NotImplementedError
 
     def freeze_at(self, when: datetime) -> None:
@@ -48,17 +46,17 @@ class MockClock(Clock):
     time_compression: int
     _offset: float
     _frozen: bool
-    _frozen_at: Optional[datetime]
+    _frozen_at: datetime | None
 
     def __init__(
         self,
-        base_time: Optional[datetime] = None,
+        base_time: datetime | None = None,
         time_compression: int = DEFAULT_TIME_COMPRESSION,
     ) -> None:
         if base_time is None:
-            base_time = datetime(2026, 10, 8, 0, 0, 0, tzinfo=timezone.utc)
+            base_time = datetime(2026, 10, 8, 0, 0, 0, tzinfo=UTC)
         elif base_time.tzinfo is None:
-            base_time = base_time.replace(tzinfo=timezone.utc)
+            base_time = base_time.replace(tzinfo=UTC)
         self.base_time = base_time
         self.time_compression = int(time_compression)
         self._offset = 0.0
@@ -70,7 +68,7 @@ class MockClock(Clock):
             return self._frozen_at
         return self.base_time + timedelta(seconds=self._offset)
 
-    def advance(self, seconds: Union[int, float]) -> datetime:
+    def advance(self, seconds: int | float) -> datetime:
         """Advance the clock by `seconds` of simulated time and return the new `now()`."""
         if self._frozen:
             raise RuntimeError("cannot advance a frozen clock; call unfreeze() first")
@@ -82,7 +80,7 @@ class MockClock(Clock):
 
     def freeze_at(self, when: datetime) -> None:
         if when.tzinfo is None:
-            when = when.replace(tzinfo=timezone.utc)
+            when = when.replace(tzinfo=UTC)
         self._frozen = True
         self._frozen_at = when
         delta = (when - self.base_time).total_seconds()
@@ -92,10 +90,10 @@ class MockClock(Clock):
         self._frozen = False
         self._frozen_at = None
 
-    def advance_days(self, days: Union[int, float]) -> datetime:
+    def advance_days(self, days: int | float) -> datetime:
         return self.advance(days * 86400)
 
-    def advance_hours(self, hours: Union[int, float]) -> datetime:
+    def advance_hours(self, hours: int | float) -> datetime:
         return self.advance(hours * 3600)
 
 
@@ -103,9 +101,9 @@ class RealClock(Clock):
     """Production clock backed by datetime.now(UTC)."""
 
     def now(self) -> datetime:
-        return datetime.now(timezone.utc)
+        return datetime.now(UTC)
 
-    def advance(self, seconds: Union[int, float]) -> datetime:
+    def advance(self, seconds: int | float) -> datetime:
         # In a real clock, advance() is a no-op (time already passes).
         return self.now()
 
@@ -124,7 +122,7 @@ if __name__ == "__main__":
     assert (t1 - t0).total_seconds() == 86400
     t2 = c.advance_hours(2)
     assert (t2 - t1).total_seconds() == 7200
-    pin = datetime(2026, 12, 31, 23, 59, 59, tzinfo=timezone.utc)
+    pin = datetime(2026, 12, 31, 23, 59, 59, tzinfo=UTC)
     c.freeze_at(pin)
     assert c.now() == pin
     # advance() must refuse while frozen

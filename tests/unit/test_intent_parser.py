@@ -20,11 +20,10 @@ import pytest
 from aios_kernel.intent import (
     CONSTRAINT_PATTERNS,
     INTENT_CLASSIFIER,
+    TRADEOFF_PATTERNS,
     IntentParser,
     IntentType,
-    LLMAdapter,
     NullLLMAdapter,
-    TRADEOFF_PATTERNS,
 )
 from aios_kernel.intent.parser import (
     Constraint,
@@ -35,7 +34,6 @@ from aios_kernel.intent.parser import (
     PermissionScope,
     Tradeoff,
 )
-
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -375,7 +373,7 @@ class TestPatternsVisible:
     def test_intent_classifier_nonempty(self):
         assert len(INTENT_CLASSIFIER) == 5  # 5 typed buckets; UNKNOWN is implicit fallback
         # Each intent type has at least 1 pattern
-        for intent_type, patterns in INTENT_CLASSIFIER.items():
+        for _intent_type, patterns in INTENT_CLASSIFIER.items():
             assert len(patterns) >= 1
             for pat in patterns:
                 assert hasattr(pat, "search")

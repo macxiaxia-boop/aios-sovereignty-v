@@ -1,12 +1,12 @@
 """test_skill_deprecation.py - C007 tests."""
 from __future__ import annotations
+
 from datetime import UTC, datetime, timedelta
 from unittest.mock import MagicMock
 
 
 def test_detect_deprecated_old_skill():
     from aios_kernel.learning.skill_deprecation import SkillDeprecationDetector
-    from aios_kernel.learning.skill_usage import SkillUsage
     det = SkillDeprecationDetector()
     # Skill used 60 days ago → deprecated
     old_skill = MagicMock()

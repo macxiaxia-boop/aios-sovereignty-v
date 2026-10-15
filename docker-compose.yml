@@ -1,11 +1,17 @@
 version: "3.9"
+
+# R1504 production rollout: 3 services + airgap enforcement
+# Usage:
+#   docker compose build
+#   AIOS_DB_PASSWORD=changeme docker compose up -d
+
 services:
   postgres:
     image: postgres:15-alpine
     environment:
       POSTGRES_DB: aios_vnext
       POSTGRES_USER: aios
-      POSTGRES_PASSWORD: ${AIOS_DB_PASSWORD}
+      POSTGRES_PASSWORD: ${AIOS_DB_PASSWORD:?database password required}
     volumes:
       - aios_pg_data:/var/lib/postgresql/data
     healthcheck:
@@ -21,19 +27,34 @@ services:
     environment:
       AIOS_KERNEL_DATABASE_URL: postgresql+psycopg://aios:${AIOS_DB_PASSWORD}@postgres/aios_vnext
       AIOS_KERNEL_OFFLINE: "1"
+      AIOS_LOG_LEVEL: INFO
     networks: [airgap]
     ports:
       - "9000:9000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:9000/health').read()"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped
 
   verifier:
     build: .
     command: ["python", "-m", "aios_kernel.verifier.server"]
     networks: [airgap]
-    depends_on: [postgres]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
 
 networks:
   airgap:
     driver: bridge
-    internal: true  # NO external network
+    internal: true  # NO external network — enforces AIOS_KERNEL_OFFLINE=1
 
-# NO services depend on external networks. Airgap enforced.
+volumes:
+  aios_pg_data:
+
+# Security: NO services depend on external networks. Airgap enforced.
+# Healthcheck on kernel hits /health endpoint (FastAPI gateway).

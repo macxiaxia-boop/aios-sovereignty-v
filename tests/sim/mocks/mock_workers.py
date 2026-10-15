@@ -16,8 +16,7 @@ from __future__ import annotations
 
 import time
 from dataclasses import dataclass, field
-from typing import Any, Callable, Dict, Optional
-
+from typing import Any
 
 # ---------- Custom exception hierarchy ---------------------------------------
 
@@ -48,7 +47,7 @@ class Artifact:
     payload: str
     evidence_ids: list[str] = field(default_factory=list)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "id": self.id,
             "task_id": self.task_id,
@@ -60,14 +59,14 @@ class Artifact:
 @dataclass
 class WorkerResult:
     success: bool
-    artifact: Optional[Artifact] = None
-    error: Optional[str] = None
+    artifact: Artifact | None = None
+    error: str | None = None
     crash: bool = False
     fake_done: bool = False
     timed_out: bool = False
     attempts: int = 1
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "success": self.success,
             "crash": self.crash,
@@ -85,7 +84,7 @@ class WorkerResult:
 class SuccessWorker:
     name = "SuccessWorker"
 
-    def execute(self, task: Dict[str, Any]) -> WorkerResult:
+    def execute(self, task: dict[str, Any]) -> WorkerResult:
         return WorkerResult(
             success=True,
             artifact=Artifact(
@@ -102,7 +101,7 @@ class FakeDoneWorker:
 
     name = "FakeDoneWorker"
 
-    def execute(self, task: Dict[str, Any]) -> WorkerResult:
+    def execute(self, task: dict[str, Any]) -> WorkerResult:
         return WorkerResult(
             success=True,
             artifact=Artifact(
@@ -119,10 +118,10 @@ class CrashWorker:
     name = "CrashWorker"
     crash_after_artifact: bool = False  # default: crash before producing anything
 
-    def execute(self, task: Dict[str, Any]) -> WorkerResult:
+    def execute(self, task: dict[str, Any]) -> WorkerResult:
         if self.crash_after_artifact:
             # produce an artifact, then crash mid-execute
-            partial = Artifact(
+            Artifact(
                 id=f"art-{task['id']}-partial",
                 task_id=task["id"],
                 payload="partial payload",
@@ -136,7 +135,7 @@ class TimeoutWorker:
     name = "TimeoutWorker"
     default_timeout_s: float = 0.05  # 50ms; runner does not enforce here
 
-    def execute(self, task: Dict[str, Any]) -> WorkerResult:
+    def execute(self, task: dict[str, Any]) -> WorkerResult:
         time.sleep(self.default_timeout_s * 100)  # sleep 5s — definitely past 50ms
         return WorkerResult(
             success=False,
@@ -156,9 +155,9 @@ class RetryableFailWorker:
     fail_count: int = 2
 
     def __init__(self) -> None:
-        self._seen: Dict[str, int] = {}
+        self._seen: dict[str, int] = {}
 
-    def execute(self, task: Dict[str, Any]) -> WorkerResult:
+    def execute(self, task: dict[str, Any]) -> WorkerResult:
         seen = self._seen.get(task["id"], 0) + 1
         self._seen[task["id"]] = seen
         if seen <= self.fail_count:
@@ -182,7 +181,7 @@ class RetryableFailWorker:
 class PermanentFailWorker:
     name = "PermanentFailWorker"
 
-    def execute(self, task: Dict[str, Any]) -> WorkerResult:
+    def execute(self, task: dict[str, Any]) -> WorkerResult:
         return WorkerResult(
             success=False,
             error="permanent failure",

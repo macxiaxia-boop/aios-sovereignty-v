@@ -8,13 +8,12 @@ governance is unobservable.
 """
 from __future__ import annotations
 
-from datetime import UTC, datetime
 from enum import Enum
 from typing import ClassVar
 
 from pydantic import Field, field_validator
 
-from aios_kernel.domain.envelope import Envelope, utcnow
+from aios_kernel.domain.envelope import Envelope
 
 
 class DecisionActor(str, Enum):

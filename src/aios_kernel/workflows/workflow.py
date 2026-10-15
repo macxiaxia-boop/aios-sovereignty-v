@@ -31,6 +31,7 @@ class WorkflowStatus(str, Enum):
     COMPLETED = "completed"
     FAILED = "failed"
     CANCELLED = "cancelled"
+    BLOCKED = "blocked"  # external outcome uncertain, requires independent reconciliation
 
 
 # ---------- Signal / Query / Run value objects -----------------------------

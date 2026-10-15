@@ -14,15 +14,14 @@ Run with: pytest tests/integration/test_100_task_closed_loop.py -v
 """
 from __future__ import annotations
 
-import asyncio
 import json
 import os
 import subprocess
 import sys
 import tempfile
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any
 
 import pytest
 import pytest_asyncio
@@ -37,30 +36,23 @@ from aios_kernel.workers import (  # noqa: E402
     ClaudeCodeAdapter,
     CodexAdapter,
     OpenClawAdapter,
-    WorkerAdapter,
     WorkerRegistry,
-)
-from tests.sim.mocks.mock_evidence import (  # noqa: E402
-    EvidenceRecord,
-    MockEvidenceStore,
-    verify_worker_evidence,
 )
 from tests.sim.mocks.mock_tasks import (  # noqa: E402
     DEFAULT_WORKER_HINTS,
-    MockTask,
     SEED,
-    _build_payload,
+    MockTask,
     _budget,
+    _build_payload,
     _priority,
     _success_criteria,
 )
-
 
 # ---------------------------------------------------------------------------
 # T0036 Part A constants
 # ---------------------------------------------------------------------------
 
-T0036_TYPE_DIST: Dict[str, int] = {
+T0036_TYPE_DIST: dict[str, int] = {
     "file_summary": 30,
     "string_format": 20,
     "math_calc": 20,
@@ -84,7 +76,7 @@ DIST_TOLERANCE: int = 5
 # ---------------------------------------------------------------------------
 
 
-def build_t0036_tasks(seed: int = SEED) -> List[MockTask]:
+def build_t0036_tasks(seed: int = SEED) -> list[MockTask]:
     """Build 100 deterministic MockTask with T0036 type distribution.
 
     Per card Part A: 30 file_summary + 20 string_format + 20 math_calc
@@ -93,9 +85,9 @@ def build_t0036_tasks(seed: int = SEED) -> List[MockTask]:
     import random
 
     rng = random.Random(seed)
-    base_time = datetime(2026, 10, 8, 0, 0, 0, tzinfo=timezone.utc)
+    base_time = datetime(2026, 10, 8, 0, 0, 0, tzinfo=UTC)
 
-    tasks: List[MockTask] = []
+    tasks: list[MockTask] = []
     for ttype, count in T0036_TYPE_DIST.items():
         for idx in range(count):
             offset = rng.randint(60, 3600)
@@ -118,7 +110,7 @@ def build_t0036_tasks(seed: int = SEED) -> List[MockTask]:
     return tasks
 
 
-def assign_workers_70_20_10(tasks: List[MockTask]) -> List[MockTask]:
+def assign_workers_70_20_10(tasks: list[MockTask]) -> list[MockTask]:
     """Mutate each task.worker in-place to enforce 70/20/10 quota.
 
     First 70 -> codex-adapter
@@ -174,7 +166,7 @@ def _build_verifier_code(evidence_path: str, kernel_root: str) -> str:
     )
 
 
-def run_verifier_subprocess(evidence_path: str, timeout: int = 60) -> Dict[str, Any]:
+def run_verifier_subprocess(evidence_path: str, timeout: int = 60) -> dict[str, Any]:
     """Spawn a Python subprocess that re-runs the verifier independently."""
     kernel_root = str(_KERNEL_ROOT).replace("\\", "/")
     code = _build_verifier_code(evidence_path, kernel_root)
@@ -202,17 +194,17 @@ def run_verifier_subprocess(evidence_path: str, timeout: int = 60) -> Dict[str, 
 
 
 async def _execute_all_tasks(
-    tasks: List[MockTask],
-) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]], Dict[str, int]]:
+    tasks: list[MockTask],
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, int]]:
     """Execute all 100 tasks via WorkerRegistry, build per-task records."""
     registry = WorkerRegistry()
     registry.register(CodexAdapter())
     registry.register(ClaudeCodeAdapter())
     registry.register(OpenClawAdapter())
 
-    evidence_dump: List[Dict[str, Any]] = []
-    task_records: List[Dict[str, Any]] = []
-    worker_counts: Dict[str, int] = {}
+    evidence_dump: list[dict[str, Any]] = []
+    task_records: list[dict[str, Any]] = []
+    worker_counts: dict[str, int] = {}
 
     for task in tasks:
         adapter = registry.route(task)
@@ -246,7 +238,7 @@ async def _execute_all_tasks(
 
 
 @pytest_asyncio.fixture(scope="module")
-async def t0036_loop_result() -> Dict[str, Any]:
+async def t0036_loop_result() -> dict[str, Any]:
     """Run 100 tasks + spawn verifier subprocess once per test module."""
     worker_pid = os.getpid()
 
@@ -285,7 +277,7 @@ async def t0036_loop_result() -> Dict[str, Any]:
 # ---------------------------------------------------------------------------
 
 
-def test_100_of_100_pass(t0036_loop_result: Dict[str, Any]) -> None:
+def test_100_of_100_pass(t0036_loop_result: dict[str, Any]) -> None:
     """All 100 tasks must be signed PASS by the independent verifier."""
     verdicts = t0036_loop_result["verdicts"]
     assert len(verdicts) == T0036_TOTAL, (
@@ -299,7 +291,7 @@ def test_100_of_100_pass(t0036_loop_result: Dict[str, Any]) -> None:
     assert pass_count == T0036_TOTAL, f"only {pass_count}/{T0036_TOTAL} PASS"
 
 
-def test_worker_distribution_within_5pp(t0036_loop_result: Dict[str, Any]) -> None:
+def test_worker_distribution_within_5pp(t0036_loop_result: dict[str, Any]) -> None:
     """Worker Adapter distribution must be 70/20/10 +/- 5 percentage points."""
     counts = t0036_loop_result["worker_counts"]
     codex = counts.get("codex-adapter", 0)
@@ -323,7 +315,7 @@ def test_worker_distribution_within_5pp(t0036_loop_result: Dict[str, Any]) -> No
     )
 
 
-def test_verifier_pid_independent(t0036_loop_result: Dict[str, Any]) -> None:
+def test_verifier_pid_independent(t0036_loop_result: dict[str, Any]) -> None:
     """Verifier must run in a different process from the Worker (kernel)."""
     worker_pid = t0036_loop_result["worker_pid"]
     verifier_pid = t0036_loop_result["verifier_pid"]
@@ -336,7 +328,7 @@ def test_verifier_pid_independent(t0036_loop_result: Dict[str, Any]) -> None:
 
 
 def test_each_task_has_artifact_evidence_cost(
-    t0036_loop_result: Dict[str, Any],
+    t0036_loop_result: dict[str, Any],
 ) -> None:
     """Every task must carry: artifact_id + evidence_id + cost record."""
     records = t0036_loop_result["task_records"]
@@ -361,7 +353,7 @@ def test_each_task_has_artifact_evidence_cost(
         )
 
 
-def test_cross_worker_tasks_all_pass(t0036_loop_result: Dict[str, Any]) -> None:
+def test_cross_worker_tasks_all_pass(t0036_loop_result: dict[str, Any]) -> None:
     """The 15 cross_worker tasks must all be routed + verifier-PASSed."""
     verdicts = t0036_loop_result["verdicts"]
     cross_worker = [
@@ -375,10 +367,10 @@ def test_cross_worker_tasks_all_pass(t0036_loop_result: Dict[str, Any]) -> None:
 
 
 def test_type_distribution_30_20_20_15_15(
-    t0036_loop_result: Dict[str, Any],
+    t0036_loop_result: dict[str, Any],
 ) -> None:
     """The 100 tasks must be split 30/20/20/15/15 across the 5 types."""
-    by_type: Dict[str, int] = {}
+    by_type: dict[str, int] = {}
     for r in t0036_loop_result["task_records"]:
         by_type[r["type"]] = by_type.get(r["type"], 0) + 1
     for ttype, expected in T0036_TYPE_DIST.items():

@@ -73,6 +73,7 @@ def test_classify_correct():
 
 def test_classify_pydantic_rejects_non_enum():
     from pydantic import ValidationError
+
     from aios_kernel.business.industry_scout import IndustrySignal, SignalCategory
     with pytest.raises(ValidationError):
         IndustrySignal(source="x", category="bogus_category", title="t",
@@ -203,6 +204,7 @@ def test_source_exception_isolated():
 
 def test_signal_confidence_validation():
     from pydantic import ValidationError
+
     from aios_kernel.business.industry_scout import IndustrySignal, SignalCategory
     with pytest.raises(ValidationError):
         IndustrySignal(source="x", category=SignalCategory.MARKET,

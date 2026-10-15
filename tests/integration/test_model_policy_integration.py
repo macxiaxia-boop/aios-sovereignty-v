@@ -10,20 +10,18 @@ from __future__ import annotations
 
 import json
 import sqlite3
-from pathlib import Path
 
 import pytest
 
-from aios_kernel.governance.model_policy.snapshot import PolicySnapshot, load_policy, sign_yaml
 from aios_kernel.governance.model_policy.claude_code_adapter import ClaudeCodeAdapter
 from aios_kernel.governance.model_policy.openclaw_adapter import OpenClawAdapter
-from aios_kernel.governance.model_policy.codex_adapter import CodexAdapter
+from aios_kernel.governance.model_policy.snapshot import load_policy, sign_yaml
 
 
 @pytest.fixture
 def sample_policy_yaml(tmp_path):
-    from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
     from cryptography.hazmat.primitives import serialization
+    from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
     priv = Ed25519PrivateKey.generate()
     priv_bytes = priv.private_bytes(
         encoding=serialization.Encoding.Raw,
@@ -158,7 +156,7 @@ def test_openclaw_policy_allowlist_rewrite(sample_policy_yaml, tmp_path):
         env_path=env_path,
     )
 
-    drift = adapter.apply(policy, dry_run=False)
+    adapter.apply(policy, dry_run=False)
 
     db = sqlite3.connect(str(db_path))
     cur = db.cursor()
@@ -197,4 +195,4 @@ def test_openclaw_env_credential_validate(sample_policy_yaml, tmp_path):
     drift = adapter.verify(policy)
     paths_str = str(drift.affected_paths)
     assert "MISSING_KEY" in paths_str, f"env.missing for MISSING_KEY not in: {paths_str}"
-    assert "MINIMAX_API_KEY" not in paths_str, f"MINIMAX_API_KEY is in .env, should NOT be flagged"
+    assert "MINIMAX_API_KEY" not in paths_str, "MINIMAX_API_KEY is in .env, should NOT be flagged"

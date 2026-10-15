@@ -41,7 +41,6 @@ from aios_kernel.intent.rules import (
     extract_tradeoffs,
 )
 
-
 # ---------------------------------------------------------------------------
 # Pydantic types — mirror F001's eventual schema (F000 §2)
 # ---------------------------------------------------------------------------
@@ -201,7 +200,7 @@ class GoalContract(BaseModel):
     # private stash so we can round-trip intent_type without polluting the schema
     _meta: dict[str, Any] | None = None
 
-    def with_meta(self, meta: dict[str, Any]) -> "GoalContract":
+    def with_meta(self, meta: dict[str, Any]) -> GoalContract:
         """Return a copy with ``_meta`` attached (for test introspection)."""
         # Pydantic forbids extras; we mutate the private attr instead.
         # Pydantic copy is the supported way; do not bypass with __dict__.

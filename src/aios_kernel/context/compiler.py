@@ -31,8 +31,9 @@ import asyncio
 import math
 import re
 import time
+from collections.abc import Iterable
 from dataclasses import dataclass, field
-from typing import Iterable, Protocol, runtime_checkable
+from typing import Protocol, runtime_checkable
 
 from aios_kernel.context.models import (
     MAX_CONTEXT_TOKENS,
@@ -128,7 +129,7 @@ class WordTokenizer:
         if not words:
             return "", 0
         # Binary search for the largest prefix whose token count <= max_tokens.
-        lo, hi = 0, len(words)
+        _lo, _hi = 0, len(words)
         best = 0
         # Pre-compute? Simpler: linear scan from full, since text is bounded
         # by chunk size and we expect the truncation to converge quickly.

@@ -8,11 +8,7 @@ Validates CLI surface compatibility with:
 """
 from __future__ import annotations
 
-import json
-import os
-import shutil
 import sqlite3
-import tempfile
 from pathlib import Path
 
 import pytest
@@ -37,8 +33,8 @@ def test_compat_codex_cli_rejects_denied_model(real_policy_paths):
     We don't actually invoke codex CLI (no test infra for that), but we
     validate the policy correctly rejects the model ID.
     """
-    from aios_kernel.governance.model_policy.snapshot import load_policy
     from aios_kernel.governance.model_policy.codex_adapter import CodexAdapter
+    from aios_kernel.governance.model_policy.snapshot import load_policy
 
     if not real_policy_paths["policy"].exists():
         pytest.skip("Canonical policy not yet signed (R2026-10-09 Phase 2 deploy)")
@@ -63,8 +59,8 @@ def test_compat_claude_code_settings_frozen(real_policy_paths):
     never writes (frozen lock). User cannot accidentally fall back to deepseek
     from settings.json alone; cc-switch's common_config_claude is the lever.
     """
-    from aios_kernel.governance.model_policy.snapshot import load_policy
     from aios_kernel.governance.model_policy.claude_code_adapter import ClaudeCodeAdapter
+    from aios_kernel.governance.model_policy.snapshot import load_policy
 
     if not real_policy_paths["policy"].exists():
         pytest.skip("Canonical policy not yet signed")
@@ -115,8 +111,8 @@ def test_compat_openclaw_policy_allowlist_readable():
 
 def test_compat_hermes_provider_acceptance(real_policy_paths):
     """Hermes CLI provider selection: minimax = canonical, openrouter = denied."""
-    from aios_kernel.governance.model_policy.snapshot import load_policy
     from aios_kernel.governance.model_policy.hermes_adapter import HermesAdapter
+    from aios_kernel.governance.model_policy.snapshot import load_policy
 
     if not real_policy_paths["policy"].exists():
         pytest.skip("Canonical policy not yet signed")
@@ -125,7 +121,7 @@ def test_compat_hermes_provider_acceptance(real_policy_paths):
     provider_first = policy.enforcement.get("hermes", {}).get(
         "cli_config_provider_first", []
     )
-    provider_deny = policy.enforcement.get("hermes", {}).get(
+    policy.enforcement.get("hermes", {}).get(
         "cli_config_provider_denylist", []
     )
 
