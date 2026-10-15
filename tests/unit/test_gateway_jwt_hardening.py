@@ -7,7 +7,6 @@ import pytest
 
 from aios_kernel.gateway.auth import InvalidToken, sign_jwt, verify_jwt
 
-
 SECRET = b"aios-local-unit-test-secret-32bytes-and-more"
 
 
