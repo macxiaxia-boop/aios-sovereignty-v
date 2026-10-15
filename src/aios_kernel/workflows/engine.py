@@ -21,14 +21,20 @@ Restart algorithm:
 from __future__ import annotations
 
 import asyncio
+import hashlib
+import json
 import logging
+import uuid
+from contextlib import suppress
 from datetime import UTC, datetime
 from typing import Any, Protocol, runtime_checkable
 
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker
 
 from .persistence import (
+    WorkflowEffectRow,
     WorkflowRunRow,
+    acquire_workflow_lease,
     init_schema,
     insert_run,
     latest_checkpoint,
@@ -36,8 +42,12 @@ from .persistence import (
     list_runs_by_status,
     make_engine,
     make_session_factory,
+    prepare_external_effect,
     record_activity,
+    release_workflow_lease,
+    renew_workflow_lease,
     safe_json_loads,
+    transition_external_effect,
     update_run,
     write_checkpoint,
 )
@@ -55,6 +65,19 @@ from .workflow import (
 )
 
 log = logging.getLogger("aios_kernel.workflows.engine")
+
+
+class WorkflowLeaseBusy(RuntimeError):
+    """Another live executor owns the run; no activity was executed."""
+
+
+class WorkflowLeaseLost(RuntimeError):
+    """This invocation no longer owns the run; checkpoint writes are forbidden."""
+
+
+class WorkflowEffectUncertain(RuntimeError):
+    """Remote action may have occurred: block automatic retry pending reconciliation."""
+
 
 
 # ---------- Engine protocol -------------------------------------------------
@@ -126,63 +149,45 @@ class PGCheckpointerEngine:
         input: dict[str, Any] | None = None,
         run_id: str | None = None,
     ) -> WorkflowRun:
-        """Start a new run, then synchronously drive it to completion.
+        """Create and run once. A repeated explicit run_id never replays effects.
 
-        `run_id`: optional explicit run id (default = uuid4 hex). Useful for
-        tests that want to predict the id.
-
-        R1348B (N6 / AIPM_FOUNDATION_02 Stage B-1): if `run_id` already exists
-        in DB and its status is `completed`, we delete the prior row plus
-        its checkpoints and activity history, then insert a fresh run row.
-        This makes engine.start() idempotent across crash/recovery loops
-        (test_cr7 cycles 1..N reach the new step A as expected).
-        Other statuses (pending / crashed / failed / running) keep the
-        existing INSERT-OR-IGNORE behavior.
+        Re-execution is a separate operation and must use a new run ID. A
+        matching prior request returns its persisted snapshot; conflicting
+        workflow identity or input is rejected.
         """
         rid = run_id or new_run_id()
         in_payload = input or {}
-        if rid is not None and run_id is not None:
-            await self._reset_completed_run_for_replay(rid)
         async with self._session_factory() as session:
-            await insert_run(
+            existing = await session.get(WorkflowRunRow, rid)
+            if existing is not None:
+                if existing.workflow_id != workflow.id:
+                    raise ValueError("run_id belongs to a different workflow")
+                prior = dict(safe_json_loads(existing.input_json))
+                prior.pop("signals", None)  # signals are stored in legacy input_json
+                if prior != in_payload:
+                    raise ValueError("run_id reused with a different input payload")
+                return _row_to_run(existing)
+            inserted = await insert_run(
                 session,
                 run_id=rid,
                 workflow_id=workflow.id,
                 input_json=in_payload,
             )
             await session.commit()
-        # drive
+            if not inserted:
+                # The initial read was empty, but a concurrent submit won the
+                # unique-key INSERT race. It alone may execute the workflow.
+                winner = await session.get(WorkflowRunRow, rid)
+                if winner is None:
+                    raise RuntimeError("run_id conflict without a committed winner")
+                if winner.workflow_id != workflow.id:
+                    raise ValueError("run_id belongs to a different workflow")
+                winner_input = dict(safe_json_loads(winner.input_json))
+                winner_input.pop("signals", None)
+                if winner_input != in_payload:
+                    raise ValueError("run_id reused with a different input payload")
+                return _row_to_run(winner)
         return await self._drive(workflow, rid, resume_from=None)
-
-    async def _reset_completed_run_for_replay(self, run_id: str) -> None:
-        """N6: if the given run_id already exists with status='completed',
-        delete its row + checkpoints + activity history so a fresh start
-        can reach step A again. Safe: only fires on completed; other
-        statuses left untouched."""
-        from aios_kernel.workflows.persistence import (
-            ActivityHistoryRow,
-            WorkflowCheckpointRow,
-            WorkflowRunRow,
-        )
-        async with self._session_factory() as session:
-            row = await session.get(WorkflowRunRow, run_id)
-            if row is None:
-                return
-            if row.status != "completed":
-                return
-            # delete child rows first (checkpoints + history)
-            await session.execute(
-                __import__("sqlalchemy").delete(WorkflowCheckpointRow).where(
-                    WorkflowCheckpointRow.run_id == run_id
-                )
-            )
-            await session.execute(
-                __import__("sqlalchemy").delete(ActivityHistoryRow).where(
-                    ActivityHistoryRow.run_id == run_id
-                )
-            )
-            await session.delete(row)
-            await session.commit()
 
     async def resume(self, workflow: Workflow, run_id: str) -> WorkflowRun:
         """Resume a run that was started but not finished. The engine looks up
@@ -295,11 +300,17 @@ class PGCheckpointerEngine:
         async with self._session_factory() as session:
             pending_rows = await list_runs_by_status(session, "pending")
             running_rows = await list_runs_by_status(session, "running")
-            candidates = [r.run_id for r in pending_rows] + [r.run_id for r in running_rows]
+            candidates = [
+                r.run_id for r in pending_rows + running_rows
+                if r.workflow_id == workflow.id
+            ]
         out: list[WorkflowRun] = []
         for rid in candidates:
             try:
                 run = await self.resume(workflow, rid)
+            except WorkflowLeaseBusy:
+                log.info("recovery skipped actively leased run %s", rid)
+                continue
             except Exception:  # noqa: BLE001
                 log.exception("recover failed for run %s", rid)
                 continue
@@ -308,11 +319,97 @@ class PGCheckpointerEngine:
 
     # -- internal: drive the workflow ---------------------------------------
 
+    async def _lease_heartbeat(
+        self, run_id: str, owner_id: str, fencing_token: int,
+        *, ttl_s: float,
+    ) -> None:
+        """Renew long-running activity leases; cancel the driver if ownership is lost."""
+        while True:
+            await asyncio.sleep(ttl_s / 3)
+            async with self._session_factory() as session:
+                ok = await renew_workflow_lease(
+                    session, run_id=run_id, owner_id=owner_id,
+                    fencing_token=fencing_token, ttl_s=ttl_s,
+                )
+                if not ok:
+                    raise WorkflowLeaseLost(f"lease lost during activity: {run_id}")
+                await session.commit()
+
+    async def _require_lease(
+        self, session: AsyncSession, run_id: str,
+        owner_id: str, fencing_token: int, ttl_s: float,
+    ) -> None:
+        if not await renew_workflow_lease(
+            session, run_id=run_id, owner_id=owner_id,
+            fencing_token=fencing_token, ttl_s=ttl_s,
+        ):
+            raise WorkflowLeaseLost(f"lost fenced workflow ownership: {run_id}")
+
     async def _drive(
+        self, workflow: Workflow, run_id: str, resume_from: str | None,
+    ) -> WorkflowRun:
+        """Exclusive DB-backed run ownership around the existing checkpoint engine.
+
+        No claim of exactly-once external effects: providers must use
+        idempotency keys / reconciliation when an API response is uncertain.
+        """
+        owner_id = uuid.uuid4().hex
+        ttl_s = 120.0
+        async with self._session_factory() as session:
+            token = await acquire_workflow_lease(
+                session, run_id=run_id, owner_id=owner_id, ttl_s=ttl_s,
+            )
+            await session.commit()
+        if token is None:
+            raise WorkflowLeaseBusy(f"workflow already leased: {run_id}")
+
+        heartbeat = asyncio.create_task(
+            self._lease_heartbeat(run_id, owner_id, token, ttl_s=ttl_s),
+            name=f"wf-lease-heartbeat-{run_id}",
+        )
+        driver = asyncio.create_task(
+            self._drive_owned(
+                workflow, run_id, resume_from,
+                owner_id=owner_id, fencing_token=token, ttl_s=ttl_s,
+            ),
+            name=f"wf-driver-{run_id}",
+        )
+        try:
+            done, _pending = await asyncio.wait(
+                {driver, heartbeat}, return_when=asyncio.FIRST_COMPLETED,
+            )
+            if heartbeat in done:
+                driver.cancel()
+                with suppress(asyncio.CancelledError):
+                    await driver
+                # Propagate heartbeat failure rather than presenting success.
+                heartbeat.result()
+                raise WorkflowLeaseLost(f"unexpected heartbeat stop: {run_id}")
+            return await driver
+        finally:
+            heartbeat.cancel()
+            if not driver.done():
+                driver.cancel()
+            with suppress(asyncio.CancelledError):
+                await heartbeat
+            with suppress(asyncio.CancelledError):
+                await driver
+            async with self._session_factory() as session:
+                await release_workflow_lease(
+                    session, run_id=run_id, owner_id=owner_id,
+                    fencing_token=token,
+                )
+                await session.commit()
+
+    async def _drive_owned(
         self,
         workflow: Workflow,
         run_id: str,
         resume_from: str | None,
+        *,
+        owner_id: str,
+        fencing_token: int,
+        ttl_s: float,
     ) -> WorkflowRun:
         """Execute steps in topological order, with checkpoint + retry.
 
@@ -322,6 +419,13 @@ class PGCheckpointerEngine:
                     (resume() path)
         """
         order = workflow.topological_order()
+        async with self._session_factory() as session:
+            identity = await session.get(WorkflowRunRow, run_id)
+            if identity is None:
+                raise KeyError(f"no run {run_id!r}")
+            if identity.workflow_id != workflow.id:
+                raise ValueError("workflow identity does not match persisted run")
+            workflow_input = safe_json_loads(identity.input_json)
         # Determine resume cursor
         if resume_from == "auto":
             async with self._session_factory() as session:
@@ -330,7 +434,7 @@ class PGCheckpointerEngine:
                 # already-ran step states from history -> mark complete
                 async with self._session_factory() as session:
                     cps = await list_checkpoints(session, run_id)
-                done_ids = {c.step_id for c in cps}
+                done_ids = {c.step_id for c in cps if c.status == "completed"}
             else:
                 done_ids = set()
         else:
@@ -341,6 +445,7 @@ class PGCheckpointerEngine:
             row = await session.get(WorkflowRunRow, run_id)
             if row is None:
                 raise KeyError(f"no run {run_id!r}")
+            await self._require_lease(session, run_id, owner_id, fencing_token, ttl_s)
             if row.status in ("pending",):
                 await update_run(
                     session,
@@ -366,6 +471,9 @@ class PGCheckpointerEngine:
                 continue
             if self._cancel_flags.get(run_id):
                 async with self._session_factory() as session:
+                    await self._require_lease(
+                        session, run_id, owner_id, fencing_token, ttl_s,
+                    )
                     await update_run(
                         session,
                         run_id=run_id,
@@ -377,12 +485,37 @@ class PGCheckpointerEngine:
                 async with self._session_factory() as session:
                     row = await session.get(WorkflowRunRow, run_id)
                     return _row_to_run(row)
+            async with self._session_factory() as session:
+                await self._require_lease(session, run_id, owner_id, fencing_token, ttl_s)
+                await session.commit()
             dep_outputs = {dep: completed_outputs.get(dep, {}) for dep in step.depends_on}
-            status, output, last_error = await self._execute_step(
-                workflow, run_id, step, idx, order, dep_outputs
-            )
+            try:
+                if step.external_effect:
+                    status, output, last_error = await self._execute_external_step(
+                        workflow, run_id, step, idx, dep_outputs, workflow_input,
+                        owner_id=owner_id, fencing_token=fencing_token, ttl_s=ttl_s,
+                    )
+                else:
+                    status, output, last_error = await self._execute_step(
+                        workflow, run_id, step, idx, order, dep_outputs,
+                        workflow_input=workflow_input,
+                        fencing_token=fencing_token,
+                    )
+            except WorkflowEffectUncertain as exc:
+                async with self._session_factory() as session:
+                    await self._require_lease(
+                        session, run_id, owner_id, fencing_token, ttl_s,
+                    )
+                    await update_run(
+                        session, run_id=run_id, status="blocked",
+                        current_step=step.id, error=str(exc),
+                    )
+                    await session.commit()
+                    row = await session.get(WorkflowRunRow, run_id)
+                    return _row_to_run(row)
             if status == "completed":
                 async with self._session_factory() as session:
+                    await self._require_lease(session, run_id, owner_id, fencing_token, ttl_s)
                     await update_run(
                         session, run_id=run_id, current_step=step.id
                     )
@@ -400,6 +533,7 @@ class PGCheckpointerEngine:
                 continue
             # failure -> mark run as failed
             async with self._session_factory() as session:
+                await self._require_lease(session, run_id, owner_id, fencing_token, ttl_s)
                 await update_run(
                     session,
                     run_id=run_id,
@@ -423,18 +557,182 @@ class PGCheckpointerEngine:
                 row = await session.get(WorkflowRunRow, run_id)
                 return _row_to_run(row)
 
-        # all steps completed -> mark run completed
+        # A cancellation may arrive while the final activity is in flight.
+        # Never overwrite its terminal status with "completed".
         async with self._session_factory() as session:
+            await self._require_lease(session, run_id, owner_id, fencing_token, ttl_s)
+            prior = await session.get(WorkflowRunRow, run_id)
+            if prior is not None and prior.status == "cancelled":
+                await session.commit()
+                return _row_to_run(prior)
             await update_run(
                 session,
                 run_id=run_id,
                 status="completed",
                 current_step=order[-1].id if order else None,
+                output_json={"steps": completed_outputs},
                 completed_at=datetime.now(UTC),
             )
             await session.commit()
             row = await session.get(WorkflowRunRow, run_id)
             return _row_to_run(row)
+
+    async def _execute_external_step(
+        self,
+        workflow: Workflow,
+        run_id: str,
+        step: WorkflowStep,
+        step_index: int,
+        dep_outputs: dict[str, Any],
+        workflow_input: dict[str, Any],
+        *,
+        owner_id: str,
+        fencing_token: int,
+        ttl_s: float,
+    ) -> tuple[str, dict[str, Any] | None, str | None]:
+        """Never blind-retry an external call if a dispatch may have happened."""
+        effect_key = hashlib.sha256(f"{run_id}:{step.id}".encode()).hexdigest()
+        canonical = json.dumps(
+            {"input": workflow_input, "deps": dep_outputs},
+            sort_keys=True, ensure_ascii=False, default=str,
+        )
+        request_hash = hashlib.sha256(canonical.encode()).hexdigest()
+
+        async with self._session_factory() as session:
+            await self._require_lease(session, run_id, owner_id, fencing_token, ttl_s)
+            journal = await prepare_external_effect(
+                session, effect_key=effect_key, run_id=run_id,
+                step_id=step.id, request_hash=request_hash,
+            )
+            status = journal.status
+            cached_output = safe_json_loads(journal.receipt_json)
+            if status == "confirmed":
+                await session.commit()
+                return ("completed", cached_output, None)
+            if status != "prepared":
+                await session.commit()
+                raise WorkflowEffectUncertain(
+                    f"external effect {effect_key} is {status}; verify remote resource"
+                )
+            if not await transition_external_effect(
+                session, effect_key=effect_key, from_status="prepared",
+                to_status="sent",
+            ):
+                raise WorkflowEffectUncertain(
+                    f"external effect {effect_key} was concurrently dispatched"
+                )
+            await record_activity(
+                session, run_id=run_id, activity_id=step.activity.name,
+                step_id=step.id, attempt=1, status="started",
+                started_at=datetime.now(UTC),
+            )
+            await session.commit()
+
+        ctx = ActivityContext(
+            run_id=run_id, step_id=step.id, attempt=1,
+            input={"workflow_input": workflow_input, "deps": dep_outputs},
+            metadata={
+                "workflow_id": workflow.id,
+                "step_index": step_index,
+                "prev_outputs": dep_outputs,
+                "idempotency_key": effect_key,
+                "fencing_token": fencing_token,
+                "external_effect": True,
+            },
+        )
+        try:
+            if step.timeout_s is None:
+                result = await step.activity.execute(ctx)
+            else:
+                result = await asyncio.wait_for(
+                    step.activity.execute(ctx), timeout=step.timeout_s,
+                )
+        except Exception as exc:
+            # Timeout / disconnect has no reliable negative acknowledgement.
+            async with self._session_factory() as session:
+                await self._require_lease(
+                    session, run_id, owner_id, fencing_token, ttl_s,
+                )
+                await transition_external_effect(
+                    session, effect_key=effect_key, from_status="sent",
+                    to_status="uncertain",
+                )
+                await session.commit()
+            raise WorkflowEffectUncertain(
+                f"external effect {effect_key} has unknown outcome: {type(exc).__name__}"
+            ) from exc
+
+        receipt = result.output.get("remote_receipt") if result.success else None
+        is_verified_shape = (
+            isinstance(receipt, dict)
+            and bool(receipt.get("provider"))
+            and bool(receipt.get("resource_id"))
+        )
+        async with self._session_factory() as session:
+            await self._require_lease(session, run_id, owner_id, fencing_token, ttl_s)
+            if not is_verified_shape:
+                await transition_external_effect(
+                    session, effect_key=effect_key, from_status="sent",
+                    to_status="uncertain",
+                )
+                await session.commit()
+                raise WorkflowEffectUncertain(
+                    f"external effect {effect_key} lacks a remote resource receipt"
+                )
+            # A shaped provider receipt is NOT independent verification.
+            # Preserve its payload for a read-only remote confirmation step.
+            if not await transition_external_effect(
+                session, effect_key=effect_key, from_status="sent",
+                to_status="unverified", receipt=result.output,
+            ):
+                raise WorkflowEffectUncertain(
+                    f"external effect {effect_key} changed before receipt capture"
+                )
+            await record_activity(
+                session, run_id=run_id, activity_id=step.activity.name,
+                step_id=step.id, attempt=1, status="receipt_observed",
+                finished_at=datetime.now(UTC),
+            )
+            await session.commit()
+        raise WorkflowEffectUncertain(
+            f"external effect {effect_key} has a receipt but awaits independent verification"
+        )
+
+    async def confirm_external_effect(
+        self,
+        *,
+        run_id: str,
+        step_id: str,
+        remote_output: dict[str, Any],
+        verification_evidence: str,
+    ) -> None:
+        """Accept independently checked remote proof, then permit resume.
+
+        Caller is responsible for RBAC and read-only remote reconciliation.
+        This method does NOT verify the external provider by itself.
+        """
+        receipt = remote_output.get("remote_receipt")
+        if (
+            not verification_evidence.strip()
+            or not isinstance(receipt, dict)
+            or not receipt.get("provider")
+            or not receipt.get("resource_id")
+        ):
+            raise ValueError("verified external receipt and evidence are required")
+        effect_key = hashlib.sha256(f"{run_id}:{step_id}".encode()).hexdigest()
+        async with self._session_factory() as session:
+            row = await session.get(WorkflowEffectRow, effect_key)
+            if row is None or row.run_id != run_id or row.step_id != step_id:
+                raise KeyError("external effect journal not found")
+            if row.status not in ("sent", "uncertain", "unverified"):
+                raise ValueError(f"effect not awaiting reconciliation: {row.status}")
+            if not await transition_external_effect(
+                session, effect_key=effect_key, from_status=row.status,
+                to_status="confirmed", receipt=remote_output,
+                reconciliation_evidence=verification_evidence,
+            ):
+                raise RuntimeError("effect reconciliation lost compare-and-swap")
+            await session.commit()
 
     async def _execute_step(
         self,
@@ -444,6 +742,8 @@ class PGCheckpointerEngine:
         step_index: int,
         order: list[WorkflowStep],
         dep_outputs = None,
+        workflow_input: dict[str, Any] | None = None,
+        fencing_token: int | None = None,
     ) -> tuple[str, dict[str, Any] | None, str | None]:
         """Run a single step with retry + timeout. Return (status, output, error).
 
@@ -464,12 +764,16 @@ class PGCheckpointerEngine:
                 run_id=run_id,
                 step_id=step.id,
                 attempt=attempt,
-                input={"workflow_input": {"workflow_id": workflow.id}, "deps": dep_outputs},
+                input={"workflow_input": workflow_input or {}, "deps": dep_outputs},
                 output=last_output or {},
                 metadata={
                     "workflow_id": workflow.id,
                     "step_index": step_index,
                     "prev_outputs": dep_outputs,
+                    "fencing_token": fencing_token,
+                    "idempotency_key": hashlib.sha256(
+                        f"{run_id}:{step.id}".encode()
+                    ).hexdigest(),
                 },
             )
             # record started

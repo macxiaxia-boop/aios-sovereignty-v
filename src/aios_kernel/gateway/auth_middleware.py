@@ -23,13 +23,29 @@ from aios_kernel.gateway.auth import RateLimiter, verify_jwt
 log = logging.getLogger("aios_kernel.gateway.auth_middleware")
 
 
+def _env_enabled(name: str) -> bool:
+    """Strict boolean parsing: the string '0' must mean false."""
+    raw = os.environ.get(name, "0").strip().lower()
+    if raw in ("1", "true", "yes", "on"):
+        return True
+    if raw in ("0", "false", "no", "off", ""):
+        return False
+    raise ValueError(f"invalid boolean environment value for {name}: {raw!r}")
+
+
 class JWTAuthMiddleware(BaseHTTPMiddleware):
     """Validate Bearer JWT on protected routes."""
 
     def __init__(self, app, *, protected_paths: Iterable[str] = ("/tasks",)):
         super().__init__(app)
         self._protected_paths = tuple(protected_paths)
-        self._required = bool(os.environ.get("AIOS_KERNEL_AUTH_REQUIRED"))
+        self._required = _env_enabled("AIOS_KERNEL_AUTH_REQUIRED")
+        self._jwt_secret = b""
+        if self._required:
+            value = os.environ.get("AIOS_KERNEL_JWT_SECRET", "")
+            if len(value.encode("utf-8")) < 32:
+                raise RuntimeError("AIOS_KERNEL_JWT_SECRET must be set (32+ bytes) when JWT auth is required")
+            self._jwt_secret = value.encode("utf-8")
 
     async def dispatch(self, request: Request, call_next: Callable):
         if not self._required:
@@ -45,9 +61,8 @@ class JWTAuthMiddleware(BaseHTTPMiddleware):
                 media_type="application/json",
             )
         token = auth.split(None, 1)[1]
-        secret = os.environ.get("AIOS_KERNEL_JWT_SECRET", "aios-default-secret").encode()
         try:
-            claims = verify_jwt(token, secret)
+            claims = verify_jwt(token, self._jwt_secret)
         except Exception as exc:  # noqa: BLE001
             return Response(
                 f'{{"detail":"invalid token: {type(exc).__name__}"}}',
@@ -63,7 +78,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
 
     def __init__(self, app, *, capacity: float = 100.0, refill_rate: float = 10.0):
         super().__init__(app)
-        self._enabled = bool(os.environ.get("AIOS_KERNEL_RATELIMIT_ENABLED"))
+        self._enabled = _env_enabled("AIOS_KERNEL_RATELIMIT_ENABLED")
         self._limiter = RateLimiter(capacity=capacity, refill_rate=refill_rate)
 
     async def dispatch(self, request: Request, call_next: Callable):

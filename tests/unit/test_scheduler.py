@@ -125,6 +125,34 @@ def test_circuit_breaker_recovery_timeout():
     assert cb.allow()  # HALF_OPEN probe
 
 
+def test_half_open_admits_only_one_inflight_probe():
+    """Do not fan out a recovered worker into many concurrent AI tasks."""
+    cb = CircuitBreaker(failure_threshold=2, recovery_timeout_s=0.01)
+    cb.record_failure()
+    cb.record_failure()
+    assert cb.state == CircuitState.OPEN
+    cb.opened_at = time.time() - 1  # deterministic elapsed timeout
+    assert cb.allow() is True   # exactly one recovery probe
+    assert cb.state == CircuitState.HALF_OPEN
+    assert cb.allow() is False  # overlapping worker request must be rejected
+    assert cb.allow() is False
+    cb.record_success()
+    assert cb.state == CircuitState.CLOSED
+    assert cb.allow() is True   # recovered worker can resume normal traffic
+
+
+def test_half_open_failed_probe_opens_and_requires_new_timeout():
+    cb = CircuitBreaker(failure_threshold=3, recovery_timeout_s=30)
+    for _ in range(3):
+        cb.record_failure()
+    cb.opened_at = time.time() - 31
+    assert cb.allow()
+    assert cb.state == CircuitState.HALF_OPEN
+    cb.record_failure()
+    assert cb.state == CircuitState.OPEN
+    assert cb.allow() is False
+
+
 def test_circuit_breaker_closes_on_half_open_success():
     cb = CircuitBreaker(failure_threshold=2, recovery_timeout_s=0.01)
     cb.record_failure()
@@ -238,3 +266,42 @@ async def test_scheduler_metrics_snapshot_fields():
         "avg_dispatch_latency_s", "circuit_opened",
     ):
         assert key in snap
+
+
+@pytest.mark.asyncio
+async def test_same_task_repeated_submit_uses_distinct_run_ids(monkeypatch):
+    """One millisecond must not alias two executions of one immutable Task."""
+    from types import SimpleNamespace
+
+    import aios_kernel.scheduler as scheduler_module
+
+    monkeypatch.setattr(scheduler_module, "time",
+                        SimpleNamespace(time=lambda: 1700000000.123))
+    scheduler = AIOSScheduler(registry=_make_registry(_FakeAdapter("w1")))
+    task = _make_task(97)
+    first = await scheduler.submit(task, priority=Priority.P1)
+    second = await scheduler.submit(task, priority=Priority.P1)
+    assert first != second
+    assert first.startswith(f"run-{task.id}-")
+    assert second.startswith(f"run-{task.id}-")
+    assert scheduler._queues[Priority.P1].qsize() == 2
+    assert (await scheduler.status(first))["state"] == "queued"
+    assert (await scheduler.status(second))["state"] == "queued"
+
+
+@pytest.mark.asyncio
+async def test_concurrent_submit_same_task_has_no_id_collision(monkeypatch):
+    from types import SimpleNamespace
+
+    import aios_kernel.scheduler as scheduler_module
+
+    monkeypatch.setattr(scheduler_module, "time",
+                        SimpleNamespace(time=lambda: 1700000000.123))
+    scheduler = AIOSScheduler(registry=_make_registry(_FakeAdapter("w1")))
+    task = _make_task(98)
+    run_ids = await asyncio.gather(
+        *(scheduler.submit(task, priority=Priority.P0) for _ in range(64))
+    )
+    assert len(set(run_ids)) == 64
+    assert scheduler._queues[Priority.P0].qsize() == 64
+    assert scheduler.metrics()["submitted"] == 64

@@ -70,17 +70,34 @@ def verify_jwt(token: str, secret: bytes) -> dict:
     except ValueError as exc:
         raise InvalidToken(f"malformed token: {exc}") from exc
     expected_sig = _hmac_sha256(secret, f"{h}.{p}".encode())
-    if expected_sig != s:
+    # Constant-time comparison avoids exposing a signature-prefix timing oracle.
+    import hmac
+    if not hmac.compare_digest(expected_sig, s):
         raise InvalidToken("bad signature")
     try:
         header = json.loads(_b64url_decode(h))
         payload = json.loads(_b64url_decode(p))
     except Exception as exc:  # noqa: BLE001
         raise InvalidToken(f"bad payload: {exc}") from exc
-    if header.get("alg") != "HS256":
+    if not isinstance(header, dict) or header.get("alg") != "HS256":
         raise InvalidToken("unsupported alg")
-    if int(payload.get("exp", 0)) < int(time.time()):
-        raise InvalidToken("expired")
+    if not isinstance(payload, dict):
+        raise InvalidToken("claims must be an object")
+    import math
+
+    def _numeric_date(value):
+        return type(value) in (int, float) and math.isfinite(value)
+
+    now = time.time()
+    exp = payload.get("exp")
+    if not _numeric_date(exp) or exp <= now:
+        raise InvalidToken("expired or invalid exp")
+    nbf = payload.get("nbf")
+    if nbf is not None and (not _numeric_date(nbf) or nbf > now):
+        raise InvalidToken("not yet valid or invalid nbf")
+    iat = payload.get("iat")
+    if iat is not None and (not _numeric_date(iat) or iat > now + 60):
+        raise InvalidToken("future or invalid iat")
     return payload
 
 

@@ -20,12 +20,14 @@ from __future__ import annotations
 import asyncio
 import logging
 import time
+import uuid
 from collections import defaultdict
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any
 
 from aios_kernel.domain.task import Task
+from aios_kernel.runtime.durable_dispatch import DurableDispatchStore
 from aios_kernel.workers.base import HealthStatus
 from aios_kernel.workers.registry import WorkerRegistry
 
@@ -89,8 +91,10 @@ class CircuitBreaker:
                 self.state = CircuitState.HALF_OPEN
                 return True
             return False
-        # HALF_OPEN: allow one probe
-        return True
+        # One probe was already admitted on OPEN -> HALF_OPEN. While it is
+        # unresolved, reject concurrent probes; only its success or failure
+        # can transition the circuit back to CLOSED or OPEN.
+        return False
 
 
 @dataclass
@@ -174,11 +178,16 @@ class AIOSScheduler:
         registry: WorkerRegistry,
         config: SchedulerConfig | None = None,
         memory: MemoryPersistence | None = None,
+        durable_db_path: str | None = None,
     ) -> None:
         self._registry = registry
         self._config = config or SchedulerConfig()
         # optional audit ledger (R1503-FINAL gap-fill)
         self._memory = memory
+        self._durable_store = (
+            DurableDispatchStore(durable_db_path) if durable_db_path else None
+        )
+        self._durable_owner = uuid.uuid4().hex
         # priority → asyncio queue
         self._queues: dict[Priority, asyncio.Queue] = {
             p: asyncio.Queue() for p in Priority
@@ -188,6 +197,12 @@ class AIOSScheduler:
         self._breakers: dict[str, CircuitBreaker] = defaultdict(CircuitBreaker)
         # active tasks (run_id → asyncio.Task)
         self._active: dict[str, asyncio.Task] = {}
+        # Terminal outcomes are kept even after _active tasks are pruned.
+        # When a MemoryPersistence sink is supplied, statuses also survive
+        # process restart. This does NOT persist/recover the execution queue.
+        self._run_states: dict[str, str] = {}
+        self._run_results: dict[str, dict[str, Any]] = {}
+        self._run_tenants: dict[str, str | None] = {}
         self._metrics = SchedulerMetrics()
         self._stopped = False
         self._dispatcher_task: asyncio.Task | None = None
@@ -202,14 +217,29 @@ class AIOSScheduler:
         except Exception as exc:  # noqa: BLE001
             log.warning("audit ledger append failed: %s", exc)
 
+    def _record_state(self, run_id: str, state: str) -> None:
+        """Record observed worker-dispatch status (not business verification)."""
+        self._run_states[run_id] = state
+        if self._memory is not None:
+            try:
+                self._memory.state_set(f"scheduler-run:{run_id}", state)
+            except Exception as exc:  # noqa: BLE001
+                log.error("persistent scheduler state write failed: %s", exc)
+
     # ----- lifecycle --------------------------------------------------------
 
     async def start(self) -> None:
         if self._dispatcher_task is not None:
             return
         self._stopped = False
+        if self._durable_store is not None:
+            self._durable_store.recover_expired()
+        dispatcher = (
+            self._durable_dispatcher_loop()
+            if self._durable_store is not None else self._dispatcher_loop()
+        )
         self._dispatcher_task = asyncio.create_task(
-            self._dispatcher_loop(), name="aios-scheduler-dispatcher"
+            dispatcher, name="aios-scheduler-dispatcher"
         )
         self._health_task = asyncio.create_task(
             self._health_loop(), name="aios-scheduler-health"
@@ -220,6 +250,9 @@ class AIOSScheduler:
         if self._stopped:
             return
         self._stopped = True
+        for run_id, task in list(self._active.items()):
+            if not task.done():
+                self._record_state(run_id, "interrupted")
         for task in list(self._active.values()):
             task.cancel()
         if self._dispatcher_task:
@@ -245,16 +278,30 @@ class AIOSScheduler:
         if self._stopped:
             raise RuntimeError("scheduler stopped")
         self._metrics.submitted += 1
-        self._metrics.queue_depth_by_priority[priority.value] += 1
+        if self._durable_store is None:
+            self._metrics.queue_depth_by_priority[priority.value] += 1
         # store the task descriptor alongside priority + retry count
         envelope = {
             "task": task,
             "priority": priority,
             "retries": 0,
             "ts": time.time(),
-            "run_id": f"run-{task.id}-{int(time.time() * 1000)}",
+            # Millisecond timestamps collide when the same Task is submitted
+            # twice in the same event-loop tick. The run identifier is an
+            # independent execution identity, never a Task de-duplication key.
+            "run_id": f"run-{task.id}-{uuid.uuid4().hex}",
         }
-        await self._queues[priority].put(envelope)
+        tenant = getattr(task, "input_payload", {}).get("tenant_id")
+        self._run_tenants[envelope["run_id"]] = (
+            str(tenant) if isinstance(tenant, str) and tenant else None
+        )
+        if self._durable_store is not None:
+            # Commit before returning a run id: the task survives restart.
+            if not self._durable_store.enqueue(envelope["run_id"], task, priority.value):
+                raise RuntimeError("duplicate durable scheduler run")
+        else:
+            await self._queues[priority].put(envelope)
+        self._record_state(envelope["run_id"], "queued")
         self._audit("task_submitted", {
             "task_id": str(task.id),
             "run_id": envelope["run_id"],
@@ -269,16 +316,165 @@ class AIOSScheduler:
         return envelope["run_id"]
 
     async def status(self, run_id: str) -> dict[str, Any]:
-        task = self._active.get(run_id)
-        if task is None:
-            return {"run_id": run_id, "state": "unknown"}
-        if task.done():
-            exc = task.exception()
-            return {"run_id": run_id, "state": "failed" if exc else "completed"}
-        return {"run_id": run_id, "state": "running"}
+        """Read the last observed dispatch outcome; not a verifier verdict."""
+        if self._durable_store is not None:
+            return {"run_id": run_id, "state": self._durable_store.status(run_id)}
+        active = self._active.get(run_id)
+        if active is not None and not active.done():
+            return {"run_id": run_id, "state": "running"}
+        state = self._run_states.get(run_id)
+        if state is None and self._memory is not None:
+            state = self._memory.state_get(f"scheduler-run:{run_id}")
+        return {"run_id": run_id, "state": state or "unknown"}
+
+    async def result(
+        self, run_id: str, *, tenant_id: str | None = None,
+    ) -> dict[str, Any]:
+        """Return actual worker Artifact (never business-validated by default)."""
+        if self._durable_store is not None:
+            row = self._durable_store.get(run_id, tenant_id=tenant_id)
+            if row is None:
+                return {"run_id": run_id, "state": "unknown", "available": False}
+            return {
+                "run_id": run_id, "state": row["state"],
+                "available": row["artifact"] is not None,
+                "artifact": row["artifact"],
+                "business_validated": False,
+                "durability": "SQLITE_DURABLE_DISPATCH_WITH_UNCERTAIN_QUARANTINE",
+            }
+        owner = self._run_tenants.get(run_id)
+        if owner is None and self._memory is not None:
+            owner = self._memory.state_get(f"scheduler-tenant:{run_id}")
+        if (tenant_id is not None and owner != tenant_id) or (
+            tenant_id is None and owner is not None
+        ):
+            # Do not leak the existence or content of another tenant's work.
+            return {"run_id": run_id, "state": "unknown", "available": False}
+        status = await self.status(run_id)
+        artifact = self._run_results.get(run_id)
+        if artifact is None and self._memory is not None:
+            artifact = self._memory.state_get(f"scheduler-result:{run_id}")
+        return {
+            "run_id": run_id,
+            "state": status["state"],
+            "available": bool(artifact),
+            "artifact": artifact,
+            "business_validated": False,
+            "durability": (
+                "OPTIONAL_MEMORY_PERSISTENCE" if self._memory is not None
+                else "IN_PROCESS_ONLY"
+            ),
+        }
 
     def metrics(self) -> dict[str, Any]:
         return self._metrics.snapshot()
+
+    # ----- internal: durable opt-in dispatcher ------------------------------
+
+    async def _durable_dispatcher_loop(self) -> None:
+        """Claim committed rows; NEVER replay ambiguous effects after crash."""
+        assert self._durable_store is not None
+        count = 0
+        while not self._stopped:
+            if len(self._active) >= self._config.max_concurrent:
+                await asyncio.sleep(0.05)
+                continue
+            # Periodic takeover: safe preflights only; all other unknown
+            # results are quarantined instead of risking duplicate effects.
+            if count % 100 == 0:
+                self._durable_store.recover_expired()
+            count += 1
+            claim = self._durable_store.claim(self._durable_owner, ttl_s=300)
+            if claim is None:
+                await asyncio.sleep(0.05)
+                continue
+            run_id = claim["run_id"]
+            envelope = {
+                "task": claim["task"],
+                "priority": Priority(claim["priority"]),
+                "retries": 0,
+                "run_id": run_id,
+            }
+            worker = asyncio.create_task(
+                self._execute_durable(envelope, claim),
+                name=f"durable-worker-{run_id}",
+            )
+            self._active[run_id] = worker
+            worker.add_done_callback(
+                lambda _task, rid=run_id: self._active.pop(rid, None)
+            )
+
+    async def _execute_durable(
+        self, envelope: dict[str, Any], claim: dict[str, Any],
+    ) -> None:
+        """Lease renewal plus CAS commit of a genuine Worker Artifact."""
+        assert self._durable_store is not None
+        run_id = claim["run_id"]
+        owner = claim["owner"]
+        fence = claim["fence"]
+
+        async def heartbeat() -> None:
+            while True:
+                await asyncio.sleep(60)
+                if not self._durable_store.renew(
+                    run_id, owner, fence, ttl_s=300,
+                ):
+                    raise RuntimeError("durable dispatch lease lost")
+
+        hb = asyncio.create_task(heartbeat())
+        driver = asyncio.create_task(self._execute(envelope))
+        try:
+            done, _pending = await asyncio.wait(
+                {driver, hb}, return_when=asyncio.FIRST_COMPLETED,
+            )
+            if hb in done:
+                driver.cancel()
+                try:
+                    await driver
+                except asyncio.CancelledError:
+                    pass
+                hb.result()
+                return
+            await driver
+            state = self._run_states.get(run_id)
+            if state == "completed":
+                artifact = self._run_results.get(run_id)
+                self._durable_store.finish(
+                    run_id, owner, fence, status="completed",
+                    artifact=artifact,
+                )
+            elif state == "failed":
+                # Failure after an outbound request might be an ambiguous
+                # remote success. Only read-only preflight is retry-safe.
+                safe = self._durable_store._safe_to_replay(envelope["task"])
+                self._durable_store.finish(
+                    run_id, owner, fence,
+                    status="failed" if safe else "blocked_uncertain",
+                )
+            else:
+                self._durable_store.finish(
+                    run_id, owner, fence, status="blocked_uncertain",
+                )
+        except asyncio.CancelledError:
+            driver.cancel()
+            raise
+        except Exception as exc:
+            log.exception("durable dispatch failed run=%s: %s", run_id, exc)
+            self._durable_store.finish(
+                run_id, owner, fence, status="blocked_uncertain",
+            )
+        finally:
+            hb.cancel()
+            if not driver.done():
+                driver.cancel()
+            try:
+                await hb
+            except asyncio.CancelledError:
+                pass
+            try:
+                await driver
+            except asyncio.CancelledError:
+                pass
 
     # ----- internal: dispatcher --------------------------------------------
 
@@ -301,6 +497,7 @@ class AIOSScheduler:
             # dispatch
             run_id = envelope["run_id"]
             coro = self._execute(envelope)
+            self._record_state(run_id, "running")
             self._active[run_id] = asyncio.create_task(
                 coro, name=f"scheduler-run-{run_id}"
             )
@@ -340,7 +537,7 @@ class AIOSScheduler:
             breaker.record_failure()
             if breaker.state == CircuitState.OPEN:
                 self._metrics.circuit_opened += 1
-            if retries < self._config.max_retries:
+            if self._durable_store is None and retries < self._config.max_retries:
                 self._metrics.retried += 1
                 envelope["retries"] = retries + 1
                 delay = min(
@@ -349,13 +546,32 @@ class AIOSScheduler:
                 )
                 await asyncio.sleep(delay)
                 await self._queues[priority].put(envelope)
+                self._record_state(run_id, "queued")
                 self._metrics.queue_depth_by_priority[priority.value] += 1
             else:
                 self._metrics.failed += 1
                 await self._dlq_put(envelope, exc)
             return
 
+        # Preserve the real worker artifact; "completed" means worker return,
+        # not provider receipt reconciliation or business acceptance.
+        if hasattr(artifact, "model_dump"):
+            artifact_doc = artifact.model_dump(mode="json")
+        elif isinstance(artifact, dict):
+            artifact_doc = artifact
+        else:
+            raise TypeError("worker must return Artifact or JSON dict")
+        self._run_results[run_id] = artifact_doc
+        if self._memory is not None:
+            try:
+                self._memory.state_set(f"scheduler-result:{run_id}", artifact_doc)
+                tenant = self._run_tenants.get(run_id)
+                if tenant is not None:
+                    self._memory.state_set(f"scheduler-tenant:{run_id}", tenant)
+            except Exception as exc:  # noqa: BLE001
+                log.error("scheduler artifact persistence failed: %s", exc)
         breaker.record_success()
+        self._record_state(run_id, "completed")
         self._metrics.completed += 1
         self._metrics.dispatch_latency_s_total += time.time() - start_ts
         self._metrics.dispatch_count += 1
@@ -372,6 +588,7 @@ class AIOSScheduler:
         )
 
     async def _dlq_put(self, envelope: dict[str, Any], exc: Exception) -> None:
+        self._record_state(envelope["run_id"], "failed")
         try:
             self._dlq.put_nowait(envelope)
         except asyncio.QueueFull:

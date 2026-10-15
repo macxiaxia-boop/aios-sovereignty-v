@@ -410,7 +410,7 @@ def test_alembic_upgrade_003_adds_10_columns(sqlite_url):
 # 20. Alembic downgrade -1 removes the 10 new columns
 def test_alembic_downgrade_003_removes_10_columns(sqlite_url):
     _run_alembic(["upgrade", "head"], sqlite_url)
-    r = _run_alembic(["downgrade", "-1"], sqlite_url)
+    r = _run_alembic(["downgrade", "002"], sqlite_url)
     assert r.returncode == 0, f"downgrade failed: {r.stderr}"
     cols = _goal_columns(sqlite_url)
     new_cols = {
@@ -429,11 +429,11 @@ def test_alembic_downgrade_003_removes_10_columns(sqlite_url):
 
 
 # 21. Alembic upgrade head reaches revision 003
-def test_alembic_head_is_003(sqlite_url):
+def test_alembic_head_is_004(sqlite_url):
     _run_alembic(["upgrade", "head"], sqlite_url)
     cur = _run_alembic(["current"], sqlite_url)
     assert cur.returncode == 0
-    assert "003" in cur.stdout
+    assert "004" in cur.stdout
 
 
 # 22. upgrade / downgrade / upgrade idempotent

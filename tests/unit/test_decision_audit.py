@@ -350,6 +350,7 @@ def test_alembic_downgrade_002_drops_decision_audit_table(tmp_path):
     url = f"sqlite+aiosqlite:///{db_path}"
     r1 = _run_alembic(["upgrade", "head"], url)
     assert r1.returncode == 0
+    _run_alembic(["downgrade", "-1"], url)  # 004 -> 003
     _run_alembic(["downgrade", "-1"], url)  # 003 -> 002
     r2 = _run_alembic(["downgrade", "-1"], url)  # 002 -> 001
     assert r2.returncode == 0, f"downgrade failed: {r2.stderr}"
