@@ -488,7 +488,12 @@ async def test_e2e_scheduler_metrics_after_claude_code_dispatch(fake_claude_bina
 
 
 @pytest.mark.asyncio
-async def test_e2e_http_submit_routes_to_claude_code_adapter(fake_claude_binary):
+async def test_e2e_http_submit_routes_to_claude_code_adapter(fake_claude_binary, monkeypatch):
+    from aios_kernel.gateway.auth import sign_jwt
+    secret = "isolated-claude-test-secret-never-for-production"
+    monkeypatch.setenv("AIOS_KERNEL_JWT_SECRET", secret)
+    monkeypatch.delenv("AIOS_KERNEL_AUTH_REQUIRED", raising=False)
+    headers = {"Authorization": "Bearer " + sign_jwt({"sub": "test-worker"}, secret.encode())}
     """Submit a task via HTTP gateway; the scheduler dispatches it to the
     claude-code-adapter and reports completed."""
     reg = _make_registry(claude_binary=fake_claude_binary, include_codex=False)
@@ -499,6 +504,7 @@ async def test_e2e_http_submit_routes_to_claude_code_adapter(fake_claude_binary)
         r = client.post(
             "/tasks",
             json={"goal_id": "g-http", "title": "http-claude-task", "priority": "P1"},
+            headers=headers,
         )
         assert r.status_code == 202
         r.json()["run_id"]  # smoke-check the response body
@@ -517,7 +523,12 @@ async def test_e2e_http_submit_routes_to_claude_code_adapter(fake_claude_binary)
 
 
 @pytest.mark.asyncio
-async def test_e2e_http_metrics_endpoint_reflects_claude_code_dispatch(fake_claude_binary):
+async def test_e2e_http_metrics_endpoint_reflects_claude_code_dispatch(fake_claude_binary, monkeypatch):
+    from aios_kernel.gateway.auth import sign_jwt
+    secret = "isolated-metrics-test-secret-never-for-production"
+    monkeypatch.setenv("AIOS_KERNEL_JWT_SECRET", secret)
+    monkeypatch.delenv("AIOS_KERNEL_AUTH_REQUIRED", raising=False)
+    headers = {"Authorization": "Bearer " + sign_jwt({"sub": "test-worker"}, secret.encode())}
     """After multiple HTTP-submitted tasks, the metrics endpoint must reflect them."""
     reg = _make_registry(claude_binary=fake_claude_binary, include_codex=False)
     s = _make_scheduler(reg, max_retries=0)
@@ -528,6 +539,7 @@ async def test_e2e_http_metrics_endpoint_reflects_claude_code_dispatch(fake_clau
             r = client.post(
                 "/tasks",
                 json={"goal_id": "g-mh", "title": f"m-{i}", "priority": "P2"},
+                headers=headers,
             )
             assert r.status_code == 202
         # wait
@@ -574,8 +586,13 @@ async def test_e2e_mcp_submit_task_dispatches_through_scheduler(fake_claude_bina
 
 @pytest.mark.asyncio
 async def test_e2e_full_pipeline_4_module_claude_code(
-    fake_claude_binary, tmp_path: Path,
+    fake_claude_binary, tmp_path: Path, monkeypatch,
 ):
+    from aios_kernel.gateway.auth import sign_jwt
+    secret = "isolated-pipeline-test-secret-never-for-production"
+    monkeypatch.setenv("AIOS_KERNEL_JWT_SECRET", secret)
+    monkeypatch.delenv("AIOS_KERNEL_AUTH_REQUIRED", raising=False)
+    headers = {"Authorization": "Bearer " + sign_jwt({"sub": "test-worker"}, secret.encode())}
     """Full R1503 §2 e2e: HTTP submit -> scheduler.submit -> registry.route
     (picks claude-code-adapter) -> ClaudeCodeAdapter.execute (real binary)
     -> audit ledger entry."""
@@ -590,6 +607,7 @@ async def test_e2e_full_pipeline_4_module_claude_code(
         r = client.post(
             "/tasks",
             json={"goal_id": "g-pipe", "title": "pipeline-ok", "priority": "P0"},
+            headers=headers,
         )
         assert r.status_code == 202
         run_id = r.json()["run_id"]
