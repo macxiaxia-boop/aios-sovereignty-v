@@ -74,13 +74,19 @@ def _make_scheduler_with_workers():
 
 
 @pytest.mark.asyncio
-async def test_e2e_http_submit_dispatches_to_4_agent_worker(tmp_path: Path):
+async def test_e2e_http_submit_dispatches_to_4_agent_worker(tmp_path: Path, monkeypatch):
+    # E2E uses an explicit short-lived test JWT; production must remain fail closed.
+    from aios_kernel.gateway.auth import sign_jwt
+    secret = "isolated-e2e-test-secret-never-for-production"
+    monkeypatch.setenv("AIOS_KERNEL_JWT_SECRET", secret)
+    monkeypatch.delenv("AIOS_KERNEL_AUTH_REQUIRED", raising=False)
+    headers = {"Authorization": "Bearer " + sign_jwt({"sub": "test-e2e"}, secret.encode())}
     s = _make_scheduler_with_workers()
     await s.start()
     try:
         client = TestClient(create_app(s))
         # submit a task
-        r = client.post("/tasks", json={"goal_id": "g-e2e", "title": "e2e-test", "priority": "P1"})
+        r = client.post("/tasks", json={"goal_id": "g-e2e", "title": "e2e-test", "priority": "P1"}, headers=headers)
         assert r.status_code == 202
         run_id = r.json()["run_id"]
 
