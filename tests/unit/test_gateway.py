@@ -67,21 +67,37 @@ def test_http_metrics():
     assert "completed" in body
 
 
-def test_http_submit_task():
+def test_http_submit_task(monkeypatch):
+    secret = "isolated-test-secret-never-for-production"
+    monkeypatch.setenv("AIOS_KERNEL_JWT_SECRET", secret)
+    monkeypatch.delenv("AIOS_KERNEL_AUTH_REQUIRED", raising=False)
     s = _make_scheduler()
     client = TestClient(create_app(s))
-    r = client.post("/tasks", json={"goal_id": "g1", "title": "t1"})
+    token = sign_jwt({"sub": "test-worker"}, secret.encode())
+    r = client.post(
+        "/tasks",
+        json={"goal_id": "g1", "title": "t1"},
+        headers={"Authorization": f"Bearer {token}"},
+    )
     assert r.status_code == 202
     body = r.json()
     assert body["run_id"].startswith("run-")
     assert "task_id" in body
 
 
-def test_http_submit_invalid_priority():
+def test_http_submit_invalid_priority(monkeypatch):
+    secret = "isolated-test-secret-never-for-production"
+    monkeypatch.setenv("AIOS_KERNEL_JWT_SECRET", secret)
+    monkeypatch.delenv("AIOS_KERNEL_AUTH_REQUIRED", raising=False)
     s = _make_scheduler()
     client = TestClient(create_app(s))
-    # Pydantic enforces the pattern in the request model → 422 before our handler.
-    r = client.post("/tasks", json={"goal_id": "g1", "title": "t1", "priority": "P9"})
+    token = sign_jwt({"sub": "test-worker"}, secret.encode())
+    # Invalid input should be a 422 only after successful authentication.
+    r = client.post(
+        "/tasks",
+        json={"goal_id": "g1", "title": "t1", "priority": "P9"},
+        headers={"Authorization": f"Bearer {token}"},
+    )
     assert r.status_code == 422
 
 
