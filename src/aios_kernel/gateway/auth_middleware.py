@@ -29,7 +29,9 @@ class JWTAuthMiddleware(BaseHTTPMiddleware):
     def __init__(self, app, *, protected_paths: Iterable[str] = ("/tasks",)):
         super().__init__(app)
         self._protected_paths = tuple(protected_paths)
-        self._required = bool(os.environ.get("AIOS_KERNEL_AUTH_REQUIRED"))
+        # Fail closed by default. Local unauthenticated mode must be explicit.
+        setting = os.environ.get("AIOS_KERNEL_AUTH_REQUIRED", "true").strip().lower()
+        self._required = setting not in {"0", "false", "no", "off"}
 
     async def dispatch(self, request: Request, call_next: Callable):
         if not self._required:
@@ -45,7 +47,15 @@ class JWTAuthMiddleware(BaseHTTPMiddleware):
                 media_type="application/json",
             )
         token = auth.split(None, 1)[1]
-        secret = os.environ.get("AIOS_KERNEL_JWT_SECRET", "aios-default-secret").encode()
+        configured_secret = os.environ.get("AIOS_KERNEL_JWT_SECRET", "")
+        if not configured_secret or configured_secret == "aios-default-secret":
+            log.error("Protected task API denied: AIOS_KERNEL_JWT_SECRET not configured")
+            return Response(
+                '{"detail":"JWT authentication unavailable"}',
+                status_code=503,
+                media_type="application/json",
+            )
+        secret = configured_secret.encode()
         try:
             claims = verify_jwt(token, secret)
         except Exception as exc:  # noqa: BLE001
@@ -63,7 +73,8 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
 
     def __init__(self, app, *, capacity: float = 100.0, refill_rate: float = 10.0):
         super().__init__(app)
-        self._enabled = bool(os.environ.get("AIOS_KERNEL_RATELIMIT_ENABLED"))
+        rate_setting = os.environ.get("AIOS_KERNEL_RATELIMIT_ENABLED", "true").strip().lower()
+        self._enabled = rate_setting not in {"0", "false", "no", "off"}
         self._limiter = RateLimiter(capacity=capacity, refill_rate=refill_rate)
 
     async def dispatch(self, request: Request, call_next: Callable):
