@@ -2,6 +2,9 @@
 
 No live backend, secrets, or external network calls.
 """
+import time
+import pytest
+
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
@@ -64,3 +67,17 @@ def test_rate_limit_enabled_by_default(monkeypatch):
     with TestClient(app) as client:
         assert client.get("/health").status_code == 200
         assert client.get("/health").status_code == 429
+
+
+
+def test_jwt_expires_at_boundary_and_rejects_modified_signature():
+    from aios_kernel.gateway.auth import InvalidToken, sign_jwt, verify_jwt
+    secret = b"test-only-strong-key"
+    token = sign_jwt({"sub": "sample", "exp": int(time.time())}, secret)
+    with pytest.raises(InvalidToken):
+        verify_jwt(token, secret)
+    valid = sign_jwt({"sub": "sample"}, secret, ttl_s=60)
+    pieces = valid.split(".")
+    altered_signature = ("A" if pieces[2][0] != "A" else "B") + pieces[2][1:]
+    with pytest.raises(InvalidToken):
+        verify_jwt(".".join(pieces[:2] + [altered_signature]), secret)
