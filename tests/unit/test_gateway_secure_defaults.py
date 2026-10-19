@@ -3,8 +3,8 @@
 No live backend, secrets, or external network calls.
 """
 import time
-import pytest
 
+import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
