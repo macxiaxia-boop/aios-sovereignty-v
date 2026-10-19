@@ -69,8 +69,9 @@ def verify_jwt(token: str, secret: bytes) -> dict:
         h, p, s = token.split(".")
     except ValueError as exc:
         raise InvalidToken(f"malformed token: {exc}") from exc
+    import hmac
     expected_sig = _hmac_sha256(secret, f"{h}.{p}".encode())
-    if expected_sig != s:
+    if not hmac.compare_digest(expected_sig, s):
         raise InvalidToken("bad signature")
     try:
         header = json.loads(_b64url_decode(h))
@@ -79,7 +80,7 @@ def verify_jwt(token: str, secret: bytes) -> dict:
         raise InvalidToken(f"bad payload: {exc}") from exc
     if header.get("alg") != "HS256":
         raise InvalidToken("unsupported alg")
-    if int(payload.get("exp", 0)) < int(time.time()):
+    if int(payload.get("exp", 0)) <= int(time.time()):
         raise InvalidToken("expired")
     return payload
 
